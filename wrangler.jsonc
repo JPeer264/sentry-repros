@@ -3,26 +3,32 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "temp-cloudflare-react",
-	"main": "worker/index.ts",
-	"compatibility_date": "2026-05-20",
-	"assets": {
-		"not_found_handling": "single-page-application"
-	},
-	"observability": {
-		"enabled": true
-	},
-	"upload_source_maps": true,
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
-	"durable_objects": {
-		"bindings": [
-			{ "name": "MyAgent", "class_name": "MyAgent" }
-		]
-	},
-	"migrations": [
-		{ "tag": "v1", "new_sqlite_classes": ["MyAgent"] }
-	]
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "temp-cloudflare-react",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-05-20",
+
+  "assets": {
+    "not_found_handling": "single-page-application",
+  },
+  "secrets": {
+    "required": ["SENTRY_DSN"],
+  },
+
+  "observability": {
+    "enabled": true,
+  },
+
+  "upload_source_maps": true,
+  "compatibility_flags": ["nodejs_compat", "nodejs_als"],
+
+  "durable_objects": {
+    "bindings": [{ "name": "MyAgent", "class_name": "MyAgent" }],
+  },
+
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MyAgent"] }],
+
+  "version_metadata": {
+    "binding": "CF_VERSION_METADATA",
+  },
 }

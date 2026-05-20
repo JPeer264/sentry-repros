@@ -1,14 +1,22 @@
-import { routeAgentRequest } from "agents";
-import { Agent, callable } from "agents";
+import * as Sentry from "@sentry/cloudflare";
+import { routeAgentRequest, Agent, callable } from "agents";
 
-export class MyAgent extends Agent<Env> {
+class MyBaseAgent extends Agent {
   @callable()
   async greet(name: string): Promise<string> {
     return `Hello, ${name}!`;
   }
 }
 
-export default {
+export const MyAgent = Sentry.instrumentDurableObjectWithSentry((env: Env) => ({
+  dsn: env.SENTRY_DSN,
+  tracesSampleRate: 1,
+}), MyBaseAgent);
+
+export default Sentry.withSentry((env) => ({
+  dsn: env.SENTRY_DSN,
+  tracesSampleRate: 1,
+}), {
   async fetch(request: Request, env: Env): Promise<Response> {
     const agentResponse = await routeAgentRequest(request, env);
 
@@ -18,4 +26,4 @@ export default {
 
     return new Response(null, { status: 404 });
   },
-} satisfies ExportedHandler<Env>;
+} satisfies ExportedHandler<Env>);
