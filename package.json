@@ -1,0 +1,36 @@
+{
+  "name": "temp-node-20625",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Repro for getsentry/sentry-javascript#20625 — Node SEA (yao-pkg) + Sentry v11 orchestrion build-time instrumentation",
+  "bin": "dist/app.mjs",
+  "scripts": {
+    "start": "node src/app.js",
+    "build:esbuild": "node build.mjs",
+    "build:sea": "pkg . --sea --targets node22-macos-arm64 --output dist/sea-app",
+    "sea": "./dist/sea-app"
+  },
+  "dependencies": {
+    "@sentry/node": "10.69.0",
+    "@sentry/profiling-node": "10.69.0",
+    "@sentry/server-utils": "10.69.0",
+    "express": "^4.22.2"
+  },
+  "devDependencies": {
+    "@sentry/esbuild-plugin": "^5.4.0",
+    "@sentry/node-cpu-profiler": "2.4.2",
+    "@yao-pkg/pkg": "^6.21.0",
+    "esbuild": "^0.28.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "pkg": {
+    "assets": [
+      "dist/*.node"
+    ]
+  }
+}
