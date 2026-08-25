@@ -1,10 +1,6 @@
 import * as Sentry from '@sentry/cloudflare';
 import { DurableObject } from 'cloudflare:workers';
 
-// No Sentry wrappers here: `sentryCloudflareVitePlugin()` wraps the default export with `withSentry`
-// and `ReproDO` with `instrumentDurableObjectWithSentry` at build time, options come from
-// `./instrument.server.ts`.
-
 export class ReproDO extends DurableObject<Env> {
   // Cheap RPC method for the burst fan-out: the point is the per-call instrumentation, not the body.
   echo(n: number): number {

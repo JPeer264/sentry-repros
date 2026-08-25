@@ -12,7 +12,7 @@ npx vite build
 # Older @sentry/cloudflare releases keep the auto-instrumentation behind an experimental flag and
 # build an unwrapped worker without a warning.
 if ! grep -q "instrumentDurableObjectWithSentry" dist/*/index.js; then
-  echo "the built worker is not instrumented: use an @sentry/cloudflare with auto-instrumentation (pnpm use-local-sdk)" >&2
+  echo "the built worker is not instrumented: this needs an @sentry/cloudflare with auto-instrumentation on by default" >&2
   exit 1
 fi
 

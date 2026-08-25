@@ -8,6 +8,14 @@
     "enabled": true,
     "head_sampling_rate": 1
   },
+  // The scripts override these per run with `wrangler deploy --var`; locally use `.dev.vars`.
+  "vars": {
+    "SENTRY_DSN": "",
+    // Sentry `environment` tag, one per run so runs can be validated in isolation.
+    "SENTRY_ENVIRONMENT": "repro",
+    // "false" turns the `cacheClient` option off (one client per invocation).
+    "CACHE_CLIENT": "true"
+  },
   "durable_objects": {
     "bindings": [{ "name": "REPRO_DO", "class_name": "ReproDO" }]
   },

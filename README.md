@@ -17,8 +17,7 @@ wrapper, the plugin wraps the handler and the DO class at build time and takes t
 `src/instrument.server.ts`.
 
 `cacheClient` ships with [getsentry/sentry-javascript#23151](https://github.com/getsentry/sentry-javascript/pull/23151).
-Until it is released, [use a local build](#local-sdk-build). `deploy` refuses a worker that the
-plugin did not wrap.
+`deploy` refuses a worker that the plugin did not wrap.
 
 ## Setup
 
@@ -65,18 +64,10 @@ pnpm dev
 curl -s localhost:5173/checkout
 ```
 
-## Local SDK build
-
-```bash
-# in sentry-javascript, for packages/core, packages/server-utils and packages/cloudflare:
-yarn build && yarn yalc:publish
-
-pnpm use-local-sdk            # yalc links + pnpm overrides
-pnpm use-local-sdk --reset    # back to npm
-```
-
 ## Notes
 
+- `Env` and the runtime types come from `wrangler.jsonc` (`worker-configuration.d.ts`). Run
+  `pnpm types` after a change to the config.
 - Keep `tracesSampleRate: 1`: an unsampled trace looks like a lost one.
 - Deploy a fresh worker per run (the scripts do). Worker names and DO namespaces are reused
   otherwise, and old isolates keep the old code for a while.
