@@ -7,6 +7,6 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 bash scripts/deploy.sh "$@"
-bash scripts/load.sh "$@"
+node scripts/load.mjs "$@"
 node scripts/validate.mjs "$@"
 node scripts/cpu.mjs "$@"

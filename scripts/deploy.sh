@@ -4,6 +4,8 @@
 #
 # usage: scripts/deploy.sh <run-id> [on|off]
 # env:   SENTRY_DSN, WORKERS_SUBDOMAIN
+#        optional overrides of the wrangler.jsonc vars: EDGE_CASES, RPC_TRACE_PROPAGATION,
+#        SENTRY_TRACES_SAMPLE_RATE, SENTRY_DEBUG (e.g. `EDGE_CASES=false scripts/deploy.sh b1 on`)
 . "$(dirname "$0")/lib.sh" "$@"
 : "${SENTRY_DSN:?set SENTRY_DSN}"
 
@@ -16,9 +18,15 @@ if ! grep -q "instrumentDurableObjectWithSentry" dist/*/index.js; then
   exit 1
 fi
 
+overrides=()
+for name in EDGE_CASES RPC_TRACE_PROPAGATION SENTRY_TRACES_SAMPLE_RATE SENTRY_DEBUG; do
+  [[ -n "${!name:-}" ]] && overrides+=(--var "${name}:${!name}")
+done
+
 npx wrangler deploy --name "$worker" \
   --var "SENTRY_DSN:${SENTRY_DSN}" \
   --var "SENTRY_ENVIRONMENT:${environment}" \
-  --var "CACHE_CLIENT:$([[ "$cache" == "on" ]] && echo true || echo false)"
+  --var "CACHE_CLIENT:$([[ "$cache" == "on" ]] && echo true || echo false)" \
+  ${overrides[@]+"${overrides[@]}"}
 
 echo "deployed $(worker_url) (Sentry environment: ${environment})"

@@ -89,9 +89,9 @@ Numbers are Workers Observability (`$workers.cpuTimeMs`, `$workers.wallTimeMs`) 
 ## Notes
 
 - The `off · edge off` and `v10` cells were produced with the same request mix but with the
-  post-response captures removed at the source (`BENCH_EDGE_CASES=false` in the benchmark build
-  of this repro) so that all three SDK variants emit identical telemetry. This published repro
-  keeps the edge cases on, which is what `pnpm run run <run> on|off` reproduces.
+  post-response captures removed at the source (`BENCH_EDGE_CASES=false` in the benchmark build,
+  `EDGE_CASES=false` in this repro) so that all three SDK variants emit identical telemetry.
+  `pnpm run run <run> on|off` keeps the edge cases on.
 - Same-host comparisons (two SDK builds in one worker script, each behind its own path prefix,
   interleaved load) resolve differences the separate-worker matrix cannot: in those runs the
   cached client measured 3–17 % lower worker CPU than both v10 and `cacheClient: false`, with

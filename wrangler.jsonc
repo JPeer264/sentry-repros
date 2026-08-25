@@ -14,10 +14,22 @@
     // Sentry `environment` tag, one per run so runs can be validated in isolation.
     "SENTRY_ENVIRONMENT": "repro",
     // "false" turns the `cacheClient` option off (one client per invocation).
-    "CACHE_CLIENT": "true"
+    "CACHE_CLIENT": "true",
+    // "false" removes every post-response and detached capture, so SDKs with and without eager
+    // delivery emit identical telemetry (1:1 CPU comparisons).
+    "EDGE_CASES": "true",
+    // "false" turns RPC trace propagation off: DO invocations then start their own traces.
+    "RPC_TRACE_PROPAGATION": "true",
+    // Keep 1: an unsampled trace looks like a lost one. "0" sends only errors, logs and metrics.
+    "SENTRY_TRACES_SAMPLE_RATE": "1",
+    // "true" enables the SDK debug logger (not under load).
+    "SENTRY_DEBUG": "false"
   },
   "durable_objects": {
     "bindings": [{ "name": "REPRO_DO", "class_name": "ReproDO" }]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ReproDO"] }]
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ReproDO"] }],
+  "workflows": [
+    { "name": "sentry-cloudflare-waituntil-repro", "binding": "REPRO_WORKFLOW", "class_name": "ReproWorkflow" }
+  ]
 }

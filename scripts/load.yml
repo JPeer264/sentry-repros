@@ -1,0 +1,26 @@
+# The deterministic load: 100 requests at 5 per second, 50 /burst?n=20, 25 /checkout, 25 /detached,
+# each tagged with the x-request-id that validate.mjs expects. Run it via `pnpm load <run> [on|off]`
+# (scripts/load.mjs sets --target and the `run` variable, and records the window for cpu.mjs).
+config:
+  processor: ./load-processor.cjs
+  phases:
+    - duration: 20
+      arrivalCount: 100
+  http:
+    timeout: 60
+  plugins:
+    expect: {}
+  ensure:
+    thresholds:
+      - vusers.failed: 0
+
+scenarios:
+  - name: mix
+    beforeScenario: assignRequest
+    flow:
+      - get:
+          url: '{{ path }}'
+          headers:
+            x-request-id: '{{ id }}'
+          expect:
+            - statusCode: 200
