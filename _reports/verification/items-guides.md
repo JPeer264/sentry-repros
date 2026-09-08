@@ -2,8 +2,8 @@
 
 Checked on 2026-09-08 against:
 
-- docs: `/Users/janpeer/dev/sentry-docs` at master `aebda0ee4` (the audit cited `046ce5942`, re-checked at `b568ebbd3`)
-- SDK as audited: worktree `/Users/janpeer/dev/sentry-worktrees/audit-runtime-docs` at `6f2da7483d`
+- docs: `~/dev/sentry-docs` at master `aebda0ee4` (the audit cited `046ce5942`, re-checked at `b568ebbd3`)
+- SDK as audited: worktree `$SDK` at `6f2da7483d`
 - SDK today: develop head `03aaf42455`, read file by file via `gh api .../contents/<path>?ref=develop`
 - released line: `ref=master` (`@sentry/cloudflare` 10.67.0), used to separate "wrong today" from "wrong at v11"
 - reproductions: `quickstarts/{node,bun,deno,cloudflare}/README.md` and `results-*.json` for DOC-Q1 to DOC-Q6

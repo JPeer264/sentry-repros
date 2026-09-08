@@ -1,0 +1,524 @@
+[
+  {
+    "id": "DOC-F1",
+    "applied": [
+      "Replaced the wrong `external` limit with the measured probe X01 behaviour: externalizing `@sentry/*` while hono stays inlined 500s every request via a duplicated GET_MATCH_RESULT symbol; the working choices are no `external` at all or `hono` externalized together with `@sentry/*`.",
+      "Changed the provenance to 'Hono 4.13.x with @sentry/hono/bun 10.67.0 (develop, 6f2da7483d) on Bun 1.4.0 and re-run on 1.4.2'; What ran now names hono 4.13.7, mysql2 3.24.3 and mysql@2.",
+      "Moved citations: bun/index.mdx 96-98 -> 90-94, bun/index.mdx:106 -> :100, hono/index.mdx 290-317 -> 278-300 (with :280 and :299), and noted the Bun guide is 212 lines.",
+      "Qualified the mysql2 bullet: 3.20.0+, driver loaded and queried early or the channels pinned; added the channel pin to the setup paragraph as a workaround for a Bun GC bug, with its root cause in one sentence.",
+      "Added the run-step lifecycle: `stream` is the default on this line, with the span names a reader sees under stream and under static.",
+      "Added a 'What to change' bullet for packages/hono/README.md:172-190, which shows the Node @hono/node-server recipe in the Bun section.",
+      "Softened 'keeps every capability' for the bundle: named the capabilities the bundled captures cover and said the isolation route is not driven there.",
+      "Page: paragraph and cite paragraph rewritten to the new line numbers and the driver split; removed the claude.ai artifact link and the ~/dev/sentry-docs path prefixes."
+    ],
+    "skipped": [
+      "Omitted finding 'client errors = not-run': skipped as trivia, the cell is a server-only Hono app with no browser surface."
+    ],
+    "works_today": [
+      "unhandled handler errors",
+      "parameterized route names (source route)",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql2 3.20.0+ db spans with no build step (driver loaded early or channels pinned)",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "drivers without native diagnostics channels (mysql@2) need the Bun.build bundle",
+      "do not pass external: ['@sentry/*'] to Bun.build for a Hono app; either no external at all or hono externalized with it"
+    ],
+    "title": "Document Hono on Bun: unbundled run and the Bun.build plugin variant"
+  },
+  {
+    "id": "DOC-F2",
+    "applied": [
+      "Dropped 'correct as published'; the docs-state paragraph now reads 'The Bun wiring on this page is correct; three statements around it are not' and lists the three include defects with file:line.",
+      "Retargeted the alert change: elysia/index.mdx:47-50 is left as-is (the evidence confirms it) and what-instrumentation-provides/javascript.elysia.mdx:11 is the sentence to qualify.",
+      "Made the bundle recipe runnable and identical to the cell build script (entrypoints/outdir/target/sourcemap/plugins), run as `bun dist/app.js`, plus the recorded rule to pass no `external` (and no `packages: 'external'` / `'*'`).",
+      "Added the sdk.name known limit: every event, transaction and span reports sentry.javascript.bun under both init placements and both lifecycles.",
+      "Added the fourth include fix: enable-stream-mode/javascript.elysia.mdx:25 inverts the traceLifecycle default, and DOC-R1 does not cover that file.",
+      "Qualified the mysql2 db bullet, which is the working half of a partial verdict, and added the silent-failure detail (debug-only log line, 'Integration installed: Mysql' still printed).",
+      "Added the SDK hook spans (sentryOnRequest / sentryOnAfterHandle / sentryOnError) and the first-pool-use connect spans as a known limit, and the build-only nature of sentryBunPlugin().",
+      "Retitled the issue to cover the four include statements; cite paragraph rewritten with the include line refs; claude.ai link and ~/dev paths removed."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled handler errors via the SDK onError hook",
+      "route names GET /users/:id (source route) on success and error paths",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation plus response trace headers",
+      "outgoing fetch spans with propagation headers",
+      "mysql2 db spans under plain `bun app.ts` (working half of a partial verdict)",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "only libraries with their own node:diagnostics_channel events are instrumented unbundled; the rest need the plugin build, and the failure is silent without debug",
+      "every event reports sdk.name sentry.javascript.bun, never sentry.javascript.elysia",
+      "events captured inside a handler carry no transaction name",
+      "the SDK's own hooks appear as user-visible spans, and first pool use adds mysql2 connect spans"
+    ],
+    "title": "Add a Bun database instrumentation section to the Elysia guide and fix four include statements"
+  },
+  {
+    "id": "DOC-F3",
+    "applied": [
+      "Moved the citation bun/index.mdx:106 -> :100.",
+      "Softened the absence claim to 'no guide page pairs Express with Bun' and added the 81 common integration pages listing javascript.express with javascript.bun, plus mysql2.mdx:30.",
+      "Added Sentry.setupExpressErrorHandler(app) to the page content: the only thing that captures errors on the unbundled path, mechanism auto.middleware.express, harmless in the bundled build.",
+      "Named `mysql` in the install line and added the 'no warning unless debug: true' sentence.",
+      "Fixed the contradicting 'Page:' paragraph: it now states the bundle is required and that unbundled gives URL-sourced names, no child spans and no automatic error capture, while the server span, the outgoing-fetch span and logs still arrive.",
+      "Added the external: ['@sentry/*'] rationale and the warning that it must not be generalized (fatal for Hono, DOC-F1).",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2' and the develop line 10.67.0 (6f2da7483d); noted the injected=[...] startup signal drifted to injected={} on 1.4.2.",
+      "Removed the claude.ai artifact link and the ~/dev/sentry-docs path prefixes."
+    ],
+    "skipped": [
+      "Omitted finding 'sdk.name is sentry.javascript.bun': skipped as trivia, it is the expected reporting when @sentry/bun is installed in place of @sentry/node."
+    ],
+    "works_today": [
+      "unhandled route errors, one event",
+      "route names GET /users/:id (source route) plus middleware and handler child spans",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql database spans",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "unbundled runs give URL-sourced names, no middleware/handler/db spans and no automatic error capture, while the server span, outgoing-fetch span and logs still arrive",
+      "the missing instrumentation is silent without debug: true"
+    ],
+    "title": "Add an Express on Bun page covering the Bun.build plugin step"
+  },
+  {
+    "id": "DOC-F4",
+    "applied": [
+      "Re-attributed the mysql2 result to the follow-up run: verified at mysql2 3.24.3 on Fastify 5.12.3, after the cell (mysql@2 only) recorded db spans as partial.",
+      "Trimmed the enumeration to execute(), the promise wrapper and pool connections; dropped query(), which was never run on Fastify.",
+      "Completed the bundle recipe to match the cell build script (entrypoints/outdir/target/external/sourcemap/plugins) and added the refutation's external: ['@sentry/bun', 'mysql'] variant plus the rule that the plugin un-externalizes instrumented packages.",
+      "Added mysql2 to the install line.",
+      "Moved citations: bun/index.mdx 96-98 -> 90-94 and :106 -> :100.",
+      "Added to the docs-state paragraph that common/configuration/integrations/fastify.mdx already says the integration works in the Node.js and Bun runtimes, so only the guide is missing.",
+      "Added the silent-failure limit (query succeeds, no span, nothing said without debug: true) and the build-only nature of sentryBunPlugin() (Bun.plugin in --preload crashes at import).",
+      "Added the mysql2 exception to the module-scope rule (a request-scope connection still gets spans), the two handler child spans, and the lifecycle caveats for source assertion and client-span naming.",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2' and the develop line 10.67.0 (6f2da7483d); removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled route-handler errors on the request transaction",
+      "route names GET /users/:id (source route) plus two handler child spans",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql2 3.20.0+ db spans with no build step (execute, promise wrapper, pool connections)",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "code-injected drivers such as mysql@2 need the bundle with a module-scope connection",
+      "the missing db span is silent: the query succeeds and nothing is logged without debug: true",
+      "Fastify still answers its own 500 body while the error is reported"
+    ],
+    "title": "Add a Fastify on Bun page and split Bun db instrumentation by driver"
+  },
+  {
+    "id": "DOC-F5",
+    "applied": [
+      "Moved the citation bun/index.mdx:106 -> :100 and added the alert at :90-94 to the docs-state paragraph.",
+      "Added a second 'What to change' bullet rewriting guides/bun/index.mdx:90-94, since this cell is one of four contradicting it.",
+      "Re-attributed the error-handler change: on v11 Express/Fastify/Koa/Hapi errors are captured by their integrations (common/migration/v10-to-v11/index.mdx:713-721), and platform-includes/getting-started-use/javascript.koa.mdx:11,28 still shows the deprecated call; added a 'What to change' bullet for it.",
+      "Stated the lifecycle (verified under traceLifecycle 'static'; stream is the default) with the span names that differ, and named the driver mysql@2.18.1 and tracesSampleRate 1.0.",
+      "Fixed the contradicting 'Page:' paragraph: it now says the bundle is not optional and that without it Koa is completely uninstrumented on Bun.",
+      "Added the silent-failure known limit (no warning unless debug: true).",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2' and the develop line 10.67.0 (6f2da7483d); noted a request-scope connection was not exercised; removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled handler errors with no setupKoaErrorHandler call (a v11-wide change)",
+      "route names GET /users/:id (source route) plus a router child span",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql@2 db spans nested under the router span",
+      "Sentry.logger log envelopes, bundled and unbundled"
+    ],
+    "known_limits": [
+      "without the plugin build Koa is uninstrumented on Bun: URL-sourced names, no router or db spans, no error capture",
+      "the failure is silent: no warning unless debug: true"
+    ],
+    "title": "Add a Koa on Bun page covering the sentryBunPlugin build"
+  },
+  {
+    "id": "DOC-F6",
+    "applied": [
+      "Rewrote the absolute limit: without the plugin build there are URL-sourced names and no router or db spans, and handler errors are captured only if you also call await Sentry.setupHapiErrorHandler(server); in the plugin build the handler registers itself and the extra call is idempotent.",
+      "Moved the citation bun/index.mdx 96-98 -> 90-94.",
+      "Made the page note precise: the handler auto-registers from the @hapi/hapi start and initialize channels in the bundled build, the export is deprecated on develop, and javascript.hapi.mdx:17,42 still instructs it.",
+      "Added a 'What to change' bullet rewriting the Bun guide alert at :90-94, as DOC-F1 and DOC-F4 do.",
+      "Attributed the no-handler-call change to v11 (common/migration/v10-to-v11/index.mdx:713-721) rather than to Bun.",
+      "Added the lifecycle-dependent router child span name, that logs work bundled and unbundled, the driver mysql@2.18.1, tracesSampleRate 1.0 and the db.connect() call.",
+      "Rewrote the 'Page:' paragraph so it states the error-capture counterfactual instead of 'not captured at all'.",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2', noted the re-run covered only the bundled shape, and named the develop line 10.67.0 (6f2da7483d); removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled route-handler errors, handler auto-registered in the bundled build",
+      "route names GET /users/{id} (source route) plus a router child span",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql@2 db spans nested under the router span",
+      "Sentry.logger log envelopes, bundled and unbundled"
+    ],
+    "known_limits": [
+      "without the plugin build: URL-sourced names and no router or db spans; handler errors need an explicit await Sentry.setupHapiErrorHandler(server)",
+      "Hapi answers its own 500 body unchanged in every variant"
+    ],
+    "title": "Add a Hapi on Bun page covering the sentryBunPlugin build"
+  },
+  {
+    "id": "DOC-F7",
+    "applied": [
+      "Fixed the naming limit: fetch-only mounts take the raw pathname with source url under static (GET /users/7) and collapse to a bare GET under the stream default.",
+      "Replaced the app.listen() prohibition with what was measured: method-only server spans still arrive, but errors are never captured, the db span is not emitted, the outgoing-fetch span detaches onto the process trace, logs carry a stale trace id and isolation leaks.",
+      "Corrected the routes-map caveat: regex, optional-param and (.*) routes are derived into the map and still fall back to url, and a path Oak 404s can still be labelled with source route.",
+      "Added the run command (bun app.ts) and the install line (npm install @sentry/bun mysql2 after the JSR .npmrc step), with the rationale that bun add cannot be used.",
+      "Said the routes-map shape comes from the follow-up run, not the cell app, and documented the cell's router.use + updateSpanName + sentry.segment.name.source alternative with its trade-off.",
+      "Updated guides/bun/index.mdx:1-214 -> :1-212 and dropped 'single page', noting guides/bun/ also holds configuration/integrations/contextlines.mdx.",
+      "Added the negative results (bundling, init placement and lifecycle do not change route naming), the error-mechanism variation with an Oak error middleware or error listener, and the generalizable mysql2 self-publishing rule.",
+      "Qualified the route-names bullet as the working half of a partial verdict; named the develop line 10.67.0 (6f2da7483d); removed the claude.ai link and the tarball/worktree wording."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled handler errors (mechanism varies with an Oak error middleware)",
+      "route names GET /users/:id with source route and url.template once the routes map is passed (working half of a partial verdict)",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql2 db spans with no build step",
+      "Sentry.logger log envelopes correlated to the request trace"
+    ],
+    "known_limits": [
+      "fetch-only mount: raw pathname with source url under static, bare GET under stream",
+      "regex, optional-param and (.*) routes fall back to url even with the map; a 404 path can still be labelled source route",
+      "app.listen(): method-only spans, no error capture, no db span, detached fetch span, stale log trace id, leaking isolation",
+      "neither naming approach works under app.listen(); bundling, init placement and lifecycle do not change naming",
+      "browser-side capture not exercised"
+    ],
+    "title": "Add an Oak on Bun page covering the Bun.serve routes map"
+  },
+  {
+    "id": "DOC-F8",
+    "applied": [
+      "Updated guides/bun/index.mdx:1-214 -> :1-212 and :96-100 -> :90-94.",
+      "Changed the absence claim to 'no page mentions the Fresh framework'.",
+      "Added the run shape: the entry.ts that imports the instrument module, imports _fresh/server.js and mounts it with Bun.serve({ fetch }), started with `bun entry.ts`.",
+      "Gave the exact externals from vite.config.ts (ssr.external and build.rollupOptions.external) and the node_modules placement rule (one directory above the app, because the app dir's node_modules is Deno-managed).",
+      "Listed app.onError('*') and an early middleware as equivalent error hooks beside routes/_error.tsx, and added the anti-recommendation about captureConsoleIntegration.",
+      "Made the transaction-name page change explicit: sentry.segment.name.source is the v11 key and the v10 sentry.source key is ignored; cited its only current appearance at common/migration/v10-to-v11/index.mdx:594.",
+      "Added that without the fix the request span still reports status internal_error, that Fresh's own OpenTelemetry spans never reach Sentry, and that the sentryBunPlugin build cannot fix this (unlike DOC-F5 and DOC-F6).",
+      "Marked the fallbackGuide value as an open scoping decision, since Fresh was also probed on Deno and Cloudflare.",
+      "Added the unexercised /assets/* static-file path; named the develop line 10.67.0 (6f2da7483d); removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql2 db spans with no build plugin",
+      "Sentry.logger log envelopes",
+      "route names GET /users/:id (source route) with the naming middleware before app.fsRoutes()"
+    ],
+    "known_limits": [
+      "route and middleware errors are not captured automatically; the request span still reports internal_error; capture from _error.tsx, app.onError('*') or an early middleware, and do not rely on captureConsoleIntegration",
+      "the sentryBunPlugin build is not an alternative here: Fresh bundles its framework code and hard-codes the error hook to a no-op",
+      "Fresh's own OpenTelemetry spans never reach Sentry",
+      "browser capture and /assets/* static serving were not exercised"
+    ],
+    "title": "Add a Fresh on Bun page for the built server output"
+  },
+  {
+    "id": "DOC-F9",
+    "applied": [
+      "Qualified the route-name limit by lifecycle: URL-sourced names under static, a bare http.server GET with no path under the stream default.",
+      "Re-cited the docs state: nestjs/index.mdx:57 is the init include and :75 is the main.ts import snippet; added platform-includes/getting-started-install/javascript.nestjs.mdx:3-15 (no Bun tab) and a 'What to change' bullet for it.",
+      "Moved bun/index.mdx 96-98 -> 90-94 and added a 'What to change' bullet replacing that alert rather than amending it.",
+      "Added that Sentry.init must come from @sentry/bun (initializing from @sentry/nestjs yields no server span at all and events lose their transaction name), plus the two runtime-hook traps (Bun.plugin at runtime, @sentry/server-runtime-injection/register).",
+      "Stated the run commands (bun run build.ts, then bun dist/main.js), the reflect-metadata import as line 2 of src/main.ts, and the full build snippet with entrypoints/outdir/sourcemap.",
+      "Added the refutation's external rule (@sentry/bun and mysql may stay listed; the plugin un-externalizes instrumented packages).",
+      "Added the silent-failure limit, the absence of Nest-specific spans, and that SentryModule.forRoot() contributed no visible spans while SentryGlobalFilter did.",
+      "Added the unbundled interceptor workaround (updateName + http.route + sentry.segment.name.source; sentry.source does not work) with its limit that child spans stay absent.",
+      "Named the develop line 10.67.0 (6f2da7483d) and the package versions; added client errors as not exercised; removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [
+      "Omitted finding 'the repo has no NestJS-on-Bun e2e app; the Bun+db reference is dev-packages/e2e-tests/test-applications/bun-mysql': skipped as internal test inventory that does not change what a docs reader would do."
+    ],
+    "works_today": [
+      "unhandled controller errors via SentryGlobalFilter",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql db spans in the bundled build",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "route names and Express middleware/handler child spans exist only in the bundled build; unbundled gives URL-sourced names under static and a bare http.server GET under stream",
+      "initializing from @sentry/nestjs instead of @sentry/bun yields no server span at all",
+      "without the SentryGlobalFilter provider controller errors are swallowed",
+      "no runtime hook substitutes for the bundle (Bun.plugin at runtime breaks @nestjs/common; the injection register is a no-op on Bun)",
+      "the unbundled failure is silent without debug: true",
+      "no Nest-specific spans in either lifecycle; SentryModule.forRoot() contributed none",
+      "browser-side capture not exercised"
+    ],
+    "title": "Add a NestJS on Bun page covering the Bun.build plugin step"
+  },
+  {
+    "id": "DOC-F10",
+    "applied": [
+      "Replaced the db-spans limit with the recorded works-after-all result: db and cache spans work for drivers with native channels (mysql2 >= 3.20.0, ioredis >= 5.11.0, node-redis >= 5.12.0) once the tracing channels are pinned after Sentry.init(); the six-line snippet is now in the body, framed as a workaround for a Bun GC bug.",
+      "Kept only the real driver limit: drivers below the native-channel cutoff stay unreachable on Next.js, because only ioredis is un-externalized for build-time injection.",
+      "Rewrote the `app`-directory note: source stays route, the symptoms are a spurious /app prefix and an event/transaction name mismatch, the cause is getPathnameFromAbsolutePath, and it reproduces on Node, so it belongs in Next.js troubleshooting.",
+      "Marked bunHttpServerIntegration({ spans: false }) as taken from the repo's nextjs-16-bun e2e app and not exercised here, and noted isolation was recorded working without it; removed it from the verified recipe.",
+      "Used the commands that ran: bun --bun ./node_modules/.bin/next build and bun --bun ./node_modules/.bin/next start -p <port>.",
+      "Moved the register() citation nextjs/index.mdx:144-147 -> :122-134 (with :126, :129, :134) and corrected :53 to the :51-53 runtime list.",
+      "Added that withSentryConfig from @sentry/nextjs/config is a v11-wide change (migration guide :1022) while guides/nextjs/index.mdx:151 still shows the old import, as its own 'What to change' bullet.",
+      "Added the typescript 5.x pin and the removed sendDefaultPii option.",
+      "Added that no Sentry-specific Bun build step is possible on Next.js, the contexts.runtime = node observation, and platform-includes/logs/usage/javascript.nextjs.mdx:7.",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2' and the develop line 10.67.0 (6f2da7483d); retitled the issue; removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled route-handler errors",
+      "route names GET /api/users/[id] (source route)",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans and propagation headers with fetchIntegration()",
+      "db and cache spans for native-channel drivers with the channel pin, both lifecycles",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "drivers below the native-channel cutoff stay unreachable on Next.js (only ioredis is un-externalized for injection)",
+      "no Sentry-specific Bun build step exists or is possible; the runtime-hook warning is only visible with debug: true",
+      "contexts.runtime reports node on Bun",
+      "edge routes, middleware, server actions and browser capture not exercised"
+    ],
+    "title": "Add a Next.js on Bun page for bun --bun, the fetch integration and the channel pin"
+  },
+  {
+    "id": "DOC-F11",
+    "applied": [
+      "Rewrote the wiring for the current SDK: develop commit ec50b3e8f1 bundles sentry.server.config.ts into the Nitro build and imports it from a generated Nitro plugin, so Sentry.init runs at startup; dropped autoInjectServerSentry: 'top-level-import' and noted both modes are deprecated (packages/nuxt/src/common/types.ts:60-64, warning at packages/nuxt/src/module.ts:213) and kept until v12.",
+      "Stated that the server config is no longer emitted to .output/server/sentry.server.config.mjs, which also obsoletes the Node start command at nuxt/index.mdx:72.",
+      "Used the recorded commands: NITRO_PRESET=bun npx nuxt build and `bun run .output/server/index.mjs` (was `bun .output/server/index.mjs`, in both places).",
+      "Kept both @sentry/bun integrations, and said the pairing with fetchIntegration() rests on a follow-up run whose result was never recorded, so the capability list rests on bunServerIntegration() alone; moved outgoing fetch out of 'Works today' accordingly.",
+      "Split the database bullet: nitro.externals.external ['mysql2'] stops genFunc$1 is not a function, while the db span additionally needs bunServerIntegration() because the mysql2 subscriber requires a parent span.",
+      "Qualified the unparameterized-route limit by lifecycle (method-only GET under stream, URL path under static, source url in both).",
+      "Updated guides/nuxt/index.mdx:68 -> :72.",
+      "Added the alternative and its cost: initializing from @sentry/bun gives the same spans but reports sdk sentry.javascript.bun and drops the Nuxt event processors.",
+      "Added the node-server preset variant (bunHttpServerIntegration() instead of bunServerIntegration()), the proven root cause (Bun never publishes http.server.request.start), the stale-transaction-name leak, the injected-driver rule, and the residual missing transaction field on manual captures.",
+      "Added a 'What to change' bullet for guides/nuxt/install/limited-server-tracing.mdx:19 and :32; kept the SDK-side patchEventHandler note in the narrative only."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled server-route errors via the Nitro error hook",
+      "http.server spans GET /users/:id with source route, http.route and the url path parameters",
+      "per-request isolation and a fresh trace per request",
+      "incoming sentry-trace/baggage continuation",
+      "mysql2 db spans with nitro.externals.external ['mysql2']",
+      "Sentry.logger log envelopes",
+      "events keep sdk sentry.javascript.nuxt and the Nuxt event processors"
+    ],
+    "known_limits": [
+      "without bunServerIntegration() there is no request span: one process-wide trace, a stale leaked transaction name, no route names, ignored incoming headers and no db span",
+      "the externals entry fixes the query, not the span; the two are separate problems",
+      "injected drivers such as mysql v2 must stay inside the Nitro bundle",
+      "unparameterized routes: method-only GET under stream, URL path under static, source url in both",
+      "manually captured events still carry no transaction field"
+    ],
+    "title": "Add a Bun section to the Nuxt Nitro deployment presets page"
+  },
+  {
+    "id": "DOC-F12",
+    "applied": [
+      "Replaced the db-spans limit with the recorded works-after-all fix: import the driver in the same file as Sentry.init() (import 'mysql2/promise'; in src/instrumentation.server.ts), framed as a workaround for Bun dropping diagnostics-channel subscriptions, with the root cause in one sentence.",
+      "Corrected the plugin import to @sentry/sveltekit/vite and said the bare package import throws on develop.",
+      "Added the mandatory kit options experimental: { instrumentation: { server: true }, tracing: { server: true } } and the fact that omitting them silently produces no span envelopes at all, on Node as well.",
+      "Added export const handle = Sentry.sentryHandle(); to the hooks description as what renames and re-attributes the root span.",
+      "Sharpened the docs-state paragraph: the box heads its list 'Fully supported Node.js runtimes' (:39) and says non-Node server runtimes are not supported (:45-46), not merely leaving the runtime unqualified.",
+      "Added the two runtime-independent docs defects as 'What to change' bullets, with line numbers re-checked on today's master: the plugin import at :365, :403, :458 (the docsNote's :383/:421/:476 have moved) and the SvelteKit 3 tab at :219-225 with tracing: { server: true } at :223 (the docsNote's :244-248 have moved).",
+      "Added the 500-route-reports-status-ok observation, contexts.runtime = node, and that the run drove the server through curl only.",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2', the develop line 10.67.0 (6f2da7483d), and that @sentry/bun enters through the outgoing-fetch refutation rather than the cell package.json; removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled server-route errors with source context lines",
+      "route names GET /api/users/[id] (source route, http.route)",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation plus SSR meta tags",
+      "outgoing fetch spans and propagation headers with fetchIntegration()",
+      "mysql2 db spans with the driver imported in src/instrumentation.server.ts",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "a route that answers 500 still reports status ok on its http.server span once kit tracing is on",
+      "contexts.runtime.name is node on Bun",
+      "SvelteKit 2.70 has no svelte.config.js; kit config lives inside the sveltekit() Vite plugin",
+      "browser-side capture not exercised"
+    ],
+    "title": "Add a SvelteKit on Bun page for the adapter-node output"
+  },
+  {
+    "id": "DOC-F13",
+    "applied": [
+      "Replaced the db limit with the recorded works-after-all fix: pin the mysql2 and orchestrion tracing channels on globalThis next to Sentry.init() in sentry.server.config.mjs, harmless on Node, with the Bun root cause in one sentence; added that loading the driver early is not a substitute (fixes mysql2, not mysql@2).",
+      "Narrowed the error bullet to unhandled endpoint errors via the Astro request middleware (auto.middleware.astro) and moved page-render errors to a not-exercised note.",
+      "Added vite: { ssr: { noExternal: ['mysql2'] } }, output: 'server' and sentry({ sourcemaps: { disable: true }, enabled: { client: false, server: true } }) to the described setup.",
+      "Corrected the adapter version to @astrojs/node ^11.1.5.",
+      "Updated the alert citation astro/index.mdx:21-28 -> :21-29 with the quoted text at :23-27; kept the alert amendment as proposed.",
+      "Added the bundler-plugins build requirement, contexts.runtime = node, the ContextLines 'Failed to read file: native' line, and that browser coverage is unstated because the run used enabled.client false.",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2', the develop line 10.67.0 (6f2da7483d), and the re-run finding that the Node control also produced spans: [] for GET /db; removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled endpoint errors via the Astro request middleware",
+      "route names GET /users/[id] (source route, http.route)",
+      "per-request isolation",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans and propagation headers with fetchIntegration()",
+      "mysql2 and mysql@2 db spans on both lifecycles with the channel pin",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "the build needs a matching @sentry/bundler-plugins or astro build fails on a missing @sentry/core export",
+      "contexts.runtime reports node on Bun",
+      "ContextLines prints 'Failed to read file: native' once per captured event",
+      "errors thrown while an .astro page renders, and browser-side capture, were not exercised"
+    ],
+    "title": "Name Bun in the Astro runtime alert and add a Running on Bun section"
+  },
+  {
+    "id": "DOC-F14",
+    "applied": [
+      "Added export const instrumentations = [Sentry.createSentryServerInstrumentation()]; to the server-entry rewrite and said it is required on Bun, documented at manual-setup.mdx:273 as optional for Node.",
+      "Rewrote the limit away from 'inert': the instrumentations export alone restores route-named http.server spans, and bunHttpServerIntegration() additionally restores isolation, incoming trace, outgoing fetch and db spans.",
+      "Gated the integrations on the runtime (process.versions.bun ? [fetchIntegration(), bunHttpServerIntegration()] : []) and gave the reason: two client spans per fetch on Node otherwise.",
+      "Narrowed 'loader and action errors' to loader errors and moved actions to the not-exercised note.",
+      "Moved the citations manual-setup.mdx:413-414 -> :400-401 and :449 -> the alert at :434-438 with the body at :436.",
+      "Added that the customization escape hatch at manual-setup.mdx:284-330 (getMetaTagTransformer + wrapSentryHandleRequest) also builds on renderToPipeableStream and needs a Bun variant.",
+      "Added that db spans need bunHttpServerIntegration() and the startup driver import jointly, that ssr.noExternal ['mysql2'] is unnecessary, and the channel pin as the alternative.",
+      "Added the static-lifecycle caveat (headers sent, no span envelope, only a client report), the misleading post-fix debug warning, the mechanism sharpening to react_router.loader, and contexts.runtime = node.",
+      "Recorded the disagreement between the two refutations about library spans, and that dbspans-v2 has no recorded result.",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2', the develop line 10.67.0 (6f2da7483d), and that the CI pin Bun 1.3.14 could not be re-checked; retitled the issue; removed the claude.ai link, ~/dev paths and the $S binary path."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled loader errors (mechanism react_router.loader once server spans exist)",
+      "http.server spans GET /users/:id (source route) from the instrumentations export, both lifecycles",
+      "per-request isolation, one trace per request",
+      "incoming sentry-trace/baggage continuation plus request and IP data",
+      "outgoing fetch spans with propagation headers",
+      "mysql2 db spans",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "without the instrumentations export and bunHttpServerIntegration() only errors and logs arrive on Bun",
+      "with fetchIntegration() but no bunHttpServerIntegration(), static lifecycle sends headers but no span envelope",
+      "createSentryHandleRequest with renderToPipeableStream cannot be used on Bun; the :284-330 escape hatch needs a Bun variant",
+      "the 'No diagnostics-channel injection detected' debug warning still fires after the fix",
+      "contexts.runtime.name is node on Bun",
+      "action errors and browser-side capture not exercised"
+    ],
+    "title": "Add a React Router on Bun page requiring the instrumentations export"
+  },
+  {
+    "id": "DOC-F15",
+    "applied": [
+      "Re-scoped the item to what is recorded: errors with wrapFetchWithSentry, logs, and db spans after the channel pin are the only 'Works today' entries.",
+      "Moved isolation, incoming trace and outgoing fetch into 'Known limits' with their recorded broken verdicts and the leaking-isolation severity note.",
+      "Replaced the db-spans limit with the recorded works-after-all pin (globalThis.__sentryKeepChannelsAlive over the three orchestrion channels) plus the A/B result and the note that stream is the better lifecycle here, framed as a workaround for a Bun GC bug.",
+      "Added the documented wiring the draft omitted: sentryTanstackStart() from @sentry/tanstackstart-react/vite (manual-setup/index.mdx:220-241) and the src/start.ts middlewares (:416-438), and stated that the documented wiring builds on Bun so no globalThis shim is needed.",
+      "Fixed the externals sentence: dropped the unrun build.rollupOptions.external recipe in favour of the documented plugin wiring that was actually run.",
+      "Dropped the typeof globalThis.Bun guard claim, which the evidence app did not use.",
+      "Moved the citations manual-setup/index.mdx:372 -> :358 and :391 -> :377, and added the Beta flag at :17.",
+      "Stated as a single Known-limits sentence that the follow-up runs adding bunHttpServerIntegration() were never recorded, with their suggestive raw output described as unverified rather than claimed.",
+      "Added the false-alarm note about the diagnostics-channel injection warning and the Node control result (200 {} and nothing sent); named the develop line 10.67.0 (6f2da7483d) and the mysql@2 driver; removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled errors from server.handlers routes with wrapFetchWithSentry",
+      "Sentry.logger log envelopes",
+      "mysql db spans with the orchestrion channel pin"
+    ],
+    "known_limits": [
+      "per-request isolation is recorded broken; the process-global isolation scope leaks tags between concurrent requests",
+      "incoming sentry-trace/baggage is recorded broken",
+      "outgoing fetch spans are recorded broken",
+      "parameterized route names such as GET /api/user/$id were not produced by the recorded runs",
+      "browser capture not exercised; contexts.runtime reports node",
+      "the bunHttpServerIntegration() follow-up runs for those four were never recorded, so none is stated as fixed"
+    ],
+    "title": "Document TanStack Start on Bun: verified setup and its limits"
+  },
+  {
+    "id": "DOC-F16",
+    "applied": [
+      "Stated the express externalization as it was run: a keep-external plugin appended after sentryBunPlugin(), not an external array entry, with the reason (the plugin un-externalizes instrumented packages) and a note that the route-names run worked without it.",
+      "Marked the bunHttpServerIntegration({ spans: false }) alternative as unrecorded and added its two caveats (spans: true names the transaction GET *; plain bun server-bunhttp.mjs splits event and transaction traces).",
+      "Added setSDKProcessingMetadata({ normalizedRequest }) to the wrapper snippet and showed it as app.all('*', (req, res, next) => ...) around the adapter handler, with the note that it is what puts request data on events.",
+      "Corrected the Mode A limit: errors and logs only, no transactions or spans, events with no transaction field so errors group without a route, while isolation and incoming-trace continuation do work there; added the Mode A outgoing-fetch fix and the repo e2e app that uses this wiring.",
+      "Moved outgoing fetch out of 'Works today' and flagged that it did not reproduce on the re-run (sentryTrace and baggage null on every attempt).",
+      "Pointed remix/manual-setup.mdx:64 at the plain install at :49, and added that the server-entry, instrumentation-file and run-command content exists today only on the noindex manual-setup__v8.x.mdx (:166-225, :285-294).",
+      "Named the @sentry/remix/vite subpath for sentryRemixVitePlugin with the migration-guide citation (:1287-1294).",
+      "Marked the \"sideEffects\": false requirement as coming from a follow-up run whose result was never recorded, and moved it into the narrative rather than stating it as a verified limit.",
+      "Added the root cause (loadModule monkeypatch versus withoutInstrumentedExternals: spans or isolation, not both), the db-spans negative control, the target: 'bun' restriction, the untested sourcemap fix, the observed no-leading-slash transaction name and the LOADER child span.",
+      "Added 'Verified on Bun 1.4.0 and re-run on 1.4.2', the develop line 10.67.0 (6f2da7483d) and the package versions; removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "unhandled loader errors via the handleError hook",
+      "route names GET users/:id (source route, no leading slash) plus function LOADER routes/users.$id children",
+      "per-request isolation and incoming trace continuation with the app.all wrapper",
+      "mysql2 db spans",
+      "Sentry.logger log envelopes"
+    ],
+    "known_limits": [
+      "plain bun server.mjs: errors and logs only, no transactions or spans, and no transaction field on events; isolation and incoming trace do work there",
+      "outgoing fetch spans in the bundled shape did not reproduce on the re-run",
+      "the bundle is target: 'bun' and cannot run under Node",
+      "no sourcemaps unless enabled; the sourcemap: 'external' fix was not exercised",
+      "re-externalizing @remix-run/* restores isolation but removes every span; bundling express breaks AsyncLocalStorage across next() on Bun",
+      "browser-side capture not exercised"
+    ],
+    "title": "Add a Remix v2 on Bun page for the Bun.build server bundle"
+  },
+  {
+    "id": "DOC-F17",
+    "applied": [
+      "Replaced the database enabling condition with the recorded one: mysql2 3.20.0+ and mysql v2 both work once the tracing channels are pinned on globalThis after Sentry.init() in server/plugins/sentry.ts, or via a bun --preload pin file; dropped import 'mysql2/promise'; and dropped the 'build-time injected drivers produce no spans' limit.",
+      "Framed the pin as a workaround for a Bun GC bug with the root cause in one sentence, and added that every channel-based integration on Bun is exposed, not only databases.",
+      "Split the error limit: file API route errors are captured with the recorded h3 middleware through createMiddleware; page-render errors stay dark; added that the guide's own Verify step at solidstart/index.mdx:444-453 is the unreported case.",
+      "Changed the runtime guard to the recorded typeof Bun !== 'undefined' and said the two integrations were probed in separate runs, never together.",
+      "Completed the wiring: sentrySolidStart({ sourcemaps: { disable: true } }) from @sentry/solidstart/vite, solidStart({ appRoot, middleware }), nitro({ serverDir: './server' }), plus @sentry/nitro in the install list and the --legacy-peer-deps note with its reason.",
+      "Moved the citations solidstart/index.mdx:289 -> :277 and :309-310 -> :297-298 (two scripts).",
+      "Stated that the whole current guide targets SolidStart 1 and that sentrySolidStart appears in the docs only in the v8-to-v9 migration note, so a SolidStart 2 page is needed for every runtime.",
+      "Added the route-name workaround (getRootSpan().updateName plus http.route and sentry.segment.name.source) next to the route-name limit, with the stream-lifecycle degradation to a bare GET.",
+      "Added the bunHttpServerIntegration({ spans: false }) trade-off and the rejected NITRO_PRESET=bun path, the roughly 2.4 MB bundle cost, contexts.runtime = node, and that the Node contrast run could not be reproduced.",
+      "Qualified the errors bullet as the working half of a partial verdict; named the develop line 10.67.0 (6f2da7483d); removed the claude.ai link and ~/dev paths."
+    ],
+    "skipped": [],
+    "works_today": [
+      "per-request isolation, one scope and one trace per request",
+      "incoming sentry-trace/baggage continuation",
+      "outgoing fetch spans with propagation headers",
+      "mysql2 3.20.0+ and mysql v2 db spans with the channel pin",
+      "Sentry.logger log envelopes",
+      "errors from withServerActionInstrumentation server functions, and file API route errors with the h3 middleware (working half of a partial verdict)"
+    ],
+    "known_limits": [
+      "page-render errors are not reported on Bun or Node; API route errors need the createMiddleware h3 wrapper, and the guide's Verify step is exactly the unreported case",
+      "server transactions are named from the raw URL (source url), collapsing to a bare GET under stream; app code can rename with updateName plus http.route and sentry.segment.name.source",
+      "bunHttpServerIntegration({ spans: false }) isolates and continues traces but drops the node:http server span; the NITRO_PRESET=bun plus bunServerIntegration() path was rejected",
+      "@sentry/bun adds roughly 2.4 MB to the server bundle",
+      "contexts.runtime.name is node under Bun"
+    ],
+    "title": "Add a SolidStart on Bun page with the @sentry/bun integrations"
+  }
+]

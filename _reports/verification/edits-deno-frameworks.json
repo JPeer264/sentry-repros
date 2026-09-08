@@ -1,0 +1,471 @@
+[
+  {
+    "id": "DOC-F18",
+    "applied": [
+      "Updated citations: Deno code tab :302-324, \"Report Unhandled Exceptions\" :360, guides/deno/index.mdx:1-230, in the issue body, the Page line and the cite paragraph.",
+      "Dropped \"or deno add npm:@sentry/hono\" from the setup paragraph; the npm install into a real node_modules is the verified form.",
+      "Removed the hand-written denoFetchIntegration() proposal from the Page narrative; outgoing fetch stays a limit with no remedy named.",
+      "Added the error mechanism auto.http.hono.context_error and the fact that Hono swallows the throw into its own 500 while the middleware responseHandler still reports it.",
+      "Added the root cause of the fetch gap (no fetch tracing integration in @sentry/deno's defaults, while the breadcrumb integration already patches fetch) to the limit and the narrative; the port-it-to-@sentry/deno ask stays in the narrative only.",
+      "Replaced the external cell-record hyperlink with a plain 'Cell record: M-hono-deno' line."
+    ],
+    "skipped": [
+      "Verifier suggested re-running Hono with winterCGFetchIntegration (@sentry/vercel-edge) or fetchIntegration (@sentry/cloudflare) before naming a fetch fix: no probe runs are possible in this editing pass, so the item keeps outgoing fetch as a plain limit and the narrative records that those shipped exports worked on Deno in the Fastify, Express and SvelteKit cells but were never run against Hono."
+    ],
+    "works_today": [
+      "Unhandled route errors (auto.http.hono.context_error), transaction GET /error",
+      "Parameterized names GET /users/:id, source route",
+      "Per-request isolation across concurrent requests",
+      "Incoming sentry-trace/baggage continuation",
+      "mysql database spans, with the @sentry/deno/import line",
+      "Logs"
+    ],
+    "known_limits": [
+      "Outgoing fetch(): no http.client span and no trace headers, because @sentry/deno ships no fetch tracing integration",
+      "node:http/node:https clients are traced normally",
+      "Without the import hook line, database and library spans are silently missing"
+    ],
+    "title": "Document the verified Hono on Deno setup and its outgoing fetch limit"
+  },
+  {
+    "id": "DOC-F19",
+    "applied": [
+      "Added the second documented wiring: keep Sentry.init from @sentry/elysia and pass integrations: [denoServeIntegration()] from @sentry/deno, in the setup paragraph, works-today and the narrative.",
+      "Stated that fetchIntegration is a real @sentry/elysia export, re-exported from @sentry/bun, so it does not read as a hand-written shim.",
+      "Added common/configuration/integrations/fetchIntegration.mdx:10 to 'What to change' and to the cite paragraph.",
+      "Added the lifecycle nuance for the @sentry/elysia-only init: the http.client span still appears under the default stream lifecycle as a parentless segment and is dropped under static.",
+      "Recorded what each wiring costs: sdk.name sentry.javascript.deno versus sentry.javascript.bun with contexts.runtime.name bun and session envelopes.",
+      "Named denoland/deno#36240 in the mysql2 limit and pointed at mysql@2.",
+      "Retitled the issue to name both wirings; replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Route errors (auto.http.elysia.on_error)",
+      "GET /users/:id, op http.server, source route, with Elysia lifecycle child spans",
+      "Per-request isolation and incoming trace continuation, with either wiring (Sentry.init from @sentry/deno, or the @sentry/elysia init plus denoServeIntegration())",
+      "Outgoing http.client spans plus sentry-trace/baggage, with fetchIntegration() from @sentry/elysia",
+      "mysql database spans, and logs"
+    ],
+    "known_limits": [
+      "The @sentry/elysia init alone does not instrument Deno.serve: no http.server span, one process-wide trace, incoming headers ignored, isolation leaks into the next event",
+      "The reported SDK depends on the wiring: sentry.javascript.deno, or sentry.javascript.bun with contexts.runtime.name bun and session envelopes",
+      "mysql2 cannot be imported under the import hook (denoland/deno#36240); use mysql@2"
+    ],
+    "title": "Document Elysia on Deno: init from @sentry/deno, or add denoServeIntegration"
+  },
+  {
+    "id": "DOC-F20",
+    "applied": [
+      "Rewrote the item around the two shapes the cell ran: shape A plain Sentry.init from @sentry/deno, shape B @sentry/deno/import plus a six-line JSON load hook, with the hook snippet in the setup paragraph.",
+      "Attributed every capability to its shape, including isolation and incoming trace continuation, which were measured on the hook runs only.",
+      "Replaced 'cannot be used with Express on Deno 2.9' with 'needs a companion JSON load hook because of denoland/deno#36240', naming the statuses require('./codes.json') failure.",
+      "Added setupExpressErrorHandler(app) from @sentry/server-utils as the verified no-hook error path in works-today, with the missing @sentry/deno re-export as a limit and the SDK ask left in the narrative.",
+      "Moved outgoing fetch into works-today with fetchIntegration() from @sentry/cloudflare (extra install), keeping the default-off behaviour as a limit; removed the hand-written @sentry/core integration from the narrative.",
+      "Noted that expressIntegration() is already in the Deno default set, so no integrations entry is needed.",
+      "Updated guides/deno/index.mdx to 1-230, retitled the issue and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Both shapes: http.server transactions and Sentry.logger logs",
+      "Shape B (import hook + JSON load hook): GET /users/:id with source route, plus handler child spans",
+      "Shape B: route errors as events with mechanism auto.http.express",
+      "Shape B: mysql@2 database spans under the handler span",
+      "Shape B: per-request isolation and incoming trace continuation (measured on this shape only)",
+      "Shape A error capture with setupExpressErrorHandler(app) from @sentry/server-utils (auto.middleware.express)",
+      "Outgoing fetch() with fetchIntegration() from @sentry/cloudflare, in both trace lifecycles"
+    ],
+    "known_limits": [
+      "Shape A: GET /users/42 with source url, no handler spans, no database spans",
+      "Shape A: a thrown route error is not captured at all without setupExpressErrorHandler, and no warning is printed",
+      "setupExpressErrorHandler is not re-exported from @sentry/deno",
+      "The import hook needs a companion JSON load hook (denoland/deno#36240) or Express dies at import in statuses",
+      "Outgoing fetch() is not instrumented by default in either shape"
+    ],
+    "title": "Add an Express on Deno page covering the plain setup and the import-hook setup"
+  },
+  {
+    "id": "DOC-F21",
+    "applied": [
+      "Moved outgoing fetch into works-today with integrations: [winterCGFetchIntegration()] from @sentry/vercel-edge, noting it is an extra package, and kept the default-off state as a limit.",
+      "Named the crash in the import-hook warning: SyntaxError: Unexpected token ':' from ajv/dist/core.js:21 require(\"./refs/data.json\"), denoland/deno#36240.",
+      "Removed the hand-written @sentry/core fetch integration from the narrative.",
+      "Added that setupFastifyErrorHandler(app), which the Fastify guide still prescribes, is a deprecated no-op on develop and errors are captured without it.",
+      "Updated guides/deno/index.mdx to 1-230 and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Route errors (auto.function.fastify), server span internal_error",
+      "GET /users/:id with source route and http.route, in both trace lifecycles",
+      "Per-request isolation and incoming trace continuation",
+      "mysql2 3.20+ database spans, with no import hook and no bundler plugin",
+      "Logs",
+      "Outgoing fetch() with winterCGFetchIntegration() from @sentry/vercel-edge (extra install)"
+    ],
+    "known_limits": [
+      "Do not add import \"@sentry/deno/import\": the process dies at ajv/dist/core.js:21 require(\"./refs/data.json\") (denoland/deno#36240)",
+      "Outgoing fetch() is not instrumented by default; only node:http/node:https are traced"
+    ],
+    "title": "Add a Fastify on Deno page: full instrumentation without the import hook"
+  },
+  {
+    "id": "DOC-F22",
+    "applied": [
+      "Rewrote the route-name limit: names are GET /users/:id with source route and koa router spans in the esbuild + sentryOrchestrionPlugin build and in the --import=./preload.ts path; only the plain unbundled setup keeps GET /users/42 with source url.",
+      "Documented the three shapes in the setup paragraph and mapped works-today to them: A esbuild build, B preload flag with the JSON load hook, C deferred hook for database spans.",
+      "Added 'use mysql.createConnection, not mysql.createPool' with the detached-root-transaction consequence.",
+      "Added the ordering rationale: Deno instantiates the entry's whole static graph, Koa included, before the first statement runs, so a static hook import registers too late.",
+      "Added the misleading debug: true output (subscribing to channels / Integration installed: Koa with nothing instrumented) as a limit.",
+      "Kept outgoing fetch as a limit and removed the userland fetch-integration snippet from the narrative.",
+      "Updated guides/deno/index.mdx to 1-230, retitled the issue and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Automatic route-error capture (auto.middleware.koa) in shape A (esbuild + sentryOrchestrionPlugin) and shape B (--import=./preload.ts with the JSON load hook)",
+      "GET /users/:id with source route, http.route and koa router spans in shapes A and B, in both trace lifecycles",
+      "Per-request isolation and incoming trace continuation",
+      "mysql database spans in shape C (hook deferred, driver imported after it)",
+      "Logs carrying the request trace id"
+    ],
+    "known_limits": [
+      "Plain unbundled setup: GET /users/42 with source url (stream: GET with no http.route), no koa spans, and no error capture",
+      "The import hook must not be a static entry import (Koa is already cached), and without the JSON load hook statuses aborts the process (denoland/deno#36240)",
+      "Use mysql.createConnection, not createPool: pooled queries detach onto their own trace",
+      "@sentry/deno exports no setupKoaErrorHandler",
+      "debug: true reports Koa as instrumented when nothing is",
+      "Outgoing fetch() is not instrumented; node:http is"
+    ],
+    "title": "Add a Koa on Deno page: instrumentation timing decides what you get"
+  },
+  {
+    "id": "DOC-F23",
+    "applied": [
+      "Added the third verified shape: @sentry/deno/import plus a JSON load hook, with the note that the two registrations may come in either order but both before the app import.",
+      "Stated that attachHapiErrorHandler(server) from @sentry/server-utils works before or after server.start().",
+      "Added the hook-free route-naming recipe (server.ext('onPreHandler') with SENTRY_SEGMENT_NAME_SOURCE set after updateName) to works-today.",
+      "Added the 'What to change' bullet and the citation for platform-includes/getting-started-use/javascript.hapi.mdx:17,42, whose setupHapiErrorHandler call does not exist on @sentry/deno.",
+      "Noted that hapiIntegration() is already a default integration on @sentry/deno.",
+      "Kept outgoing fetch as a limit and removed the userland fetch integration from the narrative.",
+      "Updated guides/deno/index.mdx to 1-230, retitled the issue and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Route errors: auto.function.hapi in shape A (esbuild build) and shape C (import hook + JSON load hook), attachHapiErrorHandler in shape B",
+      "GET /users/{id} with source route plus a router child span, in shapes A and C",
+      "Route names with no build step and no hook, via server.ext('onPreHandler') with SENTRY_SEGMENT_NAME_SOURCE set after updateName",
+      "Per-request isolation and incoming trace continuation in every shape",
+      "mysql database spans in shapes A and C, and logs in every configuration"
+    ],
+    "known_limits": [
+      "Plain Sentry.init alone loses Hapi errors (Boom 500, transaction internal_error, no event) and names transactions GET /users/42 with source url",
+      "The import hook alone aborts at import through @hapi/validate require('../package.json') (denoland/deno#36240); registering it with --import fails the same way",
+      "@sentry/deno does not export setupHapiErrorHandler; the shipped equivalent is attachHapiErrorHandler from @sentry/server-utils",
+      "Outgoing fetch() is not instrumented, with or without the hook; node:http is"
+    ],
+    "title": "Add a Hapi on Deno page with the three verified wirings"
+  },
+  {
+    "id": "DOC-F24",
+    "applied": [
+      "Replaced the error-path limit with the fix: name the span inside try { await next(); } finally { ... } or from a router.use(...) middleware, and it applies on throws too, in both lifecycles and with prefixed routers.",
+      "Kept the after-await-next placement only as the failure mode to avoid.",
+      "Added span.setAttribute('http.route', route) to the naming recipe.",
+      "Updated the Deno guide citations to :100 and :119 and to 1-230.",
+      "Added the ctx.request.ip caveat: Oak types app.fetch as a Cloudflare handler, while the SDK still records the address from the Deno.serve connection info.",
+      "Added the SDK-side note that setHttpServerSpanRouteAttribute is a public @sentry/server-utils export that @sentry/deno does not re-export (narrative only).",
+      "Removed the userland fetch integration from the narrative, keeping node:http as the verified alternative; replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Route errors (auto.http.deno) on the app.fetch path",
+      "Per-request isolation and incoming trace continuation",
+      "GET /users/:id with source route and http.route via the naming middleware, on success and error paths, in both lifecycles and with prefixed routers",
+      "mysql database spans through the import hook, driver imported dynamically after init",
+      "Logs correlated to the request trace"
+    ],
+    "known_limits": [
+      "app.listen(): no active span, no error capture, isolation leaks, and nothing in user code repairs it",
+      "Naming after await next() instead of in a finally block skips every throwing request",
+      "Without the middleware, spans are method-only (stream) or raw-path with source url (static)",
+      "ctx.request.ip is empty because Oak types app.fetch as a Cloudflare handler",
+      "Outgoing fetch() is not instrumented; node:http is"
+    ],
+    "title": "Add an Oak on Deno page: mount with Deno.serve(app.fetch)"
+  },
+  {
+    "id": "DOC-F25",
+    "applied": [
+      "Updated the Fresh-grep citation to guides/cloudflare/agent-tracing/agents-sdk.mdx:43 plus common/migration/v10-to-v11/index.mdx:1339, and the Deno-guide anchors to :54, :69, :100, :119 and 1-230.",
+      "Added the isolation-scrub middleware to the limits bullet, with the explicit warning against Sentry.withIsolationScope(new Sentry.Scope(), ...), which misattributes transactions.",
+      "Restated the isolation leak as a Deno dynamic-import defect that reproduces with zero Sentry, under Deno.serve and node:http, and in vite dev, rather than a Fresh route-chunk effect.",
+      "Added setErrorInterceptor from jsr:@fresh/core/internal as a third capture path and the fact that captureConsoleIntegration goes silent once the app registers app.onError(\"*\").",
+      "Added the OTel ContextManager bridge as the alternative to the ctx.route middleware, with why the middleware is the shape to document.",
+      "Said outright to use mysql@2 and added mysql2 as a limit (denoland/deno#36240).",
+      "Removed the userland fetchTracingIntegration from the narrative and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Errors via captureConsoleIntegration, an explicit capture in the app's error handler, or setErrorInterceptor from jsr:@fresh/core/internal",
+      "Incoming sentry-trace/baggage continuation",
+      "mysql@2 database spans with the driver externalized in both vite config knobs",
+      "Logs"
+    ],
+    "known_limits": [
+      "Routes are not named automatically; a middleware reading ctx.route and calling Sentry.updateSpanName is required",
+      "Isolation leaks across requests after any awaited dynamic import(); mitigate by scrubbing the inherited isolation scope, never with withIsolationScope(new Scope())",
+      "mysql2 cannot be used (denoland/deno#36240)",
+      "Outgoing fetch() is not instrumented"
+    ],
+    "title": "Add a Fresh 2 on Deno page: what the SDK does and does not instrument"
+  },
+  {
+    "id": "DOC-F26",
+    "applied": [
+      "Added the boot workaround to the setup: either the six-line Module.registerHooks JSON load hook with injection left on, or enableRuntimeChannelInjection: false, the public option, as used on Deno by the Next.js cell.",
+      "Replaced the route-name limit with the two-branch truth: injection on plus the JSON hook gives GET /users/:id with source route and express/nest spans on platform-express and platform-fastify; injection off keeps GET /users/42 with source url and no framework spans.",
+      "Added the boot blocker itself as a limit, with the platform-express 'No driver (HTTP) has been selected' and platform-fastify SyntaxError failures.",
+      "Kept the APP_FILTER bullet and the outgoing-fetch limit unchanged in substance.",
+      "Added the misleading '@sentry/server-runtime-injection was bundled into your application' log line.",
+      "Cited that enableRuntimeChannelInjection appears nowhere in the docs; updated guides/deno/index.mdx to 1-230; retitled the issue; replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Handler errors (auto.http.nestjs.global_filter)",
+      "With injection on plus the JSON load hook: GET /users/:id with source route and http.route, plus express middleware, handler and function spans, on platform-express and platform-fastify",
+      "Per-request isolation with distinct trace ids",
+      "Incoming sentry-trace/baggage continuation",
+      "mysql2 database spans through its own diagnostics channels",
+      "Logs"
+    ],
+    "known_limits": [
+      "With injection off: GET /users/42 with source url and no framework spans",
+      "With injection on and no JSON load hook the app does not start (denoland/deno#36240)",
+      "With injection off, only drivers with their own diagnostics channels are instrumented",
+      "Without SentryGlobalFilter as APP_FILTER the error is swallowed; SentryModule.forRoot() registers APP_INTERCEPTOR only",
+      "Outgoing fetch() is not instrumented; node:http is",
+      "The SDK logs 'was bundled into your application' for an app that is not bundled"
+    ],
+    "title": "Add a NestJS on Deno page: the boot workaround decides what you get"
+  },
+  {
+    "id": "DOC-F27",
+    "applied": [
+      "Updated the options.mdx anchor to :755 in the issue body, the Page line and the cite paragraph.",
+      "Reworded the database bullet to cover native-channel drivers plus drivers Sentry bundles and transforms at build time (ioredis below 5.11), with the webpack and buildTimeInstrumentation conditions.",
+      "Added the mysql 2.x / pg explanation to the limit: they stay in the server-external packages and forcing them into the bundle corrupts the driver on Node as well as Deno.",
+      "Added the --turbopack / buildTimeInstrumentation: false caveat and the contexts.runtime: node caveat.",
+      "Replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Route handler errors (auto.function.nextjs.route_handler)",
+      "GET /users/[id] with source route, plus nested Next.js spans",
+      "Per-request isolation and incoming trace continuation",
+      "Outgoing http.client spans with trace headers via winterCGFetchIntegration() from @sentry/vercel-edge",
+      "Database spans for native-channel drivers (mysql2 >= 3.11, ioredis >= 5.11) and for build-time-instrumented ioredis below 5.11, with webpack and buildTimeInstrumentation on",
+      "Logs"
+    ],
+    "known_limits": [
+      "Without enableRuntimeChannelInjection: false every request 500s (denoland/deno#36240)",
+      "mysql 2.x and pg record nothing, and forcing them into the bundle corrupts the driver on Node too",
+      "--turbopack on Next 15 or buildTimeInstrumentation: false removes the ioredis spans",
+      "Error events carry no source context lines",
+      "contexts.runtime reports node on Deno"
+    ],
+    "title": "Add a Next.js on Deno page and document enableRuntimeChannelInjection"
+  },
+  {
+    "id": "DOC-F28",
+    "applied": [
+      "Removed per-request isolation and incoming trace continuation from works-today and recorded that both were measured only on the deno_server build, where they fail.",
+      "Added a database bullet with nitro: { externals: { inline: ['generate-function','named-placeholders'] } } and the 'injected libraries=[]' false negative.",
+      "Qualified the fetch bullet: winterCGFetchIntegration() is verified on the deno_server build under the stream lifecycle and needs an extra install; named @sentry/cloudflare's fetchIntegration, already a @sentry/nuxt dependency, as the zero-install candidate to verify next.",
+      "Updated the cli-import.mdx citation to :37 and added it to 'What to change' as a Node-only start command.",
+      "Added the '.output/server/deno.json start' entry-wrapper defect, the static-lifecycle no_parent_span drop and the error-path route-name gap that also affects Node.",
+      "Replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [
+      "'Re-run isolation and incoming trace on the node-server output': no probe runs in this pass, so both were removed from works-today and recorded as measured only on the deno_server build.",
+      "'Prefer fetchIntegration() from @sentry/cloudflare over winterCGFetchIntegration()': kept winterCGFetchIntegration() as the measured wiring and instead noted that @sentry/nuxt already depends on @sentry/cloudflare, so its fetchIntegration is the zero-install candidate to verify next."
+    ],
+    "works_today": [
+      "Errors from nitro route handlers, with request data and source context",
+      "GET /api/users/:id with source route in both lifecycles, getActiveSpan() defined in handlers, Node control identical",
+      "mysql2 database spans with nitro.externals.inline ['generate-function','named-placeholders']",
+      "http.client spans and trace headers on fetch and $fetch with winterCGFetchIntegration() (measured on the deno_server build, stream lifecycle, extra install)",
+      "Logs"
+    ],
+    "known_limits": [
+      "preset deno_server: no request instrumentation at all",
+      "deno_server with top-level-import writes the config import into a file named .output/server/deno.json start",
+      "deno_server under the static lifecycle drops parentless fetches with no_parent_span",
+      "Outgoing fetch is not instrumented without the integration",
+      "Route-name enrichment does not run for thrown handlers, on Deno and Node alike",
+      "The 'injected libraries=[]' debug line is a false negative",
+      "Isolation and incoming trace continuation are unmeasured on the node-server output"
+    ],
+    "title": "Correct the Nuxt Nitro preset page for Deno: keep the node-server preset"
+  },
+  {
+    "id": "DOC-F29",
+    "applied": [
+      "Updated the adapter-compatibility citation to :21-36, with the 'Currently not supported' heading at :31 and the non-Node bullet at :32, in the body, the Page line, 'What to change' and the cite paragraph.",
+      "Softened the mysql2 limit and added the verified prewarm (createRequire(import.meta.url)('mysql2/package.json') via --preload ./prewarm-json.mjs or at the top of src/hooks.server.js); mysql2 spans now appear in works-today.",
+      "Added the spurious '@sentry/server-runtime-injection was bundled into your application' warning as a limit.",
+      "Added common/configuration/integrations/fetchIntegration.mdx:10 to 'What to change', the Page line and the cite paragraph.",
+      "Kept the @sentry/sveltekit/vite import for sentrySvelteKit(); replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Errors from +server.js handlers (auto.function.sveltekit.handle_error)",
+      "GET /users/[id] with source route",
+      "Per-request isolation and incoming trace continuation",
+      "http.client spans plus trace headers with fetchIntegration() from @sentry/cloudflare",
+      "mysql database spans with no flags, mysql2 with the package.json prewarm, in both lifecycles",
+      "Logs"
+    ],
+    "known_limits": [
+      "Without fetchIntegration(), neither fetch() nor event.fetch is traced",
+      "mysql2 needs its package.json in the require cache before Sentry.init (denoland/deno#36240)",
+      "The 'was bundled into your application' warning can fire while instrumentation works"
+    ],
+    "title": "Correct the SvelteKit adapter note: adapter-node runs on Deno"
+  },
+  {
+    "id": "DOC-F30",
+    "applied": [
+      "Updated the runtime-Alert citation to :21-29 in the body, the Page line, 'What to change' and the cite paragraph, and the Deno guide to 1-230.",
+      "Stated that @sentry/astro does not depend on @sentry/cloudflare, so fetchIntegration means installing that package on purpose, and added the Sentry.startSpan + getTraceData() fallback.",
+      "Spelled out why src/middleware.ts is mandatory: without it Sentry.init never runs for requests that only hit .ts/.js endpoint routes.",
+      "Added common/configuration/integrations/fetchIntegration.mdx:10 to 'What to change' and the Page line.",
+      "Replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Route errors (auto.middleware.astro) with request URL and source context",
+      "GET /users/[id] with source route, in both trace lifecycles",
+      "Per-request isolation across concurrent requests",
+      "Incoming sentry-trace/baggage continuation",
+      "mysql2 database spans from the Vite plugin @sentry/astro adds during astro build",
+      "Logs"
+    ],
+    "known_limits": [
+      "Outgoing fetch() is not instrumented; fetchIntegration from @sentry/cloudflare needs a deliberate install, while node:http/node:https work without it",
+      "Endpoint-only .ts/.js routes are uninstrumented unless src/middleware.ts imports the server config"
+    ],
+    "title": "Correct the Astro runtime note: Deno with @deno/astro-adapter works"
+  },
+  {
+    "id": "DOC-F31",
+    "applied": [
+      "Replaced the database bullet with what was measured: mysql@2 works with no extra instrumentation path but only with the connection created inside the loader; a module-scope pool detaches the span onto its own trace; mysql2 cannot be loaded once Sentry is initialized.",
+      "Dropped the unsupported ssr: { noExternal: true, external: [...] } sentence from the setup paragraph and the narrative.",
+      "Documented the hand-written node:http server entry and that react-router-serve and NODE_OPTIONS are unusable on Deno, and that a bare Deno.serve handler gets neither the http.server span nor the isolation scope.",
+      "Added fetchIntegration from @sentry/cloudflare, Deno-gated, as the verified fetch remedy in works-today.",
+      "Changed the plugin import to @sentry/react-router/vite.",
+      "Updated citations: index.mdx:9, manual-setup.mdx:400-401, the direct-import warnings at :417 and :436, and the Node-support Expandable at :186-197.",
+      "Pinned the version to React Router 7.18.3, retitled the issue and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Loader errors (mechanism react-router) through the handleError export",
+      "GET /users/:id with op http.server and source route",
+      "Per-request isolation and incoming trace continuation",
+      "mysql@2 database spans with no extra instrumentation path, connection created inside the loader",
+      "Outgoing fetch() with fetchIntegration from @sentry/cloudflare, Deno-gated",
+      "Logs"
+    ],
+    "known_limits": [
+      "react-router-serve and NODE_OPTIONS are unusable on Deno, and a bare Deno.serve handler gets neither the http.server span nor the isolation scope",
+      "mysql2 cannot be loaded once Sentry is initialized",
+      "A module-scope mysql@2 pool detaches its database span onto its own trace",
+      "Without the fetch integration there is no http.client span and no trace headers",
+      "Error events carry the raw path in transaction while the transaction carries the route pattern"
+    ],
+    "title": "Add a React Router on Deno page with the Deno entry.server and node:http server entry"
+  },
+  {
+    "id": "DOC-F32",
+    "applied": [
+      "Updated citations to :286 and :354-358 in the body, the Page line, 'What to change', the narrative and the cite paragraph.",
+      "Stated the build sensitivity: vite 8.x with the pristine config; vite 7.3.2 with nitro 3.0.260903-beta crashes rollup with or without Sentry; the externalising pre-plugin gets past that crash but removes the route parametrization.",
+      "Added the verification step grep -l 'users/$userId' .output/server/_libs/sentry__tanstackstart-react.mjs.",
+      "Said the unparameterized names are a build-config effect rather than a Deno effect, with the Node control run.",
+      "Kept outgoing fetch as a limit, removed the hand-written integration from the narrative and pointed at node:http clients instead.",
+      "Replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Server route errors (auto.middleware.tanstackstart.request)",
+      "GET /users/$userId with source route, with nitro noExternals, in both lifecycles, Node control identical",
+      "Per-request isolation and incoming trace continuation",
+      "mysql database spans injected at build time by the Sentry Vite plugin",
+      "Logs"
+    ],
+    "known_limits": [
+      "An externalized @sentry/tanstackstart-react leaves raw names on every runtime, with no warning",
+      "The build is version-sensitive: vite 7.3.2 with nitro 3.0.260903-beta fails in rollup, and the externalising pre-plugin costs the route names",
+      "Outgoing fetch() is not instrumented"
+    ],
+    "title": "Add a TanStack Start on Deno page with the Deno entry and noExternals"
+  },
+  {
+    "id": "DOC-F33",
+    "applied": [
+      "Fixed the grep sentence: orchestrion now returns two hits, common/migration/v10-to-v11/index.mdx:689 and :1297, while deno, installGlobals and enableRuntimeChannelInjection stay at zero.",
+      "Changed the plugin import to @sentry/remix/vite and added the re-check note that this plugin now applies the build-time instrumentation transform itself, so the separate esbuild pass may be redundant for code that goes through Vite.",
+      "Added the installGlobals() ordering rule: from the server entry it must run after import './instrument.server.mjs', or every transaction and span envelope is dropped while errors keep arriving.",
+      "Added the createRequire banner requirement, the @remix-run/server-runtime bundling rule and the @sentry/* + mysql2 external rule for the esbuild build.",
+      "Added the simpler database shape (import the driver before instrument.server.mjs, since mysql2 3.20+ publishes its own channels) and the warning that a hand-written fetch integration suppresses every server transaction and span.",
+      "Moved the proposed page to docs/platforms/javascript/guides/deno/frameworks/remix.mdx, linked from guides/remix/frameworks/index.mdx, because guides/remix/ has no install/ directory.",
+      "Updated the Remix 3 alert citation to :12-16, pinned Remix 2.17.5 and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [
+      "'Re-check whether the separate esbuild orchestrion step is still needed now that the Vite plugin applies the transform': cannot re-run the build here, so the item keeps the verified esbuild shape and flags the re-check in the narrative."
+    ],
+    "works_today": [
+      "Loader errors (auto.function.remix.server)",
+      "GET users/:id with source route, plus nested loader spans",
+      "Per-request isolation and incoming trace continuation",
+      "Outgoing http.client spans with trace headers after installGlobals(), in both lifecycles",
+      "mysql2 database spans through either the driver-first import or the esbuild orchestrion build, and logs"
+    ],
+    "known_limits": [
+      "Without installGlobals() there is no fetch span and no trace headers; node:http and undici clients are traced",
+      "installGlobals() in the server entry must run after the instrument import, or every transaction and span envelope is dropped while errors keep arriving",
+      "A hand-written fetch integration is no substitute: it suppresses every server transaction and span",
+      "The esbuild bundle needs the createRequire banner, with @sentry/* external",
+      "The runtime hook off without the bundler plugin removes every server span; on, Deno aborts at startup on require('*.json')",
+      "Express cannot be used as the Remix server on Deno"
+    ],
+    "title": "Add a Remix on Deno page covering installGlobals and the build-time setup"
+  },
+  {
+    "id": "DOC-F34",
+    "applied": [
+      "Added NODE_ENV=production npx vite build to the setup with the reason: the sentrySolidStart orchestrion pass is skipped in development and it is what produces the mysql2 spans.",
+      "Named the import path @sentry/solidstart/vite and included solidStart({ appRoot: './src' }) and nitro({ serverDir: './server' }) as the cell ran them.",
+      "Softened the route-name limit and shipped the setHttpServerSpanRouteAttribute recipe for API routes (onBeforeResponse over event.params) and SSR pages (useCurrentMatches in the Router root), with the @sentry/server-utils dependency note and the segment-span-only caveat.",
+      "Turned the fetch limit into a works-today entry: winterCGFetchIntegration() from @sentry/vercel-edge in the Nitro startup plugin, gated on Deno.",
+      "Dropped the dynamic-import attribution from the isolation bullet and stated the symptom only.",
+      "Added the array-form createMiddleware requirement with the nested sentryBeforeResponseMiddleware() spread, the reason the Nitro error hook cannot help, and that 'use server' actions are already covered by withServerActionInstrumentation.",
+      "Cited index.mdx:444 and :451 precisely and replaced the external cell-record hyperlink with a plain 'Cell record' line."
+    ],
+    "skipped": [],
+    "works_today": [
+      "Incoming sentry-trace/baggage continuation",
+      "mysql2 database spans injected at build time (production build only)",
+      "Logs",
+      "API-route errors with the array-form try/catch middleware; 'use server' action errors already covered by withServerActionInstrumentation",
+      "Parameterized names with setHttpServerSpanRouteAttribute from @sentry/server-utils, for API routes and SSR pages, in both lifecycles",
+      "Outgoing fetch() with winterCGFetchIntegration() from @sentry/vercel-edge, Deno-gated"
+    ],
+    "known_limits": [
+      "Unhandled API-route errors are not captured on their own, on Deno and Node alike, so the guide's verification step reports nothing",
+      "The Nitro error hook cannot help: SolidStart's inner H3 instance already turns the throw into a 500",
+      "The SDK does not name server transactions (one catch-all Nitro route); the helper is not re-exported from @sentry/solidstart and only the segment span is renamed",
+      "Scope data set during one request is inherited by later requests; the mechanism was not established for this stack",
+      "Outgoing fetch() is not instrumented without the integration; node:http/node:https are"
+    ],
+    "title": "Add a SolidStart on Deno install page and record its instrumentation limits"
+  }
+]

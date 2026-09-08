@@ -1,0 +1,329 @@
+[
+  {
+    "id": "DOC-B1",
+    "applied": [
+      "Moved the Bun guide citations to today's master in both the issue body and the narrative: `:94`/`:106` -> `:88`/`:100`, alert `:96-100` -> `:90-94`.",
+      "Kept `:20-22`, `:182` and `packages/bun/src/plugin.ts:14` unchanged, all exact on master and at develop head.",
+      "Pinned the integration count in the narrative to `6f2da7483d` (42) and named the develop-head figure (43), so it agrees with DOC-B2.",
+      "Added that the QS-bun run on bun 1.4.2 reaches the same result as the 1.4.0 probe."
+    ],
+    "skipped": [],
+    "priority": "P0",
+    "title": "Rewrite the Bun guide's instrumentation step around @sentry/bun/plugin"
+  },
+  {
+    "id": "DOC-B2",
+    "applied": [
+      "Stated the counts as 42 at `6f2da7483d` and 43 at develop head, added `mastraIntegration` to the missing-row list and changed the heading from eleven to twelve.",
+      "Split the server-utils citation: `packages/server-utils/src/integrations/index.ts:30-62` at the pin, `:30-63` at develop head, with `getTracingIntegrations` `:31-59` and `getErrorIntegrations` `:62-64`.",
+      "Split `packages/bun/src/sdk.ts:47-79` into `getDefaultIntegrationsWithoutPerformance` `:47-74` and `getDefaultIntegrations` `:77-79`.",
+      "Applied the optional row note: `spanStreamingIntegration` comes from `packages/core/src/server-runtime-client.ts:56`, not from `getDefaultIntegrations()`, which explains the 41+1 arithmetic and widens the generator ask."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Correct the Bun integrations table in platform-includes/.../javascript.bun.mdx"
+  },
+  {
+    "id": "DOC-B3",
+    "applied": [
+      "Hono citation `:12,84-85,290-292` -> `:12,84-85,278-280`, with the `@sentry/hono/bun` import at `:280`.",
+      "Stated in both the issue body and the narrative that the seven case-insensitive matches under `guides/nextjs/` are 'Bunyan' and 'bundle', not the Bun runtime."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Add a frameworks page to the Bun guide and a Bun caveat to the Hono guide"
+  },
+  {
+    "id": "DOC-B4",
+    "applied": [
+      "Dropped the breadcrumbs bullet from the heading, the issue title, the issue body and the narrative: `@sentry/bun` neither installs nor exports `breadcrumbsIntegration`, so `notSupported: javascript.bun` is correct as it stands.",
+      "Recorded in the narrative that the real, inverse gating bug is on Deno and moved it to DOC-D2.",
+      "Cited `platform-includes/getting-started-prerequisites/javascript.deno.mdx:7` as the shape for the new Bun prerequisites file, and named the `_default.mdx` fallback that leaves the page without a version.",
+      "Added the other two Bun CI pins (`build.yml:911`, `:1035`) next to `:522`."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Fix Bun guide hygiene: version floor, Hono install command, v7 wording"
+  },
+  {
+    "id": "DOC-D1",
+    "applied": [
+      "Said the guide renders `npm:@sentry/deno` through the `___SDK_PACKAGE___` placeholder at `:44` and `:66`, instead of claiming it shows the literal specifier.",
+      "Removed the implication that the e2e apps demonstrate `nodeModulesDir: \"auto\"`: they all use `\"manual\"` with an installed `node_modules`, and the ask is now that the package be resolvable either way.",
+      "Added `packages/deno/README.md:70` as the line carrying the `--import=@sentry/deno/import` form that does not resolve.",
+      "Pinned the 39-integration figure to `6f2da7483d`."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Document the @sentry/deno/import hook in the Deno guide"
+  },
+  {
+    "id": "DOC-D2",
+    "applied": [
+      "Stated the counts as 39 at `6f2da7483d` and 40 at develop head, added `Mastra` to the installed list and updated the heading to 40.",
+      "Kept `packages/deno/src/sdk.ts:28-49`, exact at the pin and at develop head.",
+      "Applied the optional breadcrumbs correction, moved here from DOC-B4: `breadcrumbs.mdx` lists `javascript.deno` under `notSupported` while `sdk.ts:39` installs and `index.ts:164` exports the integration; the guide-local override makes it an inconsistent gate rather than a dead page. Added as a fix bullet and in the narrative."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Correct the Deno integrations table in platform-includes/.../javascript.deno.mdx"
+  },
+  {
+    "id": "DOC-D3",
+    "applied": [
+      "`:106` -> `:100` and `:125` -> `:119` in the issue body, the fix bullet and the narrative; added that the init snippets name the file `main.ts` at `:43` and `:65`.",
+      "Widened the e2e permission sentence in both places: every Deno app runs `--allow-net --allow-env --allow-read`; `deno-mysql`, `deno-pg` and `deno-redis` add `--allow-sys --allow-write`, and `deno-streamed` adds `--allow-sys` without being docker-backed."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Show one complete deno run command with all four permission flags in the Deno guide"
+  },
+  {
+    "id": "DOC-D4",
+    "applied": [
+      "Hono citation `:88-89,320-322` -> `:88-89,302-304` in both places, with `Deno.serve(app.fetch)` at `:323`."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Add a frameworks page to the Deno guide and Deno notes to four Node framework guides"
+  },
+  {
+    "id": "DOC-D5",
+    "applied": [
+      "Applied the optional line-range correction: the false OpenTelemetry auto-instrumentation claim is `:34-48`, with the Express `:38`, Fastify `:39`, Hapi `:40` and Nest `:46` bullets, named in the issue body, the fix bullet and the narrative."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones"
+  },
+  {
+    "id": "DOC-D6",
+    "applied": [
+      "Said the snippets render `npm:@sentry/deno` from the `___SDK_PACKAGE___` placeholder and that the literal specifier is not in the file, in both places.",
+      "Added the exact lines of the two hardcoded specifiers (`featureflags` `:2`, `enable-stream-mode` `:11`).",
+      "Added `enable-stream-mode/javascript.deno.mdx:24`, which calls `traceLifecycle: 'static'` 'the default': true on the released line, wrong on develop (`packages/core/src/client.ts:243`), cross-referenced to DOC-Q1."
+    ],
+    "skipped": [
+      "'The e2e apps use nodeModulesDir \"manual\", not auto, so stop implying they demonstrate it' - this fragment makes no `nodeModulesDir` claim; the correction was applied in DOC-D1, where that claim lives."
+    ],
+    "priority": "P2",
+    "title": "Show deno add and an import map in the Deno guide's install step"
+  },
+  {
+    "id": "DOC-C1",
+    "applied": [
+      "Dropped the `getting-started-config` bullet; the narrative now records that `platform-includes/getting-started-config/javascript.cloudflare.mdx:5` has stated the `nodejs_compat` and `compatibility_date` requirement since before the audit.",
+      "vercelai.mdx `:61-77` -> the two-entrypoint table at `:66-71` inside the Cloudflare section `:60-73`, in both places.",
+      "MIGRATION.md `:1384-1391` -> `:1394-1399` at the pin, with `:1600-1605` at develop head.",
+      "Noted that `common/migration/v10-to-v11/index.mdx:948-959` already lands the migration half, so the remaining work is the five product pages.",
+      "Fixed the body's internal count, 'Four places' -> 'Five places', so it matches the heading and its own list; added the `features/nodejs-compat.mdx` entrypoint lines `:6` and `:10`.",
+      "Named the released line as 10.67.0 in the repro line and dropped the unverified '(both open)' state from the prior-art PRs."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Remove the @sentry/cloudflare/nodejs_compat entrypoint from the Cloudflare docs for v11"
+  },
+  {
+    "id": "DOC-C2",
+    "applied": [
+      "instrumentEnv.ts D1 branch cited as `:64-68` at `6f2da7483d` and `:61-65` at develop head, in both places.",
+      "MIGRATION.md `:1393-1408` -> `:1401-1416` at the pin, `:1607-1622` at develop head.",
+      "Kept the exact `instrumentD1.ts:114-116,142-146,178` citations and added the single-query naming at `:137` (sanitized query summary under stream, raw query under static) to the documentation ask.",
+      "Noted that `common/migration/v10-to-v11/index.mdx:991` already records the removal, so only the feature page needs rewriting.",
+      "Replaced 'On 10.73.0' with 'On the released line': the verifier read released `master` as `@sentry/cloudflare` 10.67.0."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Rewrite features/d1.mdx around automatic D1 instrumentation"
+  },
+  {
+    "id": "DOC-C3",
+    "applied": [
+      "Priority lowered to P2, per the editing brief.",
+      "Deleted the whole `enableRpcTracePropagation` replacement half; the narrative now says commit `3acad630b` (sentry-docs#19198) replaced it in all three files and added the `rpcTracePropagationBindings` SdkOption at `options.mdx:580-592`, leaving three legitimate hits (`options.mdx:594`, `v10-to-v11/index.mdx:971,977`).",
+      "Shrunk the ask to the four missing SdkOption entries - `cacheClient`, `enableOpenTelemetrySetup`, `durableObjectSqlSpanAllowlist`, `durableObjectStorageSpanAllowlist` - with their doc-hit counts (0, 0, 0 and 6, the six all inside the v11 migration page).",
+      "Added the v11 bullet: remove the deprecated `enableRpcTracePropagation` block at `common/configuration/options.mdx:594-600`.",
+      "SDK citation `client.ts:359` -> `:360`, plus the declaration lines `:324`, `:384`, `:409`, `:451`.",
+      "MIGRATION.md `:1410-1428` -> `:1418-1431` at the pin, `:1624-1637` at develop head.",
+      "Rewrote the heading and the issue title around the leftovers and updated prior art to 'merged as 3acad630b, kept the deprecated option deliberately'."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Add the four missing Cloudflare SdkOption entries and drop the deprecated enableRpcTracePropagation block"
+  },
+  {
+    "id": "DOC-C4",
+    "applied": [
+      "Options block `:138-154` -> `:150-166`, with the sub-entries `:150-154`, `:156-160`, `:162-166` and the 'plugin is a no-op' sentence at `:164`.",
+      "Added that `wranglerConfigPath` already has a correct entry at `:130-148` that only needs keeping.",
+      "Instrumented-package list `packages/server-utils/src/orchestrion/config/index.ts:49-79` -> `:50-80` (29 entries) at the pin, `:51-81` (30, Mastra added) at develop head.",
+      "Added the bullet to remove the experimental Alert at `vite-plugin.mdx:8-11` as part of moving the page out of the experimental section.",
+      "Noted that `common/migration/v10-to-v11/index.mdx:961-967` already tells upgraders the `_experimental.autoInstrumentation` opt-in was removed, so the feature page is the last place with the old shape.",
+      "Added the per-option source lines from `packages/cloudflare/src/vite/index.ts` (`wranglerConfigPath` `:23`, `buildTimeInstrumentation` `:37`, `autoInstrumentation` `:54`) and the `mysql`-only mentions at `:15`, `:59`."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Update features/vite-plugin.mdx to the shipped Cloudflare Vite plugin options"
+  },
+  {
+    "id": "DOC-C5",
+    "applied": [
+      "Import citation `:221` -> `:219`; the snippet range `:212-231` replaced by the expandable `:207-238` with the snippet at `:217-232` and the `wrapRequestHandler` call at `:230`.",
+      "Hydrogen subpath `:188` -> `:187`, with the supporting prose at `:175` and `:179`.",
+      "MIGRATION.md `:1436-1445` -> `:1445-1453` at the pin, `:1651-1659` at develop head.",
+      "Said the hono integrations page already carries a deprecation Alert at `:8-12`, so it needs deleting rather than a first deprecation notice.",
+      "Noted that `common/migration/v10-to-v11/index.mdx:990` and `:993` already record both changes, leaving the product pages and the README.",
+      "Added `packages/cloudflare/src/index.ts:117` (only `_INTERNAL_wrapRequestHandler` is exported) and the README lines `:88`/`:99`."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Import wrapRequestHandler from @sentry/cloudflare/request and drop the honoIntegration page"
+  },
+  {
+    "id": "DOC-C6",
+    "applied": [
+      "`features/workers-ai.mdx` -> `agent-tracing/workers-ai.mdx` in the issue body and the table, with the move recorded (commit `2e707563c`, sentry-docs#19279) and the `features/index.mdx:11` additionalPage link.",
+      "instrumentR2.ts R2_OPERATIONS `:27-47` -> `:26-48`.",
+      "instrumentQueueProducer split: span name `send <binding>` at `:20`, `queue.publish` op at `:28`.",
+      "Added the develop-head state of instrumentEnv.ts - rate-limit branch deleted, D1 `:61`, Queue `:67`, R2 `:74`, AI `:81`, DurableObjectNamespace `:89`, JSRPC `:95` - and pinned the cited numbers to `6f2da7483d`.",
+      "Recorded that `guides/cloudflare/features/index.mdx` is a 13-line PageGrid, which is the premise of the ask."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Add a bindings table to the Cloudflare features/index.mdx"
+  },
+  {
+    "id": "DOC-C7",
+    "applied": [
+      "TanStack Start imports `:80,143,219` -> `:80,137,206` in both places.",
+      "`guides/tanstackstart-react/manual-setup/index.mdx:391` -> `:377` in both places.",
+      "Restated the e2e figure as 'apps with a wrangler config' (21 at `6f2da7483d`) and listed them, noting that a `*cloudflare*` name match finds only 16.",
+      "Pinned the 21 apps / 1 Pages app figures to `6f2da7483d`, since the e2e tree was not re-listed at develop head."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Add a Cloudflare React Router page and fix frameworks/index.mdx and tanstack-start.mdx"
+  },
+  {
+    "id": "DOC-C8",
+    "applied": [
+      "Dropped the Astro `dataCollection` bullet and table row; the narrative records that commit `ae4b46502` (sentry-docs#19208) removed the block at `astro.mdx:103-108` and that it was already gone at the re-check commit.",
+      "logs onboarding block `:352` -> `:356-360` in both places.",
+      "Added the exact ranges for the affected includes: traces-sampler `:4`, sample-rate `:1-7`, capture-console `:1-8`, dedupe `:1-8`.",
+      "Said Bun and Deno have guide-local contextlines overrides, so only the Cloudflare include is unreachable and the fix must leave the other two alone.",
+      "Recorded that `browserTracingIntegration` is absent from `@sentry/cloudflare` on the released line, at the pin and at develop head."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Fix snippet errors across the Cloudflare includes and framework pages"
+  },
+  {
+    "id": "X1",
+    "applied": [
+      "Reworked the SDK sentence in both places: `packages/core/src/utils/hasSpansEnabled.ts:23-36` is the runtime-independent reason spans need `tracesSampleRate` or `tracesSampler`, and `packages/bun/src/sdk.ts:38-44` is an extra Bun-only integration gate; Deno (`packages/deno/src/sdk.ts:28-49`) and Cloudflare have no equivalent.",
+      "Stated that there is no Deno `enable-automatic-instrumentation` include, so the consistency ask covers Bun and Cloudflare only; added the `:1` line for both includes."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Fix \"Tracing is enabled by default\" in the Bun, Deno and Cloudflare enable-tracing includes"
+  },
+  {
+    "id": "X2",
+    "applied": [
+      "Retitled to 'Add the per-runtime channel-instrumentation setup to the v10-to-v11 page' and changed the issue type chip from new-page to docs-change, since the page exists.",
+      "Rewrote the premise in both places: `common/migration/v10-to-v11/index.mdx` landed as commit `e4d245f972` (sentry-docs#19217, 1473 lines) and already carries DOC-C1 to DOC-C5 at `:948-993`, with a Deno section at `:933-939`.",
+      "Dropped the 'Make the Cloudflare section carry DOC-C1 through DOC-C5' bullet.",
+      "Repointed the framing complaint at `:689` ('Most setups need no changes.') alongside MIGRATION.md, and rewrote the asks as a Bun section plus a Deno hook paragraph, since `@sentry/bun/plugin`, `sentryBunPlugin` and `@sentry/deno/import` have 0 hits on the page.",
+      "MIGRATION.md `:289-295` at the pin, `:282-288` at develop head.",
+      "Kept the MIGRATION.md rewording in the narrative work item only, so the issue body asks for docs-page changes."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Add the per-runtime channel-instrumentation setup to the v10-to-v11 page"
+  },
+  {
+    "id": "X3",
+    "applied": [
+      "Four missing rows, not three: added `spanStreamingIntegration` to `conversationIdIntegration`, `httpServerIntegration` and `consoleIntegration`, sourced to `packages/cloudflare/src/baseSdk.ts:51-72` plus `packages/core/src/server-runtime-client.ts:56`, with the ten-integration set QS-cloudflare recorded.",
+      "Added the two wrong existing rows: `:8` should read `eventFiltersIntegration`, and `:17` marks the removed `honoIntegration` auto-enabled (DOC-C5).",
+      "Attributed the 51-cell / 50-run figures to the audit's own cell dataset, which the re-check did not re-derive.",
+      "Extended the generator ask to cover the client-side `spanStreamingIntegration`, which `getDefaultIntegrations()` alone would miss."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Add a runtime-by-framework support matrix for Bun, Deno and Cloudflare"
+  },
+  {
+    "id": "DOC-Q1",
+    "applied": [
+      "Rewrote the 'named transactions' sentence in both places: the four pages say 'view the collected data' and link the `quick-start-locate-data-expandable` include, which points at the Traces page (`src/components/featureInfo.tsx:46-59`); the only 'Transaction' on the page is the sample name in the snippet.",
+      "Added the `lands with v11` chip and scoped the item to the v11 docs update: released `master` does no `traceLifecycle` normalization, so a transaction is sent, while develop normalizes at `packages/core/src/client.ts:243`.",
+      "Added the ten `platform-includes/performance/enable-stream-mode/javascript.*.mdx` files that call `'static'` '(the default)', with their lines (node :36, cloudflare :62, hono :51, deno :24, bun/nextjs/nestjs/nitro/gcp-functions/elysia :25).",
+      "Added `guides/cloudflare/index.mdx:382-388`, which frames the static lifecycle as the current model and stream as the opt-in.",
+      "Reworded the heading away from 'promises a transaction that develop never sends'."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Rewrite the tracing verify step for the stream lifecycle on the Node, Bun, Deno and Cloudflare guides"
+  },
+  {
+    "id": "DOC-Q2",
+    "applied": [
+      "Priority lowered from P0 to P1, per the editing brief.",
+      "Dropped the 'add the instrument.server.ts step' bullet; the narrative records commit `9bfe0e96c` (sentry-docs#19199) documenting the file at `vite-plugin.mdx:88-99`, the `defineCloudflareOptions` snippet at `:90-97` and the `env` fallback sentence at `:99`.",
+      "Corrected 'the Worker runs with no DSN, silently': `ENV_FALLBACK_OPTIONS_FN` (`packages/cloudflare/src/vite/instrumentFile.ts:7`) is a deliberate hand-off, and `packages/cloudflare/src/options.ts:68` resolves `dsn ?? getEnvVar(env, 'SENTRY_DSN')`.",
+      "Corrected 'with no warning from the plugin': `packages/cloudflare/src/vite/autoInstrument.ts:34-40` warns through the Vite logger when no wrangler config parses.",
+      "Rewrote the title, heading and body around the one open point: with several configs in the project the plugin resolves a different default-named one, instruments nothing and logs nothing, as recorded in `quickstarts/cloudflare/README.md:341-347`.",
+      "Kept the second ask: remove `_experimental.useDiagnosticsChannelInjection` from `guides/cloudflare/index.mdx:77-92`, cross-referenced to DOC-C4.",
+      "Kept the positive half of the observation: with `wranglerConfigPath` and the options file, the built Worker matched the hand-written `withSentry` baseline."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "Say on the Vite plugin page that a wrangler config resolved to the wrong file instruments nothing"
+  },
+  {
+    "id": "DOC-Q3",
+    "applied": [
+      "Replaced 'The guides promise named transactions from the base setup' with the omission the pages actually have, in both the issue body and the narrative; the gap is that nothing says where a route name comes from.",
+      "Added the `lands with v11` chip and a sentence that under the released static lifecycle the reader does get a named transaction.",
+      "Kept every reproduced observation and added why Node differs: its error event carries `transaction: \"GET /debug-sentry\"` (`quickstarts/node/README.md:235`), so the last bullet stays scoped to Bun and Cloudflare.",
+      "Reworded the heading away from 'and the guides say named transactions'."
+    ],
+    "skipped": [],
+    "priority": "P1",
+    "title": "State on the four guides that route names need a framework integration or a routes map"
+  },
+  {
+    "id": "DOC-Q4",
+    "applied": [
+      "Citation `:88-106` -> the step at `guides/bun/index.mdx:82-105`, with the run command at `:100`.",
+      "Named the source of each warning line: `packages/server-runtime-injection/src/register.ts:160` (`:201` at develop head) and `packages/server-utils/src/orchestrion/detect.ts:38-42`, both through `debug.warn`, and kept the `debug: true` condition explicit in the fix bullet."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Explain the channel-injection warnings on the Bun guide"
+  },
+  {
+    "id": "DOC-Q5",
+    "applied": [
+      "Added the banner's source: `packages/node/src/sdk/index.ts:126-133`, printed whenever `getEntryPointType() === 'require'`, unconditionally and not behind `debug`.",
+      "Softened the NODE_OPTIONS bullet: the form is already documented at `common/install/esm.mdx:44-48`, so the ask is to surface it on the getting-started page.",
+      "Added the `common/install/late-initialization.mdx:34,37,106,132` caveat, so a blanket 'don't use --require' does not catch `--require @sentry/node/preload`.",
+      "Noted that `common/migration/v10-to-v11/index.mdx:695-707` already covers `--require` for upgraders, leaving the getting-started page as the gap for new users."
+    ],
+    "skipped": [],
+    "priority": "P2",
+    "title": "Update the Node getting-started page for --require and for first-line ESM imports"
+  },
+  {
+    "id": "DOC-Q6",
+    "applied": [
+      "Added the Pages verify snippet at `guides/cloudflare/index.mdx:297-301` to the citation and to the fix bullet, alongside the Workers snippet at `:267-280`."
+    ],
+    "skipped": [
+      "'The segment span reports status ok on a 500 aside is confirmed and correctly marked as tracked separately' - no edit needed; the verifier confirmed the text as written."
+    ],
+    "priority": "P2",
+    "title": "Say on the Cloudflare guide that readable stack traces need the source maps step"
+  }
+]

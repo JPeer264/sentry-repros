@@ -2,8 +2,8 @@
 
 Checked on 2026-09-08 against:
 
-- docs: `/Users/janpeer/dev/sentry-docs` at master `aebda0ee4`
-- SDK as audited: worktree `/Users/janpeer/dev/sentry-worktrees/audit-runtime-docs` at `6f2da7483d`
+- docs: `~/dev/sentry-docs` at master `aebda0ee4`
+- SDK as audited: worktree `$SDK` at `6f2da7483d`
 - SDK today: develop head `03aaf42455` (full tree extracted from the GitHub tarball, so
   "appears nowhere in packages/*/src" claims were verified exhaustively, not by sampling)
 - reproductions: `probes/D11` (DOC-R2), `probes/C01` + `quickstarts/cloudflare/results-waituntil.json`

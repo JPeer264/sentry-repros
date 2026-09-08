@@ -29,7 +29,7 @@ equal to that section's audit id. All `#file-*-md` links match real gist file an
 The only anchor collision among 113 headings is `## Contents`, which appears in P0/P1/P2 and slugs
 to the same base. Nothing links to `#contents`, so no link is affected.
 
-**Content sanity.** No `claude.ai`, no `__ROWS__`, no `%s`, no `$SCRATCH`, no `/Users/janpeer`, no
+**Content sanity.** No `claude.ai`, no `__ROWS__`, no `%s`, no `$SCRATCH`, no `~`, no
 TODO/FIXME/XXX. Code fences balanced in all five files; every table has a header separator. All
 seven Linear-owned notes present (X2 -> JS-2599, DOC-R20 -> SDK-1351, DOC-C1..C5 -> v11-gated under
 SDK-1296) and all three pairs cross-reference each other. The nine `__` hits are real content:

@@ -1,0 +1,203 @@
+[
+  {
+    "id": "DOC-R1",
+    "applied": [
+      "SDK citation split: `packages/core/src/client.ts:243` on develop, `:242` at the pin, with the comment at `:237-238` named as stating the same rule (the verifier's `:238` is the second line of that two-line comment).",
+      "Named both Cloudflare opt-in sentences, `:8` (Pages) and `:35` (Workers); body, 'What to change' and narrative now say four sentences across three files.",
+      "Scoped the comma fix to the Pages snippet at `javascript.cloudflare.mdx:19` and recorded that the Workers snippet at `:40-56` already parses.",
+      "Added the v10-to-v11 guide as corroboration and consistency target: `migration/v10-to-v11/index.mdx:23` ('the new default') and `:198` (`traceLifecycle: 'static'`, `SENTRY_TRACE_LIFECYCLE=static`), plus a 'What to change' bullet to match its wording, and stated in the narrative that master contradicts itself.",
+      "Applied the optional env-hatch note: `packages/cloudflare/src/options.ts:73` reads `SENTRY_TRACE_LIFECYCLE` but returns undefined when unset (`:107-109`), so it never changes the default."
+    ],
+    "skipped": [],
+    "title": "Fix inverted traceLifecycle default in the stream mode includes"
+  },
+  {
+    "id": "DOC-R2",
+    "applied": [
+      "Scoped the breakage by Deno version in the heading, the body and the narrative: on Deno 2.8.3 `Deno.cron` is a writable data property and the integration works (one `in_progress` and one `ok` check-in); from Deno 2.9.0 it is a getter-only accessor, `Sentry.init` throws and the process exits 1.",
+      "Added the second failure mode: without `--unstable-cron` the guard at `deno-cron.ts:18-21` returns silently, the integration is an inert no-op with no warning, and the reader's own `Deno.cron(...)` throws `TypeError: Deno.cron is not a function`.",
+      "Kept the JSDoc-versus-defaults contradiction (`deno-cron.ts:64` against `packages/deno/src/sdk.ts:31-49`) and turned it into a 'What to change' bullet: the page must say the integration is passed explicitly, not enabled by default.",
+      "Put the SDK-side follow-up in the narrative only, per the no-SDK-asks-in-issue-text rule: `Object.defineProperty(Deno, 'cron', { value, writable: true, configurable: true })` succeeds on both Deno versions, so a one-line SDK fix exists and the docs change should link it.",
+      "Replaced 'This reproduced in four separate audit runs', which the artifacts do not support, with a citation of probes/D11 in the narrative."
+    ],
+    "skipped": [],
+    "title": "Stop recommending denoCronIntegration() on the Deno crons page"
+  },
+  {
+    "id": "DOC-R4",
+    "applied": [
+      "Deno export citation refreshed in both places: `packages/deno/src/index.ts:163` on develop, `:160` at the pin, with `packages/deno/src/sdk.ts:45` marked unchanged.",
+      "Applied the optional list-wide point: `javascript.vercel-edge` is missing from the same `notSupported` list and `globalHandlers` has no occurrence in `packages/vercel-edge/src` either; added a 'What to change' bullet to walk the remaining non-browser JavaScript guides while the list is open."
+    ],
+    "skipped": [],
+    "title": "Exclude Cloudflare from the GlobalHandlers integration page"
+  },
+  {
+    "id": "DOC-R5",
+    "applied": [
+      "Corrected the Deno entry-point sentence: on develop `packages/deno/src/index.ts:104` re-exports only `wrapMcpServerWithSentry` from `@sentry/core/server` and `instrumentPostgresJsSql` comes from `@sentry/server-utils` at `:105`; the old wording is now labelled as true at the pin only.",
+      "Bun citation split: `packages/bun/src/index.ts:156` on develop, `:154` at the pin; the Cloudflare citation `:109` marked unchanged.",
+      "Added the page alert at `trpc.mdx:32` to the body, the narrative and 'What to change', with the extra fact that the same sentence names Node.js, Bun and Deno but not Cloudflare, which does export the middleware."
+    ],
+    "skipped": [],
+    "title": "Remove javascript.deno from the trpcMiddleware supported list"
+  },
+  {
+    "id": "DOC-R6",
+    "applied": [
+      "Replaced the false half of the body and the narrative: `getTracingIntegrations()` installs eleven of the thirteen by default (graphql, mongo, mongoose, mysql, mysql2, redis, postgres, prisma, genericPool, kafka, firebase), and `dataloaderIntegration` and `knexIntegration` are re-exported but opt-in on Deno exactly as on Node, cited to the comment at `packages/deno/src/index.ts:114-117`.",
+      "Kept the recommendation intact: all thirteen are usable on Deno, so `- javascript.deno` still belongs on all thirteen pages.",
+      "Added the missed edit to 'What to change' and to both places: the alert 'This integration only works in the Node.js and Bun runtimes' has to be rewritten, otherwise the platform key just moves the wrong claim onto the Deno guide.",
+      "Refreshed the citations for both trees: deno re-export block `:119-147` on develop and `:118-144` at the pin, `getTracingIntegrations` `:31-58` on develop and `:31-56` at the pin, `packages/deno/src/sdk.ts:48` unchanged.",
+      "Added opt-in wording bullets for `knex.mdx` and `dataloader.mdx` next to the existing prisma bullet, since the pages would otherwise imply Deno installs them."
+    ],
+    "skipped": [
+      "Correction 3 says every one of the thirteen pages carries the 'only works in the Node.js and Bun runtimes' alert. Twelve do (mysql, mysql2, postgres, redis, mongo, graphql at :30; mongoose, knex, dataloader, kafka, genericpool, prisma at :29); firebase.mdx is 28 lines and has no Alert block at all. The item therefore says twelve and names firebase.mdx as the exception, rather than claiming thirteen."
+    ],
+    "title": "Show the database and library integration pages on the Deno guide"
+  },
+  {
+    "id": "DOC-R7",
+    "applied": [
+      "Sequenced the item behind DOC-R20 and split it: the narrative states the sequencing outright, and the 'What to change' list now adds the two platform keys to `index.mdx` and `using-opentelemetry-apis.mdx` only, leaving `custom-setup.mdx:9` gated.",
+      "Recorded why `custom-setup.mdx` cannot take the keys: its body is written around `skipOpenTelemetrySetup` (:35, :122, :132), `SentryContextManager` (:35, :53), `SentrySpanProcessor` (:53, :66) and `SentrySampler` (:53), none of which exist on develop.",
+      "Refined the include point: `platform-includes/performance/opentelemetry-setup/` has no `javascript.deno.mdx` or `javascript.cloudflare.mdx`, so both guides would fall back to `javascript.mdx`, which is itself written against the removed API. Stated as a fallback, not as a missing include.",
+      "Stated the defaults precisely in body and narrative: Deno sets up the tracer unless `enableOpenTelemetrySetup: false` (`packages/deno/src/sdk.ts:114`), Cloudflare only with `true` (`packages/cloudflare/src/sdk.ts:23`, tracer at `:27-29`), Bun off by default through @sentry/node (`packages/node/src/sdk/index.ts:253`).",
+      "Retitled the issue to match the split scope."
+    ],
+    "skipped": [],
+    "title": "Add Deno and Cloudflare to the OpenTelemetry overview and API pages"
+  },
+  {
+    "id": "DOC-R8",
+    "applied": [
+      "Reworded the `nativeNodeFetchIntegration` claim in both places: it still exists, is exported by @sentry/node (`packages/node/src/index.ts:2`) and is a default integration there (`packages/node/src/sdk/index.ts:63`); what is wrong is that neither @sentry/bun nor @sentry/deno re-exports it. 'No longer exists' now covers only inboundFilters, debug and sessionTiming.",
+      "Extended the Deno prune list by the two missed rows, `new Console()` -> `consoleIntegration()` (:15) and `new OnUnhandledRejection()` -> `onUnhandledRejectionIntegration()` (:19), for eight extra Deno rows in total with per-row line numbers.",
+      "Added the counter-instruction for Bun: @sentry/bun re-exports all eight of those names (`packages/bun/src/index.ts:75`, `:78`, `:79`, `:82`, `:83`, `:87`, `:89`, `:148` at the pin; modules `:89`, nodeContext `:91`, spotlight `:150` on develop), so the Bun table is pruned only for the four dead names.",
+      "Cited the rename in the migration guide: `migration/v10-to-v11/index.mdx:1406`, and split the eventFilters citation (`packages/bun/src/index.ts:96` develop, `:94` pin; deno `:72` unchanged)."
+    ],
+    "skipped": [],
+    "title": "Fix removed integration names in the Bun and Deno v7 migration tables"
+  },
+  {
+    "id": "DOC-R10",
+    "applied": [
+      "Fixed the three off-by-one SDK citations in body and narrative: assignment at `:70`, `return { ...event, contexts }` at `:73-76`, name/constructor-name fallback at `:55`, and noted `:69` is the `setSkipNormalizationHint` call.",
+      "Applied the optional point: the key is `error.name || error.constructor.name`, so the issue-view section header reads e.g. `TypeError`, not `ExtraErrorData`; added to the 'What to change' bullet as well.",
+      "Stated that the line numbers are identical at the pin and on develop."
+    ],
+    "skipped": [],
+    "title": "Correct where ExtraErrorData writes on the integration page"
+  },
+  {
+    "id": "DOC-R11",
+    "applied": [
+      "Bun citation split: `packages/bun/src/index.ts:196` on develop, `:194` at the pin; deno `:79` and cloudflare `:82` marked unchanged.",
+      "Added the Cloudflare snippet's second defect and the matching instruction: the include calls a bare `Sentry.init` at `:4`, while that SDK is configured through `withSentry` or `sentryPagesPlugin`, so the rewrite must put the integration in those options objects.",
+      "Added the instruction to keep the `___SDK_PACKAGE___` import placeholder in the Deno snippet, and noted in the narrative that it resolves to `npm:@sentry/deno`."
+    ],
+    "skipped": [],
+    "title": "Replace the invalid rewriteFrames options snippets with runnable code"
+  },
+  {
+    "id": "DOC-R12",
+    "applied": [
+      "Refreshed the citation to cover all eight names including `featureFlagsIntegration`: `packages/bun/src/index.ts:175-182` at the pin, `:177-184` on develop.",
+      "Separated the growthbook work: it is exported by @sentry/bun (`:179` on develop) and @sentry/cloudflare (`packages/cloudflare/src/index.ts:101`) and has no page anywhere under docs/, platform-includes/ or includes/, so the item now calls for a new page filed separately rather than a frontmatter edit.",
+      "Marked the Deno and Cloudflare exclusions as confirmed unchanged (`packages/deno/src/index.ts:95`, `packages/cloudflare/src/index.ts:100-101`)."
+    ],
+    "skipped": [],
+    "title": "Enable the provider feature flag pages for Bun"
+  },
+  {
+    "id": "DOC-R13",
+    "applied": [
+      "Moved every docs reference to `docs/platforms/javascript/guides/cloudflare/agent-tracing/agents-sdk.mdx` and the line refs to `:11`, `:43` and `:45`, in the body, the 'What to change' list and the narrative.",
+      "Recorded the relocation in the narrative and added the inbound link at `features/durableobject.mdx:31`, with a 'What to change' bullet to check it; nothing else needs moving.",
+      "Added the recorded telemetry as evidence: probes/N4 shows `gen_ai.agent.name: MyAgentBase`, the base class, on callable RPC spans, and hex uuid4 conversation ids that change after `clearChat`.",
+      "Marked the SDK citations as verified unchanged on develop: types.ts:61-70, :104, :173, :180 and instrumentChatAgentConversation.ts:34-36."
+    ],
+    "skipped": [],
+    "title": "Correct the Agents SDK span attribute and conversation ID claims"
+  },
+  {
+    "id": "DOC-R14",
+    "applied": [
+      "Shifted every docs line ref by +4: section `:376-424`, sub-refs `:382`, `:384-386`, `:388`, `:393-420`.",
+      "Softened 'Verified on both trace lifecycles' to what was recorded: the narrative names probes/C01 and quickstarts/cloudflare/results-waituntil.json as stream-lifecycle evidence and says C14 covers both lifecycles for spans, not errors; the lifecycle-independent claim now rests on the source argument.",
+      "Replaced the SDK citation with the decisive one: `packages/cloudflare/src/client.ts:285` hands the promise to the invocation's `waitUntil` and nothing else, and `captureException` has zero occurrences in `packages/cloudflare/src/flush.ts`.",
+      "Added the app-side fix to the body and the 'What to change' list: `ctx.waitUntil(work().catch((e) => Sentry.captureException(e)));`.",
+      "Put the C01/C10 side finding in the narrative only, as an SDK-side note: the request span for a throwing request ends with `status: ok` and no `http.response.status_code`."
+    ],
+    "skipped": [],
+    "title": "Document that errors inside ctx.waitUntil() are not captured"
+  },
+  {
+    "id": "DOC-R15",
+    "applied": [
+      "Tightened the citations: guard at `:152-153` on develop and `:151-153` at the pin, with `:150` named as the `catch`; `isFinalAttempt` at `:114-121` on develop and `:113-120` at the pin; noted the only develop change is the `markAsInstrumented` wrapper.",
+      "Made the wording match the code: the flag is `!hasStepContext || attempt > retryLimit`, so 'once, on the final attempt' holds when the engine passes both `attempt` and `config.retries.limit`, and every attempt reports otherwise.",
+      "Added the mechanism type `auto.faas.cloudflare.workflow` and the rethrow at `:154` to the body, the 'What to change' list and the narrative."
+    ],
+    "skipped": [],
+    "title": "Document Cloudflare Workflows step error capture on the final attempt"
+  },
+  {
+    "id": "DOC-R16",
+    "applied": [
+      "Swapped the citation for the implementation: `packages/cloudflare/src/instrumentations/instrumentDurableObjectHandlers.ts:44-129` with per-handler lines `:44`, `:66`, `:85`, `:102`, `:119` and origins `:78`, `:95`, `:112`, `:129`.",
+      "Corrected the two misattributed durableobject.ts refs: `:311-318` at the pin (`:312-318` on develop) is only the JSDoc of `instrumentDurableObjectWithSentry`, and `:288` (`:289` on develop) is the RPC prototype-method origin.",
+      "Separated origin from mechanism: `wrapMethodWithSentry.ts:72-76` and `:168-176` use the origin string for both the span attribute and the exception mechanism, so the four non-`fetch` handlers give `auto.faas.cloudflare.durable_object` for both. Refined the verifier's wording for `fetch`, whose span origin is `auto.http.cloudflare` (wrapRequestHandlerWithInit.ts:30-33, matching the C08 record) while its error mechanism is the durable_object one, and noted the `webSocketError` argument's own mechanism `auto.faas.cloudflare.durable_object_websocket` at `:135`.",
+      "Added the C08 findings: the alarm span as `op: function`, `name: alarm` on a new trace with `sentry.previous_trace` and a link back to `setAlarm`, no `http.client` span for `stub.fetch()`, and the DO request span named `GET` with the URL as an attribute in stream mode.",
+      "Softened the verification claim per the verifier's note: the narrative says probes/N4 shows `webSocketMessage` segments and that no artifact isolates `webSocketClose`, which the source wraps identically."
+    ],
+    "skipped": [],
+    "title": "Document the Durable Object WebSocket and alarm instrumentation"
+  },
+  {
+    "id": "DOC-R17",
+    "applied": [
+      "Updated both docs refs to `:100` and `:119` and the SDK ref to `deno-serve.ts:80-93` on develop and `:75-88` at the pin, with the `@deprecated` JSDoc on `ignoreStatusCodes` named as the reason for the shift.",
+      "Sharpened the `--parallel` sentence with probes/N8: 16 workers in one process, one `Sentry.init` and one module-scope load each, 55 requests producing exactly 55 spans, per-request tags matching in 10 of 10 events, and no session envelope at all since the Deno SDK ships no release health.",
+      "Added the N8 entry-shape caveat to the body, the 'What to change' list and the narrative: a docs-shaped entry without `import \"@sentry/deno/import\"` still reports errors and `http.server` spans under `deno serve` but loses library spans, the mysql `db` span included."
+    ],
+    "skipped": [],
+    "title": "Add deno serve to the Deno guide run commands"
+  },
+  {
+    "id": "DOC-R18",
+    "applied": [
+      "Dropped the 'The audit verified the same functions imported from @sentry/core work inside a withSentry handler' sentence from both the body and the narrative; nothing exercised it.",
+      "Made gating the recommendation and retitled the issue accordingly; the `@sentry/core` import is now explicitly not recommended, with the reason stated in the narrative.",
+      "Kept the plumbing as context rather than as a recommendation: `packages/cloudflare/src/client.ts:24` extends `ServerRuntimeClient`, core implements `captureSession` at `packages/core/src/client.ts:399` and `sendSession` at `:596` (the verifier's `:400` and `:597` are the first body lines of those two methods).",
+      "Added the `Session` type export at `packages/cloudflare/src/index.ts:12` and a 'What to change' bullet saying it is a type only, so autocomplete suggests sessions exist.",
+      "Corrected the apis.mdx range to `:922-941` and added the per-API lines `:927`, `:931`, `:935-941`, plus the recorded C12 result (only span envelopes and the error event, never a session envelope)."
+    ],
+    "skipped": [],
+    "title": "Gate the release health and session APIs away from the Cloudflare guide"
+  },
+  {
+    "id": "DOC-R19",
+    "applied": [
+      "Updated the section range to `:161-205`, keeping the snippet reference at `:174`.",
+      "Replaced 'its own span and transaction' with the correct statement in both places: under the default stream lifecycle each asset request produces an `http.server` span envelope, and transactions appear only with `traceLifecycle: \"static\"`; C10 ran stream mode.",
+      "Added the naming detail C10 recorded: the root request span is named `GET /`, every other path is named bare `GET`, with `url.path` carried as an attribute.",
+      "Made the remedy concrete: scope the middleware to a subdirectory such as `functions/api/_middleware.js` when only function routes should be instrumented."
+    ],
+    "skipped": [],
+    "title": "Note that the root Pages middleware also spans static asset requests"
+  },
+  {
+    "id": "DOC-R20",
+    "applied": [
+      "Turned the work item into deletion in both places: remove the three `javascript.bun` includes and drop `javascript.bun` from `custom-setup.mdx`'s supported list, since that page is their only consumer (:49, :80, :160).",
+      "Added the reason the import swap is impossible: `SentrySampler` (javascript.bun.mdx:6, :26, :49, :67; error-monitoring-only:4, :27) and `wrapSamplingDecision` (with-custom-sampler:4, :13) are gone too, the only `SentrySampler` string left being a stale comment in `packages/node/src/integrations/node-fetch/undici-instrumentation.ts` (:265 at the pin, :256 on develop), so no custom OpenTelemetry setup path remains to document for Bun.",
+      "Dropped the `enableOpenTelemetrySetup: false` replacement and said why: it is already the Bun default (`packages/bun/src/types.ts:21-23`, `packages/bun/src/sdk.ts:158` delegating to `initNode`, `packages/node/src/sdk/index.ts:253`).",
+      "Added the follow-on edit for `custom-setup.mdx`'s own body at `:35`, `:53`, `:66`, `:122` and `:132` if the page survives, and corrected the @sentry/opentelemetry export list to the six names in the nine-line index, the `AsyncLocalStorageLookup` type included.",
+      "Cited the package merge at `migration/v10-to-v11/index.mdx:1396`, retitled the issue for the deletion scope, and kept the ownership note in the narrative: Linear SDK-1351 proposes removing the page, so this belongs with that ticket rather than as a separate filing. The trailing 'Checked and dropped' paragraph was carried over unchanged.",
+      "Dropped the `provider.addSpanProcessor(...)` replacement instruction, which is moot once the snippet is deleted."
+    ],
+    "skipped": [],
+    "title": "Delete the Bun OpenTelemetry setup includes and drop Bun from custom-setup"
+  }
+]
