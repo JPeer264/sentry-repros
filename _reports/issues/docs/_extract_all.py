@@ -46,7 +46,7 @@ for m in re.finditer(r'<h3 id="([^"]+)">(.*?)</h3>\s*<div class="issue">(.*?)</d
     body=to_md(re.search(r'<div class="body">(.*)$',issue,re.S).group(1))
     body=re.sub(r'\n*Source: runtime docs audit, item [^\n]*$','',body).strip()
     items.append(dict(id=hid,prio=prio,heading=heading,type=typ,title=title,body=body))
-P0_ORDER=['DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
+P0_ORDER=['DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-Q2','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
 for pos,i in enumerate(items): i['pos']=pos
 def key(i): return (['P0','P1','P2'].index(i['prio']), P0_ORDER.index(i['id']) if i['id'] in P0_ORDER else 99, i['pos'])
 items.sort(key=key)
@@ -57,7 +57,7 @@ def notes(i):
     if i['id'] in PAIRS: n.append('**Note.** Touches the same docs file as %s; the two can be filed as one issue.' % PAIRS[i['id']])
     return ('\n\n'.join(n)+'\n\n') if n else ''
 sh=['#!/usr/bin/env bash','# Files the docs issues in getsentry/sentry-docs. Not executed by the audit. Items marked as owned by Linear are commented out.','set -euo pipefail','cd "$(dirname "$0")"','']
-idx=['# Docs issue drafts, P0 to P2','','Ninety drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit. P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.','','| # | Prio | Item | Type | Title | File |','| --- | --- | --- | --- | --- | --- |']
+idx=['# Docs issue drafts, P0 to P2','','Ninety-six drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit. P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.','','| # | Prio | Item | Type | Title | File |','| --- | --- | --- | --- | --- | --- |']
 gist={'P0':[],'P1':[],'P2':[]}
 for n,i in enumerate(items,1):
     fn='%s-%02d-%s.md' % (i['prio'], n, i['id']); i['file']=fn
@@ -82,9 +82,9 @@ for p in ('P0','P1','P2'):
         it=re.search(r'\*\*Audit item:\*\* (\S+) · \*\*Type:\*\* (\S+)', sec)
         toc.append('- [%s](#%s) · %s · %s' % (h, slug(h), it.group(1), it.group(2)))
     open(os.path.join(GIST,'%s.md' % p),'w').write(head+'\n'.join(toc)+'\n\n'+'\n\n'.join(gist[p])+'\n')
-gidx=['# Runtime docs audit, proposed issues for sentry-docs','','Ninety proposed GitHub issues for `getsentry/sentry-docs` from the audit of the Bun, Deno and Cloudflare guides against the shipped SDK (develop at `6f2da7483d`, September 2026). One file per priority; within P0 the order is the suggested filing order.','','| Priority | Meaning | Drafts |','| --- | --- | --- |']
+gidx=['# Runtime docs audit, proposed issues for sentry-docs','','Ninety-six proposed GitHub issues for `getsentry/sentry-docs` from the audit of the Bun, Deno and Cloudflare guides against the shipped SDK (develop at `6f2da7483d`, September 2026). One file per priority; within P0 the order is the suggested filing order.','','| Priority | Meaning | Drafts |','| --- | --- | --- |']
 for p in ('P0','P1','P2'): gidx.append('| [%s](#file-%s-md) | %s | %d |' % (p, p.lower(), MEAN[p], len(gist[p])))
-gidx+=['','Reproductions, report pages and the same drafts as individual body files: %s' % BASE.replace('/blob/','/tree/'),'','Seven drafts carry a note: X2 and DOC-R20 are owned by Linear tickets already in progress, and DOC-C1 to DOC-C5 are v11-gated and belong under the v11 docs umbrella. Three pairs touch the same docs file and can be filed as one issue each: DOC-F11 with DOC-F28, DOC-F13 with DOC-F30, DOC-F19 with DOC-F36.','']
+gidx+=['','Reproductions, report pages and the same drafts as individual body files: %s' % BASE.replace('/blob/','/tree/'),'','Section 7 (DOC-Q1 to DOC-Q6) comes from the getting-started paths run on 2026-09-08. Seven drafts carry a note: X2 and DOC-R20 are owned by Linear tickets already in progress, and DOC-C1 to DOC-C5 are v11-gated and belong under the v11 docs umbrella. Three pairs touch the same docs file and can be filed as one issue each: DOC-F11 with DOC-F28, DOC-F13 with DOC-F30, DOC-F19 with DOC-F36.','']
 open(os.path.join(GIST,'README.md'),'w').write('\n'.join(gidx)+'\n')
 from collections import Counter
 print(len(items),'drafts', dict(Counter(i['prio'] for i in items)), '| gist files:', sorted(os.listdir(GIST)))

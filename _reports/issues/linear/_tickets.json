@@ -377,6 +377,19 @@
   "n": 29
  },
  {
+  "milestone": "Deno Functionality Gaps",
+  "title": "The Deno import hook requires `--allow-env` at module load through the vendored debug package",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "With `import \"@sentry/deno/import\"` as the first line and the permission flags the Deno guide shows (`--allow-net`, `--allow-read`), the process exits before the app starts: `NotCapable: Requires env access, run again with the --allow-env flag`, raised from `node_modules/@sentry/server-runtime-injection/build/esm/vendored/debug/src/node.js:124` reading `process.env` at module load. A scoped `--allow-env=SENTRY_DSN` is not enough. Without the hook line the same flags run, and the SDK silently drops `server_name`, the OS version, context lines and `app://` frame paths.\n\n**Work item.** Guard the environment reads in the vendored `debug` (or read them lazily) so the hook loads under a scoped or missing `--allow-env`, and warn once instead of degrading silently when a permission is missing.\n\n**Evidence.** Getting-started reproduction [`quickstarts/deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/deno), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "30-the-deno-import-hook-requires-allow-env-at-module-load-throu.md",
+  "n": 30
+ },
+ {
   "milestone": "CF Functionality Gaps",
   "title": "Errors inside `ctx.waitUntil()` are never captured",
   "labels": [
@@ -386,8 +399,8 @@
   ],
   "priority": "High",
   "body": "An error thrown or a promise rejected inside `ctx.waitUntil(promise)` is never captured, on both trace lifecycles and on develop and 10.73.0. The SDK's `waitUntil` handling in `packages/cloudflare/src/flush.ts` and `packages/cloudflare/src/client.ts:280-295` is flush and invocation bookkeeping; no error-capture path is attached. `ctx.waitUntil(work().catch(e => Sentry.captureException(e)))` is the app-side shape.\n\n**Work item.** Wrap the promise handed to `waitUntil` so a rejection is captured once, then rethrown.\n\n**Evidence.** Probe record C01 in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`probes/C01/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/probes/C01). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
-  "file": "30-errors-inside-ctx-waituntil-are-never-captured.md",
-  "n": 30
+  "file": "31-errors-inside-ctx-waituntil-are-never-captured.md",
+  "n": 31
  },
  {
   "milestone": "CF Functionality Gaps",
@@ -399,8 +412,8 @@
   ],
   "priority": "Medium",
   "body": "On develop the client is cached per isolate. The Dedupe integration then treats an identical error thrown in a later request as a duplicate: hitting the same failing route twice sends one event, and the second arrives only after a different event goes out. `enableDedupe: false` turns it off. On 10.73.0, with a client per request, every hit produced an event.\n\n**Work item.** Reset the dedupe state per request, or leave Dedupe out of the Cloudflare defaults when the client is cached.\n\n**Evidence.** Cloudflare section of the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html) (develop regression) and the [quick start verification](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/quick-starts.html).",
-  "file": "31-dedupe-drops-repeated-errors-across-requests-with-the-cached.md",
-  "n": 31
+  "file": "32-dedupe-drops-repeated-errors-across-requests-with-the-cached.md",
+  "n": 32
  },
  {
   "milestone": "CF Functionality Gaps",
@@ -412,8 +425,35 @@
   ],
   "priority": "High",
   "body": "`wrapRequestHandler` from `@sentry/cloudflare/request` sets up a reduced client with no async-context strategy. Under the default stream lifecycle some requests turn into legacy transaction envelopes and events are dropped; `traceLifecycle: \"static\"` avoids it. On Workers with `nodejs_compat`, Remix wired through this entry loses per-request isolation unless `setAsyncLocalStorageAsyncContextStrategy` is called first.\n\n**Work item.** Set the strategy in the request entry whenever AsyncLocalStorage is available, and otherwise force the static lifecycle there with a warning.\n\n**Evidence.** Cell record M-remix-cf in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-remix-cf/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-remix-cf), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0). Also the Cloudflare section of the deep probe report.",
-  "file": "32-the-request-entry-runs-without-an-async-context-strategy-und.md",
-  "n": 32
+  "file": "33-the-request-entry-runs-without-an-async-context-strategy-und.md",
+  "n": 33
+ },
+ {
+  "milestone": "CF Functionality Gaps",
+  "title": "Cloudflare Vite plugin: silent no-op without `wranglerConfigPath`, silent fallback without the options file",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Two silent paths in `sentryCloudflareVitePlugin()`. With a wrangler config that is not at the default path and no `wranglerConfigPath`, the plugin instruments nothing: the build succeeds, the Worker runs without the SDK, the sink stays empty, and no warning is printed. With `autoInstrumentation` wrapping an entry that has no `withSentry`, the options callback is read from an `instrument.server.{ts,js,mjs,cjs}` file next to the wrangler `main`; without that file the callback is `() => undefined` and the Worker runs with no DSN, again silently. With both in place the built Worker delivered the same errors, spans, headers and logs as a hand-written `withSentry`.\n\n**Work item.** Fail the build, or at least warn, when no wrangler config is found and when the entry is wrapped without an options file. Document the options file (docs item DOC-Q2).\n\n**Evidence.** Getting-started reproduction [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "34-cloudflare-vite-plugin-silent-no-op-without-wranglerconfigpa.md",
+  "n": 34
+ },
+ {
+  "milestone": "CF Functionality Gaps",
+  "title": "Cloudflare segment span reports status ok on a 500 response",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Spans",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "A `withSentry` route that throws answers 500 through wrangler, and the error event arrives with mechanism `auto.http.cloudflare`, but the segment span of that request is emitted with `status: \"ok\"`. Node, Bun and Deno mark the same route `internal_error`.\n\n**Work item.** Set the span status from the thrown error in the Cloudflare request wrapper, the way the other runtimes do.\n\n**Evidence.** Getting-started reproduction [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "35-cloudflare-segment-span-reports-status-ok-on-a-500-response.md",
+  "n": 35
  },
  {
   "milestone": "XPlatform Functionality Gaps",
@@ -424,8 +464,8 @@
   ],
   "priority": "Medium",
   "body": "SolidStart mounts the whole app as one Nitro catch-all handler, so the SDK's Nitro route parameterization never fires: server transactions arrive as `GET /users/456` with source `url` on Node, Bun, Deno and Workers. Errors thrown in a file API route (`src/routes/api/*.ts`) or during page render are turned into a 500 by SolidStart's internal h3 app before Nitro's error hook, so no event is sent, and the guide's own verification snippet produces nothing. Only `withServerActionInstrumentation`, or a user h3 middleware registered first in the array form of `createMiddleware`, captures them.\n\n**Work item.** A SolidStart middleware in `@sentry/solidstart` that names the span from the route manifest and captures API-route errors.\n\n**Evidence.** Cell records M-solidstart-bun, M-solidstart-deno, M-solidstart-cf in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproductions [`cells/M-solidstart-bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-bun), [`cells/M-solidstart-deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-deno), [`cells/M-solidstart-cf/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-cf), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
-  "file": "33-solidstart-names-transactions-by-url-and-swallows-api-route-.md",
-  "n": 33
+  "file": "36-solidstart-names-transactions-by-url-and-swallows-api-route-.md",
+  "n": 36
  },
  {
   "milestone": "XPlatform Functionality Gaps",
@@ -436,8 +476,34 @@
   ],
   "priority": "Low",
   "body": "`packages/deno/README.md:70` and `src/import.mjs:10` show `--import=@sentry/deno/import`, which Deno resolves as a file path and rejects. `packages/cloudflare/README.md:82-99` imports `wrapRequestHandler` from the main entry, which develop no longer exports (`ERR_PACKAGE_PATH_NOT_EXPORTED`); it lives on `@sentry/cloudflare/request`.\n\n**Work item.** Fix both READMEs in one PR.\n\n**Evidence.** First-round probes D-HOOK, CF-EXPORTS, see the code-defects table in the [docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
-  "file": "34-package-readmes-show-wiring-that-does-not-resolve.md",
-  "n": 34
+  "file": "37-package-readmes-show-wiring-that-does-not-resolve.md",
+  "n": 37
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "Error events on Bun and Cloudflare carry no `transaction` field",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "The same throwing route produces an error event with `transaction: \"GET /debug-sentry\"` on Node and no `transaction` key at all on Bun (`Bun.serve`, even with a `routes` map that names the server span `GET /users/:id`) and on Cloudflare (`withSentry`). Deno sets none either. Issues from those runtimes have no transaction to group or filter by.\n\n**Work item.** Set `event.transaction` from the active segment span name in the Bun, Deno and Cloudflare request wrappers, as the Node request integration does.\n\n**Evidence.** Getting-started reproductions [`quickstarts/node/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/node), [`quickstarts/bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/bun), [`quickstarts/deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/deno), [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "38-error-events-on-bun-and-cloudflare-carry-no-transaction-fiel.md",
+  "n": 38
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "`debug: true` prints no SDK name, version or runtime on any runtime",
+  "labels": [
+   "JavaScript",
+   "Improvement"
+  ],
+  "priority": "Low",
+  "body": "With `debug: true`, Node prints `Initializing Sentry: process: <pid>, thread: main.` and the list of installed integrations; Bun prints the same banner; Deno and Cloudflare print no banner at all. None of the four prints the SDK name, the SDK version, or the runtime name and version. In every reproduction those had to be read off the envelopes. A support thread that starts with \"enable debug and paste the output\" gets no identity line.\n\n**Work item.** Print one line at init with SDK name, version, runtime name and version, on every runtime.\n\n**Evidence.** Getting-started reproductions [`quickstarts/node/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/node), [`quickstarts/bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/bun), [`quickstarts/deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/deno), [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "39-debug-true-prints-no-sdk-name-version-or-runtime-on-any-runt.md",
+  "n": 39
  },
  {
   "milestone": "Bun Test Coverage",
@@ -449,8 +515,8 @@
   ],
   "priority": "Medium",
   "body": "Bun has e2e apps for Elysia, Next.js and mysql, and integration suites for Hono and two drivers. No Bun app runs Express, Koa, Hapi, Fastify, Oak, Fresh, NestJS, Remix, SolidStart, SvelteKit, Astro, React Router, TanStack Start or Nuxt, although all fourteen were verified to work with the wiring in the cell records. Each cell in the reproduction folder is a runnable app with a README that lists install, run and expected output.\n\n**Work item.** Port the cells into `dev-packages/e2e-tests/test-applications/`, one per framework, starting with the four Node HTTP frameworks on the plugin build.\n\n**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-bun` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).",
-  "file": "35-add-e2e-apps-for-the-verified-bun-framework-cells.md",
-  "n": 35
+  "file": "40-add-e2e-apps-for-the-verified-bun-framework-cells.md",
+  "n": 40
  },
  {
   "milestone": "Deno Test Coverage",
@@ -462,8 +528,8 @@
   ],
   "priority": "Medium",
   "body": "Only `hono-4 (deno)` runs a real framework on Deno in CI; the Deno orchestrion suites publish channels by hand (JS-3523). Sixteen framework cells were verified on Deno 2.9, with the wiring in their records. Fastify works with no hook, Next.js, Nuxt (node-server output), SvelteKit and Astro work with one integration added, and the rest need the JSON hook or the esbuild build.\n\n**Work item.** Port the cells into e2e apps, starting with Fastify, Next.js, Nuxt, SvelteKit and Astro, and add Deno 2.9 to the runner (JS-3524).\n\n**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-deno` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).",
-  "file": "36-add-e2e-apps-for-the-verified-deno-framework-cells.md",
-  "n": 36
+  "file": "41-add-e2e-apps-for-the-verified-deno-framework-cells.md",
+  "n": 41
  },
  {
   "milestone": "CF Test Coverage",
@@ -475,8 +541,8 @@
   ],
   "priority": "Medium",
   "body": "`react-router-8-cloudflare`, `tanstackstart-react-cloudflare` and `sveltekit-3-cloudflare-workers` are `optional` in CI (`.github/workflows/build.yml:1131`), so the wiring the Cloudflare framework pages describe does not run on pull requests. No app covers Express, Koa, Hapi or NestJS behind `httpServerHandler` with the Vite plugin, Elysia with `aot: false`, Oak, Fresh, Remix through `@sentry/remix/cloudflare`, or SolidStart.\n\n**Work item.** Promote the three apps to required and port the nine missing cells.\n\n**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-cf` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).",
-  "file": "37-make-the-cloudflare-framework-e2e-apps-required-and-add-the-.md",
-  "n": 37
+  "file": "42-make-the-cloudflare-framework-e2e-apps-required-and-add-the-.md",
+  "n": 42
  },
  {
   "milestone": "Documentation Correctness",
@@ -487,8 +553,8 @@
   ],
   "priority": "Medium",
   "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Bun. Items: DOC-B1, DOC-B2, DOC-B3, DOC-B4, DOC-R1 (Bun include), DOC-R8, DOC-R11, DOC-R12, DOC-F1 to DOC-F17. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** [Docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) with the proposed issue text per item",
-  "file": "38-track-the-bun-docs-issues-from-the-runtime-docs-audit.md",
-  "n": 38
+  "file": "43-track-the-bun-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 43
  },
  {
   "milestone": "Documentation Correctness",
@@ -499,8 +565,8 @@
   ],
   "priority": "Medium",
   "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Deno. Items: DOC-D1 to DOC-D6, DOC-R2, DOC-R5, DOC-R6, DOC-R7, DOC-R8, DOC-R11, DOC-R17, DOC-F18 to DOC-F34. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** [Docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) with the proposed issue text per item",
-  "file": "39-track-the-deno-docs-issues-from-the-runtime-docs-audit.md",
-  "n": 39
+  "file": "44-track-the-deno-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 44
  },
  {
   "milestone": "Documentation Correctness",
@@ -511,7 +577,7 @@
   ],
   "priority": "Medium",
   "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Cloudflare. Items: DOC-C6, DOC-C7, DOC-C8, DOC-R4, DOC-R7, DOC-R10, DOC-R11, DOC-R13 to DOC-R16, DOC-R18, DOC-R19, DOC-F35 to DOC-F51. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** [Docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) with the proposed issue text per item",
-  "file": "40-track-the-cloudflare-docs-issues-from-the-runtime-docs-audit.md",
-  "n": 40
+  "file": "45-track-the-cloudflare-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 45
  }
 ]

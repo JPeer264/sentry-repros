@@ -1,6 +1,6 @@
 # P0 issue drafts
 
-Thirteen drafts for `getsentry/sentry-docs`, in the suggested filing order. Each `.md` file is an issue body; the title is in the table. `create.sh` files them with the GitHub CLI and was not run.
+Fourteen drafts for `getsentry/sentry-docs`, in the suggested filing order. Each `.md` file is an issue body; the title is in the table. `create.sh` files them with the GitHub CLI and was not run.
 
 | # | File | Title | Type | Audit item |
 | --- | --- | --- | --- | --- |
@@ -9,11 +9,12 @@ Thirteen drafts for `getsentry/sentry-docs`, in the suggested filing order. Each
 | 3 | `03-DOC-R2.md` | Stop recommending denoCronIntegration() on the Deno crons page | docs-change | DOC-R2 |
 | 4 | `04-DOC-R20.md` | Rewrite the Bun OpenTelemetry setup includes against develop | docs-change | DOC-R20 |
 | 5 | `05-DOC-R13.md` | Correct the Agents SDK span attribute and conversation ID claims | docs-change | DOC-R13 |
-| 6 | `06-DOC-F50.md` | Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options | docs-change | DOC-F50 |
-| 7 | `07-DOC-F36.md` | Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim | new-page | DOC-F36 |
-| 8 | `08-DOC-F19.md` | Document Elysia on Deno: init from @sentry/deno, keep withElysia | docs-change | DOC-F19 |
-| 9 | `09-DOC-F11.md` | Add a Bun section to the Nuxt Nitro deployment presets page | docs-change | DOC-F11 |
-| 10 | `10-DOC-F28.md` | Correct the Nuxt Nitro preset page for Deno: keep the node-server preset | docs-change | DOC-F28 |
-| 11 | `11-DOC-F13.md` | Name Bun in the Astro runtime alert and add a Running on Bun section | docs-change | DOC-F13 |
-| 12 | `12-DOC-F30.md` | Correct the Astro runtime note: Deno with @deno/astro-adapter works | docs-change | DOC-F30 |
-| 13 | `13-DOC-F29.md` | Correct the SvelteKit adapter note: adapter-node runs on Deno | docs-change | DOC-F29 |
+| 6 | `06-DOC-Q2.md` | Document the instrument.server file and the wranglerConfigPath requirement on the Cloudflare Vite plugin page | docs-change | DOC-Q2 |
+| 7 | `07-DOC-F50.md` | Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options | docs-change | DOC-F50 |
+| 8 | `08-DOC-F36.md` | Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim | new-page | DOC-F36 |
+| 9 | `09-DOC-F19.md` | Document Elysia on Deno: init from @sentry/deno, keep withElysia | docs-change | DOC-F19 |
+| 10 | `10-DOC-F11.md` | Add a Bun section to the Nuxt Nitro deployment presets page | docs-change | DOC-F11 |
+| 11 | `11-DOC-F28.md` | Correct the Nuxt Nitro preset page for Deno: keep the node-server preset | docs-change | DOC-F28 |
+| 12 | `12-DOC-F13.md` | Name Bun in the Astro runtime alert and add a Running on Bun section | docs-change | DOC-F13 |
+| 13 | `13-DOC-F30.md` | Correct the Astro runtime note: Deno with @deno/astro-adapter works | docs-change | DOC-F30 |
+| 14 | `14-DOC-F29.md` | Correct the SvelteKit adapter note: adapter-node runs on Deno | docs-change | DOC-F29 |

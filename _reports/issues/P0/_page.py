@@ -18,7 +18,7 @@ for n,i in enumerate(items,1):
     rows.append('<tr><td>%d</td><td><a href="#i-%s">%s</a></td><td>%s</td><td><span class="chip">%s</span></td></tr>' % (n,i['id'],H.escape(i['title']),i['id'],i['type']))
     cards.append('''
 <article class="issue" id="i-%(id)s">
-<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">%(type)s</span><span class="iid">%(id)s</span><span class="n">%(n)d of 13</span></p>
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">%(type)s</span><span class="iid">%(id)s</span><span class="n">%(n)d of 14</span></p>
 <h2>%(title)s</h2>
 <div class="ibody">%(body)s%(foot)s</div>
 <div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">%(file)s</span></div>
@@ -58,7 +58,7 @@ details summary{cursor:pointer;color:var(--accent);font-size:13.5px;margin:0 0 8
 </style>
 <main>
 <h1>P0 issue drafts for the runtime docs</h1>
-<p class="lede">Thirteen issues for <code>getsentry/sentry-docs</code>, one per P0 item of the runtime docs audit, shown as they would read on GitHub. Nothing has been filed. The order below is the suggested filing order: the four items that mislead every reader of a runtime guide first, then the framework pages that contradict a verified run.</p>
+<p class="lede">Fourteen issues for <code>getsentry/sentry-docs</code>, one per P0 item of the runtime docs audit, shown as they would read on GitHub. Nothing has been filed. The order below is the suggested filing order: the four items that mislead every reader of a runtime guide first, then the framework pages that contradict a verified run.</p>
 <div class="alert"><p><strong>Before filing.</strong> Three pairs touch the same docs file and could be filed as one issue each: the two Nuxt presets items (DOC-F11, DOC-F28), the two Astro runtime-alert items (DOC-F13, DOC-F30) and the two Elysia runtime-list items (DOC-F19, DOC-F36).</p></div>
 <div class="tw"><table><thead><tr><th>#</th><th>Title</th><th>Audit item</th><th>Type</th></tr></thead><tbody>__ROWS__</tbody></table></div>
 __CARDS_ANCHOR__<p>The body files and a <code>create.sh</code> with one <code>gh issue create</code> line per draft are in <a href="https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/_reports/issues/P0">_reports/issues/P0/</a> of the runtime audit repository. The script was not run.</p>

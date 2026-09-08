@@ -27,13 +27,13 @@ for i,m in enumerate(ms_order):
     for x in [t for t in T if t['milestone']==m]:
         labels=''.join('<span class="chip">%s</span>' % H.escape(l) for l in x['labels'])
         cards.append('''<article class="ticket" id="t-%(n)d">
-<p class="props"><span class="chip status">Backlog</span><span class="chip %(pc)s">Priority: %(prio)s</span><span class="chip ms">%(ms)s</span>%(labels)s<span class="n">#%(n)d of 40</span></p>
+<p class="props"><span class="chip status">Backlog</span><span class="chip %(pc)s">Priority: %(prio)s</span><span class="chip ms">%(ms)s</span>%(labels)s<span class="n">#%(n)d of %(total)d</span></p>
 <h3>%(title)s</h3>
 <div class="body">%(body)s</div>
 <div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy description</button><span class="file">%(file)s</span></div>
 <details><summary>Markdown source</summary><pre data-role="body">%(md)s</pre></details>
 <pre class="hidden" data-role="title">%(title)s</pre>
-</article>''' % dict(n=x['n'],pc=PRIO[x['priority']],prio=x['priority'],ms=H.escape(m),labels=labels,title=H.escape(x['title']),body=md2html(x['body']),file=x['file'],md=H.escape(x['body'])))
+</article>''' % dict(total=len(T),n=x['n'],pc=PRIO[x['priority']],prio=x['priority'],ms=H.escape(m),labels=labels,title=H.escape(x['title']),body=md2html(x['body']),file=x['file'],md=H.escape(x['body'])))
     sections.append('<section id="ms-%d"><h2>%s <small>%d ticket%s</small></h2>%s</section>' % (i,H.escape(m),len(cards),'' if len(cards)==1 else 's','\n'.join(cards)))
 page='''<title>Runtime Compatibility Tickets</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -67,7 +67,7 @@ details summary{cursor:pointer;color:var(--accent);font-size:13px;margin:0 0 8px
 </style>
 <div class="wrap"><nav><p>Milestones</p><ul>__NAV__</ul></nav><main>
 <h1>Tickets for the runtime compatibility project</h1>
-<p class="lede">Forty drafts for the Linear project Improve Server Runtime + Framework Compatibility [JS], grouped by milestone, in the shape the project's existing issues use: what was observed, the cause where known, a work item, and the evidence. Nothing has been created.</p>
+<p class="lede">__COUNT__ drafts for the Linear project Improve Server Runtime + Framework Compatibility [JS], grouped by milestone, in the shape the project's existing issues use: what was observed, the cause where known, a work item, and the evidence. Nothing has been created.</p>
 <div class="alert"><p><strong>Before filing.</strong> Evidence lines link into the <a href="https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements">runtime audit repository</a>: the cell and probe reproductions, and the report pages under <code>_reports/</code>. Existing tickets that already cover a finding are referenced by id and not drafted again: JS-3508, JS-3517, JS-3518, JS-3509, JS-3510, JS-3572, JS-3580 and JS-3581. The Markdown files are in <a href="https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/_reports/issues/linear">_reports/issues/linear/</a>.</p></div>
 __SECTIONS__
 </main></div>
@@ -81,6 +81,6 @@ document.addEventListener('click', function (ev) {
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
 });
 </script>
-'''.replace('__NAV__',nav).replace('__SECTIONS__','\n'.join(sections))
+'''.replace('__COUNT__',str(len(T))).replace('__NAV__',nav).replace('__SECTIONS__','\n'.join(sections))
 open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'preview.html'),'w').write(page)
 print('page written', len(page), 'tickets', len(T))

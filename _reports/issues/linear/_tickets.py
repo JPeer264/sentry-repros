@@ -309,6 +309,44 @@ Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runt
 **Evidence.** [Docs audit](%s) with the proposed issue text per item
 ''' % (rt, ids, AUDIT))
 
+def qs(*rts):
+    return '**Evidence.** Getting-started reproduction%s %s, run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.' % ('s' if len(rts)>1 else '', ', '.join('[`quickstarts/%s/`](%s/quickstarts/%s)' % (r, REPRO, r) for r in rts))
+
+t(CFG, 'Cloudflare Vite plugin: silent no-op without `wranglerConfigPath`, silent fallback without the options file', ['JavaScript','Cloudflare Workers','Bug'], 'High', '''
+Two silent paths in `sentryCloudflareVitePlugin()`. With a wrangler config that is not at the default path and no `wranglerConfigPath`, the plugin instruments nothing: the build succeeds, the Worker runs without the SDK, the sink stays empty, and no warning is printed. With `autoInstrumentation` wrapping an entry that has no `withSentry`, the options callback is read from an `instrument.server.{ts,js,mjs,cjs}` file next to the wrangler `main`; without that file the callback is `() => undefined` and the Worker runs with no DSN, again silently. With both in place the built Worker delivered the same errors, spans, headers and logs as a hand-written `withSentry`.
+
+**Work item.** Fail the build, or at least warn, when no wrangler config is found and when the entry is wrapped without an options file. Document the options file (docs item DOC-Q2).
+
+''' + qs('cloudflare'))
+
+t(CFG, 'Cloudflare segment span reports status ok on a 500 response', ['JavaScript','Cloudflare Workers','Spans','Bug'], 'Medium', '''
+A `withSentry` route that throws answers 500 through wrangler, and the error event arrives with mechanism `auto.http.cloudflare`, but the segment span of that request is emitted with `status: "ok"`. Node, Bun and Deno mark the same route `internal_error`.
+
+**Work item.** Set the span status from the thrown error in the Cloudflare request wrapper, the way the other runtimes do.
+
+''' + qs('cloudflare'))
+
+t(DENOG, 'The Deno import hook requires `--allow-env` at module load through the vendored debug package', ['JavaScript','Deno','Bug'], 'Medium', '''
+With `import "@sentry/deno/import"` as the first line and the permission flags the Deno guide shows (`--allow-net`, `--allow-read`), the process exits before the app starts: `NotCapable: Requires env access, run again with the --allow-env flag`, raised from `node_modules/@sentry/server-runtime-injection/build/esm/vendored/debug/src/node.js:124` reading `process.env` at module load. A scoped `--allow-env=SENTRY_DSN` is not enough. Without the hook line the same flags run, and the SDK silently drops `server_name`, the OS version, context lines and `app://` frame paths.
+
+**Work item.** Guard the environment reads in the vendored `debug` (or read them lazily) so the hook loads under a scoped or missing `--allow-env`, and warn once instead of degrading silently when a permission is missing.
+
+''' + qs('deno'))
+
+t(XP, 'Error events on Bun and Cloudflare carry no `transaction` field', ['JavaScript','Bun','Cloudflare Workers','Bug'], 'Medium', '''
+The same throwing route produces an error event with `transaction: "GET /debug-sentry"` on Node and no `transaction` key at all on Bun (`Bun.serve`, even with a `routes` map that names the server span `GET /users/:id`) and on Cloudflare (`withSentry`). Deno sets none either. Issues from those runtimes have no transaction to group or filter by.
+
+**Work item.** Set `event.transaction` from the active segment span name in the Bun, Deno and Cloudflare request wrappers, as the Node request integration does.
+
+''' + qs('node','bun','deno','cloudflare'))
+
+t(XP, '`debug: true` prints no SDK name, version or runtime on any runtime', ['JavaScript','Improvement'], 'Low', '''
+With `debug: true`, Node prints `Initializing Sentry: process: <pid>, thread: main.` and the list of installed integrations; Bun prints the same banner; Deno and Cloudflare print no banner at all. None of the four prints the SDK name, the SDK version, or the runtime name and version. In every reproduction those had to be read off the envelopes. A support thread that starts with "enable debug and paste the output" gets no identity line.
+
+**Work item.** Print one line at init with SDK name, version, runtime name and version, on every runtime.
+
+''' + qs('node','bun','deno','cloudflare'))
+
 # files
 order=[BUN,DENO,CF,BUNG,DENOG,CFG,XP,BUNT,DENOT,CFT,DOCS]
 T.sort(key=lambda x:(order.index(x['milestone'])))
