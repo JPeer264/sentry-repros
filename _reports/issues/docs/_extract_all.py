@@ -45,6 +45,11 @@ for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="iss
     title=H.unescape(re.sub(r'<[^>]+>','',re.search(r'<p class="it">(.*?)</p>',issue,re.S).group(1))).strip()
     body=to_md(re.search(r'<div class="body">(.*)$',issue,re.S).group(1))
     body=re.sub(r'\n*Source: runtime docs audit, item [^\n]*$','',body).strip()
+    body=body.replace('**What to change**\n\n','What to change:\n\n')
+    m2=re.match(r'^(.*?) on (Bun|Deno|Cloudflare): documented (no|wrong|partial|yes)$', heading)
+    if m2:
+        fw,rt,v=m2.groups(); rt2={'Cloudflare':'Cloudflare Workers'}.get(rt,rt)
+        heading={'no':'No page documents %s on %s','wrong':'The page for %s on %s contradicts the verified run','partial':'The page for %s on %s misses the wiring or the limits','yes':'The page for %s on %s is correct'}[v] % (fw,rt2)
     items.append(dict(id=hid,prio=prio,heading=heading,type=typ,title=title,body=body))
 P0_ORDER=['DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-Q2','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
 for pos,i in enumerate(items): i['pos']=pos
@@ -84,7 +89,7 @@ for p in ('P0','P1','P2'):
     open(os.path.join(GIST,'%s.md' % p),'w').write(head+'\n'.join(toc)+'\n\n'+'\n\n'.join(gist[p])+'\n')
 gidx=['# Runtime docs audit, proposed issues for sentry-docs','','Ninety-six proposed GitHub issues for `getsentry/sentry-docs` from the audit of the Bun, Deno and Cloudflare guides against the shipped SDK (develop at `6f2da7483d`, September 2026). One file per priority; within P0 the order is the suggested filing order.','','| Priority | Meaning | Drafts |','| --- | --- | --- |']
 for p in ('P0','P1','P2'): gidx.append('| [%s](#file-%s-md) | %s | %d |' % (p, p.lower(), MEAN[p], len(gist[p])))
-gidx+=['','Reproductions, report pages and the same drafts as individual body files: %s' % BASE.replace('/blob/','/tree/'),'','Section 7 (DOC-Q1 to DOC-Q6) comes from the getting-started paths run on 2026-09-08. Seven drafts carry a note: X2 and DOC-R20 are owned by Linear tickets already in progress, and DOC-C1 to DOC-C5 are v11-gated and belong under the v11 docs umbrella. Three pairs touch the same docs file and can be filed as one issue each: DOC-F11 with DOC-F28, DOC-F13 with DOC-F30, DOC-F19 with DOC-F36.','']
+gidx+=['','**Start with [01-V11-CHECKLIST.md](#file-01-v11-checklist-md):** the getting-started and manual-setup changes that must land with v11, grouped by runtime, each linked to its draft.','','Reproductions, report pages and the same drafts as individual body files: %s' % BASE.replace('/blob/','/tree/'),'','Section 7 (DOC-Q1 to DOC-Q6) comes from the getting-started paths run on 2026-09-08. Seven drafts carry a note: X2 and DOC-R20 are owned by Linear tickets already in progress, and DOC-C1 to DOC-C5 are v11-gated and belong under the v11 docs umbrella. Three pairs touch the same docs file and can be filed as one issue each: DOC-F11 with DOC-F28, DOC-F13 with DOC-F30, DOC-F19 with DOC-F36.','']
 open(os.path.join(GIST,'README.md'),'w').write('\n'.join(gidx)+'\n')
 from collections import Counter
 print(len(items),'drafts', dict(Counter(i['prio'] for i in items)), '| gist files:', sorted(os.listdir(GIST)))

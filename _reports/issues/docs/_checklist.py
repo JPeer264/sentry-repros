@@ -72,7 +72,7 @@ for group, rows in PLAN:
         own=(' · '+OWNER[iid]) if iid in OWNER else ''
         out.append('- [ ] **%s** · %s · %s%s. %s: %s' % (TIER[tier], i['prio'], iid, own, why[0].upper()+why[1:], link(i)))
     out.append('')
-out+=['## Not in this list','','The 34 framework pages that do not exist yet (DOC-F3 to DOC-F17, DOC-F20 to DOC-F34, DOC-F37 to DOC-F43, DOC-F48, DOC-F51), the generated integrations tables and the runtime matrix (X3, DOC-R6), the feature pages (D1, bindings, Durable Objects, Workflows, Agents SDK), and the remaining completeness items. They improve coverage after the release and do not block a first setup.','',
+out+=['## Not in this list','','The 34 framework pages that do not exist yet (DOC-F3 to DOC-F10, DOC-F12, DOC-F14 to DOC-F17, DOC-F20 to DOC-F27, DOC-F31 to DOC-F34, DOC-F37 to DOC-F43, DOC-F48, DOC-F51), the generated integrations tables and the runtime matrix (X3, DOC-R6), the feature pages (D1, bindings, Durable Objects, Workflows, Agents SDK), and the remaining completeness items. They improve coverage after the release and do not block a first setup.','',
  'Counts: %d must, %d should, %d later.' % (counts['must'],counts['should'],counts['later']),'']
 open(os.path.join(GIST,'01-V11-CHECKLIST.md'),'w').write('\n'.join(out))
 print('checklist written', counts)

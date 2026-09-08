@@ -2,7 +2,7 @@
 
 On develop, `globalHandlers` appears nowhere in `packages/cloudflare/src`, so `Sentry.globalHandlersIntegration` is `undefined` when imported from `@sentry/cloudflare`. Deno is the runtime the alert is right about: `packages/deno/src/index.ts:160` exports it and `packages/deno/src/sdk.ts:45` installs it by default.
 
-**What to change**
+What to change:
 
 - Add `javascript.cloudflare` to the `notSupported` list in `globalhandlers.mdx`.
 - Leave the Deno rendering as is, since the export and the default both exist there.

@@ -2,7 +2,7 @@ The three stream-mode includes present stream mode as opt-in. `platform-includes
 
 On develop the default is `'stream'`. `packages/core/src/client.ts:242` normalizes `traceLifecycle: options.traceLifecycle === 'static' ? 'static' : 'stream'`, so every value except an explicit `'static'` resolves to stream. No runtime overrides this, and `packages/deno/src/integrations/deno-serve.ts:28` describes `'stream'` as the default too.
 
-**What to change**
+What to change:
 
 - Reframe all three includes as opt-out: `'stream'` is the default, `'static'` is what a user sets.
 - Replace the `traceLifecycle: "stream"` sample lines with `"static"` examples, or drop them.

@@ -2,7 +2,7 @@ Thirteen integration pages under `docs/platforms/javascript/common/configuration
 
 On develop, `packages/deno/src/index.ts:118-144` re-exports twelve of these integrations from `@sentry/server-utils`, and `packages/deno/src/sdk.ts:48` spreads `getTracingIntegrations()` (`packages/server-utils/src/integrations/index.ts:31-56`), which installs all thirteen — prisma included — in the Deno default set. Prisma is the one that is on by default without being re-exported from `@sentry/deno`.
 
-**What to change**
+What to change:
 
 - Add `- javascript.deno` to the `supported` list on all thirteen pages.
 - On `prisma.mdx`, state that Deno installs it by default but does not re-export it individually.

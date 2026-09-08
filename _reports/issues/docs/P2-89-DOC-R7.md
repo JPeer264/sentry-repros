@@ -2,7 +2,7 @@ The three OpenTelemetry pages gate themselves to a `supported` allowlist that in
 
 Both runtimes support the setup on develop. `packages/deno/src/sdk.ts:114` calls `setupOpenTelemetryTracer()` when `options.enableOpenTelemetrySetup ?? true`, so a Deno app gets a Sentry OpenTelemetry tracer provider by default, and spans created through `@opentelemetry/api` reach Sentry with no extra configuration. `packages/cloudflare/src/sdk.ts:23-29` exposes the same `enableOpenTelemetrySetup` option, defaulted to `false`, and installs the tracer when it is set to `true`.
 
-**What to change**
+What to change:
 
 - Add `- javascript.deno` and `- javascript.cloudflare` to the `supported` lists on all three pages.
 - State the differing defaults: on for Deno, opt-in for Cloudflare via `enableOpenTelemetrySetup: true`.
