@@ -3,7 +3,7 @@
 # Capability under test: per-request isolation scope.
 set -e
 S=$SCRATCH
-V=$S/deep/verify4-M-nuxt-deno-isolation
+V=$REPRO/refutations/verify4-M-nuxt-deno-isolation
 APP=$V/app
 
 # 1. deps (do NOT install @sentry/nitro: it drags in nitro@3.0.0, which makes the
@@ -11,10 +11,10 @@ APP=$V/app
 #    with `[ERR_PACKAGE_PATH_NOT_EXPORTED] Package subpath './storage' is not defined by "exports" in nitro`)
 cd $APP
 npm install nuxt@^4 vue
-npm install $S/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+npm install $REPRO/_toolbox/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 
 # 2. sink
-PORT=41377 node $S/qs/sink.mjs > $V/sink.log 2>&1 & echo $! > $V/sink.pid
+PORT=41377 node $REPRO/_toolbox/sink.mjs > $V/sink.log 2>&1 & echo $! > $V/sink.pid
 
 # --- A: reported setup, nitro preset deno_server -------------------------------
 cd $APP && npx nuxt build                       # nitro.json preset: deno-server-legacy

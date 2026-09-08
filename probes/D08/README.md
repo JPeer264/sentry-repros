@@ -28,7 +28,7 @@ Pick a free port for the sink and use the same one for `SINK_PORT`.
 
 ```
 S=$SCRATCH
-PORT=52843 node $S/qs/sink.mjs > sink.log 2>&1 &
+PORT=52843 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 
 cd $REPRO/probes/D08
 
@@ -42,10 +42,10 @@ SINK_PORT=52843 TAG=dev deno run --no-prompt --allow-net --allow-env --allow-rea
 sleep 1; curl -s http://127.0.0.1:52843/__items
 ```
 
-Optional cross-check on the CI-pinned Deno (only if `$S/deno283/deno` exists):
+Optional cross-check on the CI-pinned Deno (only if `$SCRATCH/deno283/deno` exists):
 
 ```
-SINK_PORT=52843 TAG=dev-283 $S/deno283/deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys denoexit.ts
+SINK_PORT=52843 TAG=dev-283 $SCRATCH/deno283/deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys denoexit.ts
 ```
 
 ## Expected
@@ -114,7 +114,7 @@ appears), and the flush variant resolves `true` and delivers.
 
 Two differences, neither behavioral:
 
-- The CI-pinned deno 2.8.3 binary (`$S/deno283/deno`) no longer exists in the scratchpad, so the
+- The CI-pinned deno 2.8.3 binary (`$SCRATCH/deno283/deno`) no longer exists in the scratchpad, so the
   2.8.3 cross-check recorded in the original run could not be repeated. Only 2.9.0 was exercised.
 - The sink's compact mapping has changed since the record was written: `exception` now carries the
   `Error: ` prefix, `runtime` is the string `"deno"` instead of `{"name":"deno","version":"2.9.0"}`,

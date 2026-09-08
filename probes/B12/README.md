@@ -221,7 +221,7 @@ hot-preload.log:
 
 ### Differences from the record
 
-- The Bun 1.3.14 CI pin (`$S/bun1314/`) no longer exists on this machine, so only bun 1.4.0 was run.
+- The Bun 1.3.14 CI pin (`$SCRATCH/bun1314/`) no longer exists on this machine, so only bun 1.4.0 was run.
   The record says 1.3.14 behaved the same.
 - Ports are 51811/51812 here (47311/47312 in the record; 47311 was in use by another sink).
 - The server body lives in `server.ts`, shared by both entries, instead of being duplicated in

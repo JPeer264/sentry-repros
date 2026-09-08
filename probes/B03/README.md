@@ -125,7 +125,7 @@ Differences from the record, none of which change the verdict:
   `/ping` in a fast path and the sentinel span closed after the driver stopped polling. The
   five `/a` spans and their trace-id match are identical.
 - Bun 1.3.14 was not re-run: the pinned binary the record used
-  (`$S/bun1314/bun-darwin-aarch64/bun`) no longer exists on this machine. Only Bun 1.4.0 was
+  (`$SCRATCH/bun1314/bun-darwin-aarch64/bun`) no longer exists on this machine. Only Bun 1.4.0 was
   exercised.
 - SDK packages come from the tarballs in `_toolbox/pack` rather than the worktree symlinks the
   original run used; both are the same 10.67.0 develop build.

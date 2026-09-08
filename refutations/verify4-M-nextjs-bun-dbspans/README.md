@@ -57,7 +57,7 @@ Two of the reporter's observations are real but harmless: `[Sentry] Runtime hook
 
 Underlying SDK bug worth filing: `subscribeRedisDiagnosticChannels` / the mysql2 equivalent discard the handle returned by `bindTracingChannelToSpan`, so nothing holds a strong reference to the channels. Node's GC happens not to collect them in practice; bun's does, within one tick. A module-scope array of the subscribed channels inside `@sentry/server-utils` would fix it for every bun user without any app change.
 
-Not run: bun 1.3.14 (the CI pin) — `$S/bun1314` does not exist on this machine.
+Not run: bun 1.3.14 (the CI pin) — `$SCRATCH/bun1314` does not exist on this machine.
 
 Files: $SCRATCH/deep/verify4-M-nextjs-bun-dbspans/ (REPRO.md, app/, server1.log, server6.log, server8-nopin.log, server9-stream.log). Ports 41777 sink, 41778 app, 41779 redis. Redis container `deep-verify4-nextjs-bun-redis` started from redis:7-alpine and stopped again; all processes killed.
 

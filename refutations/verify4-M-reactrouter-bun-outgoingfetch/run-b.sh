@@ -1,6 +1,6 @@
 set -u
 S=$SCRATCH
-D=$S/deep/verify4-M-reactrouter-bun-outgoingfetch
+D=$REPRO/refutations/verify4-M-reactrouter-bun-outgoingfetch
 SINK=51431; REC=51432; APP=51433
 BUNBIN=${BUNBIN:-bun}
 VARIANT=$1; LIFE=$2; TAG=$3

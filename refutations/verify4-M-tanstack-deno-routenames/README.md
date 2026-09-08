@@ -65,7 +65,7 @@ Probe files (rerunnable): $SCRATCH/deep/verify4-M-tanstack-deno-routenames/
   app-pnpm/                        pnpm + vite 7.3.2 reference-faithful build (fails at rollup)
   FINAL-deno-items.jsonl, FINAL-deno-stream-items.jsonl, rerun-deno-pristine.log,
   build-FINAL-rerun.log, rerun-build-pristine.log, build-pnpm-pristine2.log
-Commands: `cd app && npm install --legacy-peer-deps && node node_modules/@swc/core/postinstall.js && npx vite build` (add `--config vite.config.pristine.ts` for the broken variant), then `PORT=43117 node $S/qs/sink.mjs &`, point instrument.server.mjs `tunnel` at it, `cd .output/server && PORT=43224 deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys --allow-ffi deno-entry.mjs`.
+Commands: `cd app && npm install --legacy-peer-deps && node node_modules/@swc/core/postinstall.js && npx vite build` (add `--config vite.config.pristine.ts` for the broken variant), then `PORT=43117 node $REPRO/_toolbox/sink.mjs &`, point instrument.server.mjs `tunnel` at it, `cd .output/server && PORT=43224 deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys --allow-ffi deno-entry.mjs`.
 
 ## Workaround
 

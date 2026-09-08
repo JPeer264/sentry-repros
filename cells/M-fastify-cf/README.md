@@ -6,7 +6,7 @@ The blocker is workerd's ban on dynamic code generation, a platform invariant wi
 
 A nuance worth recording for the other Cloudflare cells: `enable_nodejs_http_server_modules` + `httpServerHandler` itself works fine on this workerd (the control worker served 200s), but most Node frameworks cannot be constructed at module scope, because workerd forbids random-value generation, timers and async I/O in global scope. The lazy-boot-on-first-fetch pattern in app/src/index.mjs is the general workaround for that first failure and is worth reusing in the Express/Hapi/Nest Cloudflare cells.
 
-I did not install or test 10.73.0. @sentry/cloudflare 10.67.0 from $S/pack was installed but never initialized, since the app never served a request, so no sink or recorder was started. All processes I started were killed and both node_modules trees were removed; the wrangler/workerd processes still running on this machine belong to other agents' cells (M-express-cf, M-nestjs-cf, M-oak-cf, M-hapi-cf).
+I did not install or test 10.73.0. @sentry/cloudflare 10.67.0 from $REPRO/_toolbox/pack was installed but never initialized, since the app never served a request, so no sink or recorder was started. All processes I started were killed and both node_modules trees were removed; the wrangler/workerd processes still running on this machine belong to other agents' cells (M-express-cf, M-nestjs-cf, M-oak-cf, M-hapi-cf).
 
 This directory is the original run of 2026-09-06 and 2026-09-07, kept as it was. This README was generated from the recorded result; the rebuilt cells carry a hand-written README.
 
@@ -33,7 +33,7 @@ Not viable. No wiring exists that makes Fastify serve a request on workerd, so t
 
 Control test proves the Cloudflare half of the shape is fine: the same wrangler config with a plain `node:http` server behind `httpServerHandler({ port: 8081 })` serves `GET /users/42` with 200 and the correct body. So the blocker is Fastify's router specifically, not `enable_nodejs_http_server_modules`.
 
-@sentry/cloudflare was installed ($S/pack/sentry-cloudflare-10.67.0.tgz + sentry-core) but never wired, because the app never served a request. The intended wiring would have been `export default withSentry(env => ({ dsn, tracesSampleRate: 1.0, tunnel: 'http://127.0.0.1:<port>/' }), { async fetch(req, env, ctx) { await boot(); return nodeHandler.fetch(req, env, ctx); } })`.
+@sentry/cloudflare was installed ($REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz + sentry-core) but never wired, because the app never served a request. The intended wiring would have been `export default withSentry(env => ({ dsn, tracesSampleRate: 1.0, tunnel: 'http://127.0.0.1:<port>/' }), { async fetch(req, env, ctx) { await boot(); return nodeHandler.fetch(req, env, ctx); } })`.
 
 ## Install and Run
 
@@ -41,9 +41,9 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-mkdir -p $S/deep/M-fastify-cf/app && cd $S/deep/M-fastify-cf/app
+mkdir -p $REPRO/cells/M-fastify-cf/app && cd $REPRO/cells/M-fastify-cf/app
 npm install --no-audit --no-fund fastify@5 mysql@2 wrangler@4 \
-  $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz
 
 # Fastify worker (fails)
 npx wrangler dev --port 47313 --inspector-port 0        # uses wrangler.jsonc -> src/index.mjs
@@ -55,7 +55,7 @@ npx wrangler dev --config wrangler-control.jsonc --port 47314 --inspector-port 0
 curl -s http://127.0.0.1:47314/users/42
 
 # Fastify 4 router check
-mkdir -p $S/deep/M-fastify-cf/fmwcheck && cd $S/deep/M-fastify-cf/fmwcheck
+mkdir -p $REPRO/cells/M-fastify-cf/fmwcheck && cd $REPRO/cells/M-fastify-cf/fmwcheck
 echo '{"name":"c","private":true}' > package.json
 npm install find-my-way@7
 grep -rn "new Function" node_modules/find-my-way/lib/*.js

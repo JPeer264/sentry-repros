@@ -8,7 +8,7 @@ Ports: sink 41821, recorder 41822, app 41823.
     cd app
     npm install --no-audit --no-fund next@15.5.4 react@19.1.0 react-dom@19.1.0 typescript@5.9.2 \
       @types/node@20 @types/react@19 @types/react-dom@19 \
-      $S/pack/sentry-{nextjs,node,core,opentelemetry,server-utils,server-runtime-injection,react,browser,browser-utils,bundler-plugins,vercel-edge,bun,feedback,replay,replay-canvas}-10.67.0.tgz
+      $REPRO/_toolbox/pack/sentry-{nextjs,node,core,opentelemetry,server-utils,server-runtime-injection,react,browser,browser-utils,bundler-plugins,vercel-edge,bun,feedback,replay,replay-canvas}-10.67.0.tgz
 
 ## Run
     PORT=41821 node ../sink.mjs > ../sink.log 2>&1 &

@@ -29,9 +29,9 @@ Oak's current line ships only to JSR; the npm package @oakserver/oak stops at 14
 
 Install:
   npm install '@oak/oak@npm:@jsr/oak__oak@17.2.0' wrangler@4 \
-    $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-    $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-    $S/pack/sentry-opentelemetry-10.67.0.tgz
+    $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz
 
 @sentry/server-utils must come from the same worktree tarball. If npm resolves @sentry/server-utils@10.67.0 from the public registry, the wrangler build dies with: Could not resolve "@sentry/server-utils/no-diagnostic-channels" ... The path "./no-diagnostic-channels" is not exported by package "@sentry/server-utils".
 
@@ -81,17 +81,17 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-mkdir -p $S/deep/M-oak-cf && cd $S/deep/M-oak-cf
+mkdir -p $REPRO/cells/M-oak-cf && cd $REPRO/cells/M-oak-cf
 echo '{ "name": "m-oak-cf", "private": true, "type": "module", "version": "0.0.0" }' > package.json
 echo '@jsr:registry=https://npm.jsr.io' > .npmrc
 npm install --no-audit --no-fund '@oak/oak@npm:@jsr/oak__oak@17.2.0' wrangler@4 mysql@2 mysql2 \
-  $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz
 # npm here gates install scripts; wrangler needs the workerd + esbuild binaries:
 (cd node_modules/workerd && node install.js); (cd node_modules/esbuild && node install.js)
 
-PORT=41538 node $S/deep/M-oak-cf/sink.mjs > sink.log 2>&1 & sinkpid=$!
+PORT=41538 node $REPRO/cells/M-oak-cf/sink.mjs > sink.log 2>&1 & sinkpid=$!
 npx wrangler dev --port 41537 --inspector-port 0 > wrangler.log 2>&1 & wrpid=$!
 
 curl -s http://127.0.0.1:41537/users/42

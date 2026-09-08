@@ -16,7 +16,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 **Verdict:** confirmed-broken
 
-CONFIRMED, and broader than reported. The leak is not a Fresh problem, not a `deno serve` problem, and not a Sentry scope-management bug. It is a Deno `AsyncLocalStorage` defect: awaiting a dynamic `import()` inside `als.run()` restores the *inner* store into the enclosing (root) async context, permanently. Deno 2.9.0 only (2.8.3 is not on this machine, `$S/deno283` does not exist).
+CONFIRMED, and broader than reported. The leak is not a Fresh problem, not a `deno serve` problem, and not a Sentry scope-management bug. It is a Deno `AsyncLocalStorage` defect: awaiting a dynamic `import()` inside `als.run()` restores the *inner* store into the enclosing (root) async context, permanently. Deno 2.9.0 only (2.8.3 is not on this machine, `$SCRATCH/deno283` does not exist).
 
 1) Pure-Deno repro, zero Sentry, both server shapes (mini/pure-matrix.ts, `MODE=denoserve|nodehttp PORT=<p> deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys pure-matrix.ts`):
   Deno.serve:  {"id":"r3","path":"/dyn","storeAtEntry":null,"storeInside":"r3"}

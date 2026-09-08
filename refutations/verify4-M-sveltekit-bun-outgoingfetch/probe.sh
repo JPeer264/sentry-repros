@@ -2,7 +2,7 @@
 # usage: probe.sh <label> <runtime-cmd> <sinkport> <appport>
 set -u
 S=$SCRATCH
-D=$S/deep/verify4-M-sveltekit-bun-outgoingfetch
+D=$REPRO/refutations/verify4-M-sveltekit-bun-outgoingfetch
 LABEL=$1; RTCMD=$2; SP=$3; AP=$4
 pause(){ perl -e 'select(undef,undef,undef,'"$1"')'; }
 

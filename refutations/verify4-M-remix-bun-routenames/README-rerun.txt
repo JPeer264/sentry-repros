@@ -2,12 +2,12 @@ verify4-M-remix-bun-routenames - Remix v2 route names on Bun 1.4.0, @sentry/remi
 
 INSTALL (node_modules may have been cleaned)
   S=$SCRATCH
-  cd $S/deep/verify4-M-remix-bun-routenames
+  cd $REPRO/refutations/verify4-M-remix-bun-routenames
   npm install --no-audit --no-fund \
-    $S/pack/sentry-remix-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-    $S/pack/sentry-react-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-browser-utils-10.67.0.tgz \
-    $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-    $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-remix-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-react-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-utils-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz \
     @remix-run/dev@2.17.4 @remix-run/express@2.17.4 @remix-run/node@2.17.4 @remix-run/react@2.17.4 \
     @remix-run/server-runtime@2.17.4 express@4.21.2 isbot@4.1.0 react@18.3.1 react-dom@18.3.1 vite@5.4.11
   npx remix vite:build

@@ -55,8 +55,8 @@ Probe files (all absolute): $SCRATCH/deep/verify4-M-elysia-deno-outgoingfetch/ â
 
 Rerun:
   cd <probe dir>
-  npm install $S/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz elysia@1
-  PORT=51817 node $S/qs/sink.mjs > sink.log 2>&1 &
+  npm install $REPRO/_toolbox/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz elysia@1
+  PORT=51817 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
   node recorder.mjs > recorder.log 2>&1 &
   LIFECYCLE=stream APP_PORT=47102 deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys --allow-ffi app-a.ts &
   curl -s http://127.0.0.1:47102/fetchout; curl -s http://127.0.0.1:47102/sentinel

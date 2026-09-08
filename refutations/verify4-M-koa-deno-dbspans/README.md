@@ -54,9 +54,9 @@ F) Same entry, traceLifecycle "stream" (main-e.ts) - WORKS, db span parented in 
 
 === HOW TO RERUN ===
 Dir: $SCRATCH/deep/verify4-M-koa-deno-dbspans/
-node_modules was removed after the run; restore with `npm install` in that dir (package.json/package-lock.json point at $S/pack/sentry-{deno,core,server-utils,server-runtime-injection}-10.67.0.tgz plus koa@3.2.1, @koa/router@15.7.0, mysql@2.18.1).
+node_modules was removed after the run; restore with `npm install` in that dir (package.json/package-lock.json point at $REPRO/_toolbox/pack/sentry-{deno,core,server-utils,server-runtime-injection}-10.67.0.tgz plus koa@3.2.1, @koa/router@15.7.0, mysql@2.18.1).
 Then: ./run3.sh ./main-e.ts static <tag> /db /db-in-span   (and ./run3.sh ./main-e.ts stream <tag> /db)
-run3.sh starts $S/qs/sink.mjs on a random port, boots the app, drives /db, waits for a captureMessage sentinel, prints the sink items and kills both processes.
+run3.sh starts $REPRO/_toolbox/sink.mjs on a random port, boots the app, drives /db, waits for a captureMessage sentinel, prints the sink items and kills both processes.
 Files: main-a-nohook.ts (baseline), main-b-hook.ts (documented ordering, crashes), main-c-koafirst.ts (late hook + pool), main-d-koafirst-conn.ts (late hook + connection), main-e.ts (init first + late hook + connection), koa-app.ts (routes /db, /db-in-span, /manual, /sentinel), mkquery.ts (pool), mkquery-conn.ts (connection), deno.json (nodeModulesDir "manual"), run3.sh, logs run3-*.log / sink-*.log.
 Command shape: PORT=<app> SINK=<sink> LIFECYCLE=static deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys ./main-e.ts
 

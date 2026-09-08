@@ -1,4 +1,4 @@
-// Envelope sink, based on $S/qs/sink.mjs, with trace ids, tags, request url and
+// Envelope sink, based on $REPRO/_toolbox/sink.mjs, with trace ids, tags, request url and
 // span attributes kept so request isolation can be asserted.
 import { createServer } from 'node:http';
 import { gunzipSync, inflateSync, brotliDecompressSync } from 'node:zlib';

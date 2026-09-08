@@ -72,19 +72,19 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 S=$SCRATCH
 
 # deps (node_modules was deleted afterwards to save disk; reinstall to rerun)
-cd $S/deep/M-nestjs-cf/app
+cd $REPRO/cells/M-nestjs-cf/app
 npm install --no-audit --no-fund @nestjs/core@11 @nestjs/common@11 @nestjs/platform-express@11 \
   rxjs reflect-metadata express mysql@2 esbuild wrangler@4 typescript
-npm install --no-audit --no-fund $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz
+npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz
 
 # sink + recorder
-cd $S/deep/M-nestjs-cf
-PORT=41871 node $S/qs/sink.mjs > sink.log 2>&1 &
+cd $REPRO/cells/M-nestjs-cf
+PORT=41871 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 node recorder.mjs > recorder.log 2>&1 &
 
 # build + run
-cd $S/deep/M-nestjs-cf/app
+cd $REPRO/cells/M-nestjs-cf/app
 ./node_modules/.bin/tsc -p tsconfig.json      # 2 harmless TS errors (cloudflare:node types, sendDefaultPii), still emits
 node build.mjs
 npx wrangler dev --port 42317 --inspector-port 0 > ../wrangler-J.log 2>&1 &

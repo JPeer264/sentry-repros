@@ -18,10 +18,10 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 Reproduced the report exactly, then found no supported wiring that fixes it, only hand-written user code.
 
-App: $SCRATCH/deep/verify4-M-solidstart-cf-routenames/app (SolidStart 1.3.2, vinxi 0.5.11, preset cloudflare-module, worker.mjs = Sentry.withSentry(...) around .output/server/index.mjs, wrangler 4.129.0 dev, compatibility_date 2026-05-01, nodejs_compat, @sentry/cloudflare 10.67.0 from $S/pack). node_modules was removed at the end; rerun with `npm install --no-audit --no-fund` in app/.
+App: $SCRATCH/deep/verify4-M-solidstart-cf-routenames/app (SolidStart 1.3.2, vinxi 0.5.11, preset cloudflare-module, worker.mjs = Sentry.withSentry(...) around .output/server/index.mjs, wrangler 4.129.0 dev, compatibility_date 2026-05-01, nodejs_compat, @sentry/cloudflare 10.67.0 from $REPRO/_toolbox/pack). node_modules was removed at the end; rerun with `npm install --no-audit --no-fund` in app/.
 
 Rerun commands:
-  PORT=52117 node $S/qs/sink.mjs > sinkB.log 2>&1 &
+  PORT=52117 node $REPRO/_toolbox/sink.mjs > sinkB.log 2>&1 &
   (cd app && npx vinxi build && npx wrangler dev --config wrangler-static-b.jsonc --port 52118 --inspector-port 0)
   curl http://127.0.0.1:52118/api/users/42                          # baseline
   curl -H 'x-route-mw: router' http://127.0.0.1:52118/api/users/42   # middleware recipe

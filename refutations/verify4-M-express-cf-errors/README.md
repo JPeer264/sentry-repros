@@ -71,7 +71,7 @@ FILES / COMMANDS (all under $SCRATCH/deep/verify4-M-express-cf-errors/run-b/):
   src/c1.js + wrangler.c1.jsonc  - setupExpressErrorHandler, static (log w-c1.log)
   src/c2.js + wrangler.c2.jsonc  - setupExpressErrorHandler, stream (log w-c2.log)
   src/a6.js, build2.mjs, build3.mjs, vite.config*.mjs - the refuted variants
-  PORT=44821 node $S/qs/sink.mjs > sink-c.log 2>&1 &
+  PORT=44821 node $REPRO/_toolbox/sink.mjs > sink-c.log 2>&1 &
   npx wrangler dev --config wrangler.c0.jsonc --port 44822 --inspector-port 0
   npx wrangler dev --config wrangler.c1.jsonc --port 44823 --inspector-port 0
   npx wrangler dev --config wrangler.c2.jsonc --port 44824 --inspector-port 0

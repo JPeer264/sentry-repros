@@ -45,7 +45,7 @@ Key findings a docs page would have to carry:
 
 Cleanup: sink (86385), recorder (86434) and all three app processes (87155, 94101, 95878) were
 killed; node_modules removed from both app/ and the probe dir (the probe dir is now 688K).
-No 10.73.0 was installed; everything ran against the $S/pack 10.67.0 develop tarballs.
+No 10.73.0 was installed; everything ran against the $REPRO/_toolbox/pack 10.67.0 develop tarballs.
 
 This directory is the original run of 2026-09-06 and 2026-09-07, kept as it was. This README was generated from the recorded result; the rebuilt cells carry a hand-written README.
 
@@ -73,9 +73,9 @@ Fresh 2 builds with Deno/Vite but the built server runs on bun unchanged. Exact 
 3. Install the SDK in the PARENT directory of the Fresh app (not in app/, whose node_modules is
    Deno-managed and gets pruned by npm). Bun resolves bare imports by walking up from the bundled
    file at app/_fresh/server/assets/*.js, so a node_modules one level above app/ is found:
-     npm install $S/pack/sentry-bun-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz \
-       $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz \
-       $S/pack/sentry-server-runtime-injection-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz mysql2
+     npm install $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz \
+       $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz \
+       $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz mysql2
 
 4. instrument.ts (parent dir):
      import * as Sentry from "@sentry/bun";
@@ -99,16 +99,16 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-cd $S/deep/M-fresh-bun
+cd $REPRO/cells/M-fresh-bun
 
 # scaffold (already done; app/ is checked in under the probe dir minus node_modules)
 deno run -A -r jsr:@fresh/init@2 ./app --force --tailwind --vscode
 
 # deps: SDK + driver go in the PARENT dir so bun's upward lookup finds them from app/_fresh/**
 npm install --no-audit --no-fund \
-  $S/pack/sentry-bun-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz mysql2
+  $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz mysql2
 
 # deno deps for the build only
 (cd app && deno install)
@@ -117,7 +117,7 @@ npm install --no-audit --no-fund \
 (cd app && deno task build)
 
 # sink + recorder
-PORT=41411 node $S/qs/sink.mjs > sink.log 2>&1 &
+PORT=41411 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 PORT=41413 node recorder.mjs > rec.log 2>&1 &
 
 # run Fresh on bun

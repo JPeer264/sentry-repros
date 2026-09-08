@@ -14,7 +14,7 @@ Two framework-level gaps that are NOT Deno's fault (node behaves the same):
 
 Packaging friction worth a docs line: npm refuses the install without --legacy-peer-deps because @sentry/nitro's peer range does not accept nitro 3.0.260610-beta (the version @solidjs/start 2.0.2 pulls); pnpm, which the e2e app uses, is more lenient.
 
-Everything above is the develop build (10.67.0 tarballs from $S/pack); 10.73.0 was never installed. All processes I started were killed and app/node_modules was removed.
+Everything above is the develop build (10.67.0 tarballs from $REPRO/_toolbox/pack); 10.73.0 was never installed. All processes I started were killed and app/node_modules was removed.
 
 This directory is the original run of 2026-09-06 and 2026-09-07, kept as it was. This README was generated from the recorded result; the rebuilt cells carry a hand-written README.
 
@@ -24,7 +24,7 @@ Build on node, run the output on Deno. No Deno-specific SDK package is involved:
 
 1. Packages (npm, --legacy-peer-deps is required because @sentry/nitro's peer range `nitro@">=3.0.0-0 <4.0.0 || 3.0.260311-beta || 3.0.260415-beta"` does not accept nitro 3.0.260610-beta under npm's prerelease semver rules):
    npm install --legacy-peer-deps @solidjs/start@2.0.2 @solidjs/router solid-js@1.9.14 vite@^8 vite-plugin-solid nitro@3.0.260610-beta mysql2 \
-     $S/pack/sentry-{solidstart,core,nitro,node,server-utils,server-runtime-injection,opentelemetry,solid,browser,browser-utils,replay,replay-canvas,feedback,bundler-plugins}-10.67.0.tgz
+     $REPRO/_toolbox/pack/sentry-{solidstart,core,nitro,node,server-utils,server-runtime-injection,opentelemetry,solid,browser,browser-utils,replay,replay-canvas,feedback,bundler-plugins}-10.67.0.tgz
 
 2. vite.config.ts:
    import { sentrySolidStart } from '@sentry/solidstart/vite';
@@ -49,13 +49,13 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 S=$SCRATCH
 
 # deps (node_modules was deleted afterwards to save disk; rerun this to rebuild)
-cd $S/deep/M-solidstart-deno/app
+cd $REPRO/cells/M-solidstart-deno/app
 npm install --no-audit --no-fund --legacy-peer-deps
-npm install --no-audit --no-fund --legacy-peer-deps $S/pack/sentry-solidstart-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-nitro-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-solid-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-browser-utils-10.67.0.tgz $S/pack/sentry-replay-10.67.0.tgz $S/pack/sentry-replay-canvas-10.67.0.tgz $S/pack/sentry-feedback-10.67.0.tgz $S/pack/sentry-bundler-plugins-10.67.0.tgz
+npm install --no-audit --no-fund --legacy-peer-deps $REPRO/_toolbox/pack/sentry-solidstart-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-nitro-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-solid-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-replay-10.67.0.tgz $REPRO/_toolbox/pack/sentry-replay-canvas-10.67.0.tgz $REPRO/_toolbox/pack/sentry-feedback-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz
 
 # sink + fetch recorder
-PORT=47311 node $S/qs/sink.mjs > $S/deep/M-solidstart-deno/sink.log 2>&1 &
-node $S/deep/M-solidstart-deno/recorder.mjs > $S/deep/M-solidstart-deno/recorder.log 2>&1 &
+PORT=47311 node $REPRO/_toolbox/sink.mjs > $REPRO/cells/M-solidstart-deno/sink.log 2>&1 &
+node $REPRO/cells/M-solidstart-deno/recorder.mjs > $REPRO/cells/M-solidstart-deno/recorder.log 2>&1 &
 
 # build (node) and run (deno)
 NODE_ENV=production npx vite build

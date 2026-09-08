@@ -21,7 +21,7 @@ Reproduced the report from a clean build and could not refute it with any suppor
 Probe dir: $SCRATCH/deep/verify4-M-tanstack-deno-outgoingfetch/ (app node_modules removed after the run; .output/server is kept and is self-contained, so the deno runs below rerun without reinstalling).
 
 Setup (identical to the repo e2e app dev-packages/e2e-tests/test-applications/tanstackstart-react, whose src/, vite.config.ts, tsconfig*.json I copied verbatim; only the two db routes were stubbed out and api.fetchout.ts / api.sentinel.ts added):
-  npm install --no-audit --no-fund $S/pack/sentry-{tanstackstart-react,node,core,server-utils,server-runtime-injection,opentelemetry,browser,react,browser-utils,replay,replay-canvas,feedback,bundler-plugins}-10.67.0.tgz
+  npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-{tanstackstart-react,node,core,server-utils,server-runtime-injection,opentelemetry,browser,react,browser-utils,replay,replay-canvas,feedback,bundler-plugins}-10.67.0.tgz
   npm install --no-audit --no-fund nitro@latest
   node node_modules/esbuild/install.js && node node_modules/@swc/core/postinstall.js
   npx vite build

@@ -143,7 +143,7 @@ Differences from the record, none of them changing a verdict:
 - Bun on this machine is now **1.4.2**, the record was taken on 1.4.0.
 - The `baggage` header carries `sentry-sample_rand` and no `sentry-org_id` (the recorded run had
   `sentry-org_id=1` and no `sample_rand`). Both `sentry-trace` and `baggage` are present either way.
-- The `log` line shows no trace id because this cell uses the plain `$S/qs/sink.mjs`; the record used
+- The `log` line shows no trace id because this cell uses the plain `$REPRO/_toolbox/sink.mjs`; the record used
   an extended `sink2.mjs`. The trace id is in the raw envelope and matches the request.
 - Ports are 41821/41822/41823 here instead of the recorded 52742/52734/52740.
 

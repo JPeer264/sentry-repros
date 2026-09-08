@@ -1,13 +1,13 @@
 verify4-M-nextjs-deno-dbspans - second pass (refutation run)
 
 S=$SCRATCH
-D=$S/deep/verify4-M-nextjs-deno-dbspans
+D=$REPRO/refutations/verify4-M-nextjs-deno-dbspans
 
 # deps (node_modules removed after the run)
 cd $D && npm install --no-audit --no-fund next@15.5.4 react@19.1.0 react-dom@19.1.0 mysql2@3 mysql@2 ioredis@5.4.1 \
-  $S/pack/sentry-{nextjs,node,core,opentelemetry,react,browser,browser-utils,server-utils,server-runtime-injection,vercel-edge,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-{nextjs,node,core,opentelemetry,react,browser,browser-utils,server-utils,server-runtime-injection,vercel-edge,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 docker run -d --rm --name deep-v4ndb2-redis -p 41341:6379 redis:7-alpine
-PORT=41342 node $S/qs/sink.mjs > $D/sink2.log 2>&1 &
+PORT=41342 node $REPRO/_toolbox/sink.mjs > $D/sink2.log 2>&1 &
 
 cd $D && SINK_PORT=41342 REDIS_PORT=41341 deno run -A node_modules/next/dist/bin/next build   # rb-build-A3.log
 

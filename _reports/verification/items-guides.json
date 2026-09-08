@@ -1,0 +1,410 @@
+[
+ {
+  "id": "DOC-B1",
+  "docs_claim": "moved",
+  "current_lines": "docs/platforms/javascript/guides/bun/index.mdx: step heading :82; the `--preload` sentence :88 (was :94); the Bundled-Code-Limitation alert :90-94 (was :96-100); `bun --preload ./instrument.js app.js` :100 (was :106); OnboardingOptionButtons options :20-22 (unchanged, exact); the `logs` OnboardingOption block :180-184 with the Include at :182 (unchanged, exact). The -6 shift comes from ae4b46502 (docs(js): Add explicit step for `dataCollection` options, #19208, 2026-09-03), which pulled the inline dataCollection block out of the init snippet. Already at the re-check commit b568ebbd3 the command sat on :100, so the item's :94/:106 were stale before the audit shipped.",
+  "grep_results": "`@sentry/bun/plugin` and `sentryBunPlugin` in docs/ + platform-includes/ on master aebda0ee4: 0 hits.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Replace `guides/bun/index.mdx:94` and `:106` with `:88` and `:100`; replace the alert citation `:96-100` with `:90-94`.",
+   "Keep `:20-22` and `:182` as they are, both are exact on master.",
+   "Keep `packages/bun/src/plugin.ts:14` - the BUILD-ONLY sentence is on line 14 at the pin and at develop head."
+  ],
+  "notes": "packages/bun/src/plugin.ts:14 reads 'This is BUILD-ONLY. Runtime instrumentation (`bun run`) is currently not supported.' - identical at 6f2da7483d and at develop head, and `./plugin` is a real export in packages/bun/package.json at both. The QS-bun reproduction ran bun 1.4.2 (the item's 1.4.0 comes from the earlier deep-probe run); both runs agree."
+ },
+ {
+  "id": "DOC-B2",
+  "docs_claim": "holds",
+  "current_lines": "platform-includes/configuration/integrations/javascript.bun.mdx: table :3-47, auto-enabled block :5-37, `dedupeIntegration` :9, `inboundFiltersIntegration` :14, `nativeNodeFetchIntegration` :24, `pinoIntegration` :47. Every cited line is exact.",
+  "grep_results": "common/configuration/integrations/fs.mdx `supported:` lists `javascript.bun` (file line 23), so the FileSystem page renders for Bun with no row in the table. common/configuration/integrations/pino.mdx `supported:` does NOT list `javascript.bun` (it lists `javascript.deno`), so the `:47` pino row links to a page that is not shown for Bun.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "changed",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "At develop head `mastraIntegration()` was added to `getTracingIntegrations()`, so the installed count is 43, not 42. Either say 42 and pin it to 6f2da7483d, or say 43 and add a `mastraIntegration` row to the 'missing rows' list.",
+   "server-utils range is `packages/server-utils/src/integrations/index.ts:30-62` at the pin and `:30-63` at develop head (`getTracingIntegrations` :31-59, `getErrorIntegrations` :62-64).",
+   "`packages/bun/src/sdk.ts:47-79` is fine but covers two functions: `getDefaultIntegrationsWithoutPerformance` :47-74 and `getDefaultIntegrations` :77-79.",
+   "Optional extra row for the table: `spanStreamingIntegration` is added by `packages/core/src/server-runtime-client.ts:56`, not by `getDefaultIntegrations`, which is why the arithmetic is 41+1."
+  ],
+  "notes": "Verified installed set at the pin: eventFilters, functionToString, linkedErrors, requestData, console, http, fetch, onUncaughtException, onUnhandledRejection, contextLines, nodeContext, modules, processSession, express, fastify, hapi, koa, bunServer, bunHttpServer (19) + 22 tracing integrations + spanStreaming = 42. No dedupe, no nativeNodeFetch, inbound filtering is eventFiltersIntegration. All three 'wrong row' claims and all eleven 'missing row' names check out."
+ },
+ {
+  "id": "DOC-B3",
+  "docs_claim": "moved",
+  "current_lines": "guides/hono/index.mdx: runtime list :12 (exact), Bun install tab :84-85 (exact), Bun code tab :278-280 (was :290-292; `import { sentry } from \"@sentry/hono/bun\"` is :280). guides/elysia/index.mdx:5 `fallbackGuide: javascript.bun` (exact). guides/bun/ still holds only index.mdx and configuration/integrations/contextlines.mdx - no frameworks section.",
+  "grep_results": "Bun-runtime mentions in guides/express, guides/fastify, guides/koa, guides/hapi: 0 each. guides/nextjs: 7 case-insensitive hits, all 'Bunyan' or 'bundle', 0 about the Bun runtime. 'external' in guides/hono/index.mdx: 0 hits, so the bundling caveat is still missing.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Update the Hono citation from `:12,84-85,290-292` to `:12,84-85,278-280`.",
+   "State explicitly that the nextjs grep hits are 'Bunyan'/'bundle', so 'contain no mention of Bun' survives a naive grep review."
+  ],
+  "notes": "Supporting SDK fact re-checked: the Fastify integration subscribes to the `fastify.initialization` diagnostics channel Fastify publishes itself (packages/server-utils/src/integrations/fastify/instrumentation.ts:383 at the pin and at develop head), which is why Fastify behaves differently from Express/Koa/Hapi on non-Node runtimes."
+ },
+ {
+  "id": "DOC-B4",
+  "docs_claim": "holds",
+  "current_lines": "guides/bun/index.mdx:12 `<PlatformContent includePath=\"getting-started-prerequisites\" />` (exact). guides/hono/index.mdx:84-85 `npm install @sentry/bun` (exact). common/configuration/integrations/breadcrumbs.mdx `notSupported:` lists `javascript.bun` (file line 19). platform-includes/performance/automatic-instrumentation-intro/javascript.bun.mdx:1 'The Sentry SDK provides a `Tracing` integration ...' (exact, the file is one line).",
+  "grep_results": "platform-includes/getting-started-prerequisites/ has _default.mdx, javascript.deno.mdx, javascript.ember.mdx, javascript.gcp-functions.mdx, javascript.hono.mdx, javascript.nextjs.mdx, javascript.node.mdx, javascript.nuxt.mdx, javascript.remix.mdx, javascript.solid.mdx, javascript.sveltekit.mdx, javascript.wasm.mdx, python.mdx - no javascript.bun.mdx, so Bun falls back to _default.mdx, which lists no version at all.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Drop the breadcrumbs bullet, or invert it. `@sentry/bun` neither installs nor exports `breadcrumbsIntegration` (0 hits in packages/bun/src/index.ts at the pin), so `notSupported: javascript.bun` in breadcrumbs.mdx is correct as it stands and needs no change.",
+   "If a breadcrumbs finding is wanted, it belongs to Deno, not Bun: breadcrumbs.mdx also lists `javascript.deno` under `notSupported` while packages/deno/src/sdk.ts:39 installs `breadcrumbsIntegration()` and packages/deno/src/index.ts:164 exports it. A guide-local override at guides/deno/configuration/integrations/breadcrumbs.mdx keeps the page reachable, but the common gating is wrong.",
+   "Cite platform-includes/getting-started-prerequisites/javascript.deno.mdx:7 ('Deno version >= `2.0.0`') as the shape to copy for the new Bun file."
+  ],
+  "notes": ".github/workflows/build.yml:522 pins `bun-version: '1.3.14'` at the pin and at develop head (also :911 and :1035). Every other claim in the item is exact on today's master."
+ },
+ {
+  "id": "DOC-D1",
+  "docs_claim": "moved",
+  "current_lines": "guides/deno/index.mdx: install prose :38, snippets :43-46 and :65-82, permission commands :100 and :119 (the item's own '-two permission flags-' wording). The snippets do not contain a literal `npm:@sentry/deno`; they use `import * as Sentry from \"___SDK_PACKAGE___\";` at :44 and :66, which renders as `npm:@sentry/deno` for Deno only (src/components/platformSdkPackageName.tsx:37-40 returns the canonical `npm:` form when `platformOrGuide.name === 'deno'`).",
+  "grep_results": "`@sentry/deno/import` in guides/deno/: 0 hits. The hook is named nowhere in the docs.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Say the guide renders `npm:@sentry/deno` through the `___SDK_PACKAGE___` placeholder at :44 and :66 rather than saying it 'shows' the specifier - an editor searching for the literal string will not find it.",
+   "Do not cite the e2e apps as evidence for `nodeModulesDir: \"auto\"`. All five Deno e2e apps (deno, deno-mysql, deno-pg, deno-redis, deno-streamed) use `\"nodeModulesDir\": \"manual\"`, as does the QS-deno reproduction. Recommend `\"auto\"` on its own merits, or recommend what the apps use.",
+   "packages/deno/README.md:60-83 is exact at the pin and at develop head, including `--import=@sentry/deno/import` on :70."
+  ],
+  "notes": "`./import` is a real subpath in packages/deno/package.json at the pin. dev-packages/e2e-tests/test-applications/deno-mysql/src/app.ts and deno-pg/src/app.ts both open with `import '@sentry/deno/import';` as the first import, with a comment saying the hook only works as the first import of the entry graph in Deno 2.8.0-2.8.2."
+ },
+ {
+  "id": "DOC-D2",
+  "docs_claim": "holds",
+  "current_lines": "platform-includes/configuration/integrations/javascript.deno.mdx: eight auto-enabled rows :5-12 (breadcrumbs :5, contextLines :6, dedupe :7, denoContext :8, functionToString :9, globalHandlers :10, inboundFilters :11, linkedErrors :12); the malformed zodErrors row is :21 and does carry five cells instead of six, so its check falls under Cron. Both citations exact.",
+  "grep_results": "`javascript.deno` appears in the `supported:` list of all four common pages: modules.mdx (file line 25), onuncaughtexception.mdx (:25), unhandledrejection.mdx (:25), console.mdx (:26). packages/deno/src/index.ts exports none of consoleIntegration, modulesIntegration, onUncaughtExceptionIntegration, onUnhandledRejectionIntegration (0 hits), so all four should be removed.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "changed",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "`packages/deno/src/sdk.ts:28-49` is exact at the pin and at develop head.",
+   "At develop head `mastraIntegration()` joined `getTracingIntegrations()`, so the installed count is 40, not 39. Add `Mastra` to the list of integrations that need a row, or pin the count to 6f2da7483d.",
+   "Optional: also flag breadcrumbs.mdx, which lists `javascript.deno` under `notSupported` although the Deno SDK installs breadcrumbsIntegration (sdk.ts:39). A guide-local override exists, so this is a gating inconsistency rather than a dead page."
+  ],
+  "notes": "Deno default set at the pin: eventFilters, requestData, functionToString, linkedErrors, dedupe, breadcrumbs, denoContext, denoServe, denoHttp, contextLines, normalizePaths, globalHandlers (12) + 4 error integrations + 22 tracing integrations = 38, plus spanStreaming = 39. Matches the item exactly."
+ },
+ {
+  "id": "DOC-D3",
+  "docs_claim": "moved",
+  "current_lines": "guides/deno/index.mdx: `deno run --allow-net=___ORG_INGEST_DOMAIN___ index.ts` is :100 (was :106); `deno run --allow-read=./src index.ts` is :119 (was :125); the init snippets name the file `main.ts` at :43 and :65. The QS-deno reproduction already cites :100 and :119, so the item text is the stale copy.",
+  "grep_results": "`--allow` in packages/deno/README.md: 0 hits at the pin and at develop head, so 'mentions no flag at all' holds.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Change `:106` to `:100` and `:125` to `:119`.",
+   "The e2e sentence needs widening: deno runs `--allow-net --allow-env --allow-read`; deno-mysql, deno-pg and deno-redis add `--allow-sys --allow-write`; deno-streamed adds `--allow-sys` without being docker-backed. As written ('the docker-backed ones add --allow-sys') it drops `--allow-write` and mis-attributes deno-streamed."
+  ],
+  "notes": "The NotCapable crash is reproduced verbatim in quickstarts/deno/README.md:218 with the stack ending in `@sentry/server-runtime-injection/build/esm/vendored/debug/src/node.js:124:30`; the vendored debug build exists in the worktree at packages/server-runtime-injection/build/esm/vendored/debug/src/node.js. The 'silent degradation without the hook / hard crash with it' split is exactly as the item states (quickstarts/deno/README.md:309-321)."
+ },
+ {
+  "id": "DOC-D4",
+  "docs_claim": "moved",
+  "current_lines": "guides/hono/index.mdx: Deno install tab :88-89 (exact), Deno code tab :302-304 with `Deno.serve(app.fetch)` at :323 (was :320-322). guides/deno/ has no frameworks section (only index.mdx and configuration/integrations/{breadcrumbs,contextlines}.mdx).",
+  "grep_results": "Deno mentions in guides/fastify, guides/express, guides/koa, guides/hapi: 0 each. Repo-wide, only guides/deno/*, guides/hono/index.mdx and guides/cloudflare/frameworks/hono.mdx mention Deno.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Update the Hono citation from `:88-89,320-322` to `:88-89,302-304` (with `Deno.serve` at :323)."
+  ],
+  "notes": "The mechanism behind the Fastify exception is verifiable in the SDK: packages/server-utils/src/integrations/fastify/instrumentation.ts:383 subscribes to `fastify.initialization`, a channel Fastify publishes itself, and errors.ts:19 subscribes to `tracing:fastify.request.handler:error`. Neither needs the orchestrion injection hook. Identical at develop head."
+ },
+ {
+  "id": "DOC-D5",
+  "docs_claim": "holds",
+  "current_lines": "platform-includes/migration/javascript-v8/important-changes/javascript.deno.mdx:9 'Sentry Bun SDK' (exact); the OpenTelemetry auto-instrumentation list is :34-48, with expressIntegration :38, fastifyIntegration :39, hapiIntegration :40, nestIntegration :46. integrations-package-removal/javascript.deno.mdx:3 and :5 both say `@sentry/bun` (exact). other-changes/javascript.deno.mdx:3 'your Bun SDK' + `./v8-opentelemetry` (exact).",
+  "grep_results": "docs/platforms/javascript/common/migration/v7-to-v8/v8-opentelemetry.mdx `supported:` lists javascript.node, aws-lambda, azure-functions, connect, express, fastify, gcp-functions, hapi, hono, koa, nestjs and javascript.bun - no javascript.deno, so the link on the Deno page is dead.",
+  "sdk_at_pin": "not-applicable",
+  "sdk_at_develop_head": "not-applicable",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Optionally name the exact line range of the false auto-instrumentation claim (:34-48) so the edit is unambiguous; the four framework bullets are :38, :39, :40 and :46."
+  ],
+  "notes": "All three files are unchanged since the audit. This is the cleanest of the 27 - every citation is exact and nothing about it depends on the SDK version."
+ },
+ {
+  "id": "DOC-D6",
+  "docs_claim": "holds",
+  "current_lines": "guides/deno/index.mdx:38-46 is the install step (prose :38, snippet :43-46). guides/hono/index.mdx:88-89 `deno add npm:@sentry/deno` (exact). platform-includes/configuration/featureflags/javascript.deno.mdx:2 hardcodes `@sentry/deno`; platform-includes/performance/enable-stream-mode/javascript.deno.mdx:11 hardcodes `npm:@sentry/deno`.",
+  "grep_results": "All five Deno e2e apps carry a deno.json import map with `\"@sentry/deno\": \"npm:@sentry/deno\"` and use the bare specifier in source. All five set `\"nodeModulesDir\": \"manual\"`.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Say the guide's snippets use the `___SDK_PACKAGE___` placeholder, which renders as `npm:@sentry/deno`; the literal specifier is not in the file.",
+   "The e2e apps use `nodeModulesDir: \"manual\"`, not `auto` - keep the recommendation but stop implying the apps demonstrate it.",
+   "Add a third file to the placeholder cleanup while you are there: enable-stream-mode/javascript.deno.mdx:24 says `traceLifecycle: 'static'` is 'the default', which is true on the released line but wrong on develop, where packages/core/src/client.ts:243 normalizes anything other than 'static' to 'stream'."
+  ],
+  "notes": "`sdk.packages[0].name = 'denoland:sentry'` confirmed at packages/deno/src/client.ts:36 at the pin and at develop head. QS-deno also confirms `npm:@sentry/deno` does resolve once a local node_modules exists, so the item's install-step complaint is about discoverability, not breakage."
+ },
+ {
+  "id": "DOC-C1",
+  "docs_claim": "moved",
+  "current_lines": "guides/cloudflare/index.mdx:63 alert (exact). guides/cloudflare/features/nodejs-compat.mdx, 50 lines, whole page (the entrypoint at :6 and :10, what it unlocks :16-19). guides/cloudflare/configuration/integrations/prisma.mdx:8 (exact). platform-includes/configuration/integrations/javascript.cloudflare.mdx:19 (exact). common/agent-tracing/vercelai.mdx: the Cloudflare PlatformSection is :60-73 and the two-entrypoint table is :66-71, not :61-77.",
+  "grep_results": "`@sentry/cloudflare/nodejs_compat` in docs/ + platform-includes/: the five places named plus common/migration/v10-to-v11/index.mdx:959, which already records the removal.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Drop the last bullet. platform-includes/getting-started-config/javascript.cloudflare.mdx:5 already says 'you need to set the `nodejs_compat` compatibility flag and a `compatibility_date` of `2024-09-23` or later'; it said so at 046ce5942 too, so the include never needed the change.",
+   "Change the vercelai.mdx citation from `:61-77` to `:66-71` (table) inside `:60-73` (Cloudflare section).",
+   "MIGRATION.md lines are off by 8: the nodejs_compat removal is `MIGRATION.md:1394-1399` at the pin and `:1600-1605` at develop head, not `:1384-1391`.",
+   "Note that common/migration/v10-to-v11/index.mdx:948-959 already lands the migration half of this item, so the remaining work is only the five product pages."
+  ],
+  "notes": "Exports verified three ways: released master (10.67.0) has `.`, `./request`, `./nodejs_compat`; the pin and develop head both have `.`, `./request`, `./vite`. So 'the subpath still exists on the last released state' is right, and importing it on develop fails."
+ },
+ {
+  "id": "DOC-C2",
+  "docs_claim": "holds",
+  "current_lines": "guides/cloudflare/features/d1.mdx:6-16 is the entire body of the page and does instruct `Sentry.instrumentD1WithSentry(env.DB)` at :13. Exact.",
+  "grep_results": "`instrumentD1WithSentry` in packages/cloudflare/src: 0 hits at the pin. dev-packages/cloudflare-integration-tests/suites/ contains d1, r2, queue, ratelimit, vite and vite-autoinstrument.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "changed",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "instrumentEnv.ts drifted: the D1 branch is `:64-68` at the pin (exact as cited) but `:61-65` at develop head.",
+   "MIGRATION.md is off by 8: the removal is `:1401-1416` at the pin and `:1607-1622` at develop head, not `:1393-1408`.",
+   "instrumentD1.ts citations are all exact at the pin and unchanged at develop head: cloudflare.d1.* attributes :114-116, the `db.query` op and db.* attributes :142-146, the `D1 batch` span name :178.",
+   "Add that common/migration/v10-to-v11/index.mdx:991 already records the removal, so only the feature page needs rewriting."
+  ],
+  "notes": "The span name is `D1 batch` for batches, and single queries are named by the sanitized query summary under stream mode and by the raw query under static (instrumentD1.ts:137) - worth putting in the page since the item asks for the batch name."
+ },
+ {
+  "id": "DOC-C3",
+  "docs_claim": "fixed",
+  "current_lines": "The three `enableRpcTracePropagation` mentions are gone from master. platform-includes/distributed-tracing/how-to-use/javascript.cloudflare.mdx now uses `rpcTracePropagationBindings` at :11, :27, :43 and :67. The agents-sdk page moved to guides/cloudflare/agent-tracing/agents-sdk.mdx and uses the new option at :31 and :37. common/agent-tracing/openai.mdx:107 (same line) now names `rpcTracePropagationBindings`. All three by commit 3acad630b (docs(cloudflare): Document rpcTracePropagationBindings, #19198). common/configuration/options.mdx now has an SdkOption for `rpcTracePropagationBindings` at :580-592 and a deprecated one for `enableRpcTracePropagation` at :594-600.",
+  "grep_results": "`enableRpcTracePropagation` in docs/ + platform-includes/: 3 hits, all legitimate - options.mdx:594 (deprecated entry) and v10-to-v11/index.mdx:971,977 (the migration diff). `cacheClient`: 0 hits. `durableObjectSqlSpanAllowlist`: 0 hits. `durableObjectStorageSpanAllowlist`: 0 hits. `enableOpenTelemetrySetup`: 6 hits, all inside common/migration/v10-to-v11/index.mdx, none an SdkOption entry.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Delete the whole first half of the item. The `enableRpcTracePropagation` -> `rpcTracePropagationBindings` replacement in the three files, and the missing SdkOption entry for `rpcTracePropagationBindings`, are all done on master.",
+   "Keep only four missing SdkOption entries, not five: `cacheClient`, `enableOpenTelemetrySetup`, `durableObjectSqlSpanAllowlist`, `durableObjectStorageSpanAllowlist`.",
+   "Add a new bullet for the v11 docs update: remove the deprecated `enableRpcTracePropagation` SdkOption block at common/configuration/options.mdx:594-600 once the option is gone.",
+   "The SDK citation is off by one: `rpcTracePropagationBindings?: TracePropagationTargets` is declared at packages/cloudflare/src/client.ts:360, not :359 (the JSDoc example is at :354). MIGRATION.md is off by 8: :1418-1431 at the pin, :1624-1637 at develop head."
+  ],
+  "notes": "The other four options do exist in the SDK and are undocumented: client.ts:324 enableOpenTelemetrySetup, :384 durableObjectSqlSpanAllowlist, :409 durableObjectStorageSpanAllowlist, :451 cacheClient - identical line numbers at the pin and at develop head."
+ },
+ {
+  "id": "DOC-C4",
+  "docs_claim": "moved",
+  "current_lines": "guides/cloudflare/features/vite-plugin.mdx grew to 175 lines and gained a real Options section. `wranglerConfigPath` SdkOption :130-148; `_experimental` :150-154; `_experimental.autoInstrumentation` (defaultValue false) :156-160; `_experimental.useDiagnosticsChannelInjection` (defaultValue false) :162-166 with 'When disabled or omitted, the plugin is a no-op' on :164. The item's `:138-154` no longer points at the options block. The experimental Alert is :8-11. guides/cloudflare/index.mdx:77-92 still passes `_experimental.useDiagnosticsChannelInjection: true` (exact).",
+  "grep_results": "`_experimental` in packages/cloudflare/src: 0 hits. `useDiagnosticsChannelInjection` in packages/cloudflare/src: 0 hits. Both at the pin. The page still names only `mysql` as an instrumented package (:15, :59).",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Change `:138-154` to `:150-166` (the two `_experimental` SdkOption blocks), and add that `wranglerConfigPath` already has a correct entry at `:130-148` that only needs to be kept.",
+   "The instrumented-package list is `packages/server-utils/src/orchestrion/config/index.ts:50-80` at the pin (29 entries), not `:49-79`; at develop head it is `:51-81` with 30 entries (mastra added).",
+   "Add a bullet to remove the experimental Alert at vite-plugin.mdx:8-11 as part of 'move the page out of the experimental section'.",
+   "Note that common/migration/v10-to-v11/index.mdx:961-967 already tells v11 readers the `_experimental.autoInstrumentation` opt-in was removed, so the feature page is now the only place carrying the old shape."
+  ],
+  "notes": "packages/cloudflare/src/vite/index.ts:12-55 is exact at the pin and at develop head: wranglerConfigPath :23, buildTimeInstrumentation :37 (@default true on :35), autoInstrumentation :54 (@default true on :52)."
+ },
+ {
+  "id": "DOC-C5",
+  "docs_claim": "moved",
+  "current_lines": "guides/cloudflare/index.mdx: the 'Don't have access to onRequest?' expandable is :207-238, the snippet :217-232, `import * as Sentry from \"@sentry/cloudflare\";` on :219 (the item's 'change the import at :221'), `Sentry.wrapRequestHandler` on :230. guides/cloudflare/configuration/integrations/hono.mdx:14 'This integration is enabled by default.' (exact), with a deprecation Alert above it at :8-12 the item does not mention. guides/cloudflare/frameworks/hono.mdx is an 8-line redirect (exact). guides/cloudflare/frameworks/hydrogen-react-router.mdx imports from the subpath at :187 (was :188), with supporting prose at :175 and :179.",
+  "grep_results": "`honoIntegration` in packages/cloudflare/src: 0 hits at the pin. packages/cloudflare/src/index.ts:117 exports only `_INTERNAL_wrapRequestHandler`, no `wrapRequestHandler`.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Change 'the import at :221' to ':219', and the Hydrogen reference from `:188` to `:187`.",
+   "MIGRATION.md is off by 9: the honoIntegration removal is `:1445-1453` at the pin and `:1651-1659` at develop head, not `:1436-1445`.",
+   "Mention that hono.mdx:8-12 already carries a deprecation alert, so the page needs deleting rather than a first deprecation notice.",
+   "Note that common/migration/v10-to-v11/index.mdx:990 and :993 already record both changes."
+  ],
+  "notes": "packages/cloudflare/README.md:88 imports `* as Sentry from '@sentry/cloudflare'` and :99 calls `Sentry.wrapRequestHandler` - unchanged at develop head, so the README fix is still needed."
+ },
+ {
+  "id": "DOC-C6",
+  "docs_claim": "moved",
+  "current_lines": "guides/cloudflare/features/index.mdx is 13 lines and is a PageGrid with no bindings table (exact premise). `features/workers-ai.mdx` no longer exists: it moved to guides/cloudflare/agent-tracing/workers-ai.mdx by commit 2e707563c (docs(cloudflare): Move AI pages under Agent Tracing, #19279), and features/index.mdx now links it as an additionalPage at :11. features/d1.mdx still describes the manual wrapper. common/tracing/instrumentation/caches-module.mdx and queues-module.mdx both list `javascript.cloudflare` in `supported:` (file line 25 in each).",
+  "grep_results": "No Cloudflare page carries a bindings table; 'binding' appears only in prose. `enable_nodejs_http_server_modules`: 0 hits in docs.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "changed",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Change `features/workers-ai.mdx` to `agent-tracing/workers-ai.mdx`.",
+   "instrumentR2.ts: the R2_OPERATIONS map is `:26-48`, not `:27-47`.",
+   "instrumentQueueProducer.ts:20 is the span name (`send <binding>`); the `queue.publish` op is set at `:28`. Cite both.",
+   "At develop head the commented-out rate-limit branch was deleted outright (no `isRateLimit` reference left in instrumentEnv.ts), and the other branches shifted: D1 :61, Queue :67, R2 :74, AI :81, DurableObjectNamespace :89, JSRPC :95. The pin's line numbers (D1 :64-68) only describe 6f2da7483d."
+  ],
+  "notes": "Every binding claim checks out at the pin: instrumentEnv.ts instruments D1, Queue producers, R2, `env.AI`, Durable Object namespaces and JSRPC fetchers/stubs, and the rate limiter is commented out at :87-92 (the pin commit is literally 'feat(cloudflare)!: Skip rate limit spans'). Nothing touches KV, Vectorize, Hyperdrive, Analytics Engine, the Cache API or Assets."
+ },
+ {
+  "id": "DOC-C7",
+  "docs_claim": "moved",
+  "current_lines": "guides/cloudflare/frameworks/index.mdx:6 'to instrument your Cloudflare Pages applications' (exact). guides/cloudflare/index.mdx:16-23 lists eight frameworks (exact). No frameworks/react-router.mdx (the dir holds astro, hono, hydrogen-react-router, hydrogen-remix, index, nextjs, nuxt, remix, sveltekit, tanstack-start). frameworks/tanstack-start.mdx:54-57 pulls getting-started-config for `javascript.cloudflare.splitlayout` (exact). Its `@sentry/tanstackstart-react` imports are :80 (exact), :137 (was :143) and :206 (was :219). guides/tanstackstart-react/manual-setup/index.mdx:377 (was :391).",
+  "grep_results": "platform-includes/getting-started-config/ has javascript.cloudflare.mdx, javascript.cloudflare.hono.mdx and javascript.cloudflare.workers.mdx - no javascript.cloudflare.splitlayout.mdx, so the wrangler step renders nothing. The only *.splitlayout.mdx in the whole include tree is python.splitlayout.mdx. tanstack-start.mdx's install step at :42 pulls getting-started-install, which installs only `@sentry/cloudflare`.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "unknown",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Update the moved citations: tanstack-start.mdx imports at `:80,137,206`; guides/tanstackstart-react/manual-setup/index.mdx:`377`.",
+   "The e2e count is 'apps with a wrangler config', which is 21 at the pin (astro-5-cf-workers, astro-6-cf-workers, the eleven cloudflare-* apps, hono-4, hydrogen-react-router-7, nextjs-16-cf-workers, nuxt-4-cloudflare, react-router-8-cloudflare, sveltekit-3-cloudflare-workers, sveltekit-cloudflare-pages, tanstackstart-react-cloudflare). Say it that way, because `ls *cloudflare*` returns only 16.",
+   "Not re-verified at develop head: the e2e tree was not re-listed there, so treat the 21/1-Pages figure as pinned to 6f2da7483d."
+  ],
+  "notes": "react-router-8-cloudflare wiring is exact: workers/app.ts:12 `export default Sentry.withSentry(` and app/entry.server.tsx:1 `import * as Sentry from '@sentry/react-router/cloudflare';`."
+ },
+ {
+  "id": "DOC-C8",
+  "docs_claim": "moved",
+  "current_lines": "traces-sampler/javascript.cloudflare.mdx:4 `Sentry.browserTracingIntegration()` (exact). sample-rate/javascript.cloudflare.mdx:1-7, capture-console/javascript.cloudflare.mdx:1-8 and dedupe/javascript.cloudflare.mdx:1-8 are all bare `Sentry.init(...)`. configuration/contextlines/javascript.cloudflare.mdx exists (8 lines) while contextlines.mdx lists `javascript.cloudflare` under `notSupported` (file line 19) and Cloudflare has no guide-local override (guides/cloudflare/configuration/integrations/ holds only hono.mdx and prisma.mdx). guides/cloudflare/index.mdx: buttons :38-40 (exact), the `logs` OnboardingOption block :356-360 (the item's `:352` is the closing fence of the Pages tracing snippet). frameworks/nextjs.mdx:40 `2025-08-16` (exact). getting-started-config/javascript.cloudflare.mdx:5 `2024-09-23` (exact). frameworks/hydrogen-remix.mdx:59 `dsn: \"YOUR_DSN_HERE\"` (exact).",
+  "grep_results": "`browserTracingIntegration` in packages/cloudflare/src/index.ts: 0 hits on released master, at the pin and at develop head. `dataCollection` in guides/cloudflare/frameworks/astro.mdx: 0 hits today.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Drop the Astro bullet. The `dataCollection` block that linked to the Next.js options page was at astro.mdx:103-108 at 046ce5942 and was removed by commit ae4b46502 (docs(js): Add explicit step for `dataCollection` options, #19208, 2026-09-03). It was already gone at the re-check commit b568ebbd3.",
+   "Change the logs-block citation from `:352` to `:356-360`.",
+   "Everything else is exact and still open."
+  ],
+  "notes": "Bun has a guide-local contextlines override (guides/bun/configuration/integrations/contextlines.mdx) and Deno has one too, which is why only the Cloudflare include is unreachable. Worth saying, so a fixer does not delete the Bun/Deno includes by analogy."
+ },
+ {
+  "id": "X1",
+  "docs_claim": "holds",
+  "current_lines": "platform-includes/performance/enable-tracing/javascript.bun.mdx, javascript.deno.mdx and javascript.cloudflare.mdx are each a single line reading 'Tracing is enabled by default in the Sentry <Runtime> SDK.' - all three citations at `:1` are exact. platform-includes/performance/enable-automatic-instrumentation/javascript.bun.mdx:1 and javascript.cloudflare.mdx:1 both say 'To enable tracing, set either a `tracesSampleRate` or a `tracesSampler` ...'.",
+  "grep_results": "There is no enable-automatic-instrumentation/javascript.deno.mdx, so Deno falls back to javascript.mdx.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Adjust the SDK sentence. `getPerformanceIntegrations` in packages/bun/src/sdk.ts:38-44 is Bun-only; the Deno SDK has no equivalent gate (packages/deno/src/sdk.ts:28-49 always spreads `getTracingIntegrations()`), and Cloudflare has none either. The runtime-independent fact is packages/core/src/utils/hasSpansEnabled.ts:23-36: spans are recorded only when `tracesSampleRate` or `tracesSampler` is set. Cite that as the general reason and Bun's :38-44 as the extra integration-level gate.",
+   "Note there is no Deno `enable-automatic-instrumentation` include, so 'keep the wording consistent with the enable-automatic-instrumentation includes' applies to Bun and Cloudflare only."
+  ],
+  "notes": "packages/bun/src/sdk.ts:38-44 is exact at the pin and at develop head. This item is unaffected by the v10/v11 split - it is wrong on both lines."
+ },
+ {
+  "id": "X2",
+  "docs_claim": "fixed",
+  "current_lines": "The premise is gone: docs/platforms/javascript/common/migration/v10-to-v11/index.mdx landed today (commit e4d245f972, docs(javascript): Add v10 to v11 migration guide, #19217), 1473 lines. It already carries the Cloudflare block the item asks for: 'Node.js Compatibility Is Required' :948-959 (DOC-C1), 'The Vite Plugin Auto-Instruments Your Worker' :961-967 (DOC-C4), 'RPC Trace Propagation Is Explicit' :969-986 (DOC-C3), and 'Other Cloudflare Changes' :988-1005 with `wrapRequestHandler` moved to the subpath :990 (DOC-C5), `instrumentD1WithSentry` removed :991 (DOC-C2) and `honoIntegration` removed :993. There is a '## Deno Changes' section at :933-939.",
+  "grep_results": "`@sentry/bun/plugin`, `sentryBunPlugin` and `@sentry/deno/import` in common/migration/v10-to-v11/index.mdx: 0 hits. There is no Bun section. The page's :689 says 'Most setups need no changes.' - the same framing the item objects to in MIGRATION.md.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Retitle from 'Add a v10-to-v11 migration page' to 'Add the per-runtime channel-instrumentation setup to the v10-to-v11 page'. The page exists; `common/migration/` no longer ends at v9-to-v10.mdx.",
+   "Drop the bullet 'Make the Cloudflare section carry DOC-C1 through DOC-C5' - it already does, at :948-993.",
+   "Repoint the complaint at common/migration/v10-to-v11/index.mdx:689 ('Most setups need no changes.') alongside MIGRATION.md, and ask for a Bun section plus a Deno hook paragraph, since neither `@sentry/bun/plugin` nor `@sentry/deno/import` is named anywhere on the page.",
+   "MIGRATION.md moved: the section is `:289-295` at the pin (exact as cited) but `:282-288` at develop head."
+  ],
+  "notes": "The substantive gap is untouched by the new page: on Bun, library and framework spans still require a `Bun.build` with `sentryBunPlugin`; on Deno, a first-line `import '@sentry/deno/import'`. Both subpaths exist at the pin and at develop head. So the finding survives; only its premise and title have to change."
+ },
+ {
+  "id": "X3",
+  "docs_claim": "holds",
+  "current_lines": "platform-includes/configuration/integrations/javascript.cloudflare.mdx:5-17 is the table (exact). No runtime-by-framework matrix page exists anywhere under docs/platforms/javascript/.",
+  "grep_results": "`enable_nodejs_http_server_modules` in docs/ + platform-includes/: 0 hits. Framework-across-runtime coverage is still only the Hono guide, the Elysia guide's `fallbackGuide`, and guides/cloudflare/frameworks/*.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "The Cloudflare table is missing four rows, not three: `conversationIdIntegration`, `httpServerIntegration`, `consoleIntegration` and `spanStreamingIntegration`. packages/cloudflare/src/baseSdk.ts:51-72 installs dedupe, eventFilters, functionToString, conversationId, linkedErrors, fetch, httpServer, requestData and console, plus the registered channel subscribers; core adds spanStreaming (server-runtime-client.ts:56). QS-cloudflare recorded exactly: Dedupe EventFilters FunctionToString ConversationId LinkedErrors Fetch HttpServer RequestData Console SpanStreaming.",
+   "While editing that table, two existing rows are also wrong: `:8` should be `eventFiltersIntegration`, not `inboundFiltersIntegration`, and `:17` marks `honoIntegration` auto-enabled although it is removed on develop (see DOC-C5).",
+   "The '51 cells / 50 run' figures come from the audit's own cell runs and were not re-derived here; keep them attributed to that dataset."
+  ],
+  "notes": "baseSdk.ts:51-72 is byte-identical at the pin and at develop head, so the three (four) missing rows hold on both lines."
+ },
+ {
+  "id": "DOC-Q1",
+  "docs_claim": "moved",
+  "current_lines": "All four verify blocks are exact on master: platform-includes/getting-started-verify/javascript.node.mdx:38-53, guides/bun/index.mdx:156-172, guides/deno/index.mdx:176-190, guides/cloudflare/index.mdx:313-335. The 'surrounding text' citations are also exact lines - getting-started-node/javascript.mdx:120, bun/index.mdx:188, deno/index.mdx:207, cloudflare/index.mdx:364 - but they do not say what the item says they say.",
+  "grep_results": "All four of those lines read 'head over to your project on [Sentry.io] ... to view the collected data'. The `quick-start-locate-data-expandable` include that follows renders FeatureInfo, whose tracing text (src/components/featureInfo.tsx:46-59) is 'Open the Traces page and select a trace to reveal more information about each span'. The word 'transaction' appears on none of them.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Rewrite the second sentence. The pages do not say the data appears as 'named transactions'; they say 'view the collected data' and link an expandable that points at the Traces page. The only thing on the page that says 'Transaction' is the sample name inside the snippet itself.",
+   "Scope the item to the v11 docs update, like DOC-C1 to DOC-C5. On released master, packages/core/src/client.ts has no traceLifecycle normalization, so 'static' is the default and a transaction envelope IS sent; on develop, client.ts:243 normalizes anything but 'static' to 'stream'. The docs are correct for the version they currently serve.",
+   "Add the ten `platform-includes/performance/enable-stream-mode/javascript.*.mdx` files whose last line says `traceLifecycle` `'static'` is '(the default)' (astro is the exception; node :36, cloudflare :62, hono :51, bun/deno/nextjs/nestjs/nitro/gcp-functions/elysia :25 or :24) - they carry the same assumption and will all be wrong at v11.",
+   "Add guides/cloudflare/index.mdx:382-388, which frames the static lifecycle as the current model and stream as the opt-in."
+  ],
+  "notes": "The envelope shape is reproduced verbatim: quickstarts/cloudflare/README.md:182 shows items `[\"http.client GET 127.0.0.1\",\"test My First Test Span\",\"http.server GET\"]` and no transaction envelope in any variant; QS-bun and QS-deno report the same."
+ },
+ {
+  "id": "DOC-Q2",
+  "docs_claim": "fixed",
+  "current_lines": "guides/cloudflare/features/vite-plugin.mdx now documents both things. The `instrument.server.*` file is :88-99, with the `defineCloudflareOptions` snippet at :90-97 and, at :99, 'If no `instrument.server.*` file exists, the SDK reads all configuration (DSN, release, environment, sample rate, etc.) from the Worker's `env` bindings at runtime.' - added by commit 9bfe0e96c (docs(cloudflare): Do not double export Sentry options, #19199). The wrangler-config probing and `wranglerConfigPath` are named at :68 and given an SdkOption at :130-148.",
+  "grep_results": "`instrument.server` in the vite plugin page: 6 hits. `wranglerConfigPath`: 5 hits.",
+  "sdk_at_pin": "fails",
+  "sdk_at_develop_head": "changed",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Drop the 'add the instrument.server.ts step' bullet - it is on the page since 9bfe0e96c, together with its shape (a default export of the options callback via `defineCloudflareOptions`).",
+   "Correct 'the Worker runs with no DSN, silently'. `ENV_FALLBACK_OPTIONS_FN = '() => undefined'` (packages/cloudflare/src/vite/instrumentFile.ts:7) is right, but returning undefined is a deliberate hand-off: packages/cloudflare/src/options.ts:68 then resolves `dsn: userOptions.dsn ?? getEnvVar(env, 'SENTRY_DSN')`. The Worker only ends up without a DSN when `env` carries no `SENTRY_DSN` either.",
+   "Correct 'with no warning from the plugin'. packages/cloudflare/src/vite/autoInstrument.ts:34-40 logs, through the Vite logger, '[sentry] No parseable wrangler config found - auto-instrumentation disabled. Set `wranglerConfigPath` if your config uses a custom name.' (and a variant naming the file when `wranglerConfigPath` is set but unusable). The reproduction's own note (quickstarts/cloudflare/README.md:341-347) says the silent run happened because the directory holds several configs and a *different*, default-named `wrangler.jsonc` was found and used - that is the real silent failure mode and it should be the one the item describes.",
+   "Keep only: say on the page that the plugin instruments nothing when it resolves the wrong wrangler config, and remove `_experimental.useDiagnosticsChannelInjection` from guides/cloudflare/index.mdx:77-92 (which is DOC-C4's work anyway)."
+  ],
+  "notes": "The positive half of the observation is untouched: with `wranglerConfigPath` set and the options file present, the built Worker delivered the same errors, spans, headers and logs as a hand-written `withSentry` (quickstarts/cloudflare/README.md, variant `vite`, same 10 integrations as `base`)."
+ },
+ {
+  "id": "DOC-Q3",
+  "docs_claim": "moved",
+  "current_lines": "The four cited lines are exact - getting-started-node/javascript.mdx:120, guides/bun/index.mdx:188, guides/deno/index.mdx:207, guides/cloudflare/index.mdx:364 - but each reads 'head over to your project on [Sentry.io] ... to view the collected data'. None promises named transactions.",
+  "grep_results": "Same as DOC-Q1: 'transaction' does not occur on any of the four lines nor in the `quick-start-locate-data-expandable` include; the include's tracing text points at the Traces page.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "partially-correct",
+  "corrections": [
+   "Replace 'The guides promise named transactions from the base setup' with what the pages actually do: they end the verify step without saying anything about how server spans are named, and the linked expandable sends the reader to the Traces page. The gap is an omission, not a false promise.",
+   "Keep the observations - they are all reproduced: QS-node segment spans are `GET` with no `sentry.source`; QS-deno `GET` with source `url`; QS-cloudflare `GET` with source `url`; QS-bun `GET /users/:id` with source `route` from the `Bun.serve` routes map, and `GET` for an unrouted path.",
+   "Qualify the last bullet: the Node error event does carry `transaction: \"GET /debug-sentry\"`, so 'drop the claim that issues are grouped by transaction' applies to the Bun and Cloudflare guides only - which is how the bullet is already written; keep it that way and say why Node differs.",
+   "Like DOC-Q1, this is v11-scoped: under the released static lifecycle the reader does get a named transaction."
+  ],
+  "notes": "quickstarts/node/README.md:114 states `sentry.source` is absent from every streamed segment span, and :235 that the error event's transaction field is set on Node. quickstarts/bun/README.md:340 confirms the Bun routes-map naming and `source: route`."
+ },
+ {
+  "id": "DOC-Q4",
+  "docs_claim": "moved",
+  "current_lines": "guides/bun/index.mdx: the 'Apply Instrumentation to Your App' step is :82-105, the `--preload` sentence :88, the alert :90-94, the run command :100. The item's `:88-106` is close but starts on the sentence and runs one line past the step.",
+  "grep_results": "Neither warning string appears anywhere in docs/ or platform-includes/ (0 hits), nor on the troubleshooting pages.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Cite `guides/bun/index.mdx:82-105` (or just `:88` and `:100`) rather than `:88-106`.",
+   "State the source of each line so the docs can quote them accurately: 'No available Node API to register diagnostics-channel injection hooks; skipping.' comes from packages/server-runtime-injection/src/register.ts:160 (:201 at develop head) and the second from packages/server-utils/src/orchestrion/detect.ts:38-42. Both go through `debug.warn`, so they print only with `debug: true` - the item already says this and it is worth keeping explicit."
+  ],
+  "notes": "Reproduced verbatim in quickstarts/bun/README.md:146-147 on bun 1.4.2, at app-preload.log:1 (startup) and :101 (after the first request), on the plain documented `--preload` path."
+ },
+ {
+  "id": "DOC-Q5",
+  "docs_claim": "holds",
+  "current_lines": "platform-includes/getting-started-node/javascript.mdx:93-96 is the ESM `node --import ./instrument.mjs app.mjs` block (exact) and :55 is the ordering warning (exact).",
+  "grep_results": "'require' in platform-includes/getting-started-node/javascript.mdx: 0 hits, so 'Nothing on the page mentions --require' holds. Elsewhere: docs/platforms/javascript/common/install/late-initialization.mdx:34,37,106,132 still shows `node --require @sentry/node/preload app.js` (the preload hook, not init, so it does not trip the banner), and common/migration/v10-to-v11/index.mdx:695-707 already documents that initializing via `--require` is no longer supported.",
+  "sdk_at_pin": "holds",
+  "sdk_at_develop_head": "holds",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Add the SDK citation: the banner is printed from packages/node/src/sdk/index.ts:126-133 (`getEntryPointType() === 'require'`), unconditionally, not behind `debug`. Same lines at the pin and at develop head.",
+   "Soften the third bullet. `NODE_OPTIONS=\"--import ./instrument.mjs\"` is already documented at docs/platforms/javascript/common/install/esm.mdx:44-48; the ask is to surface it on the getting-started page, not to document it for the first time.",
+   "Note that common/migration/v10-to-v11/index.mdx:695-707 covers `--require` for upgraders, so the remaining gap is the getting-started page for new users.",
+   "When adding the sentence, check common/install/late-initialization.mdx, which recommends `--require @sentry/node/preload`; that form is still correct and should not be caught by a blanket 'don't use --require'."
+  ],
+  "notes": "quickstarts/node/README.md:163 reproduces the banner verbatim and :166 confirms every signal was still captured; :182-189 confirms a first-line `import \"./instrument.mjs\"` matches `--import` including Express route names; :192 confirms NODE_OPTIONS is identical."
+ },
+ {
+  "id": "DOC-Q6",
+  "docs_claim": "holds",
+  "current_lines": "guides/cloudflare/index.mdx:240 '### Add Readable Stack Traces With Source Maps (Optional)' (exact) and :267-280 the Workers verify snippet (exact). The Pages variant is :297-301.",
+  "grep_results": "Nothing between :248 and :280 mentions stack-trace quality, source maps or bundle frames.",
+  "sdk_at_pin": "not-applicable",
+  "sdk_at_develop_head": "not-applicable",
+  "verdict": "correct-and-open",
+  "corrections": [
+   "Add the Pages verify snippet at :297-301 to the citation, since it has the same problem as :267-280.",
+   "The 'segment span reports status ok on a 500' aside is confirmed (quickstarts/cloudflare/README.md, base variant) and is correctly marked as tracked separately."
+  ],
+  "notes": "Reproduced in quickstarts/cloudflare/README.md: the error event carries `hasContextLine: false`, `hasAppFrame: false`, every frame in `.wrangler/tmp/dev-fsyj7x/index.js`, and `contexts.runtime` has a name but no version - while the Node, Bun and Deno reproductions all ship context lines and a runtime version."
+ }
+]

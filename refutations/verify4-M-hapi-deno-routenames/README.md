@@ -49,7 +49,7 @@ Gotcha found while building that: `Sentry.getRootSpan(span).updateName(...)` for
 
 Why CI never sees this: the repo's own Deno hapi test, ~/dev/sentry-worktrees/audit-runtime-docs/dev-packages/deno-integration-tests/suites/orchestrion-hapi/test.ts, never imports @hapi/hapi — it hand-publishes `orchestrion:@hapi/hapi:route` on the diagnostics channel against a fake route object, so the real import path under Deno's load hook is untested. The root defect is Deno's (denoland/deno#36240): with any Module.registerHooks load hook registered, `nextLoad` returns `format: undefined` for a .json URL and Deno then compiles it as CJS; the SDK's loadSync passes such results straight through untouched (hook.js:113-128).
 
-Not run: Deno 2.8.3 (the $S/deno283 pin has been cleaned off disk) and nodeModulesDir "auto" (the JSON defect is in Deno's load-hook chain, independent of resolution mode).
+Not run: Deno 2.8.3 (the $SCRATCH/deno283 pin has been cleaned off disk) and nodeModulesDir "auto" (the JSON defect is in Deno's load-hook chain, independent of resolution mode).
 
 ## Workaround
 

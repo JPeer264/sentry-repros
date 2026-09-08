@@ -8,7 +8,7 @@ Ordering trap worth a docs callout: `withElysia` installs its route-naming hook 
 
 No Elysia lifecycle spans on Cloudflare. `platform-includes/.../javascript.elysia.mdx:3-5` promises spans for Request/Parse/Transform/BeforeHandle/Handle/AfterHandle/MapResponse/AfterResponse/Error with `op: request_handler.elysia` / `middleware.elysia`; on workerd every transaction came back with `spans: []` except the `http.client` fetch span. The `app.trace()` handler that creates them depends on `rootSpanForRequest`, which is only populated by the Bun branch of `app.wrap`.
 
-Tarball hazard for whoever reruns this: `$S/pack/sentry-server-utils-10.67.0.tgz` and `$S/pack/sentry-core-10.67.0.tgz` are older than `$S/pack/sentry-cloudflare-10.67.0.tgz`. Using them together fails the wrangler build with `The path "./no-diagnostic-channels" is not exported by package "@sentry/server-utils"` and then `No matching export in "@sentry/core/build/esm/index.js" for import "spanSourceWasExplicitlySet" / "markSpanForOtelSourceInference" / "_INTERNAL_startInactiveSpan"`. Repacking core, opentelemetry, cloudflare and server-utils from $W fixed it. Also, `npm install $S/pack/sentry-elysia-...tgz` needs `sentry-server-runtime-injection-10.67.0.tgz` on the same command line or it fails with `notarget No matching version found for @sentry/server-runtime-injection@10.67.0`.
+Tarball hazard for whoever reruns this: `$REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz` and `$REPRO/_toolbox/pack/sentry-core-10.67.0.tgz` are older than `$REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz`. Using them together fails the wrangler build with `The path "./no-diagnostic-channels" is not exported by package "@sentry/server-utils"` and then `No matching export in "@sentry/core/build/esm/index.js" for import "spanSourceWasExplicitlySet" / "markSpanForOtelSourceInference" / "_INTERNAL_startInactiveSpan"`. Repacking core, opentelemetry, cloudflare and server-utils from $W fixed it. Also, `npm install $REPRO/_toolbox/pack/sentry-elysia-...tgz` needs `sentry-server-runtime-injection-10.67.0.tgz` on the same command line or it fails with `notarget No matching version found for @sentry/server-runtime-injection@10.67.0`.
 
 mysql2 on workerd: works from a module-scope pool over the nodejs_compat TCP polyfill, but only with `disableEval: true`; the default row-parser codegen dies with `Code generation from strings disallowed for this context`. Queries returned real rows from the MariaDB on 3307. Still no db span, and the Cloudflare Vite plugin (`buildTimeInstrumentation`) path was not exercised, so treat the db verdict as "no span from a plain wrangler build" rather than "no span on Cloudflare, ever".
 
@@ -22,7 +22,7 @@ Elysia runs on workerd ONLY with AOT disabled: `new Elysia({ aot: false })`. Wit
 
 Recommended wiring (this is what a docs page should show; it is NOT the plain-withSentry-only shape the task hint assumed):
 
-packages: `npm install @sentry/cloudflare @sentry/elysia elysia wrangler` (for the develop build: `npm install <worktree packs>/sentry-{core,opentelemetry,cloudflare,server-utils}-10.67.0.tgz $S/pack/sentry-{elysia,bun,node,server-runtime-injection}-10.67.0.tgz elysia wrangler@4`)
+packages: `npm install @sentry/cloudflare @sentry/elysia elysia wrangler` (for the develop build: `npm install <worktree packs>/sentry-{core,opentelemetry,cloudflare,server-utils}-10.67.0.tgz $REPRO/_toolbox/pack/sentry-{elysia,bun,node,server-runtime-injection}-10.67.0.tgz elysia wrangler@4`)
 
 src/index.ts:
 ```ts
@@ -54,9 +54,9 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 ```
 S=$SCRATCH
 W=~/dev/sentry-worktrees/audit-runtime-docs
-D=$S/deep/M-elysia-cf
+D=$REPRO/cells/M-elysia-cf
 
-# 1. the $S/pack tarballs for core/server-utils are stale vs @sentry/cloudflare, repack from the worktree
+# 1. the $REPRO/_toolbox/pack tarballs for core/server-utils are stale vs @sentry/cloudflare, repack from the worktree
 for p in core opentelemetry cloudflare server-utils; do (cd $W/packages/$p && npm pack --pack-destination $D/localpack); done
 
 # 2. plain-withSentry app (node_modules was removed after the run, reinstall to rerun)
@@ -64,14 +64,14 @@ cd $D
 npm install ./localpack/sentry-core-10.67.0.tgz ./localpack/sentry-opentelemetry-10.67.0.tgz \
             ./localpack/sentry-cloudflare-10.67.0.tgz ./localpack/sentry-server-utils-10.67.0.tgz \
             elysia mysql2 wrangler@4
-PORT=52745 node $S/qs/sink.mjs > sink2.log 2>&1 &        # envelope sink
+PORT=52745 node $REPRO/_toolbox/sink.mjs > sink2.log 2>&1 &        # envelope sink
 PORT=52742 node recorder.mjs   > recorder2.log 2>&1 &    # outgoing-fetch recorder
 npx wrangler dev --port 52741 --inspector-port 0 > wrangler7.log 2>&1 &
 
 # 3. @sentry/elysia + withSentry app
 cd $D/elysia-sdk-probe
-npm install $S/pack/sentry-elysia-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz \
-            $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
+npm install $REPRO/_toolbox/pack/sentry-elysia-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz \
+            $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
             $D/localpack/sentry-core-10.67.0.tgz $D/localpack/sentry-opentelemetry-10.67.0.tgz \
             $D/localpack/sentry-cloudflare-10.67.0.tgz $D/localpack/sentry-server-utils-10.67.0.tgz \
             elysia wrangler@4

@@ -18,7 +18,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 REFUTED. The leak is real with the reported wiring, but it is a one-line fix, and the SDK already ships the integration that fixes it.
 
-ROOT CAUSE (proved directly, not theorised): the Node SDK's per-request isolation scope is forked by the subscriber to the Node **core** diagnostics channel `http.server.request.start` (packages/core/src/integrations/http/server-subscription.ts:132-175 `getIsolationScope().clone()` … `withIsolationScope(...)`, subscribed in packages/node/src/integrations/http/httpServerIntegration.ts:146). This channel is published by Node itself, not by the orchestrion/`--import` injection, so the "no diagnostics-channel injection" warning is a red herring here. Bun simply never publishes it. Direct probe ($S/deep/verify4-M-reactrouter-bun-isolation/run2/dc.mjs, subscribe + one request to a `node:http` server):
+ROOT CAUSE (proved directly, not theorised): the Node SDK's per-request isolation scope is forked by the subscriber to the Node **core** diagnostics channel `http.server.request.start` (packages/core/src/integrations/http/server-subscription.ts:132-175 `getIsolationScope().clone()` … `withIsolationScope(...)`, subscribed in packages/node/src/integrations/http/httpServerIntegration.ts:146). This channel is published by Node itself, not by the orchestrion/`--import` injection, so the "no diagnostics-channel injection" warning is a red herring here. Bun simply never publishes it. Direct probe ($REPRO/refutations/verify4-M-reactrouter-bun-isolation/run2/dc.mjs, subscribe + one request to a `node:http` server):
   bun 1.4.0 -> {"runtime":"bun","seen":[]}
   node v26.5.0 -> {"runtime":"node","seen":["http.server.request.start","http.server.response.finish"]}
 `@sentry/react-router` never forks an isolation scope itself (wrapSentryHandleRequest and createSentryServerInstrumentation only rename the root span), so with no channel there is no request boundary at all.
@@ -46,7 +46,7 @@ SECOND, DEPENDENCY-FREE WORKAROUND (run2/drive-D.out): an Express middleware `ap
 
 Prior art in this repo: dev-packages/e2e-tests/test-applications/nextjs-16-bun/sentry.server.config.ts:1,16 already does exactly this (`bunHttpServerIntegration({ spans: false })`) for the same reason. There is no react-router-on-Bun e2e app, so nothing carried the pattern over. The integration's own JSDoc (packages/bun/src/integrations/bunHttpServer.ts:86-101) describes this precise failure mode.
 
-NOT CROSS-CHECKED: the CI-pinned bun 1.3.14 at $S/bun1314 no longer exists on disk (directory removed), so only bun 1.4.0 was exercised this run.
+NOT CROSS-CHECKED: the CI-pinned bun 1.3.14 at $SCRATCH/bun1314 no longer exists on disk (directory removed), so only bun 1.4.0 was exercised this run.
 
 Rerun: probe files in $SCRATCH/deep/verify4-M-reactrouter-bun-isolation/ (app/ has node_modules and build/ intact).
   PORT=47311 node ../sink.mjs &

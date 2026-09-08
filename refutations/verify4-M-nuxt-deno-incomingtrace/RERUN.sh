@@ -2,14 +2,14 @@
 # Rerun: Nuxt 4.5.2 + @sentry/nuxt 10.67.0 (develop) on Deno 2.9.0, incoming-trace capability.
 set -x
 S=$SCRATCH
-D=$S/deep/verify4-M-nuxt-deno-incomingtrace
+D=$REPRO/refutations/verify4-M-nuxt-deno-incomingtrace
 cd $D
 npm install --no-audit --no-fund nuxt@^4 vue
-npm install --no-audit --no-fund $S/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 # IMPORTANT: do NOT install @sentry/nitro. It drags in nitro@3.0.0, which shadows nitropack 2.13.4
 # and makes the build emit `import 'nitro/storage'` -> ERR_PACKAGE_PATH_NOT_EXPORTED at boot (node AND deno).
 
-PORT=41120 node $S/qs/sink.mjs > sink.log 2>&1 & SINK=$!
+PORT=41120 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 & SINK=$!
 
 # ---- A) default preset (node-server), run with deno  => incoming trace WORKS
 npx nuxt build                       # nuxt.config.ts has no `nitro.preset`

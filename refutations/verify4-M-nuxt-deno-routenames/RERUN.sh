@@ -3,14 +3,14 @@
 # WORKING path: default nitro `node-server` preset, output run with `deno run`.
 set -e
 S=$SCRATCH
-D=$S/deep/verify4-M-nuxt-deno-routenames
+D=$REPRO/refutations/verify4-M-nuxt-deno-routenames
 cd $D
 
 # 1. deps (only if node_modules is gone)
 # npm install --no-audit --no-fund nuxt@^4 vue
-# npm install --no-audit --no-fund $S/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+# npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 
-PORT=34771 node $S/qs/sink.mjs > sink.log 2>&1 & sinkpid=$!
+PORT=34771 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 & sinkpid=$!
 
 # 2. build with the DEFAULT preset (no `nitro: { preset: 'deno_server' }`)
 npx nuxt build            # writes .output, and correctly prepends the sentry import to .output/server/index.mjs

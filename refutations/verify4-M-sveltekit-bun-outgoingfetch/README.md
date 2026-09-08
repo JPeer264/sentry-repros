@@ -23,17 +23,17 @@ REFUTED. The reported symptom reproduces exactly, but it is a missing-integratio
 `npx sv@latest create --template minimal --types ts --no-add-ons --no-install app` -> SvelteKit ^2.63.0, svelte ^5.56.1, vite ^8.0.16 (same shape the reporter used: no `svelte.config.js`, kit config inside the `sveltekit()` Vite plugin). Then `npm install @sveltejs/adapter-node` and the develop tarball set on one line:
 
 ```
-npm install $S/pack/sentry-sveltekit-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-svelte-10.67.0.tgz \
-  $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-bundler-plugins-10.67.0.tgz $S/pack/sentry-browser-utils-10.67.0.tgz \
-  $S/pack/sentry-replay-10.67.0.tgz $S/pack/sentry-replay-canvas-10.67.0.tgz $S/pack/sentry-feedback-10.67.0.tgz \
-  $S/pack/sentry-bun-10.67.0.tgz
+npm install $REPRO/_toolbox/pack/sentry-sveltekit-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-svelte-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-utils-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-replay-10.67.0.tgz $REPRO/_toolbox/pack/sentry-replay-canvas-10.67.0.tgz $REPRO/_toolbox/pack/sentry-feedback-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz
 ```
 
-(I confirm the reporter's packing note: `@sentry/browser-utils`, `@sentry/replay` (packages/replay-internal), `@sentry/replay-canvas`, `@sentry/feedback` were not in `$S/pack` and had to be `npm pack`ed from the worktree. I added them to `$S/pack` for later agents. `@sentry/bundler-plugins` WAS already there.)
+(I confirm the reporter's packing note: `@sentry/browser-utils`, `@sentry/replay` (packages/replay-internal), `@sentry/replay-canvas`, `@sentry/feedback` were not in `$REPRO/_toolbox/pack` and had to be `npm pack`ed from the worktree. I added them to `$REPRO/_toolbox/pack` for later agents. `@sentry/bundler-plugins` WAS already there.)
 
-Wiring is the reporter's: `sentrySvelteKit({ autoUploadSourceMaps: false, adapter: 'node' })` from `@sentry/sveltekit/vite` before `sveltekit({ adapter: adapter(), experimental: { instrumentation: { server: true }, tracing: { server: true } } })`; `src/instrumentation.server.ts` calls `Sentry.init`; `src/hooks.server.ts` exports `sentryHandle()`/`handleErrorWithSentry()`. Route `src/routes/api/out/+server.ts` does a bare global `await fetch(`${process.env.REC_URL}/__rec/from-sveltekit`)`. Sink at `sink.mjs` (copy of `$S/qs/sink.mjs` plus a `/__rec/` header recorder readable at `/__recs`), port 47611. Build: `npx vite build`. Run: `PORT=<port> SENTRY_TUNNEL=http://127.0.0.1:47611/ REC_URL=http://127.0.0.1:47611 bun build/index.js`. Driven with `curl` from outside the app process, sentinel = `Sentry.captureMessage('sentinel')` on `/api/hello`.
+Wiring is the reporter's: `sentrySvelteKit({ autoUploadSourceMaps: false, adapter: 'node' })` from `@sentry/sveltekit/vite` before `sveltekit({ adapter: adapter(), experimental: { instrumentation: { server: true }, tracing: { server: true } } })`; `src/instrumentation.server.ts` calls `Sentry.init`; `src/hooks.server.ts` exports `sentryHandle()`/`handleErrorWithSentry()`. Route `src/routes/api/out/+server.ts` does a bare global `await fetch(`${process.env.REC_URL}/__rec/from-sveltekit`)`. Sink at `sink.mjs` (copy of `$REPRO/_toolbox/sink.mjs` plus a `/__rec/` header recorder readable at `/__recs`), port 47611. Build: `npx vite build`. Run: `PORT=<port> SENTRY_TUNNEL=http://127.0.0.1:47611/ REC_URL=http://127.0.0.1:47611 bun build/index.js`. Driven with `curl` from outside the app process, sentinel = `Sentry.captureMessage('sentinel')` on `/api/hello`.
 
 ## 1. Baseline on bun 1.4.0 — symptom reproduced (app-bun-baseline.log)
 

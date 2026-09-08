@@ -1,7 +1,7 @@
 # verify4-M-nextjs-bun-routenames (second pass) - rerun recipe
 
 S=$SCRATCH
-V=$S/deep/verify4-M-nextjs-bun-routenames
+V=$REPRO/refutations/verify4-M-nextjs-bun-routenames
 
 ## install (in $V/nextapp)
 npm install --no-audit --no-fund     # package.json + package-lock.json are checked in here
@@ -9,7 +9,7 @@ ln -s $V/nextapp/node_modules $V/casedir/app/node_modules
 
 ## CONTROL: project root NOT named "app"  -> route names correct, event == transaction
 cd $V/nextapp && bun --bun ./node_modules/.bin/next build
-PORT=52907 node $S/qs/sink.mjs &
+PORT=52907 node $REPRO/_toolbox/sink.mjs &
 cd $V/nextapp && SINK_PORT=52907 TRACE_LIFECYCLE=static bun --bun ./node_modules/.bin/next start -p 52908 &
 curl -s localhost:52908/api/users/99; curl -s localhost:52908/api/error; curl -s localhost:52908/api/sentinel
 curl -s localhost:52907/__items

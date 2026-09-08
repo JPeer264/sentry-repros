@@ -2,7 +2,7 @@
 # usage: probe.sh <variant> <lifecycle> <runtime: bun|node> <tag>
 set -u
 S=$SCRATCH
-D=$S/deep/verify4-M-tanstack-bun-outgoingfetch
+D=$REPRO/refutations/verify4-M-tanstack-bun-outgoingfetch
 VARIANT=$1; LIFECYCLE=$2; RT=$3; TAG=$4
 SINK=52117; REC=52118; APP=52119
 

@@ -18,10 +18,10 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 REFUTED. Koa route errors DO reach Sentry automatically on Deno, with no hand-written `app.on('error')` and without `@sentry/deno/import` — the app just has to be bundled with esbuild plus `sentryOrchestrionPlugin()` from `@sentry/server-utils/orchestrion/esbuild`. Build-time channel injection replaces the runtime import hook that crashes on Deno, so `attachKoaErrorHandler` fires off the `orchestrion:koa:callback` channel exactly as on Node.
 
-Probe dir: $SCRATCH/deep/verify4-M-koa-deno-errors/ (app.ts, instrument.ts, main.ts, main-hook.ts, build.mjs, build-nobanner.mjs, build-cjs.mjs, build-noplugin.mjs, deno.json, run-*.log). koa 3.2.1, @koa/router 15.7.0, deno 2.9.0, @sentry/deno 10.67.0 from $S/pack tarballs. `ERR_HANDLER` was never set in any bundled run, i.e. the app registers NO error listener of its own.
+Probe dir: $SCRATCH/deep/verify4-M-koa-deno-errors/ (app.ts, instrument.ts, main.ts, main-hook.ts, build.mjs, build-nobanner.mjs, build-cjs.mjs, build-noplugin.mjs, deno.json, run-*.log). koa 3.2.1, @koa/router 15.7.0, deno 2.9.0, @sentry/deno 10.67.0 from $REPRO/_toolbox/pack tarballs. `ERR_HANDLER` was never set in any bundled run, i.e. the app registers NO error listener of its own.
 
 Install / build / run:
-  npm install $S/pack/sentry-deno-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz koa@3 @koa/router@15 esbuild
+  npm install $REPRO/_toolbox/pack/sentry-deno-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz koa@3 @koa/router@15 esbuild
   node build.mjs      # esbuild: entry main.ts, bundle, platform node, format esm, external ['@sentry/deno','@sentry/server-utils'], plugins [sentryOrchestrionPlugin()], banner createRequire
   TUNNEL=http://127.0.0.1:58211/ PORT=58213 LIFECYCLE=static deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys dist/main.js
 
@@ -46,7 +46,7 @@ Install / build / run:
    error: Uncaught (in promise) SyntaxError: Unexpected token ':'
    var codes = require('./codes.json')
        at Object.<anonymous> (.../node_modules/statuses/index.js:15:13)
-   Deno 2.8.3 (the CI pin) could not be retested: $S/deno283 no longer exists on this machine.
+   Deno 2.8.3 (the CI pin) could not be retested: $SCRATCH/deno283 no longer exists on this machine.
 
 Two build shapes that do NOT work and must be avoided in a docs snippet:
 - `format: 'cjs'` (so the createRequire banner is unnecessary): `Error: [ERR_PACKAGE_PATH_NOT_EXPORTED] No "exports" main defined in .../@sentry/deno/package.json` — the Deno SDK is ESM-only.

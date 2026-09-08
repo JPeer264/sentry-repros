@@ -16,7 +16,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 **Verdict:** confirmed-broken
 
-Reproduced exactly, and it is a @sentry/deno gap (K2), not a Fresh gap. Probe dir: $SCRATCH/deep/verify4-M-fresh-deno-outgoingfetch (Fresh 2.3.3 + @fresh/plugin-vite 1.1.2, deno 2.9.0, SDK from $S/pack tarballs copied into app/node_modules). Two routes call out to a node:http recorder in the same request: /api/out uses global `fetch()`, /api/outnode uses `node:http.request()`. Driver: /run-b/drive.sh (sink 58101, recorder 58103, app 58105).
+Reproduced exactly, and it is a @sentry/deno gap (K2), not a Fresh gap. Probe dir: $SCRATCH/deep/verify4-M-fresh-deno-outgoingfetch (Fresh 2.3.3 + @fresh/plugin-vite 1.1.2, deno 2.9.0, SDK from $REPRO/_toolbox/pack tarballs copied into app/node_modules). Two routes call out to a node:http recorder in the same request: /api/out uses global `fetch()`, /api/outnode uses `node:http.request()`. Driver: /run-b/drive.sh (sink 58101, recorder 58103, app 58105).
 
 A) vite dev, traceLifecycle static, stock SDK (no extra integration):
   transaction | GET /api/out | op=http.server | src=route | spans=[]

@@ -2,7 +2,7 @@
 # usage: run.sh <main.ts> <lifecycle> <tag> [extra deno args...]
 set -u
 S=$SCRATCH
-D=$S/deep/verify4-M-hapi-deno-routenames
+D=$REPRO/refutations/verify4-M-hapi-deno-routenames
 MAIN=$1; LIFE=$2; TAG=$3; shift 3
 DENO=${DENO_BIN:-deno}
 SINK_PORT=41731

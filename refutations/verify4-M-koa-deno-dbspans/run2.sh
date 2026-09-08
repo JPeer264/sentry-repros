@@ -4,7 +4,7 @@ S=$SCRATCH
 cd "$(dirname "$0")"
 ENTRY=$1; LC=$2; TAG=$3
 SINK=$((41000 + RANDOM % 4000)); PORT=$((45000 + RANDOM % 4000))
-PORT=$SINK node $S/qs/sink.mjs > sink-$TAG.log 2>&1 &
+PORT=$SINK node $REPRO/_toolbox/sink.mjs > sink-$TAG.log 2>&1 &
 SPID=$!
 sleep 1
 PORT=$PORT SINK=$SINK LIFECYCLE=$LC deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys $ENTRY > run2-$TAG.log 2>&1 &

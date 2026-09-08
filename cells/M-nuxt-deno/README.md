@@ -25,11 +25,11 @@ S=$SCRATCH
 cd $REPRO/cells/M-nuxt-deno
 
 npm install --no-audit --no-fund nuxt@4.5.2 vue mysql2 \
-  $S/pack/sentry-nuxt-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-vue-10.67.0.tgz \
-  $S/pack/sentry-browser-utils-10.67.0.tgz $S/pack/sentry-bundler-plugins-10.67.0.tgz \
-  $S/pack/sentry-replay-10.67.0.tgz $S/pack/sentry-replay-canvas-10.67.0.tgz $S/pack/sentry-feedback-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-nuxt-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-vue-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-browser-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-replay-10.67.0.tgz $REPRO/_toolbox/pack/sentry-replay-canvas-10.67.0.tgz $REPRO/_toolbox/pack/sentry-feedback-10.67.0.tgz
 ```
 
 The same tarballs are mirrored in `$REPRO/_toolbox/pack`. Use npm, not
@@ -51,7 +51,7 @@ cd $D && npx nuxt build
 # work around the broken top-level-import injection (already applied in the checked-in .output)
 cd $D && node -e "const fs=require('fs');const p='.output/server/index.mjs';const s=fs.readFileSync(p,'utf8');if(!s.startsWith(\"import './sentry.server.config.mjs';\"))fs.writeFileSync(p,\"import './sentry.server.config.mjs';\n\"+s)"
 
-# sinks (sink.mjs is $S/qs/sink.mjs with event trace ids, tags, runtime and hasContextLine kept)
+# sinks (sink.mjs is $REPRO/_toolbox/sink.mjs with event trace ids, tags, runtime and hasContextLine kept)
 PORT=41711 node $D/sink.mjs > $D/sink.log 2>&1 &
 PORT=41712 node $D/recorder.mjs > $D/recorder.log 2>&1 &
 

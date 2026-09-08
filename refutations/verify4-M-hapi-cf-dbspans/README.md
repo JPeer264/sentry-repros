@@ -18,7 +18,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 REFUTED: db spans on Hapi + Cloudflare Workers do NOT need the Cloudflare Vite plugin. The real requirement is build-time orchestrion instrumentation from ANY of the SDK's bundler plugins. `@sentry/server-utils` ships `./orchestrion/{vite,rollup,esbuild,webpack,webpack-loader,bun}`; `@sentry/cloudflare/vite` is just `sentryOrchestrionPlugin` (vite) + the auto-instrument plugin. Pre-bundling the Worker yourself with esbuild + `sentryOrchestrionPlugin` from `@sentry/server-utils/orchestrion/esbuild`, then pointing wrangler at that bundle, gives the same db spans with no vite and no @cloudflare/vite-plugin installed.
 
-Exact change (probe at $S/deep/verify4-M-hapi-cf-dbspans/run-b/):
+Exact change (probe at $REPRO/refutations/verify4-M-hapi-cf-dbspans/run-b/):
   build.mjs:
     import { sentryOrchestrionPlugin } from '@sentry/server-utils/orchestrion/esbuild';
     esbuild.build({ entryPoints:['./src/index.mjs'], outfile:'./dist/worker.mjs', bundle:true,
@@ -49,7 +49,7 @@ Without `disableEval` the same pool returns {"error":"Code generation from strin
 
 Still true from the original report: `npx wrangler dev` on unbundled source (wrangler's internal esbuild) produces no db span, and there is no supported way to add a plugin to wrangler's own bundler — so "plain wrangler build" remains broken. The reference e2e app (~/dev/sentry-worktrees/audit-runtime-docs/dev-packages/e2e-tests/test-applications/cloudflare-orchestrion-mysql) only covers the vite path.
 
-Probe files (node_modules removed; reinstall with `npm install $S/pack/sentry-{cloudflare,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz @hapi/hapi@21 mysql@2 mysql2@3 wrangler@4 esbuild@0.25`):
+Probe files (node_modules removed; reinstall with `npm install $REPRO/_toolbox/pack/sentry-{cloudflare,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz @hapi/hapi@21 mysql@2 mysql2@3 wrangler@4 esbuild@0.25`):
   $SCRATCH/deep/verify4-M-hapi-cf-dbspans/run-b/src/index.mjs
   .../run-b/build.mjs, build-nobanner.mjs, wrangler.jsonc, wrangler.plain.jsonc, wrangler.nobanner.jsonc
   .../run-b/dev-b.log (with plugin), dev-plain.log (control), dev-c.log (mysql2), dev-nobanner.log (__require crash)

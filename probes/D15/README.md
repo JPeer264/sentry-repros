@@ -150,7 +150,7 @@ spans with origin `auto.db.mysql2.diagnostic_channel`, `db.query.text: "SELECT *
 
 Differences from the record, none of them affecting the verdict:
 
-- Deno 2.8.3 was not re-tested: the CI-pin binary the record used (`$S/deno283/deno`) is no longer
+- Deno 2.8.3 was not re-tested: the CI-pin binary the record used (`$SCRATCH/deno283/deno`) is no longer
   on this machine. Only Deno 2.9.0 was run.
 - The hook runs here do land one sink item, the captured `SyntaxError` unhandled rejection
   (`mechanism: auto.deno.global_handlers.unhandledrejection`), where the record noted "no sink

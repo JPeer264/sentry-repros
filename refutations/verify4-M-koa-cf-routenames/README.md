@@ -49,7 +49,7 @@ so the error event's `transaction` is the route now, not the raw path.
 
 The manual `Sentry.updateSpanName(getRootSpan(...))` workaround still works and still wins (source `custom`) but is no longer needed.
 
-Files (all under $S/deep/verify4-M-koa-cf-routenames/, node_modules removed after the run):
+Files (all under $REPRO/refutations/verify4-M-koa-cf-routenames/, node_modules removed after the run):
 - $SCRATCH/deep/verify4-M-koa-cf-routenames/app.js - shared Koa app (`buildApp()` factory, routes /plain, /users/:id, /api/orders/:orderId/items/:itemId, /named/:id manual-naming, /boom/:id, /sentinel)
 - .../src/index.js + wrangler.jsonc - variant A, module-scope app, plain wrangler (baseline, no route names)
 - .../src/index.js + wrangler.b.jsonc + vite.config.b.mjs - variant B, module-scope app + Vite plugin (the boot failure; log in wrangler-b.log)
@@ -57,8 +57,8 @@ Files (all under $S/deep/verify4-M-koa-cf-routenames/, node_modules removed afte
 - .../dump.py - prints name/op/http.route/source per span from the sink's raw feed
 
 Rerun:
-  npm install koa@3 @koa/router wrangler@4 vite@6 @cloudflare/vite-plugin $S/pack/sentry-{cloudflare,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
-  PORT=51733 node $S/qs/sink.mjs > sink.log 2>&1 &
+  npm install koa@3 @koa/router wrangler@4 vite@6 @cloudflare/vite-plugin $REPRO/_toolbox/pack/sentry-{cloudflare,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
+  PORT=51733 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
   npx vite build --config vite.config.c.mjs
   npx wrangler dev --config distc/koa_cf_c/wrangler.json --port 51736 --inspector-port 0    # add --var LIFECYCLE:static for transactions
   curl -s http://127.0.0.1:51736/users/42 ; python3 dump.py "http://127.0.0.1:51733/__items?raw"

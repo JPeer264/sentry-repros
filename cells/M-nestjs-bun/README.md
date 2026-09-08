@@ -24,9 +24,9 @@ optional either: with the `APP_FILTER` provider removed, a controller throw yiel
 ```
 S=$SCRATCH
 cd $REPRO/cells/M-nestjs-bun
-npm install --no-audit --no-fund $S/pack/sentry-nestjs-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz \
-  $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
+npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-nestjs-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
   @nestjs/core@11 @nestjs/common@11 @nestjs/platform-express@11 reflect-metadata rxjs mysql
 ```
 

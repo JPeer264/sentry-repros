@@ -20,9 +20,9 @@ Hapi runs on Workers behind the node:http server shim. Two working shapes, they 
 
 A) Plain wrangler (esbuild) build - no framework instrumentation:
   npm install @hapi/hapi@21 mysql@2 wrangler@4 \
-    $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-    $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-    $S/pack/sentry-opentelemetry-10.67.0.tgz
+    $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz
   (all five @sentry tarballs are required: @sentry/cloudflare imports "@sentry/server-utils/no-diagnostic-channels", and npm otherwise resolves @sentry/opentelemetry@10.67.0 from the registry, which does not match the develop core build - see notes.)
 
   wrangler.jsonc:
@@ -79,15 +79,15 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-cd $S/deep/M-hapi-cf
+cd $REPRO/cells/M-hapi-cf
 
 # deps (node_modules was removed at the end to save disk; reinstall to rerun)
 npm install --no-audit --no-fund @hapi/hapi@21 mysql@2 wrangler@4 vite@6 @cloudflare/vite-plugin \
-  $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz
 
-# sink (extended copy of $S/qs/sink.mjs with /__record + /__recorded)
+# sink (extended copy of $REPRO/_toolbox/sink.mjs with /__record + /__recorded)
 PORT=41778 node ./sink.mjs > sink.log 2>&1 & echo $! > sink.pid
 
 # A) plain wrangler build

@@ -65,10 +65,10 @@ Independence check — the fix is NOT an artifact of React Router 8's instrument
   event sentinel                   trace= 2bd7655b22e14a0f9be917010461eb04
 
 Notes / caveats:
-- `@sentry/bun` must be installed alongside `@sentry/react-router` and must dedupe to ONE `@sentry/core@10.67.0` (verified: only `node_modules/@sentry/core` exists, no nested copy). Installed with `npm install $S/pack/sentry-bun-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz`.
+- `@sentry/bun` must be installed alongside `@sentry/react-router` and must dedupe to ONE `@sentry/core@10.67.0` (verified: only `node_modules/@sentry/core` exists, no nested copy). Installed with `npm install $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz`.
 - The debug warning "No diagnostics-channel injection detected. Channel-based integrations will not record spans." is still printed and is still accurate for *library* spans (express/db/AI) — those remain absent without a Bun bundle. It is misleading here in that incoming-request tracing is fully fixed while the warning still fires.
 - The Bun workaround the original probe found is still required: `app/entry.server.tsx` must use `renderToReadableStream`, because Bun resolves `react-dom/server` to `server.bun.js` which has no `renderToPipeableStream`. That means `Sentry.createSentryHandleRequest(...)` (the wiring the docs and the `react-router-8-framework` e2e app show) is unusable on Bun; `Sentry.wrapSentryHandleRequest(handler)` is.
-- bun 1.3.14 (the CI pin) could NOT be cross-checked: `$S/bun1314` no longer exists on this machine. Only bun 1.4.0 was tested.
+- bun 1.3.14 (the CI pin) could NOT be cross-checked: `$SCRATCH/bun1314` no longer exists on this machine. Only bun 1.4.0 was tested.
 - The repo's own reference app `~/dev/sentry-worktrees/audit-runtime-docs/dev-packages/e2e-tests/test-applications/react-router-8-framework` runs Node with `NODE_OPTIONS='--import ./instrument.mjs'`, which is exactly the mechanism Bun lacks.
 
 Probe files (all absolute, rerunnable):

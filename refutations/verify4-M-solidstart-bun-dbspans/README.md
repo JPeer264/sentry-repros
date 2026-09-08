@@ -62,9 +62,9 @@ The patch was reverted afterwards (original kept at tracing-channel.orig.js) and
 - "No available Node API to register diagnostics-channel injection hooks" is irrelevant here — the runtime hook is only a second path to injection, and the bundler already did the job.
 
 === 5. Not tested ===
-bun 1.3.14 (the CI pin at $S/bun1314 no longer exists on disk), so I cannot say whether this is a bun 1.4.0 regression.
+bun 1.3.14 (the CI pin at $SCRATCH/bun1314 no longer exists on disk), so I cannot say whether this is a bun 1.4.0 regression.
 
-Commands to rerun: `PORT=45123 node $S/qs/sink.mjs &`; `cd app && npx vite build`; `PORT=45131 SENTRY_TUNNEL=http://127.0.0.1:45123/ SENTRY_LIFECYCLE=static bun .output/server/index.mjs` (no db spans) vs the same with `PIN_CHANNELS=1` (db spans); `curl http://127.0.0.1:45123/__items`.
+Commands to rerun: `PORT=45123 node $REPRO/_toolbox/sink.mjs &`; `cd app && npx vite build`; `PORT=45131 SENTRY_TUNNEL=http://127.0.0.1:45123/ SENTRY_LIFECYCLE=static bun .output/server/index.mjs` (no db spans) vs the same with `PIN_CHANNELS=1` (db spans); `curl http://127.0.0.1:45123/__items`.
 
 ## Workaround
 

@@ -1,4 +1,4 @@
-// Envelope sink for D09. Keeps the request-body fields the base $S/qs/sink.mjs drops:
+// Envelope sink for D09. Keeps the request-body fields the base $REPRO/_toolbox/sink.mjs drops:
 // event/transaction `request.data` (+ its length), and the `http.request.body.*` attributes
 // on stream-lifecycle spans and on the static-lifecycle transaction's trace data.
 import { createServer } from 'node:http';

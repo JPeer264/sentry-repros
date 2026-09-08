@@ -22,12 +22,12 @@ S=$SCRATCH
 cd $REPRO/cells/M-nuxt-cf
 npm install --no-audit --no-fund   # the `nuxt prepare` postinstall fails here; that is expected
 npm install --no-audit --no-fund \
-  $S/pack/sentry-nuxt-10.67.0.tgz $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-vue-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz \
-  $S/pack/sentry-browser-utils-10.67.0.tgz $S/pack/sentry-replay-10.67.0.tgz $S/pack/sentry-replay-canvas-10.67.0.tgz \
-  $S/pack/sentry-feedback-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz \
-  $S/pack/sentry-server-runtime-injection-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz \
-  $S/pack/sentry-bundler-plugins-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-nuxt-10.67.0.tgz $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-vue-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-browser-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-replay-10.67.0.tgz $REPRO/_toolbox/pack/sentry-replay-canvas-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-feedback-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz
 npx nuxt prepare
 ```
 

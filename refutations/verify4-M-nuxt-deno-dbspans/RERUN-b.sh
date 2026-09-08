@@ -3,10 +3,10 @@
 # db spans: CONFIRMED WORKING. Two ways.
 set -e
 S=$SCRATCH
-D=$S/deep/verify4-M-nuxt-deno-dbspans
+D=$REPRO/refutations/verify4-M-nuxt-deno-dbspans
 cd $D/app
 npm install --no-audit --no-fund
-PORT=47313 node $S/qs/sink.mjs > $D/sink-b.log 2>&1 & echo $! > $D/sink-b.pid
+PORT=47313 node $REPRO/_toolbox/sink.mjs > $D/sink-b.log 2>&1 & echo $! > $D/sink-b.pid
 
 # --- A) deno_server preset (nuxt.config.ts as committed) --------------------
 # nuxt.config.ts MUST carry: nitro: { externals: { inline: ['generate-function','named-placeholders'] } }

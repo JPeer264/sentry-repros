@@ -16,7 +16,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 **Verdict:** partial
 
-Rebuilt the Fresh 2 + Cloudflare probe from scratch (copy of the original app, same versions: @fresh/core 2.3.3, @fresh/plugin-vite 1.1.2, wrangler 4.129.0, compatibility_date 2026-05-01, nodejs_compat, @sentry/cloudflare 10.67.0 from $S/pack) and attacked the claim from four sides. The swallowing part of the claim is CONFIRMED; the "you must add routes/_error.tsx" part is REFUTED - an init-only option works with no framework file at all.
+Rebuilt the Fresh 2 + Cloudflare probe from scratch (copy of the original app, same versions: @fresh/core 2.3.3, @fresh/plugin-vite 1.1.2, wrangler 4.129.0, compatibility_date 2026-05-01, nodejs_compat, @sentry/cloudflare 10.67.0 from $REPRO/_toolbox/pack) and attacked the claim from four sides. The swallowing part of the claim is CONFIRMED; the "you must add routes/_error.tsx" part is REFUTED - an init-only option works with no framework file at all.
 
 Why it is swallowed (read from the built bundle, app/_fresh/server/server-entry.js):
 - line 6099 `DEFAULT_ERROR_HANDLER`: `console.error(error); return new Response("Internal server error", {status:500})`.

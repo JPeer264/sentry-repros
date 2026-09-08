@@ -59,9 +59,9 @@ WHY IT WORKS: `@sentry/nestjs/setup` (worktree `packages/nestjs/src/setup.ts`) i
 SIDE OBSERVATION (not this capability): in `stream` lifecycle the `/error-expected` 404 segment span carries `"status":"error"`, while in `static` lifecycle the same request produces `"status":"not_found"`.
 
 FILES / COMMANDS (rerunnable):
-  D=$S/deep/verify4-M-nestjs-cf-errors
+  D=$REPRO/refutations/verify4-M-nestjs-cf-errors
   $D/app/src/app.module.ts     (the change: SentryGlobalFilter + SentryModule)
-  $D/app/src/main.ts           ($S/pack tarballs, lazy Nest boot, httpServerHandler bridge)
+  $D/app/src/main.ts           ($REPRO/_toolbox/pack tarballs, lazy Nest boot, httpServerHandler bridge)
   $D/app/src/app.controller.ts ( /error, /error-async, /error-expected, /sentinel )
   $D/app/build.mjs             (esbuild + process shim + orchestrion)
   $D/app/build-noorch.mjs      (same minus orchestrion -> dist-noorch/)
@@ -70,7 +70,7 @@ FILES / COMMANDS (rerunnable):
 
   cd $D/app && npm install --no-audit --no-fund
   npx tsc -p tsconfig.json ; node build.mjs        # or node build-noorch.mjs
-  PORT=41777 node $S/qs/sink.mjs &
+  PORT=41777 node $REPRO/_toolbox/sink.mjs &
   npx wrangler dev --config wrangler.jsonc --port 41778 --inspector-port 0
   curl http://127.0.0.1:41778/error ; curl http://127.0.0.1:41778/sentinel
   curl -s http://127.0.0.1:41777/__items

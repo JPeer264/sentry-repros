@@ -9,7 +9,7 @@ Two findings worth filing.
 (b) SEGMENT NAME never gets the route. `svelteKitSpansIntegration` sets the parameterized name and `http.route` on a CHILD span, while the segment stays the Cloudflare request span (`GET /users/42` source url under static, bare `GET` under stream). Both lifecycles were checked. On the Node SvelteKit SDK the SvelteKit span IS the root, so this is Cloudflare-specific and means transaction grouping in the product is by URL, not by route.
 
 Smaller notes:
-- `@sentry/sveltekit@10.67.0` cannot be installed from $S/pack alone: its `@sentry/bundler-plugins@10.67.0` dependency is neither in $S/pack nor published (npm latest 10.73.0). It has to be packed from the worktree. Worth adding to $S/pack for other framework cells.
+- `@sentry/sveltekit@10.67.0` cannot be installed from $REPRO/_toolbox/pack alone: its `@sentry/bundler-plugins@10.67.0` dependency is neither in $REPRO/_toolbox/pack nor published (npm latest 10.73.0). It has to be packed from the worktree. Worth adding to $REPRO/_toolbox/pack for other framework cells.
 - The Worker reaches the host sink at `127.0.0.1:41317` fine; `tunnel` in `initCloudflareSentryHandle` works.
 - mysql connections must be created INSIDE the handler on workerd (module-scope I/O is forbidden), the inverse of the Bun K11 rule, and spans still attach correctly.
 - npm 11 skipped the workerd/esbuild postinstall scripts (`npm warn allow-scripts`); the prebuilt binaries were present anyway and wrangler dev started fine, so no approval was needed.
@@ -19,11 +19,11 @@ This directory is the original run of 2026-09-06 and 2026-09-07, kept as it was.
 
 ## Setup the docs would show
 
-Packages (all from $S/pack, npm, one command line so the 10.67.0 peers resolve):
-  npm install $S/pack/sentry-{sveltekit,cloudflare,core,node,svelte,browser,server-utils,server-runtime-injection,opentelemetry,bundler-plugins}-10.67.0.tgz mysql@2.18.1
+Packages (all from $REPRO/_toolbox/pack, npm, one command line so the 10.67.0 peers resolve):
+  npm install $REPRO/_toolbox/pack/sentry-{sveltekit,cloudflare,core,node,svelte,browser,server-utils,server-runtime-injection,opentelemetry,bundler-plugins}-10.67.0.tgz mysql@2.18.1
   npm install -D @sveltejs/kit@^2.46 @sveltejs/adapter-cloudflare@^5 @sveltejs/vite-plugin-svelte@^5 svelte@^5 vite@^6 wrangler@^4 typescript@^5
-Note: @sentry/sveltekit@10.67.0 depends on @sentry/bundler-plugins@10.67.0, which is NOT in $S/pack and NOT on npm (npm latest is 10.73.0), so it has to be packed from the worktree first:
-  (cd $W/packages/bundler-plugins && npm pack --pack-destination $S/pack)
+Note: @sentry/sveltekit@10.67.0 depends on @sentry/bundler-plugins@10.67.0, which is NOT in $REPRO/_toolbox/pack and NOT on npm (npm latest is 10.73.0), so it has to be packed from the worktree first:
+  (cd $W/packages/bundler-plugins && npm pack --pack-destination $REPRO/_toolbox/pack)
 
 vite.config.js:
   import { sentrySvelteKit } from '@sentry/sveltekit/vite';   // NOT '@sentry/sveltekit' - see docsNote
@@ -53,24 +53,24 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 ```
 S=$SCRATCH
 W=~/dev/sentry-worktrees/audit-runtime-docs
-D=$S/deep/M-sveltekit-cf/app
+D=$REPRO/cells/M-sveltekit-cf/app
 
-# 1. pack the missing build-time dep (not in $S/pack, not on npm at 10.67.0)
-(cd $W/packages/bundler-plugins && npm pack --pack-destination $S/pack)
+# 1. pack the missing build-time dep (not in $REPRO/_toolbox/pack, not on npm at 10.67.0)
+(cd $W/packages/bundler-plugins && npm pack --pack-destination $REPRO/_toolbox/pack)
 
 # 2. install
 cd $D && npm install --no-audit --no-fund \
-  $S/pack/sentry-sveltekit-10.67.0.tgz $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-svelte-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-bundler-plugins-10.67.0.tgz mysql@2.18.1
+  $REPRO/_toolbox/pack/sentry-sveltekit-10.67.0.tgz $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-svelte-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz mysql@2.18.1
 cd $D && npm install --no-audit --no-fund --save-dev "@sveltejs/kit@^2.46.0" \
   "@sveltejs/adapter-cloudflare@^5.0.3" "@sveltejs/vite-plugin-svelte@^5.0.3" \
   "svelte@^5.20.2" "vite@^6.4.2" "wrangler@^4.61.0" "typescript@^5"
 
 # 3. sink + fetch recorder
-PORT=41317 node $S/qs/sink.mjs > $S/deep/M-sveltekit-cf/sink.log 2>&1 &
-node $S/deep/M-sveltekit-cf/recorder.mjs > $S/deep/M-sveltekit-cf/recorder.log 2>&1 &
+PORT=41317 node $REPRO/_toolbox/sink.mjs > $REPRO/cells/M-sveltekit-cf/sink.log 2>&1 &
+node $REPRO/cells/M-sveltekit-cf/recorder.mjs > $REPRO/cells/M-sveltekit-cf/recorder.log 2>&1 &
 
 # 4a. docs-shaped build (reproduces the mysql build crash)
 cd $D && npx vite build

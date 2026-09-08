@@ -54,7 +54,7 @@ Repro (probe dir $SCRATCH/deep/verify4-M-fresh-bun-routenames/):
   zsh run.sh static B v2-static-B   # then read items-v2-static-B.json
   zsh run.sh stream B v2-stream-B
   zsh run2.sh static NONE v2-static-bunroutes entry-routes.ts
-  npm install $S/pack/sentry-{bun,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz mysql2  (node_modules was already present; app/_fresh is the prebuilt SSR bundle, rebuild with `cd app && deno task build`)
+  npm install $REPRO/_toolbox/pack/sentry-{bun,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz mysql2  (node_modules was already present; app/_fresh is the prebuilt SSR bundle, rebuild with `cd app && deno task build`)
 Wiring is otherwise exactly the prior probe's: SDK external to the Fresh SSR bundle, node_modules one level above app/, `bun entry.ts`.
 
 Not tested: whether the same middleware works under `deno serve` (out of scope, this is the bun probe). No Fresh e2e app exists in dev-packages/e2e-tests/test-applications and there is no Fresh guide under ~/dev/sentry-docs/docs/platforms/javascript/guides/, so there is no documented Fresh wiring to compare against.

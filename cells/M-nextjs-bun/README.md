@@ -20,7 +20,7 @@ npm install --no-audit --no-fund
 ```
 
 `package.json` pins every `@sentry/*` package to the 10.67.0 tarball in
-`../../_toolbox/pack/` (the durable mirror of `$S/pack`), so one `npm install` restores the whole tree.
+`../../_toolbox/pack/` (the durable mirror of `$REPRO/_toolbox/pack`), so one `npm install` restores the whole tree.
 Use `npm`, not `bun add`: `bun add` cannot resolve the tarballs' transitive `@sentry/*@10.67.0` deps.
 `typescript` is pinned to 5.9.2 on purpose (see above) and `mysql2` to 3.24.3, the version this run used.
 

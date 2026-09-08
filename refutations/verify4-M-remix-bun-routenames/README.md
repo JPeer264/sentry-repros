@@ -16,7 +16,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 **Verdict:** works-after-all
 
-Rebuilt the probe from scratch (the earlier $S/deep/M-remix-bun/ dir no longer exists) in $S/deep/verify4-M-remix-bun-routenames/app: Remix 2.17.4 vite plugin + @remix-run/express, `bun x remix vite:build` (works unmodified on Bun), @sentry/remix 10.67.0 from the develop tarballs, `import './instrument.mjs'` first line of server.mjs, `export const handleError = Sentry.sentryHandleError`, sink on 34177, app on 34199, sentinel-gated driver.
+Rebuilt the probe from scratch (the earlier $REPRO/cells/M-remix-bun/ dir no longer exists) in $REPRO/refutations/verify4-M-remix-bun-routenames/app: Remix 2.17.4 vite plugin + @remix-run/express, `bun x remix vite:build` (works unmodified on Bun), @sentry/remix 10.67.0 from the develop tarballs, `import './instrument.mjs'` first line of server.mjs, `export const handleError = Sentry.sentryHandleError`, sink on 34177, app on 34199, sentinel-gated driver.
 
 MODE A (`bun server.mjs`) — the prior report's "zero envelopes" is CONFIRMED, and it is not route-name specific: the whole tracing pipeline is absent.
   {"type":"event","exception":"Error: probe-loader-boom-7","mechanism":"auto.function.remix.server","handled":false,"sdk":"sentry.javascript.remix","trace_id":"89e72131d5a144efa08751b91f5281ba","request":{"url":"http://127.0.0.1:34199/boom/7",...}}
@@ -50,7 +50,7 @@ NODE CONTROL (same unbundled app, `node --import ./node_modules/@sentry/remix/bu
 
 So for the route-names capability specifically there is a run shape on Bun that gets it fully right, in both trace lifecycles, with parameterized and multi-segment routes and source `route`. Mode A produces nothing because Bun has no runtime instrumentation at all without a bundle (the established Bun rule for every library), not because of anything Remix-specific, and the isolation loss that made the prior verdict "partial" is removable without giving up the bundle.
 
-Probe files: $S/deep/verify4-M-remix-bun-routenames/ (README-rerun.txt has the exact commands; app/server.mjs, app/server-iso.mjs, app/build-server.ts, app/build-server-iso.ts, drive.sh, modeA.log, modeB.log, modeB-stream.log, modeC.log, modeC-stream.log, node-control.log). All processes started were killed.
+Probe files: $REPRO/refutations/verify4-M-remix-bun-routenames/ (README-rerun.txt has the exact commands; app/server.mjs, app/server-iso.mjs, app/build-server.ts, app/build-server-iso.ts, drive.sh, modeA.log, modeB.log, modeB-stream.log, modeC.log, modeC-stream.log, node-control.log). All processes started were killed.
 
 ## Workaround
 

@@ -19,7 +19,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 Could not fully refute. The db span itself is unambiguously correct and needs no extra wiring; the build crash is real but is **package-manager-dependent**, which the original report missed.
 
 REFUTED PART 1 — with a pnpm install the docs-shaped config builds and works with ZERO workaround.
-`/private/tmp/.../deep/verify4-M-sveltekit-cf-dbspans/appB` — pnpm, `@sentry/sveltekit` the only direct `@sentry/*` dep (rest via `pnpm.overrides` to the $S/pack tarballs), vite 6.4.3, @sveltejs/kit 2.70.3, adapter-cloudflare 5.1.0, `vite.config.js` = exactly `plugins: [sentrySvelteKit({ autoUploadSourceMaps: false }), sveltekit()]`, no `ssr` block at all.
+`/private/tmp/.../deep/verify4-M-sveltekit-cf-dbspans/appB` — pnpm, `@sentry/sveltekit` the only direct `@sentry/*` dep (rest via `pnpm.overrides` to the $REPRO/_toolbox/pack tarballs), vite 6.4.3, @sveltejs/kit 2.70.3, adapter-cloudflare 5.1.0, `vite.config.js` = exactly `plugins: [sentrySvelteKit({ autoUploadSourceMaps: false }), sveltekit()]`, no `ssr` block at all.
   npx vite build        -> EXIT=0, "> Using @sveltejs/adapter-cloudflare  ✔ done"
   npx wrangler dev --port 51878 --inspector-port 0
 Worker log: `Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now` / `subscribing to channels` / `Integration installed: Mysql`, and NO "Failed to register diagnostics-channel injection hooks" warning.
@@ -48,7 +48,7 @@ Variants I tried on the npm app (all in appD, `npx vite build -c <config>`):
 - vite.config.c.js  ssr.noExternal ['@sentry/core','@sentry/conventions','@opentelemetry/api'] -> builds AND correct at runtime: `"sdk":"sentry.javascript.cloudflare","spans":["http.server GET /db-mysql","db SELECT * FROM users"]`
 - vite.config.d.js  sentrySvelteKit({ buildTimeInstrumentation: false }) -> builds, but no transform, so no db spans.
 
-Repro files: $SCRATCH/deep/verify4-M-sveltekit-cf-dbspans/ — appB (pnpm, clean pass), appD (npm, repro + 4 variant configs), buildB*.log, buildD*.log, wranglerB_final.log, wranglerD.log. Both apps share src/hooks.server.ts (initCloudflareSentryHandle + sentryHandle + handleErrorWithSentry, tunnel 127.0.0.1:51873, traceLifecycle 'static') and routes /db-mysql (per-request connection) and /db-mysql-module (module-scope connection). Sink: `PORT=51873 node $S/qs/sink.mjs`. appB node_modules is intact; appD node_modules is intact. All processes I started were killed (ports 51873/51876/51878 verified free).
+Repro files: $SCRATCH/deep/verify4-M-sveltekit-cf-dbspans/ — appB (pnpm, clean pass), appD (npm, repro + 4 variant configs), buildB*.log, buildD*.log, wranglerB_final.log, wranglerD.log. Both apps share src/hooks.server.ts (initCloudflareSentryHandle + sentryHandle + handleErrorWithSentry, tunnel 127.0.0.1:51873, traceLifecycle 'static') and routes /db-mysql (per-request connection) and /db-mysql-module (module-scope connection). Sink: `PORT=51873 node $REPRO/_toolbox/sink.mjs`. appB node_modules is intact; appD node_modules is intact. All processes I started were killed (ports 51873/51876/51878 verified free).
 
 ## Workaround
 

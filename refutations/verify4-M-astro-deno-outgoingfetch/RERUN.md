@@ -4,7 +4,7 @@ Astro 7 (output: 'server') + @deno/astro-adapter 0.6.0 + @sentry/astro 10.67.0 (
 
 ## Install
 npm install astro@7 @deno/astro-adapter \
-  $S/pack/sentry-{astro,browser,browser-utils,core,node,opentelemetry,server-runtime-injection,server-utils,bundler-plugins,replay,replay-canvas,feedback,cloudflare}-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-{astro,browser,browser-utils,core,node,opentelemetry,server-runtime-injection,server-utils,bundler-plugins,replay,replay-canvas,feedback,cloudflare}-10.67.0.tgz
 
 ## Run
 PORT=53821 node sink.mjs & PORT=53822 node rec.mjs &

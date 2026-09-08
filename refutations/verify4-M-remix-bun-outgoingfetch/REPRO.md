@@ -20,12 +20,12 @@ Answer:
 ## Install
   mkdir app && cd app   # package.json in this repo dir
   npm install
-  npm install $S/pack/sentry-remix-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-    $S/pack/sentry-react-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-browser-utils-10.67.0.tgz \
-    $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-    $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz \
-    $S/pack/sentry-bundler-plugins-10.67.0.tgz $S/pack/sentry-replay-10.67.0.tgz \
-    $S/pack/sentry-replay-canvas-10.67.0.tgz $S/pack/sentry-feedback-10.67.0.tgz
+  npm install $REPRO/_toolbox/pack/sentry-remix-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-react-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-utils-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz $REPRO/_toolbox/pack/sentry-replay-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-replay-canvas-10.67.0.tgz $REPRO/_toolbox/pack/sentry-feedback-10.67.0.tgz
   bun x remix vite:build          # works unmodified on bun
   bun build-server.ts             # only for the bundled mode -> app/dist/server.js
 
@@ -53,5 +53,5 @@ Answer:
   app/build-server.ts     Bun.build + sentryBunPlugin()
   app/app/routes/outfetch.tsx, iso.$id.tsx, users.$id.tsx, sentinel.tsx
   app/recorder.mjs        echoes sentry-trace / baggage of the incoming /rec request
-  app/sink2.mjs           copy of $S/qs/sink.mjs
+  app/sink2.mjs           copy of $REPRO/_toolbox/sink.mjs
   app-<label>.log, items-<label>.json, rec-<label>.json

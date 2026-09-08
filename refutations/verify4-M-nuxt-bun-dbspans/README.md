@@ -24,7 +24,7 @@ That also refutes "the build-time orchestrion pass injected nothing": with a dri
 
 CAUSE 2 - `genFunc$1 is not a function` is a Nitro bundling bug with a one-line fix, not an unfixable blocker. `nitro: { externals: { external: ['mysql2', 'mysql2/promise'] } }` keeps mysql2 out of the rollup bundle; the query then returns rows on the first try (`[warmdb] mysql2 ok`, `{"rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}`). Confirmed the bug is Nitro's, not bun's or Sentry's: the same unexternalized build on `node-server` under plain node fails the same way, and there it also breaks the `mysql` v2 driver (`TypeError: SqlString.format is not a function`) which bun happens to tolerate.
 
-FINAL WORKING RUN, documented wiring, static lifecycle (variant F, $S/deep/verify4-M-nuxt-bun-dbspans/run-b/app-F.log):
+FINAL WORKING RUN, documented wiring, static lifecycle (variant F, $REPRO/refutations/verify4-M-nuxt-bun-dbspans/run-b/app-F.log):
   {"type":"transaction","name":"GET /api/db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.nuxt","spans":["db mysql2.pool.connect","db SELECT id, name FROM users WHERE id > ?"],"spanDetail":[{"op":"db","desc":"mysql2.pool.connect","origin":"auto.db.mysql2.diagnostic_channel","db_ns":"app"},{"op":"db","desc":"SELECT id, name FROM users WHERE id > ?","origin":"auto.db.mysql2.diagnostic_channel","db_text":"SELECT id, name FROM users WHERE id > ?","db_summary":"SELECT users","db_ns":"app"}]}
   {"type":"transaction","name":"GET /api/dbmysql","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.nuxt","spans":["db SELECT id, name FROM users WHERE id > 0"],"spanDetail":[{"op":"db","desc":"SELECT id, name FROM users WHERE id > 0","origin":"auto.db.mysql","db_text":"SELECT id, name FROM users WHERE id > 0","db_summary":"SELECT users","db_ns":"app"}]}
 
@@ -43,7 +43,7 @@ E @sentry/bun + externals[mysql,mysql2]: mysql v2 loses its span (see gotcha).
 F @sentry/nuxt + bunServerIntegration() + externals[mysql2], static: works.
 G same as F, stream lifecycle: works.
 
-Probe files (rerun after `npm install` per the package.json in app/, node_modules removed to save disk): $S/deep/verify4-M-nuxt-bun-dbspans/app/{nuxt.config.ts,sentry.server.config.ts,server/utils/dbpool.ts,server/utils/dbconn.ts,server/api/{db,dbmysql,dbspan,dbmysqlspan,sentinel}.ts,server/plugins/warmdb.ts}; logs in $S/deep/verify4-M-nuxt-bun-dbspans/run-b/; sink at $S/deep/verify4-M-nuxt-bun-dbspans/sink.mjs. app/ is left in the variant-F/G state. All processes killed.
+Probe files (rerun after `npm install` per the package.json in app/, node_modules removed to save disk): $REPRO/refutations/verify4-M-nuxt-bun-dbspans/app/{nuxt.config.ts,sentry.server.config.ts,server/utils/dbpool.ts,server/utils/dbconn.ts,server/api/{db,dbmysql,dbspan,dbmysqlspan,sentinel}.ts,server/plugins/warmdb.ts}; logs in $REPRO/refutations/verify4-M-nuxt-bun-dbspans/run-b/; sink at $REPRO/refutations/verify4-M-nuxt-bun-dbspans/sink.mjs. app/ is left in the variant-F/G state. All processes killed.
 
 ## Workaround
 

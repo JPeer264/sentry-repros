@@ -18,7 +18,7 @@ request context on Bun, but *with* `transaction` and `request.url` on Node). Fou
 plain `bun run app.ts`, the `sentryBunPlugin` bundle (`bun run dist/app.js`),
 `traceLifecycle: 'static'` (`app-static.ts`), and the Node baseline (`node-app.mjs`).
 
-`sink.mjs` is `$S/qs/sink.mjs` with the compact mappings extended to keep trace ids, `request`,
+`sink.mjs` is `$REPRO/_toolbox/sink.mjs` with the compact mappings extended to keep trace ids, `request`,
 `tags`, `origin` and the span-stream attributes (`sentry.segment.name.source`, `url.path`,
 `http.request.method`, `http.response.status_code`, `is_segment`).
 

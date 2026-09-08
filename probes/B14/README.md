@@ -52,7 +52,7 @@ DIST=dist4 SINK_PORT=41933 PORT=41934 SENTRY_NEST=1 SENTRY_FILTER=1 SENTRY_LIFEC
 Other variants from the record: `SENTRY_NEST=0 SENTRY_FILTER=0` (plain `@sentry/bun`),
 `SENTRY_FILTER=0` (integration without the filter), `SENTRY_LIFECYCLE=static` (transaction
 envelopes), `bun run build3.ts` + `DIST=dist3` (Sentry and Nest both external), and
-`BUN=$S/bun1314/bun-darwin-aarch64/bun` for the Bun 1.3.14 CI pin.
+`BUN=$SCRATCH/bun1314/bun-darwin-aarch64/bun` for the Bun 1.3.14 CI pin.
 
 `dist/`, `dist2/` and `dist4/` are committed but are not runnable on their own — the bundles keep
 `@sentry/*` (and the Nest optional peers) external, so `npm install` is required either way. They
@@ -129,11 +129,11 @@ and the exception-filter span:
 ### Differences from the record
 
 - The record had to rollup-build `@sentry/nestjs` from a copy of the worktree package because no
-  tarball existed; `$S/pack/sentry-nestjs-10.67.0.tgz` now exists and was used directly.
+  tarball existed; `$REPRO/_toolbox/pack/sentry-nestjs-10.67.0.tgz` now exists and was used directly.
 - `instrument.ts` static-imports `nestIntegration` and only registers it when `SENTRY_NEST=1`, so the
   `SENTRY_NEST=0` variant still loads `@sentry/nestjs` (it just does not use it). Variant A was not
   re-run.
-- The record's sink is an extended copy of `$S/qs/sink.mjs`; `sink.mjs` here is that copy rebuilt —
+- The record's sink is an extended copy of `$REPRO/_toolbox/sink.mjs`; `sink.mjs` here is that copy rebuilt —
   span item strings carry `{route= cb= origin= status=}` and transactions carry `route`.
 - The driver waits for the sentinel event *and* its own request span before reading the sink; waiting
   for the event alone returns before the span envelopes are flushed.

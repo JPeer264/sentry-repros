@@ -18,7 +18,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 The reported claim is half right and half too narrow. Confirmed: with no build-time instrumentation the transaction is the raw path. Refuted: Vite is NOT required, and route names are reachable in a plain wrangler build with ~4 lines of user code.
 
-Probe dir: $SCRATCH/deep/verify4-M-hapi-cf-routenames (entries in run2/, results in RESULTS-run2.txt and RESULTS.txt; node_modules removed, restore with `npm install` — package.json points at the $S/pack tarballs). Sink on 53911, worker on 53912/53913, workerd via wrangler 4.129.0, compatibility_date 2026-05-01, flags nodejs_compat + enable_nodejs_http_server_modules, traceLifecycle static unless noted.
+Probe dir: $SCRATCH/deep/verify4-M-hapi-cf-routenames (entries in run2/, results in RESULTS-run2.txt and RESULTS.txt; node_modules removed, restore with `npm install` — package.json points at the $REPRO/_toolbox/pack tarballs). Sink on 53911, worker on 53912/53913, workerd via wrangler 4.129.0, compatibility_date 2026-05-01, flags nodejs_compat + enable_nodejs_http_server_modules, traceLifecycle static unless noted.
 
 A) plain wrangler, module-scope routes, no plugin — `npx wrangler dev --config wr2-eager.jsonc --port 53912 --inspector-port 0`
    transaction | GET /ok                 | source= url | spans= []

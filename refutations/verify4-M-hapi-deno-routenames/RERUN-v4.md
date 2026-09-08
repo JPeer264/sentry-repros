@@ -4,7 +4,7 @@ Tree state: node_modules is PRISTINE develop 10.67.0 (the earlier `loadSync` jso
 before every run below; `grep -c 'endsWith(".json")' node_modules/@sentry/server-runtime-injection/build/*/vendored/@apm-js-collab/tracing-hooks/hook.js` == 0).
 
 Ports: sink 41731, app 51837.
-    PORT=41731 node $S/qs/sink.mjs > sink2.log 2>&1 &
+    PORT=41731 node $REPRO/_toolbox/sink.mjs > sink2.log 2>&1 &
     ./run.sh <main>.ts <static|stream> <tag> [extra deno flags]
 
 ## Runs (all on deno 2.9.0, unpatched SDK)

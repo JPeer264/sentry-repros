@@ -16,9 +16,9 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 **Verdict:** confirmed-broken
 
-Reproduced the reported behavior exactly, with the documented wiring, and could not refute it. Probe dir: $SCRATCH/deep/verify4-M-sveltekit-cf-routenames/ (app/, logs bB1-bB5.log builds, wB1-wB5.log wrangler, sinkB.log). Same stack as reported: SvelteKit 2.70.3 / svelte 5.57.0 / adapter-cloudflare 5.1.0 / vite 6.4.3, @sentry/sveltekit 10.67.0 from $S/pack, wrangler 4.129.0, compatibility_date 2026-05-01 + nodejs_compat. Sink on 37421, worker on 37422.
+Reproduced the reported behavior exactly, with the documented wiring, and could not refute it. Probe dir: $SCRATCH/deep/verify4-M-sveltekit-cf-routenames/ (app/, logs bB1-bB5.log builds, wB1-wB5.log wrangler, sinkB.log). Same stack as reported: SvelteKit 2.70.3 / svelte 5.57.0 / adapter-cloudflare 5.1.0 / vite 6.4.3, @sentry/sveltekit 10.67.0 from $REPRO/_toolbox/pack, wrangler 4.129.0, compatibility_date 2026-05-01 + nodejs_compat. Sink on 37421, worker on 37422.
 
-Commands: (cd app && npm install --no-audit --no-fund) ; PORT=37421 node $S/qs/sink.mjs & ; (cd app && npx vite build && npx wrangler dev --port 37422 --inspector-port 0) ; curl -s http://127.0.0.1:37422/users/42 ; curl -s "http://127.0.0.1:37422/sentinel?n=N" ; curl -s "http://127.0.0.1:37421/__items?raw=1".
+Commands: (cd app && npm install --no-audit --no-fund) ; PORT=37421 node $REPRO/_toolbox/sink.mjs & ; (cd app && npx vite build && npx wrangler dev --port 37422 --inspector-port 0) ; curl -s http://127.0.0.1:37422/users/42 ; curl -s "http://127.0.0.1:37422/sentinel?n=N" ; curl -s "http://127.0.0.1:37421/__items?raw=1".
 
 VARIANT 1 - docs wiring exactly as in ~/dev/sentry-docs/platform-includes/getting-started-complete/javascript.sveltekit.mdx:331-352 (sequence(initCloudflareSentryHandle({...}), sentryHandle())), stream lifecycle (develop default). Segment loses the route:
   {"name": "GET /users/[id]", "is_segment": false, "attrs": {"sentry.origin": "auto.http.sveltekit", "sentry.op": "http.server", "url.path": "/users/42", "http.route": "/users/[id]"}}

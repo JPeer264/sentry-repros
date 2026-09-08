@@ -22,7 +22,7 @@ Probe dir: `$SCRATCH/deep/verify4-M-hono-deno-outgoingfetch/`
 Files: `main.ts` (baseline), `main-fix.ts` (baseline + userland fetch integration), `main-fix-nohook.ts`, `fetch-integration.ts` (the workaround), `sink.mjs` (sink extended with a `/rec` header recorder + `/__recs`), `deno.json` (`{"nodeModulesDir":"manual"}`), logs `app-*.log`. `node_modules` removed after the run.
 
 Install / run (ports 41317 sink, 41318-41322 app):
-  npm install $S/pack/sentry-{deno,hono,core,server-utils,server-runtime-injection}-10.67.0.tgz hono@4
+  npm install $REPRO/_toolbox/pack/sentry-{deno,hono,core,server-utils,server-runtime-injection}-10.67.0.tgz hono@4
   PORT=41317 node sink.mjs &
   SINK_PORT=41317 APP_PORT=41318 LIFECYCLE=static deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys main.ts
 

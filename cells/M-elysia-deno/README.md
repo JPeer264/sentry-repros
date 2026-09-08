@@ -17,7 +17,7 @@ This directory is the original run of 2026-09-06 and 2026-09-07, kept as it was.
 Elysia runs on Deno unchanged: `new Elysia().get(...)` mounted with `Deno.serve({port}, app.fetch)`, deno.json `{"nodeModulesDir":"manual"}`, deps installed with npm. Two Sentry wirings exist and they behave very differently.
 
 (A) The wiring a docs page would show today (@sentry/elysia, the documented package):
-  npm install elysia@1 mysql@2 $S/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz
+  npm install elysia@1 mysql@2 $REPRO/_toolbox/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz
   instrument.ts: `import "@sentry/deno/import";` then `import * as Sentry from "@sentry/elysia"; Sentry.init({ dsn, tunnel, tracesSampleRate: 1.0, traceLifecycle: 'static'|'stream' })`
   app.ts: `import "./instrument.ts";` as the first line, `Sentry.withElysia(new Elysia()).get(...)`, `Deno.serve({port,hostname}, app.fetch)`
   run: `deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys --allow-ffi app.ts`
@@ -34,16 +34,16 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-D=$S/deep/M-elysia-deno
+D=$REPRO/cells/M-elysia-deno
 
 # deps (node_modules was deleted afterwards, reinstall to rerun)
 cd $D && npm install elysia@1 mysql@2 \
-  $S/pack/sentry-elysia-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz \
-  $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-deno-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-elysia-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-deno-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz
 
 # sink + outgoing-fetch recorder
-PORT=43711 node $S/qs/sink.mjs > sink.log 2>&1 &
+PORT=43711 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 node $D/recorder.mjs > recorder.log 2>&1 &
 
 # viability, no Sentry (port 41338)

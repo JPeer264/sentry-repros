@@ -1,10 +1,10 @@
 verify4-M-remix-bun-isolation (round 2) — REFUTED: isolation works on Bun with bunHttpServerIntegration()
 
 S=$SCRATCH
-D=$S/deep/verify4-M-remix-bun-isolation
+D=$REPRO/refutations/verify4-M-remix-bun-isolation
 (install line: see README-rerun.txt; node_modules and ./build were reused as-is)
 
-Sink:      cd $D && PORT=41317 node $S/qs/sink.mjs > sink-v.log 2>&1 &
+Sink:      cd $D && PORT=41317 node $REPRO/_toolbox/sink.mjs > sink-v.log 2>&1 &
 Bundle:    cd $D && ENTRY=./server.mjs         OUTDIR=./dist-vbase    bun build-server.ts
            cd $D && ENTRY=./server-bunhttp.mjs OUTDIR=./dist-vbunhttp bun build-server.ts
 Baseline (repro of the reported break):

@@ -49,7 +49,7 @@ ALSO TRIED AND CONFIRMED DEAD (so a docs page should not send anyone down these)
 - Baseline reproduction of the reporter's shape 1 (driver external, wrangler bundles `worker.ts`): confirmed, `{"type":"transaction","name":"GET /dbq2",...,"spans":[]}` — no db span.
 
 RERUN:
-  cd $S/deep/verify4-M-fresh-cf-dbspans/app
+  cd $REPRO/refutations/verify4-M-fresh-cf-dbspans/app
   npm install                     # node_modules already present, 337M
   deno task build                 # Fresh SSR bundle, driver external
   node build-worker3.mjs          # esbuild + sentryOrchestrionPlugin -> dist3/worker.mjs

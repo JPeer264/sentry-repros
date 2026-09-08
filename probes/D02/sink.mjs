@@ -1,4 +1,4 @@
-// $S/qs/sink.mjs plus: a /__target endpoint that records the incoming
+// $REPRO/_toolbox/sink.mjs plus: a /__target endpoint that records the incoming
 // sentry-trace/baggage headers, and /__items?raw for full envelope payloads.
 import { createServer } from 'node:http';
 import { gunzipSync, inflateSync, brotliDecompressSync } from 'node:zlib';

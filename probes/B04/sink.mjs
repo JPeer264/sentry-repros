@@ -1,4 +1,4 @@
-// Envelope sink, extended from $S/qs/sink.mjs to keep trace_id / span_id / parent_span_id.
+// Envelope sink, extended from $REPRO/_toolbox/sink.mjs to keep trace_id / span_id / parent_span_id.
 import { createServer } from 'node:http';
 import { gunzipSync, inflateSync, brotliDecompressSync } from 'node:zlib';
 

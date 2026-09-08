@@ -115,7 +115,7 @@ Transaction end `1788771076.4797` == handler-return time `1788771076479` ms; the
 `1788771077381`. `/stream-cancel` reports `duration_ms: 0`, `status: ok`, `http_status: 200`.
 
 One difference from the record, environmental only: the CI-pinned Bun 1.3.14 build
-(`$S/bun1314/bun-darwin-aarch64/bun`) no longer exists on this machine, so the 1.3.14 repeat is **not-run**.
+(`$SCRATCH/bun1314/bun-darwin-aarch64/bun`) no longer exists on this machine, so the 1.3.14 repeat is **not-run**.
 The Bun 1.4.0 numbers reproduce the record within normal timing jitter.
 
 ## Files

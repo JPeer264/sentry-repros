@@ -46,8 +46,8 @@ WHAT DOES NOT RESCUE mysql@2: registering the plugin as a runtime Bun plugin ins
 So for `mysql@2` the `Bun.build` + `sentryBunPlugin()` step from the toolbox/e2e recipe is genuinely the only route, and the bundle-vs-runtime distinction is real.
 
 COMMANDS (probe files in $SCRATCH/deep/verify4-M-fastify-bun-dbspans/):
-  npm install $S/pack/sentry-{bun,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz fastify@5 mysql@2 mysql2@3
-  PORT=52117 node $S/qs/sink.mjs &                                    # or ./sinkraw.mjs for full span attributes
+  npm install $REPRO/_toolbox/pack/sentry-{bun,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz fastify@5 mysql@2 mysql2@3
+  PORT=52117 node $REPRO/_toolbox/sink.mjs &                                    # or ./sinkraw.mjs for full span attributes
   SINK_PORT=52117 APP_PORT=52118 LIFECYCLE=static bun appH.mjs &      # plain bun run, no build step
   SINK_PORT=52117 APP_PORT=52118 node driveH.mjs                      # separate plain-node driver, sentinel-gated
 Files: appH.mjs (fastify, mysql@2 AND mysql2 at module scope, four db routes + /sentinel), app2.mjs (mysql2 only, incl. /db-lazy), app3.mjs (mysql@2, no instrument import, for the --preload variant), instrument.mjs, driveH.mjs, drive2.mjs, sinkraw.mjs, preload-plugin.mjs; logs runH-*, runJ-*, runK-app.log, runL-items.json, runM-*.

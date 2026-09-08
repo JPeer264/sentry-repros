@@ -18,7 +18,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 Reproduced the reported failure, then made db spans appear on bun with a one-line app change. The reported diagnosis (missed `waitForTracingChannelBinding` retry window) is WRONG: the SDK does subscribe, and then bun garbage-collects the subscription.
 
-Probe dir: $SCRATCH/deep/verify4-M-sveltekit-bun-dbspans (app/ = SvelteKit app, micro/ = no-framework isolators, RERUN.md = exact commands). Sink: `PORT=41777 node $S/qs/sink.mjs`. Build/run: `cd app && npx vite build && PORT=<port> SENTRY_TUNNEL=http://127.0.0.1:41777/ bun build/index.js`, drive with `curl /api/db`.
+Probe dir: $SCRATCH/deep/verify4-M-sveltekit-bun-dbspans (app/ = SvelteKit app, micro/ = no-framework isolators, RERUN.md = exact commands). Sink: `PORT=41777 node $REPRO/_toolbox/sink.mjs`. Build/run: `cd app && npx vite build && PORT=<port> SENTRY_TUNNEL=http://127.0.0.1:41777/ bun build/index.js`, drive with `curl /api/db`.
 
 A/B on ONE build config (default traceLifecycle 'stream'), only `app/src/instrumentation.server.ts` differs.
 

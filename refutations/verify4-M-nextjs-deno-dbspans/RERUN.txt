@@ -1,12 +1,12 @@
 S=$SCRATCH
-D=$S/deep/verify4-M-nextjs-deno-dbspans
+D=$REPRO/refutations/verify4-M-nextjs-deno-dbspans
 
 # deps (node_modules removed after the run)
 cd $D && npm install --no-audit --no-fund next@15.5.4 react@19.1.0 react-dom@19.1.0 mysql2@3 mysql@2 ioredis@5.4.1 \
-  $S/pack/sentry-{nextjs,node,core,opentelemetry,react,browser,browser-utils,server-utils,server-runtime-injection,vercel-edge,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-{nextjs,node,core,opentelemetry,react,browser,browser-utils,server-utils,server-runtime-injection,vercel-edge,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 
 docker run -d --rm --name deep-v4ndb-redis -p 41339:6379 redis:7-alpine
-PORT=41337 node $S/qs/sink.mjs > $D/sink.log 2>&1 &
+PORT=41337 node $REPRO/_toolbox/sink.mjs > $D/sink.log 2>&1 &
 
 # A. default externals (ioredis bundled by Sentry, mysql/mysql2 external), no runtime hook
 cd $D && SINK_PORT=41337 REDIS_PORT=41339 deno run -A node_modules/next/dist/bin/next build

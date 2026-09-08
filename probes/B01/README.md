@@ -136,7 +136,7 @@ baseline/SDK exit-code divergence on the unhandled rejection (baseline 1, SDK 0)
 Differences from the record, none behavioural:
 
 - The bun on this machine is 1.4.2, not the 1.4.0 the record ran, and the CI-pinned 1.3.14 the record
-  also ran (`$S/bun1314/`) is no longer here, so this rebuild ran only bun 1.4.2. All seven cases
+  also ran (`$SCRATCH/bun1314/`) is no longer here, so this rebuild ran only bun 1.4.2. All seven cases
   behave as recorded on it; the record reports 1.4.0 and 1.3.14 as identical to each other.
 - This `sink.mjs` prints `exception` as `"<type>: <value>"` (`"Error: B01 uncaught exception
   (timer)"`), where the recorded excerpt shows the value alone. That is the sink's formatting, not

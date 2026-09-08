@@ -1,4 +1,4 @@
-// Envelope sink, extended from $S/qs/sink.mjs:
+// Envelope sink, extended from $REPRO/_toolbox/sink.mjs:
 // - span items carry op | name | source | http.route | trace | parent
 // - events carry mechanism, sdk version, runtime, transaction, trace id, request url, tags
 // - /__rec records the inbound sentry-trace/baggage headers, /__recorded reads them back

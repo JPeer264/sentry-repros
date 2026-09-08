@@ -85,5 +85,5 @@ run 3 sink: []
 
 Two differences, neither affecting the verdict:
 
-- The Bun 1.3.14 CI pin (`$S/bun1314/bun-darwin-aarch64/bun`) no longer exists in the scratchpad, so the cross-version check is **not-run** (`no such file or directory`). Only Bun 1.4.0 was exercised.
+- The Bun 1.3.14 CI pin (`$SCRATCH/bun1314/bun-darwin-aarch64/bun`) no longer exists in the scratchpad, so the cross-version check is **not-run** (`no such file or directory`). Only Bun 1.4.0 was exercised.
 - The sink prints the exception as `Error: x-natural` / `Error: x-flush` (`${type}: ${value}`); the record quotes the value alone (`x-natural`), and the local sink also emits `trace_id` and `environment`. Cosmetic sink-formatting differences.

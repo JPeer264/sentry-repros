@@ -5,9 +5,9 @@ everything here in `run-b/` is self-contained (own node_modules).
 
     S=$SCRATCH
     npm install express@5 wrangler@4 esbuild vite@6 @cloudflare/vite-plugin \
-      $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-      $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz
-    PORT=39411 node $S/qs/sink.mjs > sink.log 2>&1 &
+      $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+      $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz
+    PORT=39411 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 
 Routes are shared in `src/routes.js` (`/boom` sync throw, `/boom-async` async throw,
 `/boom-next` next(err), `/plain`, `/users/:id`, `/sentinel`).

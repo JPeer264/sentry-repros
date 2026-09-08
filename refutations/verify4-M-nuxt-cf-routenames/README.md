@@ -20,8 +20,8 @@ Could not refute. Reproduced end to end and the reported defect stands exactly a
 
 App: $SCRATCH/deep/verify4-M-nuxt-cf-routenames/app (nuxt.config.ts, wrangler.jsonc, server/plugins/sentry.ts, server/plugins/route-name.ts, server/api/{db,log,sentinel,users/[id]}.ts). node_modules removed after the run.
 
-Install: npm install --no-audit --no-fund nuxt@^4.1.2 wrangler@^4 $S/pack/sentry-{nuxt,cloudflare,core,node,vue,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry,bundler-plugins}-10.67.0.tgz
-Run: npx nuxt build && npx wrangler dev --port 41791 --inspector-port 0 ; sink: PORT=41777 node $S/qs/sink.mjs
+Install: npm install --no-audit --no-fund nuxt@^4.1.2 wrangler@^4 $REPRO/_toolbox/pack/sentry-{nuxt,cloudflare,core,node,vue,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry,bundler-plugins}-10.67.0.tgz
+Run: npx nuxt build && npx wrangler dev --port 41791 --inspector-port 0 ; sink: PORT=41777 node $REPRO/_toolbox/sink.mjs
 
 RUN A - stream (default lifecycle), stock SDK, no extra plugin. Sink `span` items:
 {"type":"span","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}     <- GET /api/db

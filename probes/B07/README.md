@@ -15,7 +15,7 @@ default on develop, that user attributes keep their JSON types, that the SDK add
 that console capture is tagged `sentry.origin=auto.log.console` with
 `sentry.message.template` / `sentry.message.parameter.0` for interpolated `console.log` calls.
 
-`sink-ext.mjs` is `$S/qs/sink.mjs` with the `log` mapping extended to keep the envelope SDK,
+`sink-ext.mjs` is `$REPRO/_toolbox/sink.mjs` with the `log` mapping extended to keep the envelope SDK,
 the item count and the per-item attributes (unwrapped from their `{value,type}` form).
 
 ## Install

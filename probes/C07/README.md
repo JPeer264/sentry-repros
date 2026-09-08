@@ -17,9 +17,9 @@ the default `stream` (a `span` envelope whose segment is named `GET`) and `stati
 ```
 S=$SCRATCH
 cd $REPRO/probes/C07
-npm install $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-            $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-            $S/pack/sentry-opentelemetry-10.67.0.tgz wrangler@4
+npm install $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+            $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+            $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz wrangler@4
 ```
 
 (The same tarballs are mirrored in `$REPRO/_toolbox/pack`.)
@@ -49,7 +49,7 @@ curl -s http://127.0.0.1:51704/r2; curl -s http://127.0.0.1:51704/kv; curl -s ht
 curl -s http://127.0.0.1:51703/__items
 ```
 
-`sink-c07.mjs` is `$S/qs/sink.mjs` with the span/transaction mapping widened to keep every span
+`sink-c07.mjs` is `$REPRO/_toolbox/sink.mjs` with the span/transaction mapping widened to keep every span
 attribute (the base sink only keeps `"<op> <name>"`).
 
 ## Expected
@@ -114,5 +114,5 @@ static (`--var TRACE_LIFECYCLE:static`), `items-c-static.jsonl`:
 
 Differences from the record: none in behavior. The only deviation is procedural — the install needs the
 `@sentry/server-utils`, `@sentry/server-runtime-injection` and `@sentry/opentelemetry` tarballs on the
-same `npm install` line (the record's command line only says "node_modules from `$S/pack` tarballs"),
+same `npm install` line (the record's command line only says "node_modules from `$REPRO/_toolbox/pack` tarballs"),
 and this rebuild uses ports 51703/51704 instead of the recorded 43117/43118.

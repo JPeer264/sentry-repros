@@ -3,7 +3,7 @@ M-remix-deno — Remix v2 + @sentry/remix 10.67.0 (develop) on Deno 2.9.0
 Install (node, npm; NOT deno add):
   S=<scratchpad>
   npm install --legacy-peer-deps \
-    $S/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz \
     '@remix-run/dev@^2.17.0' '@remix-run/node@^2.17.0' '@remix-run/react@^2.17.0' \
     '@remix-run/server-runtime@^2.17.0' react react-dom vite@^5 mysql2 typescript
 

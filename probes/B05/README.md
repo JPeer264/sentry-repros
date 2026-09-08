@@ -37,7 +37,7 @@ cd $REPRO/probes/B05
 ```
 
 `run.sh <app file> <app port> <sink port>` starts the envelope sink itself
-(`PORT=<sink port> node sink.mjs`, a copy of `$S/qs/sink.mjs` extended to compact `session` and
+(`PORT=<sink port> node sink.mjs`, a copy of `$REPRO/_toolbox/sink.mjs` extended to compact `session` and
 `sessions` envelopes and to print an exception's `value` only), waits for the app on a TCP-only
 readiness check (an HTTP probe would add one more request session to the aggregate), curls
 `/ok1 /ok2 /error /sentinel`, polls the sink until the sentinel event has arrived, prints the sink,

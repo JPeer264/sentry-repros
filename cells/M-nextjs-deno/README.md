@@ -27,7 +27,7 @@ npm install --no-audit --no-fund
 ```
 
 `package.json` pins every `@sentry/*` package to the 10.67.0 tarball in `../../_toolbox/pack/` (the
-durable mirror of `$S/pack`), so one `npm install` restores the whole tree. Use `npm`, not `deno install`:
+durable mirror of `$REPRO/_toolbox/pack`), so one `npm install` restores the whole tree. Use `npm`, not `deno install`:
 `deno.json` sets `nodeModulesDir: "manual"`, which means Deno consumes a `node_modules` that npm prepared.
 
 ## Run

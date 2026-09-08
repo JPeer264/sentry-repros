@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { gunzipSync, inflateSync, brotliDecompressSync } from 'node:zlib';
 
-// Like $S/qs/sink.mjs, but keeps trace_id / span_id / parent_span_id / origin so
+// Like $REPRO/_toolbox/sink.mjs, but keeps trace_id / span_id / parent_span_id / origin so
 // the parent-child relationship between the request span and the RPC and db
 // spans can be asserted.
 const items = [];

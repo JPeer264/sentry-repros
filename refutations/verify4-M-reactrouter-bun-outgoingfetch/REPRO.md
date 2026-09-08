@@ -11,16 +11,16 @@ http.client span + isolation) after also adding `bunHttpServerIntegration()`.
 ## Install
   npx create-react-router@latest ./app --template remix-run/react-router-templates/node-custom-server --no-git-init --no-install --yes
   cd app && npm install
-  npm install $S/pack/sentry-react-router-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz \
-    $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-react-10.67.0.tgz \
-    $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-    $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-bundler-plugins-10.67.0.tgz \
-    $S/pack/sentry-bun-10.67.0.tgz
+  npm install $REPRO/_toolbox/pack/sentry-react-router-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-react-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz
   npx react-router reveal   # then rewrite app/entry.server.tsx for renderToReadableStream (Bun)
   npx react-router build    # build with node
 
 ## Run
-  PORT=47811 node $S/qs/sink.mjs &
+  PORT=47811 node $REPRO/_toolbox/sink.mjs &
   REC_PORT=47812 node app/recorder.mjs &
   cd app && SINK_PORT=47811 PORT=47813 PROBE_VARIANT=<baseline|bunfetch|bunall> \
     PROBE_LIFECYCLE=<static|stream> bun server.js &

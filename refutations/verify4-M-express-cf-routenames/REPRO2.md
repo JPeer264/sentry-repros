@@ -1,6 +1,6 @@
 # verify4 M-express-cf route names
 
-sink:  PORT=53177 node $S/qs/sink.mjs
+sink:  PORT=53177 node $REPRO/_toolbox/sink.mjs
 
 A1 baseline (plain wrangler, no workaround):
   npx wrangler dev --config wrangler.A1.jsonc --port 54301 --inspector-port 0

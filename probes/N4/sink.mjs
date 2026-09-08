@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { gunzipSync, inflateSync, brotliDecompressSync } from 'node:zlib';
 
-// Like $S/qs/sink.mjs, but keeps the span attributes this probe asserts on
+// Like $REPRO/_toolbox/sink.mjs, but keeps the span attributes this probe asserts on
 // (agent name, conversation id, op, origin, segment name, db attributes).
 const items = [];
 const raw = [];

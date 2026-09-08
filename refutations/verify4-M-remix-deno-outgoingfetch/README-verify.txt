@@ -1,9 +1,9 @@
 verify4-M-remix-deno-outgoingfetch  ---  REFUTES "outgoing fetch broken" for Remix v2 on Deno 2.9.0
 
-SDK: develop tarballs 10.67.0 from $S/pack. Remix 2.17.5, Deno 2.9.0, nodeModulesDir "manual".
+SDK: develop tarballs 10.67.0 from $REPRO/_toolbox/pack. Remix 2.17.5, Deno 2.9.0, nodeModulesDir "manual".
 
 Install / build (under node):
-  npm install --legacy-peer-deps $S/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,\
+  npm install --legacy-peer-deps $REPRO/_toolbox/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,\
     replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz \
     '@remix-run/dev@^2.17.0' '@remix-run/node@^2.17.0' '@remix-run/react@^2.17.0' \
     '@remix-run/server-runtime@^2.17.0' react react-dom vite@^5 mysql2 undici axios typescript

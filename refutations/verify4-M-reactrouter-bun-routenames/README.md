@@ -23,7 +23,7 @@ THE ONE CHANGE (in `app/entry.server.tsx`):
 
 That is React Router 8's own `instrumentations` export. The SDK's `createSentryServerInstrumentation()` (packages/react-router/src/server/createServerInstrumentation.ts:55) is called directly by React Router, so it needs no diagnostics-channel injection and no node:http patching. Its `request` hook explicitly handles the "no existing root span" case (`if (existingRootSpan) { updateSpanName(...) } else { await startSpan({ name: unparameterizedName, ... }) }`), i.e. it starts the HTTP server span itself when @sentry/node has not created one. That is exactly the Bun situation. The `No diagnostics-channel injection detected` warning is real and unchanged, and is irrelevant to this capability.
 
-EVIDENCE, bun 1.4.0, traceLifecycle 'static' ($S/deep/verify4-M-reactrouter-bun-routenames/v2-items-bun-static.json, verbatim, trimmed):
+EVIDENCE, bun 1.4.0, traceLifecycle 'static' ($REPRO/refutations/verify4-M-reactrouter-bun-routenames/v2-items-bun-static.json, verbatim, trimmed):
   {"type":"transaction","name":"GET /users/:id","op":"http.server","source":"route","status":"ok","sdk":"sentry.javascript.react-router","spans":["function /users/:id"]}
   {"type":"event","exception":"Error: loader boom on bun","mechanism":"react_router.loader","handled":false,"transaction":"GET /users/:id"}
   {"type":"transaction","name":"GET /","op":"http.server","source":"route","status":"ok","spans":["function /"]}
@@ -50,12 +50,12 @@ The report's Bun-specific setup facts hold and are NOT refuted: the stock templa
 REMAINING (separate capabilities, not route names): on Bun every request in a run shares one trace_id (`88278811acb34c09a0409425f8dd2d43` for all 7 items) while node gives 5 distinct ones — request isolation is still broken; the error request's transaction is `status:"ok"` on Bun vs `internal_error` on node; and `request`/`user.ip_address` are absent from Bun events.
 
 RERUN: files in $SCRATCH/deep/verify4-M-reactrouter-bun-routenames/ (node_modules intact, 197M).
-  PORT=53411 node $S/qs/sink.mjs > v2-sink.log 2>&1 &
+  PORT=53411 node $REPRO/_toolbox/sink.mjs > v2-sink.log 2>&1 &
   cd app && NODE_ENV=production npx react-router build
   ./run2.sh bun static bun-static      # also: ./run2.sh bun stream bun-stream, ./run2.sh node static node-static
 Key files: app/app/entry.server.tsx (the fixed entry, also saved as entry.server.WITH-instrumentation.tsx; entry.server.NO-instrumentation.tsx is the prior probe's broken one), app/instrument.server.mjs, app/server.js, app/app/routes/users.tsx, run2.sh. Sink and app processes were killed; ports 53411/53412 are free.
 
-NOT RUN: the bun 1.3.14 CI-pin cross-check. `$S/bun1314/bun-darwin-aarch64/bun` no longer exists on disk (`ls: .../bun1314: No such file or directory`), and a filesystem search found no other copy.
+NOT RUN: the bun 1.3.14 CI-pin cross-check. `$SCRATCH/bun1314/bun-darwin-aarch64/bun` no longer exists on disk (`ls: .../bun1314: No such file or directory`), and a filesystem search found no other copy.
 
 ## Workaround
 

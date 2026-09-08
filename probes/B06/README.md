@@ -70,7 +70,7 @@ SINK: [{"type":"trace_metric","items":["counter probe.count=1 attrs={\"route\":\
 Matches the recorded verdict and the recorded `app.log` evidence byte for byte.
 
 Not re-run: the CI-pinned Bun 1.3.14 half. The binary the record used
-(`$S/bun1314/bun-darwin-aarch64/bun`) no longer exists in the scratchpad and is not mirrored in
+(`$SCRATCH/bun1314/bun-darwin-aarch64/bun`) no longer exists in the scratchpad and is not mirrored in
 `_toolbox/`, so only the Bun 1.4.0 line could be reproduced. To re-run it, drop a 1.3.14 bun binary
 somewhere and use `SINK_PORT=33417 <path>/bun app.ts` against a sink on `PORT=33417`.
 

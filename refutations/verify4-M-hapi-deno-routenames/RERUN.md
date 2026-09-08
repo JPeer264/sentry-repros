@@ -1,11 +1,11 @@
 # verify4-M-hapi-deno-routenames
 
 Deno 2.9.0, @hapi/hapi 21.4.x, @sentry/{deno,core,server-utils,server-runtime-injection,opentelemetry} 10.67.0
-(tarballs from $S/pack), mysql@2 against MariaDB 127.0.0.1:3307. deno.json nodeModulesDir "manual".
+(tarballs from $REPRO/_toolbox/pack), mysql@2 against MariaDB 127.0.0.1:3307. deno.json nodeModulesDir "manual".
 
 Ports: sink 41731, app 51837.
 
-    PORT=41731 node $S/qs/sink.mjs > sink.log 2>&1 &
+    PORT=41731 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
     ./run.sh <main>.ts <static|stream> <tag> [extra deno flags]
 
 run.sh clears the sink, starts the app, curls /users/42 /error /db /sentinel, waits for the

@@ -20,7 +20,7 @@ This directory is the original run of 2026-09-06 and 2026-09-07, kept as it was.
 
 Koa runs on workerd unchanged once `enable_nodejs_http_server_modules` is on. Verified first WITHOUT Sentry (GET / -> {"ok":true}, GET /users/42 -> {"id":"42"}).
 
-Packages: `npm install koa@3 @koa/router wrangler@4 $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz`
+Packages: `npm install koa@3 @koa/router wrangler@4 $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz`
 IMPORTANT: you must pass the `server-utils` AND `opentelemetry` tarballs too. Installing only the cloudflare + core tarballs makes npm pull the *published* 10.67.0 of those two, and esbuild then fails the wrangler build with `Could not resolve "@sentry/server-utils/no-diagnostic-channels"` and six `No matching export in "@sentry/core/build/esm/index.js" for import "SEMANTIC_ATTRIBUTE_SENTRY_SOURCE" / "SPAN_KIND" / "spanShouldInferOtelSource" / "spanSourceWasExplicitlySet" / "markSpanForOtelSourceInference" / "_INTERNAL_startInactiveSpan"`.
 
 wrangler.jsonc:
@@ -65,16 +65,16 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-D=$S/deep/M-koa-cf
+D=$REPRO/cells/M-koa-cf
 
 # install (node_modules was deleted at the end to save disk - rerun this first)
 cd $D && npm install --no-audit --no-fund koa@3 @koa/router wrangler@4 vite@6 @cloudflare/vite-plugin mysql@2 \
-  $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz
 
 # sink + local fetch recorder
-PORT=41318 node $S/qs/sink.mjs > $D/sink.log 2>&1 &
+PORT=41318 node $REPRO/_toolbox/sink.mjs > $D/sink.log 2>&1 &
 cd $D && nohup node recorder.mjs > $D/rec4.log 2>&1 &        # listens on 41337
 
 # viability without Sentry

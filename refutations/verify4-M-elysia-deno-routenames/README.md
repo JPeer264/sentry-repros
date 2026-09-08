@@ -21,8 +21,8 @@ The behavior the other agent saw is real, but its conclusion "not reachable thro
 Probe dir: $SCRATCH/deep/verify4-M-elysia-deno-routenames/ (node_modules removed; reinstall with the npm line below).
 
 Install (in that dir, package.json `{"type":"module"}`, deno.json `{"nodeModulesDir":"manual"}`):
-  npm install elysia@1 @elysiajs/node $S/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz
-Sink: PORT=52117 node $S/qs/sink.mjs > v4sink.log 2>&1 &
+  npm install elysia@1 @elysiajs/node $REPRO/_toolbox/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz
+Sink: PORT=52117 node $REPRO/_toolbox/sink.mjs > v4sink.log 2>&1 &
 
 === Baseline, wiring A reproduced (v4a.ts, `import * as Sentry from "@sentry/elysia"` + Sentry.init + Deno.serve), LIFECYCLE=static, port 52121 ===
 {"type":"transaction","name":"Request","op":"middleware","source":"custom","trace_id":"20f7dbd8...","sdk":"sentry.javascript.bun","spans":["middleware sentryOnRequest"]}

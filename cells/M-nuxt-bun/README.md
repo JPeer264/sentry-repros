@@ -15,10 +15,10 @@ which `@sentry/node`'s HTTP instrumentation never sees.
 
 ```
 npm install --no-audit --no-fund \
-  $S/pack/sentry-nuxt-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-vue-10.67.0.tgz \
-  $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-bundler-plugins-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz mysql2
+  $REPRO/_toolbox/pack/sentry-nuxt-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-vue-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bundler-plugins-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz mysql2
 ```
 
 with `S=$SCRATCH`
@@ -36,7 +36,7 @@ without reinstalling. Reinstall only to rebuild after changing sources or swappi
 S=$SCRATCH
 D=$REPRO/cells/M-nuxt-bun
 
-# sinks (sink.mjs is $S/qs/sink.mjs with span attributes and event trace ids kept)
+# sinks (sink.mjs is $REPRO/_toolbox/sink.mjs with span attributes and event trace ids kept)
 PORT=34118 node $D/sink.mjs > $D/sink.log 2>&1 &
 PORT=34119 node $D/recorder.mjs > $D/recorder.log 2>&1 &
 

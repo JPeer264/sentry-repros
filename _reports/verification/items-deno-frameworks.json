@@ -1,0 +1,400 @@
+[
+  {
+    "id": "DOC-F18",
+    "cell": "M-hono-deno",
+    "docs_claim": "moved",
+    "current_lines": "guides/hono/index.mdx:12 (runtime list, verbatim) and :88-89 (`deno add npm:@sentry/deno`) hold exactly. The Deno code tab is now :302-324 (audit cited :320-348); \"### Report Unhandled Exceptions\" is now :360 (audit cited :384). guides/deno/index.mdx is 230 lines (audit cited 1-232). The grep claim reproduces exactly: `grep -rniE \"fetch|framework|node_modules|nodeModulesDir|@sentry/deno/import|Deno.serve\" guides/deno/` = 2 hits, both configuration/integrations/breadcrumbs.mdx:23,27. Repo-wide `@sentry/deno/import|registerHooks` = 0 hits.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "Cell detail for errors names mechanism `auto.http.hono.context_error` and notes Hono swallows the throw into a 500 (the middleware's responseHandler is what reports it); the draft only gives the transaction name.",
+      "verify4-M-hono-deno-outgoingfetch pins the root cause: @sentry/deno ships no fetch tracing integration at all (packages/deno/src/sdk.ts getDefaultIntegrations), while breadcrumbsIntegration already calls addFetchInstrumentationHandler. The draft states the symptom only."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Update the citations: Deno code tab :302-324, \"Report Unhandled Exceptions\" :360, guides/deno/index.mdx:1-230.",
+      "Drop or qualify \"or `deno add npm:@sentry/hono`\" in the setup paragraph: the cell installed with `npm install` only, and quickstarts/deno deliberately did not run `deno add` (it resolves from the registry). Keep the npm form as the verified one.",
+      "The audit page's \"Page:\" narrative tells the docs to ship a hand-written `denoFetchIntegration()` built from @sentry/core primitives. That breaks the audit's own shipped-public-exports rule and should be removed from the page proposal; the item body is right to keep outgoing fetch as a plain limit. If a fix is to be named, first re-run Hono with the shipped `winterCGFetchIntegration` (@sentry/vercel-edge) or `fetchIntegration` (@sentry/cloudflare), both of which worked unmodified on Deno in the Fastify, Express and SvelteKit cells."
+    ],
+    "notes": "The only Deno cell with an existing docs page. Every \"Works today\" bullet maps 1:1 to a `works` verdict in _records/cells-all.json, and the one limit maps to `broken` plus a confirmed-broken refutation in both lifecycles and with the hook on and off."
+  },
+  {
+    "id": "DOC-F19",
+    "cell": "M-elysia-deno",
+    "docs_claim": "holds",
+    "current_lines": "guides/elysia/index.mdx:25 verbatim (\"Bun or Node.js 18+ (with @elysiajs/node adapter)\"); install tabs at :55 (Bun) and :59 (Node.js) inside the cited :52-70; configure tabs at :82 and :105 with `Sentry.init` at :86/:110, inside the cited :78-120; platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:6 and :9-12 verbatim (exactly two runtimes). `grep -rniE deno guides/elysia/` = 0. common/configuration/integrations/fetchIntegration.mdx:1-12 still scoped `javascript.cloudflare` and still says at :10 \"This integration only works inside the Cloudflare Workers runtime\".",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "verify4/verify5-M-elysia-deno-incomingtrace variant (C): keeping `Sentry.init` in @sentry/elysia and adding `denoServeIntegration()` from @sentry/deno (public export, packages/deno/src/index.ts) also gives the http.server root span, isolation and continueTrace, in both lifecycles. The draft offers only the @sentry/deno-init variant.",
+      "verify4-M-elysia-deno-outgoingfetch: with the documented @sentry/elysia init the http.client span does appear under the default `stream` lifecycle; it is dropped only under `static` with no active span (packages/core/src/fetch.ts shouldEmitSpan). The draft's blanket framing hides that the lifecycle matters.",
+      "Cell notes a second SDK bug: with the @sentry/elysia init the elysia SDK metadata never reaches the client (packages/elysia/src/sdk.ts spreads userOptions before applySdkMetadata), so events are tagged bun. The draft mentions the deno sdk.name for wiring (B) but not this."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add the `denoServeIntegration()` variant as a second documented option for users who want to keep `Sentry.init` from @sentry/elysia.",
+      "Say explicitly that `fetchIntegration` is a real @sentry/elysia export (packages/elysia/src/index.ts:60, re-exported from @sentry/bun) so reviewers do not read it as a hand-written shim.",
+      "Add a bullet to \"What to change\": common/configuration/integrations/fetchIntegration.mdx:10 claims the integration only works inside Cloudflare Workers, which the Deno runs disprove."
+    ],
+    "notes": "The cell record calls route names, isolation and incoming trace `broken` and outgoing fetch `partial`, but all four are refuted-to-working by verify4/verify5 with public exports only; the draft correctly reports the refuted state. The refutations also demolish the cell's \"needs a deep import into build/esm/withElysia.js\" claim, and the draft uses the public entry."
+  },
+  {
+    "id": "DOC-F20",
+    "cell": "M-express-deno",
+    "docs_claim": "holds",
+    "current_lines": "guides/express/index.mdx:4-5 (`sdk: sentry.javascript.node`, `fallbackGuide: javascript.node`) and :12 (bare `<PlatformContent includePath=\"getting-started-node\" />`) verbatim. `grep -rni deno guides/express/` = 0; `grep -rni express guides/deno/` = 0; `grep -rn \"@sentry/deno/import|registerHooks\" docs/ platform-includes/` = 0. guides/deno/index.mdx is 230 lines (cited 1-232).",
+    "evidence_consistent": "no",
+    "unsupported_claims": [
+      "\"Transaction names stay unparameterized ... and no handler spans\", \"Errors thrown in route handlers ... are not captured\" and \"Database spans are not produced\" are presented as properties of Express on Deno. The cell records route names = works, errors = works and db spans = works; those verdicts are for the hook + 6-line jsonfix entry (cells/M-express-deno/jsonfix.ts, run variants 2 and 3), and the cell's own headline reads \"Express on Deno is fully instrumentable on develop, but only via a workaround that no user could guess\".",
+      "\"`import \\\"@sentry/deno/import\\\"` ... cannot be used with Express on Deno 2.9\" - it can, and was, once a second `Module.registerHooks({ load })` returns `format: 'json'` for .json URLs. Only the bare hook (variant 1) crashes.",
+      "\"Outgoing fetch() is not instrumented\" as an absolute: verify4-M-express-deno-outgoingfetch is `partial` and records that `import { fetchIntegration } from \"@sentry/cloudflare\"` works on Deno with zero custom code (run-c.sh / app-cf.ts), on top of the hand-written variant."
+    ],
+    "omitted_findings": [
+      "`setupExpressErrorHandler` from @sentry/server-utils (a shipped public export, packages/server-utils/src/index.ts:58) restores error capture on the no-hook path with mechanism `auto.middleware.express`; the cell tested it. @sentry/deno does not re-export it, which is the actual gap to report.",
+      "The cell's isolation and incoming-trace evidence was collected on the hook runs (span names are parameterized in the quoted payloads); the no-hook run (variant 4) recorded only url-source transactions, logs and the missing error event. The draft presents both as no-hook results.",
+      "`expressIntegration()` is already in @sentry/deno's default set (packages/deno/src/sdk.ts), so no `integrations: []` entry is needed - worth stating on a new page."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Rewrite the item around two documented shapes, as the cell ran them: (1) plain `Sentry.init` from @sentry/deno - transactions with source `url`, no handler spans, no db spans, and, critically, no error event; (2) `import \"@sentry/deno/import\"` plus a 6-line JSON load hook - route names `GET /users/:id` with source `route`, `handler` spans, `auto.http.express` error events and `db SELECT ...` spans. Ship the jsonfix snippet.",
+      "Replace \"cannot be used with Express on Deno 2.9\" with \"needs a companion JSON load hook because of denoland/deno#36240\".",
+      "Move outgoing fetch from an absolute limit to \"not instrumented by default; `fetchIntegration` from @sentry/cloudflare restores the span and the headers on Deno\", or state that the option was verified and rejected for a reason.",
+      "Add `setupExpressErrorHandler` from @sentry/server-utils as the supported no-hook error-capture fallback, and file the missing @sentry/deno re-export as the SDK-side ask."
+    ],
+    "notes": "The draft is the no-hook half of the cell presented as the whole cell. Everything it says about the no-hook path is exactly right and is the most user-relevant finding (a docs-following user gets invisible 500s); the framing of the hook as unusable is what contradicts the evidence."
+  },
+  {
+    "id": "DOC-F21",
+    "cell": "M-fastify-deno",
+    "docs_claim": "holds",
+    "current_lines": "guides/fastify/index.mdx:4 (`sdk: sentry.javascript.node`), :5 (`fallbackGuide: javascript.node`), :12-14 (`getting-started-primer` + `getting-started-node`) verbatim. `grep -rni deno guides/fastify/` = 0; `grep -rniE fastify guides/deno/` = 0. guides/deno/index.mdx is 230 lines.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "\"Outgoing fetch() is not instrumented on Deno: no http.client span and no sentry-trace/baggage headers, in either trace lifecycle\" is stated with no escape. verify4-M-fastify-deno-outgoingfetch is `works-after-all`: `integrations: [winterCGFetchIntegration()]` from @sentry/vercel-edge - shipped SDK code, zero user code - produced the span and both headers on this exact stack."
+    ],
+    "omitted_findings": [
+      "The shipped winterCGFetchIntegration fix above, which by the audit's own rule counts as working.",
+      "Cell note: `setupFastifyErrorHandler(app)`, which the Node/Fastify guide still tells users to call, is a deprecated no-op on develop - relevant because a Deno page will be read next to the Node one.",
+      "Cell note: the hook crash is in `ajv/dist/core.js:21` (`require(\"./refs/data.json\")`), useful for the warning the draft wants to add."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Change the fetch bullet to: \"Outgoing `fetch()` is not instrumented by default. Adding `winterCGFetchIntegration()` from @sentry/vercel-edge to `Sentry.init` restores the `http.client` span and the `sentry-trace`/`baggage` headers in both lifecycles (verified); `node:http`/`node:https` are traced without it.\" Note that @sentry/vercel-edge is an extra install for a @sentry/deno app.",
+      "Name the ajv JSON require in the import-hook warning so the failure is recognisable."
+    ],
+    "notes": "Everything else matches the cell one-for-one, including the mysql2 >= 3.20 native-diagnostics-channel path with no hook and no bundler plugin, and the `deno run --allow-net --allow-env --allow-read --allow-sys main.ts` command."
+  },
+  {
+    "id": "DOC-F22",
+    "cell": "M-koa-deno",
+    "docs_claim": "holds",
+    "current_lines": "guides/koa/index.mdx:4, :5 and :12 verbatim. `grep -rni deno guides/koa/` = 0; `grep -rniE koa guides/deno/` = 0; repo-wide `@sentry/deno/import|registerHooks` = 0. guides/deno/index.mdx is 230 lines.",
+    "evidence_consistent": "no",
+    "unsupported_claims": [
+      "\"Parameterized route names are not available: transactions are `GET /users/42` with source `url`, and the streamed server span is `GET` with no `http.route`.\" verify4-M-koa-deno-routenames is `works-after-all` (json-fix shim + `deno run --import=./preload.ts`, both lifecycles, plus koa `router` spans), and verify4-M-koa-deno-errors records that the esbuild + `sentryOrchestrionPlugin()` build the draft itself prescribes \"also fixes two neighbouring findings for free: `source: \\\"route\\\"` with `GET /users/:id` ... and koa `router` middleware spans\". The limit contradicts the draft's own recommended build.",
+      "\"`import \\\"@sentry/deno/import\\\"` must not be the first static import\" as the only rule: the refutation loads it first via `--import=./preload.ts` provided a JSON load hook is registered ahead of it."
+    ],
+    "omitted_findings": [
+      "verify4-M-koa-deno-dbspans change 2, which the refutation calls load-bearing: use `mysql.createConnection`, not `createPool`. With a pool the db span is emitted as its own root transaction on a different trace from the request.",
+      "The same refutation's ordering rationale (Koa must be in the module cache before the hook is registered) - the draft states the recipe but not why.",
+      "Cell note 3: with no hook loaded, `debug: true` still prints \"[instrumentation:koa] subscribing to channels\" and \"Integration installed: Koa\", so the debug log actively misleads."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Delete or rewrite the route-names limit. With the esbuild + orchestrion build the page already recommends, names are `GET /users/:id` with source `route` and `router` spans appear; without a build step they stay `GET /users/42` / `url`. State it as a property of the unbundled path only.",
+      "Add \"use `mysql.createConnection`, not `createPool`\" to the database-spans instructions.",
+      "Add the `--import=./preload.ts` + json-fix alternative for users who cannot add a bundler step.",
+      "Keep outgoing fetch as a limit: the Koa refutation only ever restored it with a hand-written @sentry/core integration."
+    ],
+    "notes": "Three of this cell's four capability verdicts were flipped by refutations, and the draft picked up two of them (errors, db spans) but not the third (route names), leaving the item internally inconsistent. Wiring is right in outline; it is marked inconsistent only because a load-bearing detail from the evidence is missing (see corrections)."
+  },
+  {
+    "id": "DOC-F23",
+    "cell": "M-hapi-deno",
+    "docs_claim": "holds",
+    "current_lines": "guides/hapi/index.mdx:4-5 and :12 verbatim. `grep -rn -i hapi guides/deno/` = 0; `grep -rn -i deno guides/hapi/` = 0; guides/deno/ still holds only index.mdx (230 lines) and configuration/integrations/{breadcrumbs,contextlines}.mdx.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "Cell docsNote: platform-includes/getting-started-use/javascript.hapi.mdx:17 and :42 still tell users to call `await Sentry.setupHapiErrorHandler(server)`, which @sentry/deno does not export (packages/deno/src/index.ts exports hapiIntegration only), so copying the documented snippet onto Deno throws. That is a concrete docs-change the item should carry alongside the new page.",
+      "The third verified shape: `import \"@sentry/deno/import\"` plus a 12-line JSON load hook gives route names, hapi router spans, db spans and error capture with no bundler (verify4-M-hapi-deno-routenames, `partial`). The draft names only the esbuild and the attachHapiErrorHandler shapes.",
+      "verify4-M-hapi-deno-routenames workaround (A): a `server.ext('onPreHandler')` extension names routes with no hook and no build step (SENTRY_SEGMENT_NAME_SOURCE must be set after updateSpanName)."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add a bullet to \"What to change\": correct platform-includes/getting-started-use/javascript.hapi.mdx:17,42 for Deno, or scope the setupHapiErrorHandler step to the Node SDK.",
+      "Mention the hook + JSON-load-hook shape as a third option, and that `attachHapiErrorHandler(server)` works before or after `server.start()`.",
+      "Note that `hapiIntegration()` is already a default integration on @sentry/deno."
+    ],
+    "notes": "Both shapes the draft describes are backed: verify4-M-hapi-deno-errors is `works-after-all` for `attachHapiErrorHandler` from @sentry/server-utils (a shipped public export) and records that the esbuild + orchestrion build additionally yields `GET /users/{id}` with `auto.http.hapi` router spans and `auto.db.mysql` spans. Outgoing fetch is correctly kept as a limit - the only fix found there is hand-written."
+  },
+  {
+    "id": "DOC-F24",
+    "cell": "M-oak-deno",
+    "docs_claim": "moved",
+    "current_lines": "`grep -rin '\\boak\\b' docs/ platform-includes/` = 0 and `grep -rl '@oak/oak|jsr:@oak' docs/` = 0, both still true. guides/deno/ still holds only index.mdx plus the two integration pages. The bare `deno run` lines are now :100 (`--allow-net=...`) and :119 (`--allow-read=./src`); the audit cited :106 and :125. index.mdx is 230 lines.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "\"The naming middleware runs after `await next()`, so error responses keep the unparameterized name.\" verify4-M-oak-deno-routenames refutes exactly this: a `try { await next(); } finally { ... }` app-level middleware, or the `router.use((ctx, next) => { ...; return next(); })` form - which is the form the draft's own setup paragraph prescribes - names the span on the error path too, in both lifecycles and with prefixed routers. The limit contradicts the recipe above it."
+    ],
+    "omitted_findings": [
+      "The naming recipe should also set `http.route`; the refutation notes the recipe omits it unless the user sets it explicitly.",
+      "`setHttpServerSpanRouteAttribute` is a public @sentry/server-utils export (packages/server-utils/src/exports.ts:2) that does this job, but is not re-exported from @sentry/deno - the SDK-side ask behind the hand-rolled middleware.",
+      "Cell note 3: Oak's `app.fetch` is typed as a Cloudflare handler, so `ctx.request.ip` is empty on Deno while the SDK still records the address from `info.remoteAddr`."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Replace the error-path limit with the fix: wrap the naming code in `finally`, or register it as `router.use(...)`, and it applies on throws too. Keep \"a middleware registered after the routes / after `await next()` misses the error path\" only as the failure mode to avoid.",
+      "Add `span.setAttribute('http.route', route)` to the snippet.",
+      "Update the cited Deno-guide line numbers to :100 and :119."
+    ],
+    "notes": "The mounting rule (`Deno.serve(app.fetch)`, never `app.listen()`) is strongly evidenced by the cell: under `app.listen()` errors vanish, `getActiveSpan()` is undefined and isolation scopes leak between requests. That is the right lead."
+  },
+  {
+    "id": "DOC-F25",
+    "cell": "M-fresh-deno",
+    "docs_claim": "moved",
+    "current_lines": "There is still no guides/fresh/ directory and guides/deno/ still holds only index.mdx (230 lines) + configuration/integrations/{breadcrumbs,contextlines}.mdx. The Fresh grep now returns 2 unrelated hits, not 1: guides/cloudflare/agent-tracing/agents-sdk.mdx:43 (the audit cited features/agents-sdk.mdx:39 - the page moved in the Guides restructure) and common/migration/v10-to-v11/index.mdx:1339 (\"a fresh scope\"). The Deno guide's init snippet is now under \"### Initialize the Sentry SDK\" at :54 with `Sentry.init` at :69 (audit cited :43-88), and the run flags are at :100 and :119 (audit cited :106 and :125).",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "verify4-M-fresh-deno-isolation: the leak is broader than \"a handler that awaits a dynamic import()\" - it reproduces with zero Sentry, on `Deno.serve` and on `node:http`, and it sticks for every later request, so `vite dev` being clean is luck. It also ships a verified user-land fix (a first middleware that scrubs the inherited isolation scope) and an explicit warning not to use `Sentry.withIsolationScope(new Sentry.Scope(), ...)`, which misattributes transactions.",
+      "verify4-M-fresh-deno-routenames: an OTel ContextManager registered in instrument.ts makes Fresh's own `span.updateName(...)`/`http.route` call work, so no Fresh middleware is needed; the root cause is that @sentry/deno installs a tracer but no ContextManager, so `trace.getActiveSpan()` is undefined.",
+      "verify4-M-fresh-deno-errors: `setErrorInterceptor` from `jsr:@fresh/core/internal` is a third capture mechanism, and `captureConsoleIntegration` goes silent the moment the app registers `app.onError(\"*\")` (the draft covers the second half but not the first)."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Update the Fresh-grep citation to guides/cloudflare/agent-tracing/agents-sdk.mdx:43 (+ the v10-to-v11 migration hit) and the Deno-guide line numbers.",
+      "Add the isolation-scrub middleware to the known-limits bullet so the page is not a dead end, with the explicit \"do not use withIsolationScope(new Scope())\" warning.",
+      "Say that the isolation leak also affects `vite dev` and is not specific to dynamic imports of route chunks.",
+      "Mention the ContextManager bridge as the alternative to the ctx.route middleware, or state why it was rejected for docs."
+    ],
+    "notes": "The vite.config recipe (both `ssr.external` and `environments.ssr.build.rollupOptions.external`) matches verify4-M-fresh-deno-dbspans exactly, including that each knob covers one shape. Use `mysql@2`, not mysql2, is implied by the evidence and could be said outright."
+  },
+  {
+    "id": "DOC-F26",
+    "cell": "M-nestjs-deno",
+    "docs_claim": "holds",
+    "current_lines": "guides/nestjs/index.mdx:1-9 verbatim (`sdk: sentry.javascript.nestjs`, `fallbackGuide: javascript.node`, category `server-node` at :9). `grep -rni deno guides/nestjs/` = 0. guides/deno/index.mdx beta Alert is still exactly :12-16; the file is 230 lines.",
+    "evidence_consistent": "no",
+    "unsupported_claims": [
+      "\"Transaction names are not parameterized on Deno ... The route pattern never appears.\" verify4-M-nestjs-deno-routenames is `works-after-all`: with diagnostics-channel injection left ON and a 6-line compensating `Module.registerHooks({ load })` that restores `format: 'json'`, NestJS 10 on Deno produces fully parameterized names with source `route`, express/nest middleware and handler spans, and error events - on both platform-express and platform-fastify.",
+      "The setup paragraph says to \"keep the standard instrument file that calls `Sentry.init({ dsn, tracesSampleRate: 1.0 })`\". The cell's working setup requires `(globalThis as any).__SENTRY_ORCHESTRION__ = { runtimeUnavailable: true }` before `Sentry.init` and calls it mandatory (\"without it the app cannot boot\"); every probe ran with `NO_INJECT=1`. As written the draft's app does not start."
+    ],
+    "omitted_findings": [
+      "The boot blocker itself: `hasStableSyncModuleHooks()` returns true unconditionally on Deno (packages/server-runtime-injection/src/register.ts), so `Sentry.init` always registers module hooks and Deno then rejects every `require('*.json')`. That is the headline of the cell and belongs in the item.",
+      "`enableRuntimeChannelInjection: false` is the public option for the same thing (packages/node/src/types.ts:36) and is what DOC-F27 uses for Next.js; the NestJS item names neither lever.",
+      "Cell note 4: on Deno the SDK prints \"@sentry/server-runtime-injection was bundled into your application\" for an app that is not bundled, immediately before the crash."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Add the boot workaround to the setup: either `enableRuntimeChannelInjection: false` (public option) or the compensating JSON load hook from verify4-M-nestjs-deno-routenames. Without one of them the documented app 500s or fails at import.",
+      "Replace the route-names limit with the two-branch truth: with injection disabled the name stays `GET /users/42` / source `url`; with injection ON plus the JSON load hook, `GET /users/:id` with source `route` and nest/express spans work.",
+      "Keep the APP_FILTER bullet - it is well evidenced (SentryModule.forRoot() registers only APP_INTERCEPTOR).",
+      "Keep outgoing fetch as a limit: verify4-M-nestjs-deno-outgoingfetch recorded no result, and the cell's `broken` verdict stands."
+    ],
+    "notes": "This is the item whose documented recipe would not run. Both the missing boot lever and the refuted route-name limit come from the same Deno JSON-require bug, so one paragraph fixes both."
+  },
+  {
+    "id": "DOC-F27",
+    "cell": "M-nextjs-deno",
+    "docs_claim": "moved",
+    "current_lines": "`grep -rniE deno guides/nextjs/` = 0 and the reverse grep over guides/deno/ = 0, both still true. guides/nextjs/index.mdx:4-9 verbatim (`sdk: sentry.javascript.nextjs`, `server-node` at :9). `grep -rn enableRuntimeChannelInjection docs/ platform-includes/` = 0, still undocumented repo-wide (it is a real option, packages/node/src/types.ts:36). The neighbouring `traceLifecycle` SdkOption is now at common/configuration/options.mdx:755, not :729.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "\"Database spans for drivers that ship their own diagnostics channels (mysql2 3.11+, ioredis 5.11+)\" understates the evidence: verify4-M-nextjs-deno-dbspans got real `db.query` spans from ioredis 5.4.1, i.e. below the native-channel floor, because withSentryConfig's default `buildTimeInstrumentation` transformed the bundled copy at build time on Deno."
+    ],
+    "omitted_findings": [
+      "The build-time path above, and its conditions: it needs the webpack builder, so no `--turbopack` on Next 15 and do not set `buildTimeInstrumentation: false`.",
+      "Why mysql 2.x cannot be rescued: it stays in DEFAULT_SERVER_EXTERNAL_PACKAGES while BUNDLE_SAFE_INSTRUMENTED_PACKAGES = ['ioredis']; forcing it to bundle produces the span but corrupts the driver on Node as well as Deno.",
+      "Cell caveat: `contexts.runtime` reports `{name: \"node\"}` on Deno, so a Deno-hosted Next.js app is indistinguishable from Node in Sentry."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Update the options.mdx anchor to :755.",
+      "Reword the db-span bullet: \"drivers with native diagnostics channels (mysql2 >= 3.11, ioredis >= 5.11), plus drivers Sentry bundles and transforms at build time (ioredis below 5.11), as long as the app builds with webpack and keeps `buildTimeInstrumentation` on\".",
+      "Add the mysql 2.x / pg explanation (external-packages allowlist) to the limit so readers do not go hunting for a config knob.",
+      "Optionally add the `contexts.runtime: node` caveat."
+    ],
+    "notes": "`winterCGFetchIntegration` is a shipped @sentry/vercel-edge export and @sentry/vercel-edge is already a direct dependency of @sentry/nextjs (packages/nextjs/package.json), so the draft's fetch fix satisfies the shipped-exports rule with nothing extra to install. verify4-M-nextjs-deno-outgoingfetch is `works-after-all` for exactly that line."
+  },
+  {
+    "id": "DOC-F28",
+    "cell": "M-nuxt-deno",
+    "docs_claim": "moved",
+    "current_lines": "guides/nuxt/features/nitro-deployment-presets.mdx:7 verbatim (\"most of which **work out of the box**\"); the file is still 11 lines and documents only Cloudflare Pages at :9-11. `grep -rni deno guides/nuxt/` = 0 and `grep -rniE 'nuxt|nitro' guides/deno/` = 0. The Node-only start command in guides/nuxt/install/cli-import.mdx is now at :37 (audit cited :33).",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "\"Per-request isolation and incoming trace continuation\" under \"Works today\" is not measured for the node-server preset. verify4-M-nuxt-deno-routenames only demonstrates `http.server` spans, parameterized names and a defined `getActiveSpan()`; the isolation and incoming-trace refutation directories (verify4-M-nuxt-deno-isolation, -incomingtrace) recorded no result, and the cell's `broken` verdicts for both are deno_server-preset measurements.",
+      "\"`http.client` spans and `sentry-trace`/`baggage` on `fetch` and nitro's `$fetch`, with the integration above\" was verified on the deno_server build (verify4-M-nuxt-deno-outgoingfetch, `partial`), and under `traceLifecycle: 'static'` there the parentless fetches were dropped with `no_parent_span`. It is very likely fine on node-server, where a server span exists, but that combination was not run."
+    ],
+    "omitted_findings": [
+      "verify4-M-nuxt-deno-dbspans (`works-after-all`): mysql2 spans do work, including on deno_server, once `nitro: { externals: { inline: ['generate-function', 'named-placeholders'] } }` is set; the \"Bundler plugin ran, injected libraries=[]\" debug line is a false negative. The draft lists no database bullet at all.",
+      "For deno_server users who cannot switch preset: the module writes the config import into a file literally named `.output/server/deno.json start`, so the entry wrapper has to be created by hand.",
+      "@sentry/nuxt already depends on @sentry/cloudflare (packages/nuxt/package.json), so `fetchIntegration` from @sentry/cloudflare is the zero-install shipped option; @sentry/vercel-edge is an extra dependency."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Mark isolation and incoming trace as expected-from-node:http rather than measured, or re-run them on the node-server output before publishing them as \"Works today\".",
+      "Prefer `fetchIntegration()` from @sentry/cloudflare (already a @sentry/nuxt dependency) over `winterCGFetchIntegration()` from @sentry/vercel-edge, or say that the latter needs an extra install.",
+      "Add a database bullet with the `externals.inline` requirement.",
+      "Update the cli-import.mdx citation to :37 and add it to \"What to change\": it prescribes `node --import ...`, which has no Deno equivalent."
+    ],
+    "notes": "The core correction - do not set `nitro: { preset: 'deno_server' }`, build node-server and run it under Deno - is exactly what verify4-M-nuxt-deno-routenames proves, with a Node control that is byte-for-byte identical. The deno_server limit list matches the cell's four `broken` verdicts."
+  },
+  {
+    "id": "DOC-F29",
+    "cell": "M-sveltekit-deno",
+    "docs_claim": "moved",
+    "current_lines": "guides/sveltekit/manual-setup__v10.7.0.mdx: the \"Notes on SvelteKit adapter compatibility\" Expandable is :21-36 (audit cited :21-35); Adapter-node is at :28 as cited; \"Currently not supported\" is the heading at :31 and the non-Node bullet is at :32 (audit cited :30-31). manual-setup.mdx is still 9 lines with only `sentry-init/manual-setup-callout` + `getting-started-complete` (:1-9 as cited). `grep -rni deno guides/sveltekit/` = 0.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "verify4-M-sveltekit-deno-dbspans ships a verified workaround for the mysql2 crash the draft states as absolute: prime the CJS require cache with `createRequire(import.meta.url)('mysql2/package.json')`, either in a `--preload` file or at the very top of src/hooks.server.js, before the Sentry import. The draft presents mysql2 as unusable.",
+      "The same refutation is `works-after-all` for the `mysql` driver in the exact configuration the cell called broken - worth citing so the cell record's `db spans: broken` is not read as contradicting the draft.",
+      "common/configuration/integrations/fetchIntegration.mdx:10 says the integration \"only works inside the Cloudflare Workers runtime\", which the SvelteKit-on-Deno run disproves; the item should ask for that page to be corrected too."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Update the citation to :21-36, with the non-Node bullet at :32.",
+      "Soften the mysql2 limit and give the prewarm workaround (`--preload ./prewarm-json.mjs` or two lines at the top of hooks.server.js).",
+      "Add fetchIntegration.mdx:10 to \"What to change\".",
+      "Keep the `@sentry/sveltekit/vite` import for `sentrySvelteKit()` - it is the real subpath (packages/sveltekit/package.json exports `./vite`)."
+    ],
+    "notes": "The claim that @sentry/cloudflare is already installed with @sentry/sveltekit checks out: packages/sveltekit/package.json lists `@sentry/cloudflare: 10.67.0` as a direct dependency, so `fetchIntegration()` needs no extra install. verify4-M-sveltekit-deno-outgoingfetch is `confirmed-broken` for the default wiring but records the same one-line shipped fix, so the draft's phrasing (limit + named remedy) matches the evidence."
+  },
+  {
+    "id": "DOC-F30",
+    "cell": "M-astro-deno",
+    "docs_claim": "moved",
+    "current_lines": "guides/astro/index.mdx: the \"What runtime do you use?\" Alert is now :21-29 (audit cited :22-31); the text is verbatim, including \"This SDK currently only works on Node runtimes\" and \"Other non-Node runtimes, like Vercel's Edge runtime, are currently **not supported**\". `grep -rni deno guides/astro/` = 0 and guides/deno/ never mentions Astro.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "@sentry/astro does not depend on @sentry/cloudflare (packages/astro/package.json), so the fetch remedy needs an explicit `npm install @sentry/cloudflare` - unlike the SvelteKit case. The refutation calls it \"if pulling an extra package is acceptable\".",
+      "verify4-M-astro-deno-outgoingfetch also verified `node:http`/`node:https` and a `Sentry.startSpan` + `getTraceData()` fallback; the draft names only the first two.",
+      "Cell setup marks `src/middleware.ts` as a REQUIRED EXTRA STEP: without it `Sentry.init` never runs for requests that only hit `.ts`/`.js` endpoint routes. The draft lists the file but not the consequence of omitting it."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Update the Alert citation to :21-29.",
+      "Say that @sentry/cloudflare must be installed for `fetchIntegration()` in an Astro app, and add fetchIntegration.mdx:10 (\"only works inside the Cloudflare Workers runtime\") to \"What to change\".",
+      "Spell out why src/middleware.ts is mandatory (endpoint-only routes otherwise never initialise Sentry)."
+    ],
+    "notes": "Every \"Works today\" bullet is a `works` verdict in the cell, including the db-span path (the Vite plugin @sentry/astro adds during `astro build`; 188 orchestrion markers in the SSR chunk). The docs statement really is contradicted by a working run, so the P0 rating is justified."
+  },
+  {
+    "id": "DOC-F31",
+    "cell": "M-reactrouter-deno",
+    "docs_claim": "moved",
+    "current_lines": "guides/react-router/ still contains only index.mdx, manual-setup.mdx and profiling/; `grep -rni deno` over it = 0 and the reverse grep over guides/deno/ = 0. `server-node` is at index.mdx:9, not :7 (it is inside the categories block :5-9). The start commands are now manual-setup.mdx:400-401 (audit cited :413-414) and the direct-import warnings are at :417 and :436 (audit cited :430 and :449). A further Node-only statement the audit did not cite sits at :186-197 (\"Limited Node support for OpenTelemetry auto-instrumentation\").",
+    "evidence_consistent": "no",
+    "unsupported_claims": [
+      "\"Database spans, with the Vite plugin and the `ssr` config above.\" The cell records db spans as `partial`: mysql2 cannot be loaded once Sentry is initialised, and with mysql@2 a module-scope pool emits its span as a detached root transaction on a different trace - only a connection created inside the loader nests. The rerun in _records/results.json re-confirms exactly that. verify4-M-reactrouter-deno-dbspans recorded no verdict, and its bundled-driver run failed at runtime (`TypeError: SqlString2.format is not a function`, appD.log).",
+      "\"set `ssr: { noExternal: true, external: ['@sentry/react-router', '@sentry/node'] }` in vite.config.ts so drivers are instrumented at build time\" - no run in the cell or the refutation used that config. The cell's working setup uses a plain `reactRouter()` config and states that no extra instrumentation path is needed at all (the SDK subscribes eagerly to mysql's diagnostics channel); the refutation used an explicit dependency list in `ssr.noExternal`, not `true`, and it broke the driver."
+    ],
+    "omitted_findings": [
+      "The cell's load-bearing wiring: the server entry must be a hand-written `node:http` adapter (`createRequestHandler(build, 'production')` over `http.createServer`) whose first line imports instrument.server.mjs. \"a bare `Deno.serve` handler gets neither\" the http.server span nor the isolation scope, and `react-router-serve` plus `NODE_OPTIONS='--import ...'` are both unusable on Deno. The draft never says what the server entry is.",
+      "verify4-M-reactrouter-deno-outgoingfetch records that `fetchIntegration` from @sentry/cloudflare fixes the fetch gap on Deno (shipped export), with a Deno-only guard so Node builds do not double-instrument. The draft presents the gap as a flat limit.",
+      "mysql2 is unusable with this stack (K3 through @sentry/node's own runtime hook); the draft's database bullet does not say which driver was used."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Replace the database bullet with what was measured: `mysql@2` works with no extra instrumentation path, but only when the connection is created inside the loader; a module-scope pool detaches the span onto its own trace, and mysql2 cannot be loaded at all once Sentry is initialised.",
+      "Drop the `ssr: { noExternal: true, external: [...] }` sentence or re-run it - no evidence supports it.",
+      "Document the custom `node:http` server entry, and say that `react-router-serve` and `NODE_OPTIONS` do not work on Deno.",
+      "Add the shipped `fetchIntegration` from @sentry/cloudflare (Deno-gated) as the fetch remedy.",
+      "Import the plugin as `import { sentryReactRouter } from '@sentry/react-router/vite'`. MIGRATION.md on develop (\"React Router: Vite plugin moved to `@sentry/react-router/vite`\", the 10.x -> 11.x section) makes the bare `@sentry/react-router` entry wrong for the version under test; the same page confirms `sentryOnBuildEnd` and `makeConfigInjectorPlugin` moved with it.",
+      "Update the citations: `server-node` at index.mdx:9, start commands at manual-setup.mdx:400-401, warnings at :417/:436, and cross-link from the new Node-support Expandable at :186-197."
+    ],
+    "notes": "Errors, route names, isolation, incoming trace and logs all match the cell exactly, including the `transaction`-field inconsistency the draft calls out. The problems are concentrated in the database and build-config sentences."
+  },
+  {
+    "id": "DOC-F32",
+    "cell": "M-tanstack-deno",
+    "docs_claim": "moved",
+    "current_lines": "`grep -rni deno guides/tanstackstart-react/` = 0 and `grep -rni tanstack guides/deno/` = 0. manual-setup/index.mdx:9 is `server-node` as cited. The `--import` section heading is now :286 (audit cited :300) and the `node --import ./.output/server/instrument.server.mjs .output/server/index.mjs` start script is now at :358 inside the :354-358 block (audit cited :369-376).",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "The cell records a REQUIRED BUILD WORKAROUND: with its dependency set `vite build` fails outright and needs a custom Vite pre-plugin that externalises every `@sentry/*` import in the non-client environments and gives each a default export. verify4-M-tanstack-deno-outgoingfetch hit the same rollup failure independently (`Cannot read properties of null (reading 'getVariableForExportName')`), while verify4-M-tanstack-deno-routenames built cleanly on vite 8.2.2. The draft compresses all of this into \"with Vite 8\".",
+      "The routenames refutation's verification step: `grep -l 'users/\\$userId' .output/server/_libs/sentry__tanstackstart-react.mjs` before deploying, plus its warning that vite 7.3.2 with nitro 3.0.260903-beta crashes rollup regardless of Sentry.",
+      "The route-name failure is not Deno-specific: the same broken build config yields url-source names under Node too."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Update the citations to :286 and :354-358.",
+      "State the build sensitivity explicitly: vite 8.x is required, older vite/nitro combinations fail in rollup, and add the `_libs/sentry__tanstackstart-react.mjs` grep as the way to confirm `noExternals` landed.",
+      "Say that the unparameterized names are a build-config effect, not a Deno effect."
+    ],
+    "notes": "The `nitro({ noExternals: ['@sentry/tanstackstart-react'] })` fix and the two-line `.output/server/deno-entry.mjs` are both exactly as recorded. Outgoing fetch is correctly kept as a limit - the only fix found there is a hand-written copy of Cloudflare's fetchIntegration."
+  },
+  {
+    "id": "DOC-F33",
+    "cell": "M-remix-deno",
+    "docs_claim": "moved",
+    "current_lines": "guides/remix/index.mdx:4-9 verbatim (`server-node` at :9); the Remix 3 alert is :12-16 (audit cited :11-17); platform-includes/getting-started-prerequisites/javascript.remix.mdx:1-7 verbatim (Remix 2.0.0+). `grep -rni deno guides/remix/` = 0 and `grep -rn installGlobals docs/ platform-includes/` = 0, both still true. The `orchestrion` grep is no longer zero: 2 hits, both in common/migration/v10-to-v11/index.mdx (:689 channel-based instrumentation, :1297 the `sentryRemixVitePlugin` subpath move). `enableRuntimeChannelInjection` is still 0. guides/remix/ has configuration/ and frameworks/ but no install/ directory, so the proposed install/deno.mdx would create one.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "\"Greps for `deno`, `installGlobals`, `enableRuntimeChannelInjection` and `orchestrion` over `docs/` and `platform-includes/` all return zero\" is now false for `orchestrion` (2 hits on the v10-to-v11 migration page)."
+    ],
+    "omitted_findings": [
+      "The ordering rule from refutations/verify4-M-remix-deno-outgoingfetch/README-verify.txt: if `installGlobals()` is called in the server entry rather than in entry.server.tsx it must run AFTER `import './instrument.server.mjs'`; calling it before `Sentry.init()` silently drops every transaction and span envelope for the whole process while errors keep arriving (runB, runF).",
+      "verify4-M-remix-deno-dbspans: the `createRequire` banner on the esbuild build is mandatory (without it the bundle dies with `Dynamic require of \"@sentry/server-utils\" is not supported`), and `@remix-run/server-runtime` must be bundled while mysql2 and `@sentry/*` stay external. The draft says only \"keeping @sentry/* external\".",
+      "The cell's simpler alternative: mysql2 needs no instrumentation path at all on Deno (it publishes its own diagnostics channels), provided the driver is imported BEFORE instrument.server.mjs - the inverse of the usual rule.",
+      "Cell note 4: the obvious hand-written fetch integration propagates headers but suppresses every server transaction/span for the process - the reason installGlobals is the recommended fix."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Fix the grep sentence: `orchestrion` now appears twice on common/migration/v10-to-v11/index.mdx; `deno`, `installGlobals` and `enableRuntimeChannelInjection` are still zero.",
+      "Import the plugin as `import { sentryRemixVitePlugin } from '@sentry/remix/vite'`. MIGRATION.md on develop (\"Remix: Vite plugin moved to `@sentry/remix/vite`\", 10.x -> 11.x) makes the bare `@sentry/remix` entry wrong for the version under test, and the same entry says the plugin now applies the build-time instrumentation transform and that a manually added `sentryOrchestrionPlugin()` from `@sentry/server-utils/orchestrion/vite` should be removed - re-check whether the separate esbuild orchestrion step is still needed before publishing it.",
+      "Add the installGlobals ordering rule and the `createRequire` banner / `@remix-run/server-runtime` bundling requirements.",
+      "Pick a page path that exists in the guide's layout: guides/remix/ has no install/ directory today (solidstart does), so either add one deliberately or use guides/remix/frameworks/ or a deno.mdx sibling."
+    ],
+    "notes": "The installGlobals fix is properly evidenced even though _records/refutations.json has no entry for it: refutations/verify4-M-remix-deno-outgoingfetch/README-verify.txt records the REFUTES verdict, the runG command and the baseline. `installGlobals()` is a shipped @remix-run/node export, not a hand-written Sentry integration, so it satisfies the audit's rule. Wiring is right in outline; it is marked inconsistent only because a load-bearing detail from the evidence is missing (see corrections)."
+  },
+  {
+    "id": "DOC-F34",
+    "cell": "M-solidstart-deno",
+    "docs_claim": "holds",
+    "current_lines": "guides/solidstart/index.mdx:1-7 verbatim (categories browser + server, no server runtime named). `grep -rni deno guides/solidstart/` = 0. There is still no platform-includes/getting-started-prerequisites/javascript.solidstart.mdx (only javascript.solid.mdx). The tracing verification step is still at :444-470: \"To test tracing, create a test API route like `src/routes/sentry-test.tsx`\" at :444 with `throw new Error(\"Sentry Example API Route Error\")` at :451. guides/deno/index.mdx:1-18 covers only frontmatter, the beta Alert (:12-16) and the prerequisites include.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "\"Server transactions cannot be parameterized by the SDK\" is too strong given the audit's own rule: verify4-M-solidstart-deno-routenames is confirmed-broken for the default wiring but ships a verified user-land fix built on `setHttpServerSpanRouteAttribute`, a shipped public @sentry/server-utils export (packages/server-utils/src/exports.ts:2) - a SolidStart middleware rebuilding the pattern from `event.params` for API routes, plus a `useCurrentMatches()` call in the Router root for SSR pages.",
+      "\"Outgoing `fetch()` is not instrumented\" with no remedy: verify4-M-solidstart-deno-outgoingfetch verified `winterCGFetchIntegration()` from @sentry/vercel-edge in the nitro startup plugin, Deno-gated, and says it bundles cleanly into the node-server output.",
+      "\"a Deno AsyncLocalStorage defect triggered by the first dynamic import of a route chunk\" - that mechanism comes from the Fresh isolation refutation. For this cell, verify4/verify5-M-solidstart-deno-isolation recorded no result, and the cell only records the observation (first setTag lands on the shared default isolation scope; Node with the same build is clean)."
+    ],
+    "omitted_findings": [
+      "The shipped `withServerActionInstrumentation` wrapper does capture `'use server'` action errors on Deno (mechanism `auto.function.solidstart`) - the only path the repo's own e2e app covers. Useful contrast to the API-route gap.",
+      "Why the nitro error hook cannot help: SolidStart builds its own inner `new H3()` whose default onError turns the throw into a 500, so @sentry/nitro's `error` hook never fires and adding @sentry/nitro as a module would not fix it.",
+      "The middleware must use the array form of `createMiddleware`, with the existing `sentryBeforeResponseMiddleware()` spread in through a nested object-form call; the object form cannot wrap the handler."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Add `NODE_ENV=production npx vite build` to the setup: the cell states the sentrySolidStart orchestrion pass is skipped in development, and that pass is what produces the mysql2 spans the item lists under \"Works today\".",
+      "Name the import path `import { sentrySolidStart } from '@sentry/solidstart/vite'`, and include `solidStart({ appRoot: './src' })` / `nitro({ serverDir: './server' })` as the cell ran them.",
+      "Soften the route-name limit and ship the `setHttpServerSpanRouteAttribute` middleware recipe (both halves: API routes and SSR pages).",
+      "Turn the fetch limit into \"not instrumented by default; `winterCGFetchIntegration()` from @sentry/vercel-edge, gated on Deno, restores span and headers\".",
+      "Drop the dynamic-import attribution from the isolation bullet, or mark it as an unverified hypothesis for this stack.",
+      "Show the array-form `createMiddleware` snippet, and mention that `'use server'` actions are already covered by `withServerActionInstrumentation`."
+    ],
+    "notes": "The strongest part of the item is right and well evidenced: unhandled API-route throws are lost on Deno and on Node alike, so the guide's own verification step at index.mdx:444-470 tells readers to expect an issue that never arrives. That alone justifies the docs change."
+  }
+]

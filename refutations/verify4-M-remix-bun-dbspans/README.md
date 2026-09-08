@@ -16,7 +16,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 **Verdict:** works-after-all
 
-REFUTED the "db spans and isolation are mutually exclusive on Bun" part; db spans themselves reconfirmed working on the Bun bundle path. All probes: $SCRATCH/deep/verify4-M-remix-bun-dbspans/ (Remix 2.17 vite build + @remix-run/express, @sentry/remix 10.67.0 from $S/pack, Bun 1.4.0, traceLifecycle 'static', module-scope mysql2 pool in db.mjs, sink on 41337).
+REFUTED the "db spans and isolation are mutually exclusive on Bun" part; db spans themselves reconfirmed working on the Bun bundle path. All probes: $SCRATCH/deep/verify4-M-remix-bun-dbspans/ (Remix 2.17 vite build + @remix-run/express, @sentry/remix 10.67.0 from $REPRO/_toolbox/pack, Bun 1.4.0, traceLifecycle 'static', module-scope mysql2 pool in db.mjs, sink on 41337).
 
 1) Mode B reproduced exactly (bun build-server.ts; bun dist/server.js). db spans present, isolation gone — run-b-modeB-items.json:
 {"type":"transaction","name":"GET db","op":"http.server","source":"route","trace_id":"e2009f764907456598e242eabcd51c57","spans":["function LOADER routes/db","db mysql2.pool.connect","db mysql2.connect","db SELECT id, name FROM users"]}

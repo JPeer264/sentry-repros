@@ -18,12 +18,12 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 REFUTED. The diagnosis was right (bun's native fetch never publishes undici's `undici:request:*` channels, so @sentry/node's NodeFetch instrumentation is dead on bun), but the conclusion "no outgoing-fetch instrumentation on Astro+bun" is wrong: @sentry/bun ships a channel-free fetch integration (`fetchIntegration`, built on `addFetchInstrumentationHandler` + `instrumentFetchRequest`, i.e. a global `fetch` monkey-patch) that is exported from the package's main entry and can be added to an @sentry/astro server init. Adding it makes both the `http.client` span and the propagation headers appear.
 
-Isolation first ($S/deep/verify4-M-astro-bun-outgoingfetch/mini/probe.mjs, plain @sentry/node init + `startSpan` around one fetch, same build run three ways):
+Isolation first ($REPRO/refutations/verify4-M-astro-bun-outgoingfetch/mini/probe.mjs, plain @sentry/node init + `startSpan` around one fetch, same build run three ways):
   node                       -> spans:["http.client GET http://127.0.0.1:47312/a-node"]     rec: sentry-trace + baggage present
   bun 1.4.0, stock           -> spans:[]                                                     rec: {"url":"/b-bun-nofix","sentry-trace":null,"baggage":null}
   bun 1.4.0 + fetchIntegration from @sentry/bun -> spans:["http.client GET http://127.0.0.1:47312/c-bun-fix"]  rec: sentry-trace + baggage present
 
-Then end-to-end in a real Astro 7.3.1 / @astrojs/node 11.1.5 standalone build ($S/deep/verify4-M-astro-bun-outgoingfetch/app, @sentry/astro 10.67.0 develop tarballs), run as `bun --preload ./sentry.server.config.mjs dist/server/entry.mjs`, hitting `/fetchout` which does `fetch(REC + '/rec')`:
+Then end-to-end in a real Astro 7.3.1 / @astrojs/node 11.1.5 standalone build ($REPRO/refutations/verify4-M-astro-bun-outgoingfetch/app, @sentry/astro 10.67.0 develop tarballs), run as `bun --preload ./sentry.server.config.mjs dist/server/entry.mjs`, hitting `/fetchout` which does `fetch(REC + '/rec')`:
 
 baseline (integrations: []) — reproduces the report exactly:
   {"type":"transaction","name":"GET /fetchout","op":"http.server","source":"route","status":"ok","sdk":"sentry.javascript.astro","spans":[]}
@@ -45,7 +45,7 @@ SDK-side observation (not a blocker for users, worth a backlog item): @sentry/as
 
 Files: $SCRATCH/deep/verify4-M-astro-bun-outgoingfetch/ — app/{astro.config.mjs,sentry.server.config.mjs,src/pages/{index.astro,fetchout.ts,sentinel.ts}}, mini/probe.mjs, recorder.mjs, logs app_a.log (baseline bun), app_b.log (bun+fix static), app_c.log (bun+fix stream), app_node.log (node duplication), app_d.log/app_e.log (guarded, bun/node), rec.log, sink.log.
 
-Rerun: npm install --no-audit --no-fund astro @astrojs/node ; npm install --no-audit --no-fund $S/pack/sentry-{astro,node,core,browser,server-utils,server-runtime-injection,opentelemetry,bundler-plugins,bun}-10.67.0.tgz ; PORT=47311 node $S/qs/sink.mjs & ; PORT=47312 node ../recorder.mjs & ; npx astro build ; PORT=47313 HOST=127.0.0.1 SENTRY_SINK=http://127.0.0.1:47311/ REC=http://127.0.0.1:47312 bun --preload ./sentry.server.config.mjs dist/server/entry.mjs ; curl http://127.0.0.1:47313/fetchout ; curl http://127.0.0.1:47311/__items
+Rerun: npm install --no-audit --no-fund astro @astrojs/node ; npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-{astro,node,core,browser,server-utils,server-runtime-injection,opentelemetry,bundler-plugins,bun}-10.67.0.tgz ; PORT=47311 node $REPRO/_toolbox/sink.mjs & ; PORT=47312 node ../recorder.mjs & ; npx astro build ; PORT=47313 HOST=127.0.0.1 SENTRY_SINK=http://127.0.0.1:47311/ REC=http://127.0.0.1:47312 bun --preload ./sentry.server.config.mjs dist/server/entry.mjs ; curl http://127.0.0.1:47313/fetchout ; curl http://127.0.0.1:47311/__items
 
 Reference read-only: ~/dev/sentry-worktrees/audit-runtime-docs/dev-packages/e2e-tests/test-applications/astro-7 (astro 7.2.4, @astrojs/node ^11.1.4, sentry.server.config.js with traceLifecycle 'static'). It is node-only; no bun variant exists in the e2e matrix for any Node-adapter framework app.
 

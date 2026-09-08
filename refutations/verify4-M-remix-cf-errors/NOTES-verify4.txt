@@ -4,7 +4,7 @@ ports: sink 38411, wrangler 38412
 Rerun:
   npm install --legacy-peer-deps
   npx remix vite:build
-  PORT=38411 node $S/qs/sink.mjs > sink-run.log 2>&1 &
+  PORT=38411 node $REPRO/_toolbox/sink.mjs > sink-run.log 2>&1 &
   npx wrangler dev --port 38412 --inspector-port 0 > wr.log 2>&1 &
   curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:38412/boom/1     # loader throws Error
   curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:38412/boomresp/1 # loader throws Response 500

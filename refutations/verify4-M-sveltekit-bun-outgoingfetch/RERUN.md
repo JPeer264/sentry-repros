@@ -24,4 +24,4 @@ The integration must be guarded by a bun check: on node it duplicates the undici
   bunfetch-static        + fetchIntegration(), static          -> client span nested in transaction
   guarded-stream         + fetchIntegration() only on bun      -> same as bunfetch-stream
   node-bunfetch-stream   node control with fetchIntegration()  -> DUPLICATE client spans
-  bunfetch-static-b1314  not-run: $S/bun1314 no longer on disk
+  bunfetch-static-b1314  not-run: $SCRATCH/bun1314 no longer on disk

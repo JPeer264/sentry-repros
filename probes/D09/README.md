@@ -35,8 +35,8 @@ npm install
 enough. The explicit equivalent (with `S=$SCRATCH`):
 
 ```
-npm install $S/pack/sentry-deno-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-            $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz
+npm install $REPRO/_toolbox/pack/sentry-deno-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+            $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz
 ```
 
 `deno.json` sets `nodeModulesDir: "manual"` so Deno uses that prepared `node_modules`.

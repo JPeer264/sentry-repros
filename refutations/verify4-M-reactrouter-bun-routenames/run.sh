@@ -2,7 +2,7 @@
 # usage: run.sh <runtime-bin> <lifecycle> <label>
 set -u
 S=$SCRATCH
-D=$S/deep/verify4-M-reactrouter-bun-routenames
+D=$REPRO/refutations/verify4-M-reactrouter-bun-routenames
 BIN=$1; LC=$2; LABEL=$3
 PORT=41824
 curl -s -X DELETE http://127.0.0.1:41823/__items > /dev/null

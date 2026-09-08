@@ -18,7 +18,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 Elysia + Deno isolation works with a wiring that uses ONLY public exports. The prior report's core factual claim ("the wiring that works is not reachable through any public export ... a docs page cannot show this today") is wrong: `import { withElysia } from "@sentry/elysia"` resolves and runs fine on Deno even when the client comes from `@sentry/deno`. No deep import into `build/esm/withElysia.js` is needed. Importing `@sentry/elysia`'s package entry (which re-exports all of `@sentry/bun`) does not crash Deno and does not conflict with an already-initialized `@sentry/deno` client, because both share the one hoisted `@sentry/core` carrier.
 
-EXACT CHANGE (working wiring, my $S/deep/verify4-M-elysia-deno-isolation/app-c.ts):
+EXACT CHANGE (working wiring, my $REPRO/refutations/verify4-M-elysia-deno-isolation/app-c.ts):
   import "@sentry/deno/import";              // optional, only needed for library instrumentation
   import * as Sentry from "@sentry/deno";
   Sentry.init({ dsn, tunnel, tracesSampleRate: 1.0 });
@@ -27,7 +27,7 @@ EXACT CHANGE (working wiring, my $S/deep/verify4-M-elysia-deno-isolation/app-c.t
   const app = withElysia(new Elysia()).get(...);
   Deno.serve({ port, hostname: "127.0.0.1" }, app.fetch);
 run: deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys --allow-ffi app-c.ts
-install: npm install elysia@1 $S/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz  (deno.json: {"nodeModulesDir":"manual"})
+install: npm install elysia@1 $REPRO/_toolbox/pack/sentry-{elysia,bun,node,core,deno,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz  (deno.json: {"nodeModulesDir":"manual"})
 
 EVIDENCE, working wiring, traceLifecycle static, 3 concurrent GET /tag/<t> + later sentinel (sink 51811, app 51813):
 {"t":"transaction","name":"GET /tag/:t","op":"http.server","src":"route","trace":"1c14c1be47454a4493f524719d6e061b","spans":["middleware Request","middleware sentryOnRequest","middleware Parse","middleware Transform","middleware BeforeHandle","handler Handle","middleware AfterHandle","middleware sentryOnAfterHandle","middleware MapResponse"]}
@@ -62,7 +62,7 @@ The OTHER documented wiring is also broken on Deno: the guide's Node.js tab (`ne
 {"ev":"Error: tagged-ccc","tags":{"reqtag":"ccc"},"trace":"172dd82f257342889c7eba3ae99401a7","tx":"GET /tag/:t"}
 plus the same phase-per-transaction output.
 
-Files (rerunnable after `npm install ...` above; node_modules removed to save disk): $SCRATCH/deep/verify4-M-elysia-deno-isolation/{app-c.ts (working), app-c-nohook.ts, app-a.ts + instrument-a.ts (documented Deno.serve wiring, broken), app-d.ts (documented Node-adapter wiring, broken), routes.ts, deno.json, run1-*.log}. Sink: `PORT=51811 node $S/qs/sink.mjs`. All processes killed, ports 51811-51817 free.
+Files (rerunnable after `npm install ...` above; node_modules removed to save disk): $SCRATCH/deep/verify4-M-elysia-deno-isolation/{app-c.ts (working), app-c-nohook.ts, app-a.ts + instrument-a.ts (documented Deno.serve wiring, broken), app-d.ts (documented Node-adapter wiring, broken), routes.ts, deno.json, run1-*.log}. Sink: `PORT=51811 node $REPRO/_toolbox/sink.mjs`. All processes killed, ports 51811-51817 free.
 
 Workaround: On Deno, initialize with `@sentry/deno` (not `@sentry/elysia`) and import only the wrapper from the Elysia package: `import * as Sentry from "@sentry/deno"; Sentry.init({...}); import { withElysia } from "@sentry/elysia"; Deno.serve(port, withElysia(new Elysia()).get(...).fetch)`. @sentry/deno instruments Deno.serve, which supplies the root span, the per-request isolation scope and continueTrace that withElysia's non-Bun branch expects. No deep import, no SDK change. A source-side fix would additionally make withElysia self-sufficient by dropping the `isBun()` gate in favor of "create a root span + isolation scope unless one already exists" (e.g. `if (!getActiveSpan())`), so the documented `@sentry/elysia` wiring also works on any runtime without HTTP instrumentation.
 

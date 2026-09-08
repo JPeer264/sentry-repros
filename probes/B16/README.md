@@ -40,7 +40,7 @@ cd $REPRO/probes/B16
 
 docker run -d --rm --name probe-B16-redis -p 127.0.0.1:51847:6379 redis:7-alpine
 
-PORT=34117 node $S/qs/sink.mjs > sink.log 2>&1 & sinkpid=$!
+PORT=34117 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 & sinkpid=$!
 
 # leg 1: plain bun run
 SENTRY_DEBUG=1 REDIS_PORT=51847 bun run app.ts > app-plain.log 2>&1 & apppid=$!
@@ -155,6 +155,6 @@ diagnostics-channel injection and the bundled run reports `injected libraries=[]
 Differences are cosmetic only: this run used ports 34117/34118/51847 instead of 53171/53172/53177,
 the SDK was installed from the develop tarballs rather than symlinked into the worktree (so the grep
 ran against `node_modules/@sentry/*/build` instead of `$W/packages/*/build`, with the same result),
-and the stock `$S/qs/sink.mjs` renders the sentinel event as `"exception":"undefined: sentinel"` and
+and the stock `$REPRO/_toolbox/sink.mjs` renders the sentinel event as `"exception":"undefined: sentinel"` and
 `"runtime":"bun"` where the recorded run used a locally extended sink that printed `"sentinel"` and
 `{"name":"bun","version":"1.4.0"}`.

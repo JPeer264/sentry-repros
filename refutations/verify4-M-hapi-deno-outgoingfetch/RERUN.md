@@ -1,6 +1,6 @@
 # verify4-M-hapi-deno-outgoingfetch
 
-Deps: `npm install $S/pack/sentry-{deno,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz @hapi/hapi`
+Deps: `npm install $REPRO/_toolbox/pack/sentry-{deno,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz @hapi/hapi`
 
 Start helpers:
   PORT=41971 node sink.mjs > sink.log 2>&1 &

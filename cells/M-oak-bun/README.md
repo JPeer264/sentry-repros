@@ -29,7 +29,7 @@ Install (Oak is JSR-only, so a docs page must show the JSR npm registry step —
     @jsr:registry=https://npm.jsr.io
   npm install "@oak/oak@npm:@jsr/oak__oak@17.2.0"
   npm install @sentry/bun mysql2
-(In this probe the SDK came from the develop tarballs: `npm install $S/pack/sentry-{bun,node,core,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz mysql2`. `bun add` cannot resolve the tarballs' transitive @sentry/*@10.67.0 deps; npm install + `bun app.ts` is fine.)
+(In this probe the SDK came from the develop tarballs: `npm install $REPRO/_toolbox/pack/sentry-{bun,node,core,opentelemetry,server-utils,server-runtime-injection}-10.67.0.tgz mysql2`. `bun add` cannot resolve the tarballs' transitive @sentry/*@10.67.0 deps; npm install + `bun app.ts` is fine.)
 
 instrument.ts:
   import * as Sentry from "@sentry/bun";
@@ -76,14 +76,14 @@ No error middleware is needed on this path: Oak's `fetch` logs "[uncaught applic
 Recorded commands; paths under `$SCRATCH` were the session working directory, the same files are in this directory:
 
 ```
-cd $S/deep/M-oak-bun
+cd $REPRO/cells/M-oak-bun
 
 # oak from JSR via the npm-compat registry (bun add @oak/oak alone does not work)
 printf '@jsr:registry=https://npm.jsr.io\n' > .npmrc
 npm install --no-audit --no-fund "@oak/oak@npm:@jsr/oak__oak@17.2.0"
-npm install --no-audit --no-fund $S/pack/sentry-bun-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz \
-  $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz \
-  $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz mysql2
+npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz mysql2
 
 # viability check without Sentry
 APP_PORT=41377 MOUNT=serve  bun bare.ts     # -> {"id":"7"}

@@ -20,8 +20,8 @@ Rebuilt the probe from scratch (the earlier agent's M-nextjs-cf/ directory no lo
 
 SETUP (same versions they used, but wrangler config copied from the repo's own e2e app nextjs-16-cf-workers: compatibility_date 2025-12-01, compatibility_flags ["nodejs_compat", "global_fetch_strictly_public"], which is stricter/newer than their 2026-05-01 + nodejs_compat only):
   npm install next@15.5.25 react@19 react-dom@19 typescript@5 @types/react @types/node @opennextjs/cloudflare@1.20.6 wrangler@4
-  npm install $S/pack/sentry-{nextjs,core,node,react,browser,browser-utils,bundler-plugins,opentelemetry,server-utils,server-runtime-injection,vercel-edge,replay,replay-canvas,feedback,cloudflare}-10.67.0.tgz
-  PORT=47311 node $S/qs/sink.mjs &   PORT=47312 node rec.mjs &   (rec.mjs records sentry-trace/baggage on /__rec)
+  npm install $REPRO/_toolbox/pack/sentry-{nextjs,core,node,react,browser,browser-utils,bundler-plugins,opentelemetry,server-utils,server-runtime-injection,vercel-edge,replay,replay-canvas,feedback,cloudflare}-10.67.0.tgz
+  PORT=47311 node $REPRO/_toolbox/sink.mjs &   PORT=47312 node rec.mjs &   (rec.mjs records sentry-trace/baggage on /__rec)
   npx opennextjs-cloudflare build ; npx wrangler dev --port 47313 --inspector-port 0
 Routes: src/app/api/{ping,outfetch,outhttp,sentinel}/route.ts. /api/outfetch does a global fetch() to the recorder, /api/outhttp does a node:http GET to it.
 

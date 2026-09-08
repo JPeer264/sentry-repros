@@ -46,7 +46,7 @@ kill $sink; wait $sink
 ```
 
 Each probe waits 7 seconds after its log calls so the flush timer fires; neither calls `Sentry.flush()`.
-`sink-d07.mjs` is `$S/qs/sink.mjs` with the `log` compaction extended to keep `item_count`,
+`sink-d07.mjs` is `$REPRO/_toolbox/sink.mjs` with the `log` compaction extended to keep `item_count`,
 `content_type`, `severity_number`, `trace_id` presence and flattened attributes, plus a `RAW` env var
 that appends every raw envelope body to a file.
 

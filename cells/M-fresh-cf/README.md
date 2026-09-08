@@ -51,13 +51,13 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-D=$S/deep/M-fresh-cf
+D=$REPRO/cells/M-fresh-cf
 
 # 1. reinstall (node_modules was removed to save disk)
 cd $D/app
 npm install --no-audit --no-fund \
-  $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz \
   vite@^7.1.3 preact@^10.29.1 @preact/signals@^2.9.0 mysql@^2 mysql2@^3 wrangler@4 \
   @prefresh/vite@^2.4.8 @babel/core@^7 @babel/preset-react@^7 preact-render-to-string@^6 \
   rollup@^4 esbuild-wasm@^0.25 @types/babel__core@^7 @remix-run/node-fetch-server@^0.12.0

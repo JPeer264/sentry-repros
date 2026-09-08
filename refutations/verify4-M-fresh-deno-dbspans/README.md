@@ -60,7 +60,7 @@ WHAT STILL DOES NOT WORK: `mysql2`. With the rollup external it is now correctly
 
 No SDK change, no init/entry change and no lifecycle change was needed: `instrument.ts` (`import "@sentry/deno/import"` first, then `Sentry.init`) imported as the first line of `main.ts` is exactly the wiring the repo's own reference app uses (~/dev/sentry-worktrees/audit-runtime-docs/dev-packages/e2e-tests/test-applications/deno-mysql/src/app.ts:5, with the same `nodeModulesDir: "manual"`). There is no Fresh e2e app in the repo.
 
-Probe files (all under $SCRATCH/deep/verify4-M-fresh-deno-dbspans/): app/vite.config.ts (final config), app/instrument.ts, app/main.ts, app/db.ts, app/db2.ts, app/routes/api/{db,db2,sentinel}.ts; logs buildB1-B3.log (build variants), prodB2.log/prodB3.log/prodB4.log, devB1.log (no ssr.external), devB2.log/devB3.log. Rerun: start the sink `PORT=38417 node $S/qs/sink.mjs`, then in app/ `deno task build` and `LIFECYCLE=static deno serve -A --port 38419 _fresh/server.js`, curl /api/db then /api/sentinel, read `curl -s http://127.0.0.1:38417/__items`. All processes started were killed.
+Probe files (all under $SCRATCH/deep/verify4-M-fresh-deno-dbspans/): app/vite.config.ts (final config), app/instrument.ts, app/main.ts, app/db.ts, app/db2.ts, app/routes/api/{db,db2,sentinel}.ts; logs buildB1-B3.log (build variants), prodB2.log/prodB3.log/prodB4.log, devB1.log (no ssr.external), devB2.log/devB3.log. Rerun: start the sink `PORT=38417 node $REPRO/_toolbox/sink.mjs`, then in app/ `deno task build` and `LIFECYCLE=static deno serve -A --port 38419 _fresh/server.js`, curl /api/db then /api/sentinel, read `curl -s http://127.0.0.1:38417/__items`. All processes started were killed.
 
 ## Workaround
 

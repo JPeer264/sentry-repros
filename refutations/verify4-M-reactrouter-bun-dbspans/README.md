@@ -56,9 +56,9 @@ So the Vite/`sentryReactRouter` build is fine; only the Bun runtime path is brok
 
 Confirmed side notes: the reporter's `entry.server.tsx` rewrite to `renderToReadableStream` + `Sentry.wrapSentryHandleRequest` is indeed required on Bun (`react-dom/server` resolves to `server.bun.js`, no `renderToPipeableStream`), and `ssr.noExternal: ["mysql2"]` is unnecessary - `sentryOrchestrionPlugin`'s own `config` hook already force-bundles every instrumented module.
 
-NOT RUN: the CI pin bun 1.3.14 - `$S/bun1314/` does not exist on this machine (only `deep`, `pack`, `qs` and three html files are under `$S`). All results are bun 1.4.0 and node v26.5.0.
+NOT RUN: the CI pin bun 1.3.14 - `$SCRATCH/bun1314/` does not exist on this machine (only `deep`, `pack`, `qs` and three html files are under `$S`). All results are bun 1.4.0 and node v26.5.0.
 
-Reproduce: `cd .../verify4-M-reactrouter-bun-dbspans/app && npm install && npm install $S/pack/sentry-{react-router,node,core,browser,react,server-utils,server-runtime-injection,opentelemetry,bundler-plugins,browser-utils,replay,replay-canvas,feedback,bun}-10.67.0.tgz mysql2 && npx react-router build`, start `PORT=47311 node $S/qs/sink.mjs`, then `PORT=<port> BUN_HTTP=1 KEEPALIVE=driver SENTRY_TUNNEL=http://127.0.0.1:47311/ bun server.js`. `app/micro/{httpdc,gc,sdkbind,tcid,bindstore}.mjs` are the standalone one-file proofs of each mechanism.
+Reproduce: `cd .../verify4-M-reactrouter-bun-dbspans/app && npm install && npm install $REPRO/_toolbox/pack/sentry-{react-router,node,core,browser,react,server-utils,server-runtime-injection,opentelemetry,bundler-plugins,browser-utils,replay,replay-canvas,feedback,bun}-10.67.0.tgz mysql2 && npx react-router build`, start `PORT=47311 node $REPRO/_toolbox/sink.mjs`, then `PORT=<port> BUN_HTTP=1 KEEPALIVE=driver SENTRY_TUNNEL=http://127.0.0.1:47311/ bun server.js`. `app/micro/{httpdc,gc,sdkbind,tcid,bindstore}.mjs` are the standalone one-file proofs of each mechanism.
 
 ## Workaround
 

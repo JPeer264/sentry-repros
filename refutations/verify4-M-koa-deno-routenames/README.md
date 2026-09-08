@@ -50,7 +50,7 @@ TUNNEL=http://127.0.0.1:47315/ LIFECYCLE=static APP_PORT=47316 deno run --no-pro
   SPAN name="GET" op=http.server seg=true http.route=undefined source=url segname="GET"
 Deno source-loads the whole static ESM graph (including the npm CJS facades) before the entry's first statement runs, so the injection hook registers too late; only `--import` / `await import()` defers Koa past hook registration.
 
-Deno 2.8.3 (CI pin) was not tested: $S/deno283/deno does not exist on this machine.
+Deno 2.8.3 (CI pin) was not tested: $SCRATCH/deno283/deno does not exist on this machine.
 
 ## Workaround
 

@@ -3,7 +3,7 @@
 # Proves db spans (mysql2 AND mysql) DO work.
 set -e
 S=$SCRATCH
-D=$S/deep/verify4-M-nuxt-deno-dbspans
+D=$REPRO/refutations/verify4-M-nuxt-deno-dbspans
 
 # 1. deps. Do NOT install @sentry/nitro: it drags in nitro@3 and the build then
 #    fails at runtime with ERR_PACKAGE_PATH_NOT_EXPORTED for 'nitro/storage'.
@@ -11,7 +11,7 @@ cd $D/app
 npm install --no-audit --no-fund
 
 # 2. sink
-PORT=52713 node $S/qs/sink.mjs > $D/sink2.log 2>&1 & echo $! > $D/sink2.pid
+PORT=52713 node $REPRO/_toolbox/sink.mjs > $D/sink2.log 2>&1 & echo $! > $D/sink2.pid
 
 # 3. build
 npx nuxt build

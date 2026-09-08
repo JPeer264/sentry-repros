@@ -40,7 +40,7 @@ R8 the same init-only variant AFTER adding a `routes/_error.tsx` -> nothing is c
 
 All four route-error events carry request URL/method/headers and context lines, and share the trace_id of their `http.server` transaction, so once captured the data is complete. Fresh's own OpenTelemetry spans ("middlewares", route spans, plus its `span.updateName(\`${method} ${pattern}\`)` at server-entry.js:6371) never reach Sentry either: every transaction came back with `spans:[]`.
 
-Files: $SCRATCH/deep/verify4-M-fresh-bun-errors/{instrument.ts,entry.ts,run.sh,app/main.ts,app/routes/boom.tsx,app/routes/boomasync.tsx,app/routes/_error.tsx,items-r*.json,app-r*.log}. `app/main.ts` compiles all wirings in and selects with `globalThis.__WIRING`, set from the `WIRING` env var in `entry.ts`. Rerun: `PORT=51873 node $S/qs/sink.mjs &` then `bash run.sh <baseline|middleware|onerror|errorroute> <static|stream> <0|1 captureConsole> <tag>`. Rebuild after touching app/: `cd app && deno task build` (works offline, ~2s).
+Files: $SCRATCH/deep/verify4-M-fresh-bun-errors/{instrument.ts,entry.ts,run.sh,app/main.ts,app/routes/boom.tsx,app/routes/boomasync.tsx,app/routes/_error.tsx,items-r*.json,app-r*.log}. `app/main.ts` compiles all wirings in and selects with `globalThis.__WIRING`, set from the `WIRING` env var in `entry.ts`. Rerun: `PORT=51873 node $REPRO/_toolbox/sink.mjs &` then `bash run.sh <baseline|middleware|onerror|errorroute> <static|stream> <0|1 captureConsole> <tag>`. Rebuild after touching app/: `cd app && deno task build` (works offline, ~2s).
 
 ## Workaround
 

@@ -13,7 +13,7 @@ followed by a `captureMessage('sentinel')` and `flush(5000)`. Running the same f
 `--allow-net --allow-env --allow-read --allow-sys` versus `--allow-net` alone isolates exactly which
 enrichment needs which permission, and running the hook entry under `--allow-net` alone shows that
 the documented hook import aborts the process before `Sentry.init` ever runs. `sink.mjs` is
-`$S/qs/sink.mjs` plus a `/__target` endpoint that records the incoming `sentry-trace` header and a
+`$REPRO/_toolbox/sink.mjs` plus a `/__target` endpoint that records the incoming `sentry-trace` header and a
 `/__items?raw` route that returns whole envelope payloads; `show.py` prints the enrichment fields
 out of those raw payloads.
 

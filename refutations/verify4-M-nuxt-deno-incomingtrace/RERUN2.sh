@@ -5,15 +5,15 @@
 #         It is broken ONLY with `nitro: { preset: 'deno_server' }`.
 set -x
 S=$SCRATCH
-D=$S/deep/verify4-M-nuxt-deno-incomingtrace
+D=$REPRO/refutations/verify4-M-nuxt-deno-incomingtrace
 cd $D
 # deps (node_modules removed after the run to save disk)
 npm install --no-audit --no-fund nuxt@^4 vue
-npm install --no-audit --no-fund $S/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+npm install --no-audit --no-fund $REPRO/_toolbox/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 # do NOT install @sentry/nitro: it pulls nitro@3 which shadows nitropack 2.13.4 and breaks the boot.
 # server/plugins/ must be EMPTY (the deno_server workaround plugin is parked at attic-sentry-deno-trace.ts.off)
 
-PORT=41120 node $S/qs/sink.mjs > sinkA.log 2>&1 & SINK=$!
+PORT=41120 node $REPRO/_toolbox/sink.mjs > sinkA.log 2>&1 & SINK=$!
 H1='sentry-trace: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-bbbbbbbbbbbbbbbb-1'
 H2='baggage: sentry-trace_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true'
 

@@ -3,16 +3,16 @@
 # Capability under test: outgoing fetch (http.client span + sentry-trace/baggage).
 set -x
 S=$SCRATCH
-D=$S/deep/verify4-M-nuxt-deno-outgoingfetch
+D=$REPRO/refutations/verify4-M-nuxt-deno-outgoingfetch
 cd $D
 
 # 1. deps (NOTE: do NOT install @sentry/nitro - its peer dep pulls nitro@3, and @sentry/nuxt's
 #    storage.server plugin then emits `import ... from "npm:nitro/storage"` into the deno_server
 #    output, which crashes at boot with ERR_PACKAGE_PATH_NOT_EXPORTED)
 npm install nuxt@^4 vue \
-  $S/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 # optional, only for the winterCGFetchIntegration variant:
-npm install $S/pack/sentry-vercel-edge-10.67.0.tgz
+npm install $REPRO/_toolbox/pack/sentry-vercel-edge-10.67.0.tgz
 
 # 2. build + REQUIRED manual patch (the module writes the import into `.output/server/deno.json start`)
 npx nuxt build

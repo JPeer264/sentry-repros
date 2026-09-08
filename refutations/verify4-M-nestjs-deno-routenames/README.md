@@ -55,12 +55,12 @@ Baselines that reproduce their report: injection ON without the hook fails to bo
 
 Probe files (all absolute, rerunnable, node_modules kept): $SCRATCH/deep/verify4-M-nestjs-deno-routenames/ — instrument.ts (JSON_FIX=1 source-rewrite hook, JSON_FIX=2 format-only hook, NO_INJECT=1 their workaround), instrument-after.ts/main-after.ts (hook registered after Sentry.init), app.module.ts, main.ts, main-fastify.ts, try-hooks-{none,noop,jsonfix,diag}.mjs, deno.json, logs A-G.
 Commands:
-  npm install @nestjs/core@10 @nestjs/common@10 @nestjs/platform-express@10 @nestjs/platform-fastify@10 reflect-metadata rxjs mysql2 $S/pack/sentry-{nestjs,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
-  PORT=41983 node $S/qs/sink.mjs &
+  npm install @nestjs/core@10 @nestjs/common@10 @nestjs/platform-express@10 @nestjs/platform-fastify@10 reflect-metadata rxjs mysql2 $REPRO/_toolbox/pack/sentry-{nestjs,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
+  PORT=41983 node $REPRO/_toolbox/sink.mjs &
   SINK_PORT=41983 APP_PORT=41984 JSON_FIX=2 LIFECYCLE=static deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys main.ts
   curl -s http://127.0.0.1:41984/users/42 ; curl -s http://127.0.0.1:41984/fail/7
 Reference app read: ~/dev/sentry-worktrees/audit-runtime-docs/dev-packages/e2e-tests/test-applications/nestjs-basic (instrument.ts + SentryModule.forRoot() + explicit APP_FILTER SentryGlobalFilter) — the same wiring, unchanged, is what I ran on Deno.
-Not tested: Deno 2.8.3 (the CI pin is not present on this machine; $S/deno283 does not exist), so I cannot say whether the JSON-format regression exists there too.
+Not tested: Deno 2.8.3 (the CI pin is not present on this machine; $SCRATCH/deno283 does not exist), so I cannot say whether the JSON-format regression exists there too.
 
 Workaround: Keep diagnostics-channel injection ON and neutralize the Deno JSON-loader bug instead. In instrument.ts (works before the `@sentry/nestjs` import or immediately after `Sentry.init()`):
 

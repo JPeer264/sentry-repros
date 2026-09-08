@@ -20,7 +20,7 @@ REFUTED. db spans do work on bun 1.4.0 with Astro 7.3.1 + @astrojs/node standalo
 
 ROOT CAUSE (Bun, not the SDK, not Astro): Bun's `node:diagnostics_channel` registry does not keep a channel alive once it has subscribers. Node's registry does (its WeakReference map is incRef'd when a channel becomes active). On Bun, as soon as the *creator* of the handle drops it, the channel is collected and every subscriber is silently dropped; the next `tracingChannel(name)` call, from mysql2's `lib/tracing.js` or from the orchestrion-injected wrapper, gets a brand-new object with no subscribers. That is exactly why Sentry reads `hasSubscribers = true` and the wrapper reads `false`: two different channel objects for the same name.
 
-Minimal repro, $S/deep/verify4-M-astro-bun-dbspans/weak1.mjs (A drops the handle, B keeps it on globalThis):
+Minimal repro, $REPRO/refutations/verify4-M-astro-bun-dbspans/weak1.mjs (A drops the handle, B keeps it on globalThis):
   == bun 1.4.0 ==            == node v26.5.0 ==
   sync    A: true   B: true   sync    A: true  B: true
   afterGC A: false  B: true   afterGC A: true  B: true
@@ -56,11 +56,11 @@ Variants tried:
 - Importing the drivers before init (`dbboot.mjs`: `import 'mysql2'; import 'mysql'`) — PARTIAL: fixes mysql2 (its own module-scope consts then own the channels) but not mysql@2, whose channels exist only in the Astro-bundled, orchestrion-transformed copy. So "load your driver early" is not a sufficient instruction.
 - Node control with the same pin — unchanged, all db spans present. The pin is harmless on Node, so it can be applied unconditionally.
 - No `--preload` at all is still required to be avoided (the integration only inlines init into `.astro` page chunks); that is the other agent's separate finding and I did not re-derive it.
-- bun 1.3.14 (CI pin): not-run, `$S/bun1314` no longer exists on this machine.
+- bun 1.3.14 (CI pin): not-run, `$SCRATCH/bun1314` no longer exists on this machine.
 
 SDK-side fix location: `packages/server-utils/src/tracing-channel.ts` `bindTracingChannelToSpan()` receives the `TracingChannel` object and subscribes to it but keeps no reference; pushing the channel into a module-level array there (or in `packages/core/src/asyncContext/tracing-channel-binding.ts`'s callers) would make every channel-based integration — mysql2, mysql, redis, knex, graphql, mongoose, vercel-ai, postgres, the AI providers — survive GC on Bun. The repo's own reference app `dev-packages/e2e-tests/test-applications/astro-7` runs `node ./dist/server/entry.mjs` and never exercises bun, which is why this is uncovered.
 
-Files (rerunnable): $S/deep/verify4-M-astro-bun-dbspans/ — `weak1.mjs` (runtime bug in isolation), `astro.config.mjs`, `sentry.server.config.mjs` (baseline), `sentry.server.config.pin3.mjs` (fix), `pinboot.mjs`, `pinall2.mjs`, `dbboot.mjs`, `src/pages/{db1.astro,db2.astro,pool1.ts,pool2.ts,sentinel.ts}`, `src/db-lib.ts`, logs `runA.log` (baseline) through `runG.log` (node control), `dist/` kept. `node_modules` removed; reinstall with `npm install $S/pack/sentry-{astro,browser,browser-utils,bundler-plugins,core,feedback,node,opentelemetry,replay,replay-canvas,server-runtime-injection,server-utils}-10.67.0.tgz astro@^7.3.1 @astrojs/node@^11.1.5 mysql2 mysql`, then `npx astro build`. Run: `PORT=<p> HOST=127.0.0.1 SENTRY_TUNNEL=http://127.0.0.1:<sink>/ bun --preload ./sentry.server.config.pin3.mjs dist/server/entry.mjs`.
+Files (rerunnable): $REPRO/refutations/verify4-M-astro-bun-dbspans/ — `weak1.mjs` (runtime bug in isolation), `astro.config.mjs`, `sentry.server.config.mjs` (baseline), `sentry.server.config.pin3.mjs` (fix), `pinboot.mjs`, `pinall2.mjs`, `dbboot.mjs`, `src/pages/{db1.astro,db2.astro,pool1.ts,pool2.ts,sentinel.ts}`, `src/db-lib.ts`, logs `runA.log` (baseline) through `runG.log` (node control), `dist/` kept. `node_modules` removed; reinstall with `npm install $REPRO/_toolbox/pack/sentry-{astro,browser,browser-utils,bundler-plugins,core,feedback,node,opentelemetry,replay,replay-canvas,server-runtime-injection,server-utils}-10.67.0.tgz astro@^7.3.1 @astrojs/node@^11.1.5 mysql2 mysql`, then `npx astro build`. Run: `PORT=<p> HOST=127.0.0.1 SENTRY_TUNNEL=http://127.0.0.1:<sink>/ bun --preload ./sentry.server.config.pin3.mjs dist/server/entry.mjs`.
 
 ## Workaround
 

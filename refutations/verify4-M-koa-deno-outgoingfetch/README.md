@@ -20,7 +20,7 @@ Reproduced the reported behavior exactly, and then made it work with a user-land
 
 Root cause (source, not Koa): `@sentry/deno` ships NO fetch tracing integration. `packages/deno/src/sdk.ts` default integrations are eventFilters, requestData, functionToString, linkedErrors, dedupe, breadcrumbs, denoContext, denoServe, denoHttp, contextLines, normalizePaths, globalHandlers + server-utils error/tracing integrations. The only `fetch` code in `packages/deno/src` outside the transport is `integrations/breadcrumbs.ts` (breadcrumbs only). The built entry exports no fetch integration at all (grep of `build/esm/index.d.ts` for `*Integration` returns denoHttp/denoServe/denoKoa/... and nothing fetch-related). `denoHttpIntegration` subscribes only to `http.client.request.created` / `http.server.request.start` on `node:diagnostics_channel`, which Deno's native `fetch` never emits. Node's equivalent (`packages/node/src/integrations/node-fetch/`) is undici-based and does not apply to Deno. The repo's own e2e app confirms this is the intended state: `dev-packages/e2e-tests/test-applications/deno/tests/fetch.test.ts` asserts only a span the app itself created with `Sentry.startSpan({name:'test-outgoing-fetch'})` and `origin: 'manual'` -- there is no assertion of an `http.client` span from fetch. Koa is irrelevant to the failure.
 
-BASELINE (main-nohook.ts, traceLifecycle static, koa 3.2.1 + @koa/router 15.7.0, deno 2.9.0, @sentry/deno 10.67.0 from $S/pack):
+BASELINE (main-nohook.ts, traceLifecycle static, koa 3.2.1 + @koa/router 15.7.0, deno 2.9.0, @sentry/deno 10.67.0 from $REPRO/_toolbox/pack):
   {"type": "transaction", "name": "GET /downstream", "op": "http.server", "source": "url", "status": "ok", "trace_id": "9fdb81124a494836b44b610897f3402f", "sdk": "sentry.javascript.deno", "spans": [], "hasRequestData": false}
   {"type": "transaction", "name": "GET /downstream-http", "op": "http.server", "source": "url", "status": "ok", "trace_id": "7bbab1d627cd4e5a96b36ced2030dc8e", "sdk": "sentry.javascript.deno", "spans": ["http.client GET http://127.0.0.1:47312/api/node-http"], "hasRequestData": false}
 recorder /__seen:
@@ -49,8 +49,8 @@ Probe files (rerunnable; node_modules removed after the run, reinstall with the 
     fetch-integration.ts + instrument-fetchfix.ts + main-fetchfix.ts (the working variant)
     run-b-base2.log, run-b-stream2.log, run-b-fix.log, run-b-fixstream2.log, run-b-hook.log
 Commands:
-  npm install --no-audit --no-fund koa@3.2.1 @koa/router@15.7.0 $S/pack/sentry-deno-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz
-  PORT=39418 node $S/qs/sink.mjs &   PORT=47312 node recorder.mjs &
+  npm install --no-audit --no-fund koa@3.2.1 @koa/router@15.7.0 $REPRO/_toolbox/pack/sentry-deno-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz
+  PORT=39418 node $REPRO/_toolbox/sink.mjs &   PORT=47312 node recorder.mjs &
   TUNNEL=http://127.0.0.1:39418/ RECORDER=http://127.0.0.1:47312 PORT=51907 LIFECYCLE=static deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys main-nohook.ts
   (swap main-nohook.ts for main-fetchfix.ts / main-hook.ts; drive with curl /downstream, /downstream-http, /sentinel; read curl http://127.0.0.1:39418/__items and http://127.0.0.1:47312/__seen)
 Caveat on ports: another agent's Next.js app was tunneling into ports 47311/47312 during part of the run, so some sink reads contain `sentry.javascript.nextjs` items; the deno items quoted above are the ones from this probe (all my final reads used a private sink on 39418).

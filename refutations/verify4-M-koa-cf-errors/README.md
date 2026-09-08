@@ -50,8 +50,8 @@ Line 54314 is inside the instrumented `Application.prototype.use`: `tr_ch_apm$us
 That constraint is real and undocumented, but it is a boot-shape bug in the injected `use` wrapper, not the absence of an error-capture mechanism.
 
 FILES / RERUN (all under $SCRATCH/deep/verify4-M-koa-cf-errors/, node_modules removed after the run):
-  npm install --no-audit --no-fund koa@3 @koa/router wrangler@4 vite@6 @cloudflare/vite-plugin $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz
-  PORT=44711 node $S/qs/sink.mjs > sink.log 2>&1 &
+  npm install --no-audit --no-fund koa@3 @koa/router wrangler@4 vite@6 @cloudflare/vite-plugin $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz
+  PORT=44711 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
   Baseline: src/index.js + wrangler.jsonc, `./node_modules/.bin/wrangler dev --port 44721 --inspector-port 0` (log w-plain.log)
   Fix:      src/lazyd.js + wrangler.d.jsonc + vite.d.config.mjs, `./node_modules/.bin/vite build -c vite.d.config.mjs` then `./node_modules/.bin/wrangler dev --config dist-d/koa_cf_d/wrangler.json --port 44741 --inspector-port 0` (logs w-d.log, w-d-static.log; static adds `--var TRACE_LIFECYCLE:static`)
   Bisect:   src/eager.js/wrangler.c.jsonc/vite.c.config.mjs (fails), src/eagerbare.js/vite.e.config.mjs (no Sentry plugin, boots), vite.f.config.mjs (buildTimeInstrumentation:false, boots) — logs w-c.log, w-e.log, w-f.log

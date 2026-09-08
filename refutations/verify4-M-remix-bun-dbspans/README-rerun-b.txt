@@ -3,7 +3,7 @@ Round-B rerun (db spans + isolation on Bun, Remix v2 + @sentry/remix 10.67.0 dev
 Prereqs: MariaDB on 127.0.0.1:3307, node_modules present (see README-rerun.txt for the npm line),
 Remix build present: bun x remix vite:build
 
-Sink:   PORT=41337 node $S/qs/sink.mjs > run-b-sink.log 2>&1 &
+Sink:   PORT=41337 node $REPRO/_toolbox/sink.mjs > run-b-sink.log 2>&1 &
 
 Mode B (plugin defaults, db spans OK / isolation BROKEN):
   bun build-server.ts

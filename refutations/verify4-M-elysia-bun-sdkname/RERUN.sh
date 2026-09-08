@@ -2,9 +2,9 @@
 # rerun from this directory
 S=$SCRATCH
 npm install --no-audit --no-fund \
-  $S/pack/sentry-elysia-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz \
-  $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz \
-  $S/pack/sentry-server-runtime-injection-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz elysia@1.4
+  $REPRO/_toolbox/pack/sentry-elysia-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz elysia@1.4
 
 # A) baseline (stream lifecycle) -> sentry.javascript.bun
 PORT=41871 node sink.mjs & SINK_PORT=41871 APP_PORT=41872 bun app.ts

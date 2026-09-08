@@ -1,9 +1,9 @@
 # verify4 M-koa-cf route names
 
 npm install koa@3 @koa/router wrangler@4 vite@7 @cloudflare/vite-plugin \
-  $S/pack/sentry-{cloudflare,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-{cloudflare,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
 
-sink: PORT=52739 node $S/qs/sink.mjs
+sink: PORT=52739 node $REPRO/_toolbox/sink.mjs
 
 A  module-scope app.use() + Vite plugin  -> worker does NOT boot
    npx vite build --config vite.config.A.mjs

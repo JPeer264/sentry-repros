@@ -24,7 +24,7 @@ npm install --no-audit --no-fund
 ```
 
 `package.json` pins every `@sentry/*` package to the 10.67.0 tarball in `../../_toolbox/pack/` (the
-durable mirror of `$S/pack`), so one `npm install` restores the whole tree. Use `npm`, not `bun add`:
+durable mirror of `$REPRO/_toolbox/pack`), so one `npm install` restores the whole tree. Use `npm`, not `bun add`:
 `bun add` cannot resolve the tarballs' transitive `@sentry/*@10.67.0` deps. `@sentry/bundler-plugins`,
 `@sentry/browser-utils`, `@sentry/replay`, `@sentry/replay-canvas` and `@sentry/feedback` are required
 even though nothing imports them directly; without the packed `@sentry/browser-utils` the client build

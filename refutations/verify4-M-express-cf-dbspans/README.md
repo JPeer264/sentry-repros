@@ -16,7 +16,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 **Verdict:** works-after-all
 
-Reproduced the reporter's setup independently in $SCRATCH/deep/verify4-M-express-cf-dbspans (express@5.2.0, wrangler 4.129.0, workerd 1.20260903.1, compatibility_date 2026-05-01, flags nodejs_compat + enable_nodejs_http_server_modules, @sentry/cloudflare 10.67.0 from $S/pack tarballs, MariaDB on 127.0.0.1:3307, sink on 43211). db spans are COMPLETE and CORRECT on the documented wiring, so I do not think this is a partial.
+Reproduced the reporter's setup independently in $SCRATCH/deep/verify4-M-express-cf-dbspans (express@5.2.0, wrangler 4.129.0, workerd 1.20260903.1, compatibility_date 2026-05-01, flags nodejs_compat + enable_nodejs_http_server_modules, @sentry/cloudflare 10.67.0 from $REPRO/_toolbox/pack tarballs, MariaDB on 127.0.0.1:3307, sink on 43211). db spans are COMPLETE and CORRECT on the documented wiring, so I do not think this is a partial.
 
 1) Vite plugin path, traceLifecycle 'static' (src/index.js, `npx vite build --config vite.config.mjs && npx wrangler dev --config dist/v4_express_db/wrangler.json --port 52411 --inspector-port 0`):
   transaction | GET /db | source= route | spans= ['handler /db', 'db mysql2.connect', 'db SELECT id, name FROM users']
@@ -46,7 +46,7 @@ Line 58643 of distb/v4_express_db_b/index.js is `return tr_ch_apm$register.start
 
 Also confirmed: mysql2 needs `disableEval: true` in the connection options; without it the query text generation throws `EvalError: Code generation from strings disallowed for this context` (the connect and query spans are still emitted). The `mysql@2` driver needs no such flag.
 
-Files: src/index.js (working lazy app), src2/index.js (module-scope crash case), vite.config.mjs / vite.config.b.mjs / vite.config.c.mjs, wrangler.jsonc / wrangler.b.jsonc, build-esbuild{,2,3}.mjs, REPRO.md, logs wS.log wStream.log wA.log wB3.log wC.log wESB*.log wDev.log wDevNS.log — all under $S/deep/verify4-M-express-cf-dbspans/. node_modules removed; reinstall per REPRO.md (remember `npm approve-scripts --allow-scripts-pending && npm rebuild`, otherwise workerd and esbuild have no binary). All processes I started were killed.
+Files: src/index.js (working lazy app), src2/index.js (module-scope crash case), vite.config.mjs / vite.config.b.mjs / vite.config.c.mjs, wrangler.jsonc / wrangler.b.jsonc, build-esbuild{,2,3}.mjs, REPRO.md, logs wS.log wStream.log wA.log wB3.log wC.log wESB*.log wDev.log wDevNS.log — all under $REPRO/refutations/verify4-M-express-cf-dbspans/. node_modules removed; reinstall per REPRO.md (remember `npm approve-scripts --allow-scripts-pending && npm rebuild`, otherwise workerd and esbuild have no binary). All processes I started were killed.
 
 ## Workaround
 

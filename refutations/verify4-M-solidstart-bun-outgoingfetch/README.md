@@ -35,7 +35,7 @@ recorded headers: [{"sentry-trace":null,"baggage":null,"traceparent":null},{"sen
       integrations: isBun ? [fetchIntegration()] : [] });
   });
 
-plus `npm install --legacy-peer-deps $S/pack/sentry-bun-10.67.0.tgz`. @sentry/bun bundles cleanly into the nitro node output under vite (its only `bun` import is a type import), chunk `.output/server/_libs/@sentry/bun+[...].mjs 170.02 kB`. Result on bun (run-final-bun.log):
+plus `npm install --legacy-peer-deps $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz`. @sentry/bun bundles cleanly into the nitro node output under vite (its only `bun` import is a type import), chunk `.output/server/_libs/@sentry/bun+[...].mjs 170.02 kB`. Result on bun (run-final-bun.log):
 {"type":"transaction","name":"GET /api/fetchout","op":"http.server","status":"ok","trace_id":"9c09a46783c84e1fbeb0a59cb0e99448","spans":["middleware GET /api/fetchout","http.server GET /api/fetchout","http.client GET http://127.0.0.1:41733/__recorder"]}
 recorded headers: [{"sentry-trace":"9c09a46783c84e1fbeb0a59cb0e99448-a55b59029034eec0-1","baggage":"sentry-environment=production,sentry-public_key=public,sentry-trace_id=9c09a46783c84e1fbeb0a59cb0e99448,sentry-sampled=true,sentry-sample_rate=1"}, ...]
 The client span is a child of the same trace as the server transaction, and both headers are propagated.
@@ -48,7 +48,7 @@ With the guard, node is back to exactly one client span (run-final-node.log). no
 
 5) A hand-written integration using only @sentry/core (addFetchInstrumentationHandler + instrumentFetchRequest + isSentryRequestUrl) behaves identically (run-bun-globalfetch.log), which confirms the mechanism rather than anything bun-package specific; the @sentry/bun export is just the packaged form of it.
 
-Rerun: `npm install --legacy-peer-deps $S/pack/sentry-{solidstart,nitro,node,core,server-utils,server-runtime-injection,opentelemetry,solid,browser,browser-utils,replay,replay-canvas,feedback,bundler-plugins,bun}-10.67.0.tgz` in app/, `npx vite build`, then `PORT=41733 node ../sink.mjs &` and `SENTRY_TUNNEL=http://127.0.0.1:41733/ RECORDER_URL=http://127.0.0.1:41733/__recorder PORT=41734 bun .output/server/index.mjs`, then `../drive.sh 41733 41734 label`. app/node_modules was removed after the run; the built `.output` still runs standalone under bun and still emits the http.client span (verified post-clean). Bun CI pin 1.3.14 was not available on this machine any more ($S/bun1314 is gone), so only bun 1.4.0 was tested.
+Rerun: `npm install --legacy-peer-deps $REPRO/_toolbox/pack/sentry-{solidstart,nitro,node,core,server-utils,server-runtime-injection,opentelemetry,solid,browser,browser-utils,replay,replay-canvas,feedback,bundler-plugins,bun}-10.67.0.tgz` in app/, `npx vite build`, then `PORT=41733 node ../sink.mjs &` and `SENTRY_TUNNEL=http://127.0.0.1:41733/ RECORDER_URL=http://127.0.0.1:41733/__recorder PORT=41734 bun .output/server/index.mjs`, then `../drive.sh 41733 41734 label`. app/node_modules was removed after the run; the built `.output` still runs standalone under bun and still emits the http.client span (verified post-clean). Bun CI pin 1.3.14 was not available on this machine any more ($SCRATCH/bun1314 is gone), so only bun 1.4.0 was tested.
 
 ## Workaround
 

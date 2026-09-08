@@ -20,7 +20,7 @@ Reproduced the report exactly, found the root cause in the build output, and mad
 
 Setup (same as the report): @solidjs/start 2.0.2 + nitro 3.0.260610-beta + vite 8, develop SDK tarballs, `sentrySolidStart()` in vite.config.ts, `Sentry.init` in `server/plugins/sentry.ts`, `sentryBeforeResponseMiddleware()` in `src/middleware.ts`, `npx vite build` then `bun .output/server/index.mjs`. Sink on 41777, app on 41778, sentinel = `GET /api/sentinel` (captureMessage + flush) after every probe request, so absence is deterministic.
 
-RUN A - baseline, docs wiring, bun, traceLifecycle 'static' ($S/deep/verify4-M-solidstart-bun-errors/run-a-baseline.log). `src/routes/api/boom.ts` = `export function GET(){ throw new Error('probe-api-route-error') }`. Confirmed swallowed:
+RUN A - baseline, docs wiring, bun, traceLifecycle 'static' ($REPRO/refutations/verify4-M-solidstart-bun-errors/run-a-baseline.log). `src/routes/api/boom.ts` = `export function GET(){ throw new Error('probe-api-route-error') }`. Confirmed swallowed:
 {"type":"transaction","name":"GET /api/boom","op":"http.server","source":"url","status":"internal_error","spans":["middleware GET /api/boom","http.server GET /api/boom"]}
 {"type":"transaction","name":"GET /api/boom-async","op":"http.server","source":"url","status":"internal_error",...}
 {"type":"event","exception":"Error: Error thrown from Solid Start E2E test app server route","mechanism":"auto.function.solidstart","handled":false,...}
@@ -61,7 +61,7 @@ Files (all rerunnable, `node_modules` removed after the run):
 - app: $SCRATCH/deep/verify4-M-solidstart-bun-errors/app
   (src/middleware.ts, src/entry-server.tsx, src/routes/api/{boom,boom-async,ok,sentinel}.ts, src/routes/page-error.tsx, src/routes/server-error.tsx, server/plugins/sentry.ts, server/routes/nitro-boom.ts, vite.config.ts)
   Both fixes are gated by env vars so one build covers every variant: `PROBE_MW=1` (middleware) and `PROBE_ONERROR=1` (h3 config.onError).
-- Rerun: `cd app && npm install --legacy-peer-deps && npx vite build`; `PORT=41777 node $S/qs/sink.mjs &`; `SENTRY_TUNNEL=http://127.0.0.1:41777/ SENTRY_LIFECYCLE=static PORT=41778 [PROBE_MW=1] bun .output/server/index.mjs`; then `curl 127.0.0.1:41778/api/boom`, `curl 127.0.0.1:41778/api/sentinel`, `curl 127.0.0.1:41777/__items`.
+- Rerun: `cd app && npm install --legacy-peer-deps && npx vite build`; `PORT=41777 node $REPRO/_toolbox/sink.mjs &`; `SENTRY_TUNNEL=http://127.0.0.1:41777/ SENTRY_LIFECYCLE=static PORT=41778 [PROBE_MW=1] bun .output/server/index.mjs`; then `curl 127.0.0.1:41778/api/boom`, `curl 127.0.0.1:41778/api/sentinel`, `curl 127.0.0.1:41777/__items`.
 - A stray `app/app/` directory is a copy I made by mistake at the start; nothing reads it (no `rm` allowed).
 
 ## Workaround

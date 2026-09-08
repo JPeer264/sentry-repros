@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>QS-browser — CDN, guide's own bundle</title>
+    <script>
+      window.__QS_VARIANT__ = 'cdn-tracing';
+    </script>
+
+    <!-- platform-includes/getting-started-config/javascript.mdx:114-119, CDN tab, verbatim except
+         that the local develop build replaces browser.sentry-cdn.com and `integrity` is dropped.
+         Note the bundle the guide names is bundle.tracing.min.js even when the session-replay
+         option is selected in the same snippet. -->
+    <script src="/vendor/bundle.tracing.min.js"></script>
+
+    <!-- platform-includes/getting-started-config/javascript.mdx:121-164 -->
+    <script>
+      Sentry.init({
+        dsn: 'https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337',
+        tunnel: '/tunnel',
+        debug: true,
+
+        release: 'my-project-name@2.3.12',
+        integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+
+        tracesSampleRate: 1.0,
+        tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
+
+        replaysSessionSampleRate: 0.1,
+        replaysOnErrorSampleRate: 1.0,
+      });
+    </script>
+
+    <script src="/buttons.js"></script>
+  </head>
+  <body>
+    <h1>QS-browser — CDN bundle.tracing.min.js with replayIntegration()</h1>
+
+    <button id="btn-throw" onclick="triggerError()">Break the World</button>
+    <button id="btn-capture">captureException</button>
+    <button id="btn-span">startSpan + fetch</button>
+    <button id="btn-log">logger.info</button>
+    <button id="btn-sentinel">sentinel</button>
+  </body>
+</html>

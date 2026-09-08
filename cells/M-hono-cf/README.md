@@ -20,9 +20,9 @@ the negative control for that.
 S=$SCRATCH
 cd $REPRO/cells/M-hono-cf
 npm install --no-audit --no-fund \
-  $S/pack/sentry-hono-10.67.0.tgz $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-  $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz \
-  $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-hono-10.67.0.tgz $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
   hono@^4 mysql@^2.18.1 wrangler@^4 vite@^6 @cloudflare/vite-plugin@^1
 ```
 

@@ -149,7 +149,7 @@ OTEL-API span `manual` appears nowhere:
   on both.
 - Ports are 43117/43118/43119 here (39411 sink, 51373/51374 app+echo in the record).
 - The SDK is installed from the `_toolbox/pack` tarballs via `npm install` instead of the
-  `$S/qs/bun` symlink template, which no longer exists on this machine. The record's note that
+  `$SCRATCH/qs/bun` symlink template, which no longer exists on this machine. The record's note that
   `bun add <tarball>` fails on `@sentry/server-runtime-injection` still holds; `npm install` with all
   six `@sentry/*` tarballs listed in `package.json` resolves fine.
 - The recorded baggage carries `sentry-org_id=1` and the rebuild's does not, because the record's DSN

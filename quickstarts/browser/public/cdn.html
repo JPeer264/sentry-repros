@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>QS-browser — CDN bundle</title>
+    <script>
+      window.__QS_VARIANT__ = 'cdn';
+    </script>
+
+    <!-- docs/platforms/javascript/common/install/loader.mdx:261-267 names
+         https://browser.sentry-cdn.com/<version>/bundle.tracing.replay.min.js with an `integrity`
+         hash and `crossorigin="anonymous"`. Substituted here by the bundle built from the same
+         develop commit, served from ../../_toolbox/bundles-develop-03aaf424/ at /vendor/.
+         `integrity` is dropped because no SRI hash is published for a local build. -->
+    <script src="/vendor/bundle.tracing.replay.min.js"></script>
+
+    <!-- platform-includes/getting-started-config/javascript.mdx:114-164, CDN tab -->
+    <script>
+      Sentry.init({
+        dsn: 'https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337',
+        tunnel: '/tunnel',
+        debug: true,
+
+        release: 'my-project-name@2.3.12',
+        integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+
+        tracesSampleRate: 1.0,
+        tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
+
+        replaysSessionSampleRate: 0.1,
+        replaysOnErrorSampleRate: 1.0,
+      });
+    </script>
+
+    <script src="/buttons.js"></script>
+  </head>
+  <body>
+    <h1>QS-browser — CDN bundle.tracing.replay.min.js (develop 03aaf42455)</h1>
+
+    <button id="btn-throw" onclick="triggerError()">Break the World</button>
+    <button id="btn-capture">captureException</button>
+    <button id="btn-span">startSpan + fetch</button>
+    <button id="btn-log">logger.info</button>
+    <button id="btn-sentinel">sentinel</button>
+  </body>
+</html>

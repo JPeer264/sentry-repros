@@ -6,7 +6,7 @@ Everything you need is prepared. Read this whole file before doing anything.
 ## Ground rules
 
 - `S=$SCRATCH`
-- Work ONLY inside `$S/deep/<your task id>/` (create it). Never modify `~/dev/sentry-javascript`, the
+- Work ONLY inside `$SCRATCH/deep/<your task id>/` (create it). Never modify `~/dev/sentry-javascript`, the
   worktree, or another agent's directory. Everything else is read-only.
 - Other agents run at the same time. Pick random ports between 20000 and 60000 for every server you
   start. Never use 3030, 3031, 3999, 8787, 9229 to 9254.
@@ -24,12 +24,12 @@ at `6f2da7483d` (the v11 line, package version 10.67.0), built in the worktree
 Two ways to install it:
 
 - **Tarballs (preferred, and required for anything Vite, rollup, Next.js or Cloudflare):**
-  `npm install $S/pack/*.tgz <your other deps>` in your task dir with a `package.json`. The tarballs are
+  `npm install $REPRO/_toolbox/pack/*.tgz <your other deps>` in your task dir with a `package.json`. The tarballs are
   `@sentry/{bun,node,deno,cloudflare,hono,elysia,core,server-utils,server-runtime-injection,opentelemetry}`
-  at 10.67.0. If you need a framework SDK that is not in `$S/pack` (`@sentry/nextjs`, `@sentry/nuxt`,
+  at 10.67.0. If you need a framework SDK that is not in `$REPRO/_toolbox/pack` (`@sentry/nextjs`, `@sentry/nuxt`,
   `@sentry/sveltekit`, `@sentry/astro`, `@sentry/react-router`, `@sentry/tanstackstart-react`,
   `@sentry/remix`, `@sentry/solidstart`, `@sentry/nestjs`), pack it yourself from the worktree:
-  `(cd $W/packages/<name> && npm pack --pack-destination $S/pack)`. If that package has no `build/`
+  `(cd $W/packages/<name> && npm pack --pack-destination $REPRO/_toolbox/pack)`. If that package has no `build/`
   directory, build it first: `(cd $W && yarn build:dev:filter @sentry/<name>)`. Say so in your notes if
   a package could not be packed.
 - **Worktree symlinks** for Bun and Deno without a bundler: symlink
@@ -48,11 +48,11 @@ there is no `/nodejs_compat` subpath, no `instrumentD1WithSentry`, no `honoInteg
 `buildTimeInstrumentation`, both default true, so a bare `sentryCloudflareVitePlugin()` already wraps
 the entry and injects channels.
 
-Templates you can copy (`cp -R $S/qs/<name> $S/deep/<id>/`): `$S/qs/bun` (Bun app, symlinked SDK,
-express + mysql), `$S/qs/deno` (Deno app, `deno.json` with `nodeModulesDir: "manual"`),
-`$S/qs/cloudflare-v11pack` (Cloudflare app, real `node_modules` from the tarballs plus vite,
+Templates you can copy (`cp -R $SCRATCH/qs/<name> $SCRATCH/deep/<id>/`): `$SCRATCH/qs/bun` (Bun app, symlinked SDK,
+express + mysql), `$SCRATCH/qs/deno` (Deno app, `deno.json` with `nodeModulesDir: "manual"`),
+`$SCRATCH/qs/cloudflare-v11pack` (Cloudflare app, real `node_modules` from the tarballs plus vite,
 `@cloudflare/vite-plugin`, wrangler, mysql). Their `node_modules` may have been cleaned to save disk;
-reinstall with `npm install $S/pack/*.tgz ...` if a template is empty.
+reinstall with `npm install $REPRO/_toolbox/pack/*.tgz ...` if a template is empty.
 
 **Disk is tight.** Install only what you need, prefer one app per task instead of one per variant, and
 when you are done with a build you no longer need, remove its `node_modules` (`rm -rf node_modules` is
@@ -64,15 +64,15 @@ the one allowed `rm` form).
 | --- | --- | --- |
 | node | v26.5.0 | `node` |
 | bun | 1.4.0 | `bun` |
-| bun (CI pin) | 1.3.14 | `$S/bun1314/bun-darwin-aarch64/bun` |
+| bun (CI pin) | 1.3.14 | `$SCRATCH/bun1314/bun-darwin-aarch64/bun` |
 | deno | 2.9.0 | `deno` |
-| deno (CI pin) | 2.8.3 | `$S/deno283/deno` |
+| deno (CI pin) | 2.8.3 | `$SCRATCH/deno283/deno` |
 | wrangler | 4.x | `npx wrangler` inside a dir that has it in `node_modules`, or `npx wrangler@4` |
 | docker | 29 | MariaDB container already running, see below |
 
 ## Envelope sink
 
-Start your own: `PORT=<port> node $S/qs/sink.mjs > sink.log 2>&1 &`. Point the SDK at it with
+Start your own: `PORT=<port> node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &`. Point the SDK at it with
 `tunnel: "http://127.0.0.1:<port>/"` (works on all three runtimes; on Cloudflare the Worker reaches
 the host at `127.0.0.1`). Then:
 
@@ -83,7 +83,7 @@ the host at `127.0.0.1`). Then:
   everything else (`sessions`, `session`, `trace_metric`, `check_in`, `client_report`, ...).
 - `curl -s -X DELETE http://127.0.0.1:<port>/__items` clears it.
 - If you need fields the sink does not keep (trace ids, user, tags, request data, release, session
-  fields), copy `$S/qs/sink.mjs` into your dir and extend the compact mapping, or write the raw
+  fields), copy `$REPRO/_toolbox/sink.mjs` into your dir and extend the compact mapping, or write the raw
   payloads to a file.
 
 Envelope timing: logs and metrics are flushed on a timer, wait 7 seconds before reading them. For
@@ -93,7 +93,7 @@ test and wait until the sentinel is in the sink; everything sent before it has t
 
 Sampling gotcha: a `fetch` made from a Sentry-initialized process without an active span carries a
 `sentry-trace` header that marks the server-side transaction as not sampled. Drive your app from a
-separate plain `node` or `curl` process (see `$S/qs/bun/drive.mjs`), or wrap the client calls in
+separate plain `node` or `curl` process (see `$SCRATCH/qs/bun/drive.mjs`), or wrap the client calls in
 `Sentry.startSpan` in the probe process.
 
 ## Database
@@ -167,14 +167,19 @@ or `~/dev/sentry-docs/platform-includes/`), but do not spend long on docs; anoth
 
 ## Framework SDK tarballs (added for the framework matrix)
 
-`$S/pack` now also holds `@sentry/{nextjs,nuxt,sveltekit,astro,react-router,tanstackstart-react,remix,solidstart,nestjs,vue,react,svelte,solid,browser}` at 10.67.0, all built from the same worktree commit. Install the ones your framework needs together with the runtime SDK, for example:
+`$REPRO/_toolbox/pack` now also holds `@sentry/{nextjs,nuxt,sveltekit,astro,react-router,tanstackstart-react,remix,solidstart,nestjs,vue,react,svelte,solid,browser}` at 10.67.0, all built from the same worktree commit. Install the ones your framework needs together with the runtime SDK, for example:
 
 ```
-npm install $S/pack/sentry-nuxt-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-            $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-            $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-vue-10.67.0.tgz
+npm install $REPRO/_toolbox/pack/sentry-nuxt-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+            $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+            $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-vue-10.67.0.tgz
 ```
 
 npm resolves the tarballs' `@sentry/*@10.67.0` dependencies only if you pass every one they need on the
 same command line, so list them all. If npm still complains about an unresolved `@sentry/*@10.67.0`,
 add that tarball too.
+
+## Two tarball sets
+
+- `_toolbox/pack/`: 31 packages from develop at `6f2da7483d` (2026-09-04), the pin of the probes, the cells, the refutations and the four first getting-started paths.
+- `_toolbox/pack-develop-03aaf424/`: 43 packages from develop at `03aaf42455` (2026-09-08), used by every getting-started path run from 2026-09-08 22:00 on, including the browser, browser-framework, meta-framework and serverless paths. Both sets carry the version 10.67.0, so never mix the two directories in one install, and name the set in the README of every reproduction.

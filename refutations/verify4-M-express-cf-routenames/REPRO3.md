@@ -1,6 +1,6 @@
 # verify4 M-express-cf route names (rerun)
 
-sink: PORT=48733 node $S/qs/sink.mjs   (raw attrs: curl -s 'http://127.0.0.1:48733/__items?raw')
+sink: PORT=48733 node $REPRO/_toolbox/sink.mjs   (raw attrs: curl -s 'http://127.0.0.1:48733/__items?raw')
 
 N1  negative control, plain wrangler, stream, NO patch:
     npx wrangler dev --config wrangler.N1.jsonc --port 48805 --inspector-port 0

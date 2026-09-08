@@ -2,7 +2,7 @@
 
 ## What it reproduces
 
-Time-box respected; scaffold reused the Remix app from $S/deep/verify4-M-remix-bun-dbspans (app/, tsconfig, db.mjs) and the Deno adapter shape from $S/deep/verify4-M-reactrouter-deno-outgoingfetch. All processes killed (appA-appH, sink, recorder, plain); node_modules deleted (dir is now 908K).
+Time-box respected; scaffold reused the Remix app from $REPRO/refutations/verify4-M-remix-bun-dbspans (app/, tsconfig, db.mjs) and the Deno adapter shape from $REPRO/refutations/verify4-M-reactrouter-deno-outgoingfetch. All processes killed (appA-appH, sink, recorder, plain); node_modules deleted (dir is now 908K).
 
 Findings worth flagging beyond the per-capability verdicts:
 
@@ -29,7 +29,7 @@ This directory is the original run of 2026-09-06 and 2026-09-07, kept as it was.
 Remix runs on Deno unchanged. Wiring that a docs page would have to show:
 
 1. Install with npm under node (not `deno add`, not `bun add`), so the tarballs' transitive `@sentry/*@10.67.0` deps resolve:
-   `npm install --legacy-peer-deps $S/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz '@remix-run/dev@^2.17.0' '@remix-run/node@^2.17.0' '@remix-run/react@^2.17.0' '@remix-run/server-runtime@^2.17.0' react react-dom vite@^5 mysql2 typescript`
+   `npm install --legacy-peer-deps $REPRO/_toolbox/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz '@remix-run/dev@^2.17.0' '@remix-run/node@^2.17.0' '@remix-run/react@^2.17.0' '@remix-run/server-runtime@^2.17.0' react react-dom vite@^5 mysql2 typescript`
 2. `deno.json`: `{ "nodeModulesDir": "manual" }`.
 3. `vite.config.ts`: `plugins: [remix(), sentryRemixVitePlugin()]` (from `@remix-run/dev` and `@sentry/remix`). The plugin runs at build time under node and prints `[Sentry Remix] Found 5 static and 3 dynamic routes`; the emitted route manifest is what makes parameterized transaction names work at runtime.
 4. `app/entry.server.tsx`: `export const handleError = Sentry.sentryHandleError;`
@@ -45,11 +45,11 @@ Recorded commands; paths under `$SCRATCH` were the session working directory, th
 
 ```
 S=$SCRATCH
-W=$S/deep/M-remix-deno
+W=$REPRO/cells/M-remix-deno
 
 # install (node/npm; node_modules was deleted after the run to save disk)
 cd $W && npm install --legacy-peer-deps \
-  $S/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz \
   '@remix-run/dev@^2.17.0' '@remix-run/node@^2.17.0' '@remix-run/react@^2.17.0' \
   '@remix-run/server-runtime@^2.17.0' react react-dom vite@^5 mysql2 typescript
 

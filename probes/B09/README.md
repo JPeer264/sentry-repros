@@ -32,7 +32,7 @@ cd $REPRO/probes/B09
 ./run.sh nobodies   41296 41293   # dataCollection: { httpBodies: [] }
 ```
 
-The sink is `sink.mjs` (a copy of `$S/qs/sink.mjs` extended to keep the whole `request` object and
+The sink is `sink.mjs` (a copy of `$REPRO/_toolbox/sink.mjs` extended to keep the whole `request` object and
 the body-related `contexts.trace.data` attributes). `run.sh` starts and kills it itself; to run it by
 hand: `PORT=41293 node sink.mjs > sink.log 2>&1 &`.
 

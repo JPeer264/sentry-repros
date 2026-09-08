@@ -54,9 +54,9 @@ PROBE FILES (rerunnable; `app/.output/` is kept and self-contained, `node_module
   .../app/src/middleware.ts, .../app/src/app.tsx, .../app/src/routes/api/{users,w1,w2,w3,w4}/[id].ts, .../app/src/routes/users/[id].tsx, .../app/server/{plugins/sentry.ts,api/nusers/[id].ts}
   logs: .../run-static.log, run-static-ctrl.log, run-stream-ctrl.log, run-stream-fix.log, run-static-direct.log, run-node-ctrl.log, raw-stream-ctrl.json, raw-stream-fix2.json, build-v1.log, build-v2.log
 COMMANDS:
-  npm install --legacy-peer-deps <deps + $S/pack/sentry-*.tgz>   (as in the original report)
+  npm install --legacy-peer-deps <deps + $REPRO/_toolbox/pack/sentry-*.tgz>   (as in the original report)
   cd app && NODE_ENV=production npx vite build
-  PORT=41599 node $S/qs/sink.mjs &
+  PORT=41599 node $REPRO/_toolbox/sink.mjs &
   PORT=41611 HOST=127.0.0.1 SENTRY_TUNNEL=http://127.0.0.1:41599/ SENTRY_LIFECYCLE=static [SENTRY_MW_ROUTE=off SENTRY_PAGE_ROUTE=off|direct] deno run -A .output/server/index.mjs
   curl the endpoints, then curl -s 'http://127.0.0.1:41599/__items?raw=1'
 

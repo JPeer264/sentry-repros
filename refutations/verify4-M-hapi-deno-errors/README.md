@@ -18,9 +18,9 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 Refuted. The Hapi error event on Deno 2.9.0 does NOT hinge on `@sentry/deno/import` or the `json-fix.mjs` load-hook workaround. Two hook-free routes both deliver it, and one of them additionally fixes route names and library spans.
 
-Probe dir: $SCRATCH/deep/verify4-M-hapi-deno-errors/ (deno.json, init.ts, app-body.ts, main-nohook.ts, main-hook.ts, json-fix.mjs, build.mjs, exports-check.ts, drive.mjs, run2.sh, items2-*.json, r2-*.log, RERUN.md). node_modules kept (@hapi/hapi 21.4.10, mysql@2, esbuild 0.28, @sentry/{deno,core,server-utils,server-runtime-injection,opentelemetry} 10.67.0 from $S/pack tarballs). deno.json `nodeModulesDir: "manual"`.
+Probe dir: $SCRATCH/deep/verify4-M-hapi-deno-errors/ (deno.json, init.ts, app-body.ts, main-nohook.ts, main-hook.ts, json-fix.mjs, build.mjs, exports-check.ts, drive.mjs, run2.sh, items2-*.json, r2-*.log, RERUN.md). node_modules kept (@hapi/hapi 21.4.10, mysql@2, esbuild 0.28, @sentry/{deno,core,server-utils,server-runtime-injection,opentelemetry} 10.67.0 from $REPRO/_toolbox/pack tarballs). deno.json `nodeModulesDir: "manual"`.
 
-Sink: `PORT=47318 node $S/qs/sink.mjs > sink2.log 2>&1 &` (killed at the end).
+Sink: `PORT=47318 node $REPRO/_toolbox/sink.mjs > sink2.log 2>&1 &` (killed at the end).
 
 --- A: baseline, no hook, no manual handler, static (reproduces the reported loss) ---
 {"type":"transaction","name":"GET /error","op":"http.server","source":"url","status":"internal_error","trace_id":"1d1a834bfc8147719b4ac2d8c2bd0b72","sdk":"sentry.javascript.deno","spans":[]}

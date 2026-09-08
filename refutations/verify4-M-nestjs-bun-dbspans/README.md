@@ -18,7 +18,7 @@ The cell reported this capability as broken or partial. Refuting it means making
 
 Refutation failed; the report stands, and the cause is a deliberate SDK limitation, not a NestJS-specific defect.
 
-Probe dir: $SCRATCH/deep/verify4-M-nestjs-bun-dbspans (NestJS 11 + @nestjs/platform-express, @sentry/nestjs + @sentry/bun 10.67.0 tarballs, bun 1.4.0, mysql@2 connection at module scope in src/db.ts, MariaDB 127.0.0.1:3307). Sink: `PORT=47311 node $S/qs/sink.mjs`. Driver: `APP_PORT=<port> SINK_PORT=47311 node drive.mjs` (hits /users/7, /db, /db, /sentinel and waits for the sentinel event).
+Probe dir: $SCRATCH/deep/verify4-M-nestjs-bun-dbspans (NestJS 11 + @nestjs/platform-express, @sentry/nestjs + @sentry/bun 10.67.0 tarballs, bun 1.4.0, mysql@2 connection at module scope in src/db.ts, MariaDB 127.0.0.1:3307). Sink: `PORT=47311 node $REPRO/_toolbox/sink.mjs`. Driver: `APP_PORT=<port> SINK_PORT=47311 node drive.mjs` (hits /users/7, /db, /db, /sentinel and waits for the sentinel event).
 
 1) BUNDLED WORKS (`bun run build.ts && PORT=47320 LIFECYCLE=static bun dist/main.js`, log run-b-app-bundled.log):
  {"type":"transaction","name":"GET /db","op":"http.server","source":"route","status":"ok","spans":["middleware <anonymous>","middleware jsonParser","middleware urlencodedParser","handler /db","db SELECT id, name FROM users"]}

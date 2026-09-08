@@ -4,16 +4,16 @@ Install (npm, NOT bun add):
   S=<scratchpad>
   cd app-a
   npm install --no-audit --no-fund \
-    $S/pack/sentry-remix-10.67.0.tgz $S/pack/sentry-node-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-    $S/pack/sentry-react-10.67.0.tgz $S/pack/sentry-browser-10.67.0.tgz $S/pack/sentry-browser-utils-10.67.0.tgz \
-    $S/pack/sentry-server-utils-10.67.0.tgz $S/pack/sentry-server-runtime-injection-10.67.0.tgz \
-    $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-bun-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-remix-10.67.0.tgz $REPRO/_toolbox/pack/sentry-node-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-react-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-10.67.0.tgz $REPRO/_toolbox/pack/sentry-browser-utils-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-runtime-injection-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz \
     @remix-run/dev@2.17.4 @remix-run/express@2.17.4 @remix-run/node@2.17.4 @remix-run/react@2.17.4 \
     @remix-run/server-runtime@2.17.4 express@4.21.2 react@18.3.1 react-dom@18.3.1 vite@5.4.11 \
     isbot@4.4.0 mysql2@3.11.5
 
 Helpers (pick free ports 20000-60000):
-  PORT=33517 node $S/qs/sink.mjs > sink-a.log 2>&1 &
+  PORT=33517 node $REPRO/_toolbox/sink.mjs > sink-a.log 2>&1 &
   PORT=33519 node ./recorder.mjs > recorder-a.log 2>&1 &
 
 Build:

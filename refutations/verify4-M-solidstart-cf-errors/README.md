@@ -20,7 +20,7 @@ REFUTED. A thrown route-handler error does become a Sentry event on SolidStart 1
 
 Probe dir: $SCRATCH/deep/verify4-M-solidstart-cf-errors (node_modules removed; `npm install` restores it). Files: app.config.ts, src/server-plugin.ts (= RECIPE-nitro-error-plugin.ts), worker.mjs, wrangler.jsonc, src/routes/api/{boom,trace,sentinel}.ts, src/routes/ssrboom.tsx, sinkraw.mjs, raw-final.jsonl, wr-b.log.
 
-Rerun: `npm install` ; `PORT=47311 node $S/qs/sink.mjs > sink-b.log 2>&1 &` ; `npx vinxi build` ; `npx wrangler dev --config wrangler.jsonc --port 47312 --inspector-port 0` ; `curl -s -o /dev/null http://127.0.0.1:47312/api/boom`.
+Rerun: `npm install` ; `PORT=47311 node $REPRO/_toolbox/sink.mjs > sink-b.log 2>&1 &` ; `npx vinxi build` ; `npx wrangler dev --config wrangler.jsonc --port 47312 --inspector-port 0` ; `curl -s -o /dev/null http://127.0.0.1:47312/api/boom`.
 
 CONTROL (identical build, only `plugins: ['./src/server-plugin.ts']` removed from app.config.ts) — `GET /api/boom` 500, no event, exactly as reported:
   /api/boom=500

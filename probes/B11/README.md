@@ -45,11 +45,11 @@ MariaDB must be reachable on `127.0.0.1:3307` (root, no password, db `app`, tabl
 ```
 S=$SCRATCH
 B=$REPRO/probes/B11
-EMPTY=$S/deep/B11/cwd-empty   # any directory with no node_modules above it
+EMPTY=$REPRO/probes/B11/cwd-empty   # any directory with no node_modules above it
 mkdir -p "$EMPTY"
 
 # envelope sink
-PORT=47512 node $S/qs/sink.mjs > $S/deep/B11/sink-47512.log 2>&1 &
+PORT=47512 node $REPRO/_toolbox/sink.mjs > $REPRO/probes/B11/sink-47512.log 2>&1 &
 
 # build the four executables
 cd $B

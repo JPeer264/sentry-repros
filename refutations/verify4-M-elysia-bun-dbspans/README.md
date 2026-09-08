@@ -19,8 +19,8 @@ The cell reported this capability as broken or partial. Refuting it means making
 Could not refute. Reproduced the reported split exactly, in both trace lifecycles, and every refutation attempt failed.
 
 Probe dir: $SCRATCH/deep/verify4-M-elysia-bun-dbspans (app.ts, instrument.ts, build.ts, preload.ts, run1..run5 logs, raw-run3.json). node_modules removed after the run; recreate with:
-npm install elysia@1.4 mysql2 mysql@2.18.1 $S/pack/sentry-{elysia,bun,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
-Sink: PORT=47231 node $S/qs/sink.mjs. App is one Elysia app, Sentry.withElysia(new Elysia()), module-scope mysql2 pool AND module-scope mysql@2 connection, routes /m2/:id and /m1/:id, MariaDB 127.0.0.1:3307.
+npm install elysia@1.4 mysql2 mysql@2.18.1 $REPRO/_toolbox/pack/sentry-{elysia,bun,node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz
+Sink: PORT=47231 node $REPRO/_toolbox/sink.mjs. App is one Elysia app, Sentry.withElysia(new Elysia()), module-scope mysql2 pool AND module-scope mysql@2 connection, routes /m2/:id and /m1/:id, MariaDB 127.0.0.1:3307.
 
 Run 1 — `SINK_PORT=47231 APP_PORT=41903 LIFECYCLE=static bun app.ts` (no bundler, documented wiring, instrument.ts imported first):
   GET /m2/:id | http.server | spans: ['middleware Request', ..., 'handler Handle', 'db mysql2.pool.connect', 'db mysql2.connect', 'db SELECT id, name FROM users WHERE id = ?', ...]

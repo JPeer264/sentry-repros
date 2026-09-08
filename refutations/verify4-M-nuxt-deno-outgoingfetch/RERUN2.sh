@@ -11,13 +11,13 @@
 #         because Nuxt-on-Deno has no server span to parent it to. Headers are added in both.
 set -x
 S=$SCRATCH
-D=$S/deep/verify4-M-nuxt-deno-outgoingfetch
+D=$REPRO/refutations/verify4-M-nuxt-deno-outgoingfetch
 cd $D
 
 # deps (do NOT install @sentry/nitro: its nitro@3 peer makes the deno_server output emit
 # `import ... from "npm:nitro/storage"`, which crashes at boot with ERR_PACKAGE_PATH_NOT_EXPORTED)
-npm install nuxt@^4 vue $S/pack/sentry-vercel-edge-10.67.0.tgz \
-  $S/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+npm install nuxt@^4 vue $REPRO/_toolbox/pack/sentry-vercel-edge-10.67.0.tgz \
+  $REPRO/_toolbox/pack/sentry-{nuxt,node,core,server-utils,server-runtime-injection,opentelemetry,browser,vue,browser-utils,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
 
 # build + REQUIRED manual patch: with the deno_server preset @sentry/nuxt writes the
 # top-level-import line into a bogus file named `.output/server/deno.json start`

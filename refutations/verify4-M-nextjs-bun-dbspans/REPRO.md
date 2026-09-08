@@ -1,15 +1,15 @@
 # verify4-M-nextjs-bun-dbspans - db spans DO work on Next.js 15.5.4 + bun 1.4.0
 
 S=$SCRATCH
-V=$S/deep/verify4-M-nextjs-bun-dbspans
+V=$REPRO/refutations/verify4-M-nextjs-bun-dbspans
 
 ## install (in $V/nextapp; node_modules removed after the run)
 npm install --no-audit --no-fund next@15.5.4 react react-dom typescript@5 @types/node @types/react mysql2 \
-  $S/pack/sentry-{nextjs,node,core,opentelemetry,server-utils,server-runtime-injection,react,browser,browser-utils,bundler-plugins,vercel-edge}-10.67.0.tgz
+  $REPRO/_toolbox/pack/sentry-{nextjs,node,core,opentelemetry,server-utils,server-runtime-injection,react,browser,browser-utils,bundler-plugins,vercel-edge}-10.67.0.tgz
 # mysql2 resolved to 3.24.3
 
 ## run
-PORT=41337 node $S/qs/sink.mjs > $V/sink.log 2>&1 &
+PORT=41337 node $REPRO/_toolbox/sink.mjs > $V/sink.log 2>&1 &
 cd $V/nextapp && bun --bun ./node_modules/.bin/next build
 KEEP_CHANNELS=1 SINK_PORT=41337 TRACE_LIFECYCLE=static bun --bun ./node_modules/.bin/next start -p 41343
 curl -s localhost:41343/api/db ; curl -s localhost:41343/api/sentinel ; curl -s localhost:41337/__items

@@ -1,0 +1,399 @@
+[
+  {
+    "id": "DOC-F35",
+    "cell": "M-hono-cf",
+    "docs_claim": "holds",
+    "current_lines": "guides/hono/index.mdx:12 (multi-runtime sentence) OK; :65-78 (peer-dep step, Cloudflare tab at :76-77) OK; :129-144 (Expandable 'Cloudflare Workers: Enable Node.js Compatibility', compatibility_flags only, no compatibility_date) OK; :162 (Node.js-only database sentence) OK. The Cloudflare middleware wiring is :240-262; the cited :246-274 spans the Cloudflare app.use plus the whole Node.js tab. grep -rniE 'vite|mysql|database' guides/hono/ = 1 hit (index.mdx:162). platform-includes/getting-started-config/javascript.cloudflare.mdx:5 OK. guides/cloudflare/index.mdx:17 OK. guides/cloudflare/frameworks/hono.mdx:6-8 OK.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "Cell README Observed: no middleware.hono spans appear in the static transactions' spans[] on Workers.",
+      "Cell: captured events carry no source context (hasContextLine false) under wrangler dev."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Change 'after :274' to 'after the \"Add the Sentry Middleware\" section (:227-359), before \"### Report Unhandled Exceptions\" at :360' - :274 sits inside the Node.js tab's code block.",
+      "Change ':246-274 shows the sentry(app, {...}) middleware wiring' to ':240-262 (Cloudflare Workers tab)'.",
+      "Add the extra packages the Vite path needs to the install line: 'vite', '@cloudflare/vite-plugin' and the driver (the cell used mysql@2).",
+      "Add guides/cloudflare/frameworks/hono.mdx (the 8-line stub that redirects to the Hono guide) as a second place the Cloudflare database note should be reachable from."
+    ],
+    "notes": "All seven exercised capabilities are 'works' in the cell record and the rerun matched. The draft's split of db spans into 'through the Vite build only' matches the recorded negative control (plain wrangler dev, GET /db returns rows, spans[] empty)."
+  },
+  {
+    "id": "DOC-F36",
+    "cell": "M-elysia-cf",
+    "docs_claim": "holds",
+    "current_lines": "guides/elysia/index.mdx:25 ('Bun or Node.js 18+ (with @elysiajs/node adapter)') OK; :5 fallbackGuide javascript.bun OK; the install block is :55-60 - :55-57 Bun, :59-60 Node - so ':55-56 and :82 are Bun and Node only' names the Bun install and the Bun snippet, not the Node install. platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12 (Runtime Behavior, exactly Bun and Node.js) OK. guides/cloudflare/index.mdx:16-23 has no Elysia OK. guides/cloudflare/frameworks/ has no elysia.mdx OK. grep -rniE 'cloudflare|workerd' guides/elysia/ = 0.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "The biggest docs contradiction this cell found is missing: platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:3-5 promises a span for every Elysia lifecycle phase with op request_handler.elysia / middleware.elysia, and on workerd every transaction came back with spans: [] (cell notes: app.trace() depends on rootSpanForRequest, which only the Bun branch of app.wrap populates). No other audit item covers this, and it is in the very file the draft proposes to edit.",
+      "Do NOT call init from @sentry/elysia on Workers - its sdk.js imports node:os and @sentry/bun; Sentry.withSentry from @sentry/cloudflare supplies the client. Only the withElysia wrapper is usable.",
+      "verify4-M-elysia-cf-dbspans: the mysql2 pool must stay at module scope."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add a bullet to Known limits: 'No Elysia lifecycle spans on Workers - every transaction comes back with spans: [], because the app.trace() handler that creates them depends on rootSpanForRequest, which only the Bun branch of app.wrap populates.' and extend the last 'What to change' bullet so javascript.elysia.mdx:3-5 is scoped to Bun and Node, not just :9-12.",
+      "Add to the wiring paragraph: do not call init from @sentry/elysia on Workers (its sdk.js imports node:os and @sentry/bun); Sentry.withSentry supplies the client.",
+      "Extend the mysql2 limit to 'disableEval: true in the connection options, and the pool must be created at module scope'.",
+      "Correct the citation ':55-56 and :82 are Bun and Node only' to ':55-60 (Bun and Node install tabs) and :82 (Bun snippet)'."
+    ],
+    "notes": "db spans were 'broken' in the cell record and refuted to works-after-all by verify4-M-elysia-cf-dbspans (Vite + sentryCloudflareVitePlugin() at defaults), so the draft's 'db spans through the Vite build' is supported. The refutation also confirms withElysia bundles cleanly under Vite/rollup and fixes naming on both build shapes."
+  },
+  {
+    "id": "DOC-F37",
+    "cell": "M-express-cf",
+    "docs_claim": "holds",
+    "current_lines": "guides/express/index.mdx:4-9 OK (file is 12 lines, body is one include at :12); grep -rniE 'cloudflare|workerd' guides/express/ = 0. Absence greps over docs/ + platform-includes/: httpServerHandler = 0, 'cloudflare:node' = 0, enable_nodejs_http_server_modules = 0. guides/cloudflare/index.mdx:16-23 has no Express OK. guides/cloudflare/features/vite-plugin.mdx:40-44 and :78-82 unchanged OK (the prose that presents the flag as required is :30, the SdkOption blocks are :150-166). NOTE: the audit page's 'Where the docs stand' also claims patchExpressModule returns zero hits - that is now stale, it has 2 hits in docs/platforms/javascript/common/migration/v10-to-v11/index.mdx:748 and :1375 (page landed today). The item body makes no patchExpressModule claim.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "Known limit 'route errors are swallowed by Express with no event' on a plain wrangler build is refuted by verify4-M-express-cf-errors (works-after-all): setupExpressErrorHandler(app) from @sentry/server-utils captures sync throws, async throws and next(err) as mechanism auto.middleware.express, handled:false, on plain wrangler dev in both lifecycles.",
+      "Known limit 'no route names, no handler spans' on a plain wrangler build is refuted by verify4-M-express-cf-routenames (works-after-all): patchExpressModule(express, () => ({})) from @sentry/core/server gives handler/router spans and GET /users/:id with sentry.segment.name.source route - though only under span streaming."
+    ],
+    "omitted_findings": [
+      "setupExpressErrorHandler must be imported from @sentry/server-utils and added as a dependency, because @sentry/cloudflare does not re-export it - Sentry.setupExpressErrorHandler(app), the form the Express guide shows, is undefined in a Worker.",
+      "patchExpressModule renames the root span only when span streaming is enabled (packages/core/src/integrations/express/patch-layer.ts applyRouteToRootSpan returns early otherwise) and is marked @deprecated, yet it is the only Express instrumentation reachable without the bundler transform.",
+      "The reason the app must be built lazily is that with buildTimeInstrumentation on, a module-scope app.get(...) crashes the Worker at startup with 'Disallowed operation called within global scope'. The draft prescribes the lazy shape without the reason.",
+      "verify4-M-express-cf-dbspans: the plain mysql@2.18.1 driver works too, not only mysql2, and db spans nest under the express handler span.",
+      "The 'no sentry.source attribute' sub-claim in the cell record was a sink mis-read: in span streaming the key is sentry.segment.name.source."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "partially-correct (docs side and the Vite-shape Works-today list hold; the Known-limits list contradicts two of this item's own refutations)",
+    "corrections": [
+      "Rewrite the first Known limit to: 'A Worker bundled by plain wrangler dev/deploy gets no route names, no handler spans and no database spans unless you add app-side wiring: setupExpressErrorHandler(app) from @sentry/server-utils (not re-exported by @sentry/cloudflare) for error capture, and patchExpressModule(express, () => ({})) from @sentry/core/server for handler spans and route names, the latter only under the stream trace lifecycle and on a deprecated API.'",
+      "Add to the wiring paragraph why the app must be built lazily: with build-time instrumentation on, a module-scope app.get() fails the Worker with 'Disallowed operation called within global scope'.",
+      "Say 'db spans from mysql2 or mysql 2.x' rather than mysql2 alone.",
+      "Extend the vite-plugin.mdx correction to name :30 (the prose that presents useDiagnosticsChannelInjection as required) and :150-166 (the SdkOption blocks), not only the two snippets.",
+      "Verify the mechanism string in Works today: the cell recorded auto.http.express for the Vite shape while the refutation recorded auto.middleware.express for the plain shape; one of the two is likely a transcription slip."
+    ],
+    "notes": "The audit page's finding paragraph states the setupExpressErrorHandler and patchExpressModule facts correctly; only the item body (which is what would be filed) omits them."
+  },
+  {
+    "id": "DOC-F38",
+    "cell": "M-fastify-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/fastify/index.mdx:4-9 OK (file is 12 lines); grep -rniE 'cloudflare|workerd' guides/fastify/ = 0. guides/cloudflare/index.mdx:16-23 names no Node HTTP framework OK. The Known Limitations anchor moved: '## Known Limitations' is now guides/cloudflare/index.mdx:368, not :364 (a 'Control the Data You Send to Sentry' section was inserted at :244-247).",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "Cell notes: Fastify would hit the same new Function wall in ajv (schema validation) and fast-json-stringify (response serialization) as soon as any route schema is declared - worth one clause so readers do not try schema-free routes as an escape.",
+      "Cell notes the general lesson for the whole Cloudflare set: enable_nodejs_http_server_modules + httpServerHandler themselves work fine (the node:http control served 200s); most Node frameworks just cannot be constructed at module scope."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Change the anchor 'near Known Limitations at docs/platforms/javascript/guides/cloudflare/index.mdx:364' to ':368'."
+    ],
+    "notes": "Every capability is not-run and viable=no in the cell record, matching 'Works today: nothing'. The three limits map one-to-one onto the cell's setup section, including the find-my-way call sites and the Fastify 4 check."
+  },
+  {
+    "id": "DOC-F39",
+    "cell": "M-koa-cf",
+    "docs_claim": "holds",
+    "current_lines": "guides/koa/index.mdx:1-12 OK (12-line stub, sdk sentry.javascript.node, fallbackGuide javascript.node, body one include at :12); grep -rniE 'cloudflare|workerd' guides/koa/ = 0; grep -rni koa guides/cloudflare/ = 0; guides/cloudflare/frameworks/ has no koa.mdx OK; guides/cloudflare/index.mdx:16-23 omits Koa OK; httpServerHandler and enable_nodejs_http_server_modules = 0 hits over docs/ + platform-includes/; guides/cloudflare/features/vite-plugin.mdx:40-44 unchanged OK.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "The evidence disagrees with itself on whether app.on('error') is still needed: verify4-M-koa-cf-errors measured koaHandlerAttached:true and automatic auto.middleware.koa capture with NO app.on('error') on the Vite build, while verify4-M-koa-cf-routenames' workaround section still says it 'is still required for error events'. The draft follows the errors refutation, which is the more specific measurement, but the item should say the plugin registers the listener for you.",
+      "The plain-wrangler fallback the cell recorded (manual app.on('error') + Sentry.updateSpanName(getRootSpan(getActiveSpan()), `${ctx.method} ${ctx._matchedRoute}`), which yields source custom rather than route) is not carried into the draft, so a reader who cannot build with Vite gets nothing.",
+      "The draft gives no npm install line."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add the install line: @sentry/cloudflare, koa, @koa/router, plus vite and @cloudflare/vite-plugin for the build.",
+      "State that with sentryCloudflareVitePlugin() the SDK registers Koa's app.on('error') listener itself (mechanism auto.middleware.koa, handled:false), so no hand-written error handler is needed.",
+      "Add a short plain-wrangler fallback paragraph (manual app.on('error') plus root-span rename) so non-Vite builds are not left silent."
+    ],
+    "notes": "All three cell verdicts the draft relies on (errors partial, route names broken, db spans broken) were refuted to works-after-all, all by the same fix: build with Vite plus sentryCloudflareVitePlugin() at defaults, and construct the Koa app inside fetch. The cell's own conclusion that buildTimeInstrumentation breaks httpServerHandler workers is superseded - the crash was module-scope app.use()."
+  },
+  {
+    "id": "DOC-F40",
+    "cell": "M-hapi-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/hapi/index.mdx:4-5 and :12 OK (12-line file, body one include). guides/cloudflare/frameworks/ has no hapi.mdx OK. guides/cloudflare/index.mdx:16-23 omits Hapi OK. packages/server-utils/package.json:30-62 OK - seven orchestrion export entries (./orchestrion/config plus six bundlers: vite, rollup, webpack, webpack-loader, esbuild, bun), so 'six' is right only if config is excluded. The absence claim moved: sentryOrchestrionPlugin and @sentry/server-utils/orchestrion now each have 1 hit in docs, at docs/platforms/javascript/common/migration/v10-to-v11/index.mdx:1297 (page landed today) - still no how-to page documents them.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "'mysql2 cannot be used on workerd; mysql 2.x works' is overstated. This audit's own refutations show mysql2 runs on workerd with disableEval: true - verify4-M-hapi-cf-dbspans docsImpact says so explicitly, and verify4-M-nestjs-cf-dbspans and verify4-M-nextjs-cf-dbspans measured it. The Hapi cell simply never passed the flag.",
+      "'A plain wrangler build gives neither route names nor database spans' is only true without user code: verify4-M-hapi-cf-routenames got source route on a plain wrangler build with a 4-line onPreResponse ext, and also automated it by hanging an esbuild+orchestrion build off wrangler's build.command."
+    ],
+    "omitted_findings": [
+      "verify4-M-hapi-cf-errors pins the root cause and gives a fix the draft does not carry: on workerd the node:http ServerResponse emits close before finish with writableEnded still false, hapi reads that as a client disconnect, turns every response into a 499 and never fires request/error. An onRequest ext that drops the premature close restores SDK-native capture with the transaction name and the auto.function.hapi mechanism. The audit page has this; the item body says only 'not captured'.",
+      "With build-time instrumentation on, routes must be registered and server.start() called inside the first fetch, never at module scope, or the isolate fails to boot with 'Disallowed operation called within global scope' (the injected wrapper around Server.prototype.route starts a span). This is in the cell setup and both refutations' docsImpact and is missing from the draft.",
+      "hapiIntegration() is not in @sentry/cloudflare's default set and is not re-exported from it, so it must be imported from @sentry/server-utils by hand - and even then it captures nothing without the onRequest fix."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Add the module-scope rule to the wiring paragraph: register routes and call server.start() inside the first fetch when build-time instrumentation is on.",
+      "Replace the errors limit with the measured shape: hapi's request/error event never fires on workerd because the response emits close before finish; show the onRequest ext that drops the premature close (restores auto.function.hapi capture) and the onPreResponse isBoom fallback for plain wrangler builds.",
+      "Change 'mysql2 cannot be used on workerd; mysql 2.x works' to 'mysql 2.x works unchanged; mysql2 needs disableEval: true in the connection options'.",
+      "Soften the plain-wrangler limit: add the verified onPreResponse rename (updateSpanName plus SENTRY_SEGMENT_NAME_SOURCE 'route') as the no-bundler-plugin route-name fallback.",
+      "Change 'packages/server-utils/package.json:30-62 exports six orchestrion entry points' to 'seven (./orchestrion/config plus six bundler entry points)', and note that sentryOrchestrionPlugin now appears once in docs, in the v10-to-v11 migration guide at :1297."
+    ],
+    "notes": "Both refuted verdicts point at the same conclusion the draft draws (build-time instrumentation via Vite or esbuild orchestrion), so the headline is right; the gaps are the missing module-scope rule and two overstated limits."
+  },
+  {
+    "id": "DOC-F41",
+    "cell": "M-oak-cf",
+    "docs_claim": "holds",
+    "current_lines": "grep -rni oak over docs/platforms/javascript/ and platform-includes/ = 0 hits. guides/cloudflare/frameworks/ contains exactly astro.mdx, hono.mdx, hydrogen-react-router.mdx, hydrogen-remix.mdx, index.mdx, nextjs.mdx, nuxt.mdx, remix.mdx, sveltekit.mdx, tanstack-start.mdx - no oak.mdx, as claimed. guides/cloudflare/index.mdx:16-23 omits Oak OK.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "'mysql2 queries fail on workerd' is stated flatly. The Oak cell did observe the EvalError, but it never tried mysql2's disableEval: true, which three other refutations in this same audit show fixes it."
+    ],
+    "omitted_findings": [
+      "verify4-M-oak-cf-routenames (partial) supplies a corrected middleware the draft does not carry: rename inside try/finally (so it also runs on the throwing route), set Sentry.SENTRY_SEGMENT_NAME_SOURCE (the exported constant, not the legacy 'sentry.source' string the cell's snippet used - that string is why the cell saw source 'custom' under static), plus http.route and getIsolationScope().setTransactionName. That yields source route in BOTH lifecycles. The audit page has it; the item body only lists the gap.",
+      "Install detail: all five @sentry/* packages must be installed on one line, @sentry/server-utils explicitly, or the wrangler build fails on '@sentry/server-utils/no-diagnostic-channels'.",
+      "The .npmrc @jsr:registry line is named in the draft, but not that the plain npm package is @oakserver/oak, stuck at 14.1.0."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Change 'mysql2 queries fail on workerd' to 'mysql 2.x works with no configuration; mysql2 emits spans but its query fails unless you pass disableEval: true (not exercised in this cell)'.",
+      "Add the verified route-naming middleware to 'What to change': try/finally around next(), read ctx.matched, updateSpanName plus Sentry.SENTRY_SEGMENT_NAME_SOURCE 'route' plus http.route plus getIsolationScope().setTransactionName - noting that the exported constant, not the string 'sentry.source', is what both lifecycles read.",
+      "Add the packaging note that @sentry/server-utils must be installed explicitly alongside @sentry/cloudflare."
+    ],
+    "notes": "Oak is the one Cloudflare cell where db spans work under plain wrangler dev with no bundler plugin (mysql@2 via the patch path, origin auto.db.mysql). The draft states that correctly and it is worth keeping, since it contradicts the blanket 'db spans need build-time instrumentation' rule the other items state."
+  },
+  {
+    "id": "DOC-F42",
+    "cell": "M-fresh-cf",
+    "docs_claim": "moved",
+    "current_lines": "No guides/fresh/ directory OK. grep -rni fresh docs/platforms/javascript/ = 4 hits, all the ordinary English word: common/session-replay/configuration.mdx:42, common/session-replay/index.mdx:218, common/migration/v10-to-v11/index.mdx:1339, and guides/cloudflare/agent-tracing/agents-sdk.mdx:43. The cited example moved: guides/cloudflare/features/agents-sdk.mdx:39 is now guides/cloudflare/agent-tracing/agents-sdk.mdx:43 (the AI pages were moved to agent-tracing/). guides/cloudflare/index.mdx:16-23 OK. guides/cloudflare/features/vite-plugin.mdx:13-18 unchanged OK.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "verify4-M-fresh-cf-routenames is works-after-all, not a flat limit: an 8-line main.ts middleware registered before app.fsRoutes() (rename in a finally, then http.route, then Sentry.SENTRY_SEGMENT_NAME_SOURCE 'route' - the source must be set after the rename because updateName/updateSpanName force 'custom') yields GET /users/:id with source route in both lifecycles. The audit page has the fix; the item body does not.",
+      "Why the naming is broken: Fresh already calls @opentelemetry/api getActiveSpan()?.updateName() plus http.route internally, but @sentry/cloudflare registers no OTel global so it is a NoopTracer.",
+      "The esbuild pre-bundle needs a banner that backs require with statically imported node: builtins, or workerd fails at the first query with 'Dynamic require of \"diagnostics_channel\" is not supported'. The draft prescribes the esbuild orchestrion build without this.",
+      "Adding sentryCloudflareVitePlugin() to Fresh's vite.config.ts does not merely do nothing - it injects the channels and then breaks the driver under workerd via Vite's CJS interop."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Move route naming out of Known limits into the page body as a solved problem: show the main.ts middleware (finally, updateName, http.route, SENTRY_SEGMENT_NAME_SOURCE after the rename) and keep only 'no route names out of the box' as the limit.",
+      "Add the esbuild banner requirement (require backed by static node: imports) to the build step.",
+      "Sharpen the vite-plugin caveat: adding sentryCloudflareVitePlugin() to Fresh's config injects the channels but breaks the driver under workerd, it is not a no-op.",
+      "Update the incidental citation guides/cloudflare/features/agents-sdk.mdx:39 to guides/cloudflare/agent-tracing/agents-sdk.mdx:43."
+    ],
+    "notes": "The errors bullet matches verify4-M-fresh-cf-errors (partial) exactly, including the captureConsoleIntegration trade-off. db spans were refuted to works-after-all via the esbuild orchestrion path the draft prescribes."
+  },
+  {
+    "id": "DOC-F43",
+    "cell": "M-nestjs-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/nestjs/index.mdx:5-9 OK (fallbackGuide javascript.node, server-node categories, no runtime caveat). guides/cloudflare/frameworks/ has no nestjs.mdx OK. guides/cloudflare/index.mdx:16-23 omits Nest OK. grep httpServerHandler over docs/ + platform-includes/ = 0 OK. grep sentryOrchestrionPlugin = 1, at docs/platforms/javascript/common/migration/v10-to-v11/index.mdx:1297 (page landed today), so 'appears nowhere' is now literally stale for that half of the claim.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "The esbuild build needs a createRequire banner that strips the node: prefix (workerd's createRequire cannot resolve node:-prefixed builtins) plus aliases stubbing class-validator, class-transformer, @nestjs/microservices* and @nestjs/websockets/socket-module, and must NOT prefer ESM conditions (that breaks express's require('is-promise')). Without these the bundle does not boot, so a docs page built only from the draft would not work.",
+      "SentryGlobalFilter correctly does not report expected HttpExceptions (verify4-M-nestjs-cf-errors measured a NotFoundException producing status not_found and no event).",
+      "verify4-M-nestjs-cf-errors also shows the orchestrion plugin is not needed for error capture at all, only for route names and db spans."
+    ],
+    "wiring_consistent": "partial",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add the esbuild build details to the wiring paragraph: the createRequire banner that strips node:, the stub aliases, and 'do not set mainFields/conditions to prefer ESM'.",
+      "Note in 'Works today' that expected HttpExceptions are not reported, which is the same behavior as Node.",
+      "Update the absence claim: sentryOrchestrionPlugin now appears once in docs, in the v10-to-v11 migration guide at :1297, but no how-to page documents it."
+    ],
+    "notes": "The draft correctly follows both refutations rather than the older cell verdicts: SentryGlobalFilter from @sentry/nestjs/setup works on workerd (mechanism auto.http.nestjs.global_filter, handled:false), and mysql2 works with disableEval plus a per-request connection. Both cell verdicts (errors partial, db spans partial) were refuted to works-after-all."
+  },
+  {
+    "id": "DOC-F44",
+    "cell": "M-nextjs-cf",
+    "docs_claim": "holds",
+    "current_lines": "guides/cloudflare/frameworks/nextjs.mdx is still exactly 56 lines and every cited line is unchanged: :6, :14, :15, :28-38, :40-54, :56. grep -c 'sentry/cloudflare' on that page = 0, so '@sentry/cloudflare is never mentioned' holds. grep -rn disableEval over docs/ + platform-includes/ = 0 hits. common/configuration/integrations/fetchIntegration.mdx:14-22 OK. platform-includes/configuration/integrations/javascript.cloudflare.mdx:6 OK. guides/cloudflare/index.mdx:19 links the page OK.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "Two of the cell's three setup traps are missing: importing withSentryConfig into an ESM next.config.mjs fails outright ('Named export withSentryConfig not found', because the exports map puts the node/CJS condition ahead of import), so a CJS next.config.js is the working shape; and sendDefaultPii no longer exists on the v11 line and fails the next build type check. The draft names the @sentry/nextjs/config subpath but not the ESM failure.",
+      "At init on workerd the SDK logs 'Failed to register diagnostics-channel injection hooks, so channel-based integrations will not record spans' with 'TypeError: port1.on is not a function' - the visible symptom of the mysql@2 limit the draft states.",
+      "verify4-M-nextjs-cf-dbspans: serverExternalPackages is not a workaround for mysql@2 (it yields spans but breaks the driver with PROTOCOL_INCORRECT_PACKET_SEQUENCE).",
+      "The fix also covers node:http calls, not only global fetch."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add to the wiring paragraph: next.config must be CommonJS - importing withSentryConfig from an ESM next.config.mjs fails with 'Named export withSentryConfig not found'.",
+      "Say the fetchIntegration() fix covers node:http as well as global fetch.",
+      "Add to the database limit that serverExternalPackages is not an escape hatch for mysql 2.x."
+    ],
+    "notes": "This is the cleanest item of the set: every docs citation is still line-exact, and both refutations (outgoing fetch partial, db spans partial) support the draft's two proposed sections verbatim."
+  },
+  {
+    "id": "DOC-F45",
+    "cell": "M-nuxt-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/cloudflare/frameworks/nuxt.mdx:1-11 OK (:6 names cloudflare_module and the deprecated cloudflare-pages, :8-11 pulls the include). The include's Cloudflare branch shifted -6: platform-includes/getting-started-complete/javascript.nuxt.mdx:255-316 (cited :261-322), wrangler include :259-262 (cited :263-268), the delete-sentry.server.config warning :270-273 (cited :276-279), the sentryCloudflareNitroPlugin snippet :280-287 (cited :286-293), the nitroApp variant :300-310 (cited :306-316). guides/nuxt/features/nitro-deployment-presets.mdx:9-11 OK. guides/cloudflare/index.mdx:20 OK. grep -rniE 'transaction_info|route name|segment name' over guides/cloudflare/ and the Nuxt include = 0 hits, as claimed.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [
+      "'Note that database spans need no extra configuration on the Cloudflare presets' - no extra Sentry configuration, but the cell's nuxt.config.ts needed nitro.alias: { 'readable-stream': 'node:stream' } for the bundled mysql driver to boot under unenv, plus nitro.cloudflare: { nodeCompat: true, deployConfig: false }.",
+      "'Six of seven capabilities worked with that documented wiring verbatim' - verbatim except for those two nitro.* settings, which are not in any docs page."
+    ],
+    "omitted_findings": [
+      "verify4-M-nuxt-cf-routenames (confirmed-broken) ships a verified second Nitro plugin that fixes the naming: hook beforeResponse, read event.context.matchedRoute.path, set http.route on the root span when it has none. The audit page names it as the ship-today fix; the item body omits it entirely.",
+      "Sentry is inert under `nuxt dev` (orchestrion is skipped in dev and there is no workerd) - you must build and run wrangler.",
+      "Do not install @sentry/nitro alongside @sentry/nuxt: it drags in nitro@3 next to Nuxt 4's nitropack."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct",
+    "corrections": [
+      "Add the nitro.alias: { 'readable-stream': 'node:stream' } requirement (and nitro.cloudflare: { nodeCompat: true, deployConfig: false }) to the verified-wiring paragraph, and qualify the database sentence to 'no extra Sentry configuration'.",
+      "Add the verified Nitro beforeResponse plugin to 'What to change' as the ship-today fix for parameterless routes.",
+      "State that the SDK is inert under nuxt dev, so verification needs nuxt build plus wrangler dev.",
+      "Update the include citations to :255-316 / :259-262 / :270-273 / :280-287 / :300-310."
+    ],
+    "notes": "The route-naming limit itself is solid: the refutation could not refute it and reproduced the method-only segment for /api/db, /api/log and /api/sentinel under stream, and the URL-derived name under static."
+  },
+  {
+    "id": "DOC-F46",
+    "cell": "M-sveltekit-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/cloudflare/frameworks/sveltekit.mdx:1-9 OK. The include shifted -12 to -18: platform-includes/getting-started-complete/javascript.sveltekit.mdx Cloudflare hooks branch :299-347 (cited :311-365), the sequence(initCloudflareSentryHandle({...}), sentryHandle()) snippet :310-343 (cited :322-352), handleErrorWithSentry :340-342 (cited :354-360), 'Configure Vite' :351-376 with sentrySvelteKit() at :369 (cited :369-394 and :387), the wrangler config :378-387 (cited :396-405); :44 (adapter-cloudflare pointer) unchanged. guides/cloudflare/index.mdx:22 OK. grep -rn noExternal over docs/ + platform-includes/ = 0 hits. grep -rniE 'transaction_info|route name|segment name' guides/cloudflare/ = 0 hits.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "verify4-M-sveltekit-cf-routenames supplies the verified fix the draft leaves out: a user-land handle inserted between initCloudflareSentryHandle and sentryHandle that calls getRootSpan(getActiveSpan()).updateName plus sets sentry.segment.name.source 'route' and http.route (and explicitly NOT Sentry.updateSpanName, which stamps source 'custom'). It works in both lifecycles.",
+      "The break is worse than the draft says: it is not limited to parameterized routes - every route except '/' loses its name, because the Cloudflare wrapper only keeps a name whose source is already 'route'.",
+      "Turning on SvelteKit's native tracing (kit.experimental.tracing.server) does not help and removes the route-named http.server span entirely on Cloudflare."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add the verified intermediate handle to 'What to change' rather than only stating the naming limit.",
+      "Say the naming break hits every route except '/', not only parameterized ones.",
+      "Update the include citations to :299-347 / :310-343 / :340-342 / :351-376 / :369 / :378-387."
+    ],
+    "notes": "Important internal conflict, in the audit's favour on the item body: the audit page's finding paragraph prescribes ssr: { noExternal: [/^@sentry\\//] } as 'the minimal fix', but verify4-M-sveltekit-cf-dbspans explicitly warns against the regex ('it force-bundles @sentry/sveltekit and boots the Node SDK instead of the Cloudflare one') and prescribes exactly the three-package list the item body uses. Keep the item body's list and correct the audit page."
+  },
+  {
+    "id": "DOC-F47",
+    "cell": "M-astro-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/cloudflare/frameworks/astro.mdx is now 142 lines (cited 1-148); :13 '@astrojs/cloudflare v13 or above' is still exactly :13, and the Astro version floor ('Astro 6.0.0 or above') is :12; :21-23 the Astro 3-5 / adapter v12 Expandable OK. platform-includes/getting-started-complete/javascript.astro.mdx: the Cloudflare-gated install is :57-85 (heading :59, cited :59-84), the wrangler config :89-96 exactly as cited, the custom entry point :98-146 with '\"main\": \"./sentry.server.config.ts\"' at :109-114 exactly as cited and Sentry.withSentry(...) around @astrojs/cloudflare/entrypoints/server at :127-142 (cited :127-148), and 'Register the Sentry Integration' :148-174 with integrations: [sentry()] at :166 (cited :154-174 and :165-174). guides/astro/index.mdx:24-25 OK. guides/cloudflare/index.mdx:16 OK.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "The build-order trap the cell calls out: @astrojs/cloudflare v14 runs @cloudflare/vite-plugin during astro build and resolves wrangler.jsonc's main at config time, so pointing main at a dist path (the shape older Astro-on-Cloudflare guides use) fails the build before the file exists. The docs' ./sentry.server.config.ts value sidesteps this but nothing explains why - a one-line addition this run directly supports.",
+      "The cell recorded '[WARN] [@sentry/astro] [Sentry] Removed in v11 and ignored: sourceMapsUploadOptions' while the Astro guide still documents that option. No item in the audit covers it.",
+      "Captured errors carry no context_line under wrangler dev even though the build emits sourcemaps."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Update the page length and citations: astro.mdx is 1-142; the withSentry block is include :127-142 and the sentry() registration is include :148-174 (snippet :158-168).",
+      "Put the Astro version widening on :12 (the 'Astro 6.0.0 or above' line) and the adapter version on :13, rather than both on :13.",
+      "Consider adding the wrangler-main build-order note as a third bullet - it is the one thing in this run that would have broken a reader following an older shape."
+    ],
+    "notes": "All seven exercised capabilities are 'works', no refutations exist for this cell, and the rerun matched, so the 'page is correct' framing is right. The only capability not covered is client errors (not-run), which the draft states."
+  },
+  {
+    "id": "DOC-F48",
+    "cell": "M-reactrouter-cf",
+    "docs_claim": "holds",
+    "current_lines": "docs/platforms/javascript/guides/react-router/ contains exactly index.mdx, manual-setup.mdx and profiling/ OK; grep -rni cloudflare there = 0 hits. guides/cloudflare/frameworks/ has no react-router.mdx OK. guides/cloudflare/index.mdx:16-23 omits React Router OK. hydrogen-react-router.mdx prescribes wrapRequestHandler from @sentry/cloudflare/request at :187, inside the server.ts block :186-215 (cited :188-212), with the 'never import from @sentry/cloudflare on Oxygen' alert at :36.",
+    "evidence_consistent": "yes",
+    "unsupported_claims": [
+      "The audit page's finding paragraph says all seven capabilities work 'with no workarounds'; the run needed a hand-rolled handleError export because createSentryHandleError is not exported from @sentry/react-router/cloudflare. The item body states this limit correctly, so the defect is in the audit page only."
+    ],
+    "omitted_findings": [
+      "@react-router/node must be pinned to ^7 alongside react-router 7, or @sentry/react-router's peer range makes npm hoist 8.3.1 and the install aborts with ERESOLVE. Nothing in the app uses it on Workers - a docs page without this line does not install.",
+      "Without future.v8_viteEnvironmentApi the build dies with '[commonjs--resolver] id.endsWith is not a function', a message naming neither plugin. The draft names the flag but not the failure it prevents.",
+      "createSentryHandleError exists only on the node entry (@sentry/react-router/cloudflare re-exports only ../client, wrapSentryHandleRequest and injectTraceMetaTags), which is why handleError has to be hand-rolled.",
+      "injectTraceMetaTags is what feeds the browser its trace; the client half of the SDK was not exercised (client errors is not-run)."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add the @react-router/node@^7 pin to the package set, with the ERESOLVE reason.",
+      "Say what future.v8_viteEnvironmentApi prevents ('[commonjs--resolver] id.endsWith is not a function').",
+      "State that createSentryHandleError is node-only, which is why the handleError export must be written by hand.",
+      "Add 'only the server runtime was exercised' to Known limits, matching the client-errors not-run verdict."
+    ],
+    "notes": "No refutations exist for this cell; all seven exercised capabilities are 'works' and the rerun matched. db spans depend on the Vite plugin's buildTimeInstrumentation, which the draft's second limit states with the exact opt-out that was measured."
+  },
+  {
+    "id": "DOC-F49",
+    "cell": "M-tanstack-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/cloudflare/frameworks/tanstack-start.mdx is now 281 lines (cited 1-290). Unchanged: :10 (scoping alert), :16-47 (install), :50 (wrap the server entry with Sentry.withSentry), :59-100 custom server entry (cited :59-102) with wrapFetchWithSentry at :67 and :80 and Sentry.withSentry at :83-95 (cited :83-101). Moved: the '\"main\": \"src/server.ts\"' wrangler step is now :102-123 with the diff at :116 (cited :108-125 and :119-125); client configuration is now :125 (cited :131); 'Capture Server-Side Errors' is now :184 (cited :197); source maps :221 (cited :234); 'Verify Your Setup' :232 (cited :241). guides/cloudflare/index.mdx:23 OK. grep sentryTanstackStart on the page = 0 hits; the page has no Vite configuration section at all (only two incidental 'vite' mentions, :10 and :258).",
+    "evidence_consistent": "no",
+    "unsupported_claims": [
+      "'Works today: ... client-side errors'. The M-tanstack-cf record has seven capabilities and no client errors entry, and results.json says 'all seven capabilities reproduce'. The audit page's 'all eight capabilities passed against it, including client-side errors' is unsupported for the same reason.",
+      "'The page's wiring is exactly what was exercised and every capability passed against it'. The run also used sentryTanstackStart({ sourcemaps: { disable: true } }) in vite.config.ts, which the page never mentions."
+    ],
+    "omitted_findings": [
+      "The cell's own headline finding is demoted to a one-line limit: 'The single load-bearing thing the docs omit is sentryTanstackStart() in vite.config.ts.' It defines __SENTRY_ROUTE_PATTERNS__ (read by wrapFetchWithSentry) and runs sentryOrchestrionPlugin, so removing it costs BOTH route names (falls back to GET /users/123, source url) and db spans (transaction spans[] empty). The draft's limit mentions only route names.",
+      "sentryOrchestrionPlugin returns early when NODE_ENV === 'development', so vite dev never produces db spans on this stack; only vite build plus wrangler dev does.",
+      "sentryCloudflareVitePlugin() must NOT be added to a TanStack Start app - the TanStack plugin chain covers it.",
+      "Plugin order matters (cloudflare() first, sentryTanstackStart() after tanstackStart()), which the draft states but the page cannot, because it has no Vite section.",
+      "Rerun note in results.json: src/router.tsx must export getRouter, not createRouter, or the client build fails."
+    ],
+    "wiring_consistent": "no",
+    "verdict": "partially-correct - the docs claim (no tested-versions note) holds, but the 'page is correct, P2, optional note' framing and the client-errors capability are wrong",
+    "corrections": [
+      "Delete 'client-side errors' from Works today; the cell exercised seven server capabilities and recorded no client-errors verdict.",
+      "Replace 'The page's wiring is exactly what was exercised and every capability passed against it' with 'The page's wiring was exercised as shown, plus sentryTanstackStart() in vite.config.ts, which the page never mentions'.",
+      "Promote the missing Vite section from an optional note to a required change: the page needs a 'Configure Vite' step showing cloudflare({ viteEnvironment: { name: 'ssr' } }) first, tanstackStart(), then sentryTanstackStart(), and stating that without it route names fall back to source url AND database spans disappear. Reconsider the P2 priority on that basis.",
+      "Change the second 'What to change' bullet: there is no Vite section to put the sentence 'near', so the bullet must create one.",
+      "Add that vite dev produces no db spans (the orchestrion plugin is production-only).",
+      "Update the moved citations: :102-123 wrangler main, :125 client config, :184 server-side error capture, :221 source maps, :232 verification, page length 281."
+    ],
+    "notes": "This is the weakest item of the seventeen: the evidence is strong and the conclusion drawn from it is too soft."
+  },
+  {
+    "id": "DOC-F50",
+    "cell": "M-remix-cf",
+    "docs_claim": "moved",
+    "current_lines": "guides/cloudflare/frameworks/remix.mdx is still 60 lines; :39-49 installs only @sentry/remix OK; :55-58 embeds the include OK. The include shifted -13 to -19: platform-includes/getting-started-complete/javascript.remix.mdx Cloudflare-Pages branch :250-294 (cited :263-313), the functions/_middleware.js Sentry.sentryPagesPlugin snippet :261-288 (cited :274-307); 'Capture Server-Side Errors' :296-329, still outside any PlatformSection (cited :315-347), 'import * as Sentry from \"@sentry/remix\"' at :314 (cited :333), Sentry.wrapHandleErrorWithSentry at :316 and Sentry.sentryHandleError at :323 (cited :335-342). hydrogen-remix.mdx:32, :42 and :91 OK. grep -rn noExternal over docs/ + platform-includes/ = 0 hits. guides/cloudflare/features/vite-plugin.mdx:30-47 unchanged - _experimental.useDiagnosticsChannelInjection is still presented as required at :30 and documented with defaultValue false at :162-166, _experimental.autoInstrumentation defaultValue false at :156-160, against packages/cloudflare/src/vite/index.ts:37 and :52-54 where buildTimeInstrumentation and autoInstrumentation both default true.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "The wrapRequestHandler isolation defect is missing from the item body although it is the sharpest thing the cell found and the audit page states it: verify4-M-remix-cf-isolation shows wrapRequestHandler from @sentry/cloudflare/request is the only cloudflare wrapper that never calls setAsyncLocalStorageAsyncContextStrategy, so under concurrency every setTag/setUser/request-data write is global to the isolate and bleeds into unrelated later requests, and no event carries request data at all. The draft lists 'per-request isolation' under Works today without saying it only holds once you move off wrapRequestHandler.",
+      "makeWrappedCreateRequestHandler from @sentry/remix/cloudflare double-reports every request as two http.server transactions in two different traces on Cloudflare; instrumentBuild alone avoids it. This is why the draft's entry shape is the right one, and it is unstated.",
+      "The build command must be `remix vite:build`; a plain `vite build` under Vite 6 silently builds only the client and skips build/server.",
+      "npm needs --legacy-peer-deps (@remix-run/cloudflare pins @cloudflare/workers-types ^4, wrangler 4 pins ^5).",
+      "verify4-M-remix-cf-dbspans: the minimal ssr.noExternal is ['mysql', /^@sentry\\//, '@opentelemetry/api']; noExternal: true is the blunt version. It also confirms autoInstrumentation: false is unnecessary, which the draft says ('at its defaults') while still carrying noExternal: true from the cell.",
+      "With instrumentBuild alone the event's transaction field is unset (nothing calls isolationScope.setTransactionName), a minor grouping gap."
+    ],
+    "wiring_consistent": "yes",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Add a Known-limits bullet for wrapRequestHandler: on Workers it establishes no request isolation unless setAsyncLocalStorageAsyncContextStrategy() is called first, so tags, user and request data bleed across concurrent requests; it exists for runtimes that cannot enable nodejs_compat (Shopify Oxygen). Extend the 'What to change' list to add that warning to the two Hydrogen pages, which document exactly that shape.",
+      "State that the build command is `remix vite:build`, not `vite build`.",
+      "Offer the minimal ssr.noExternal list ['mysql', /^@sentry/', '@opentelemetry/api'] alongside noExternal: true, since noExternal: true is the blunt version.",
+      "Add that makeWrappedCreateRequestHandler double-reports on Cloudflare and must not be combined with the Cloudflare wrapper.",
+      "Note that the shipped Vite plugin options are top-level buildTimeInstrumentation and autoInstrumentation (both default true), and that the correction to vite-plugin.mdx should also touch the prose at :30 and the SdkOption blocks at :150-166, not only :30-47."
+    ],
+    "notes": "Answers to the three DOC-F50 questions. (1) MIGRATION.md on develop, :1350-1362: 'sentryRemixVitePlugin is no longer available from the main @sentry/remix entry point. Import it from @sentry/remix/vite ... The plugin now also applies the build-time instrumentation transform. If you added sentryOrchestrionPlugin() from @sentry/server-utils/orchestrion/vite to your Vite config manually, remove it. Opt out with sentryRemixVitePlugin({ buildTimeInstrumentation: false }).' The same text is already published at docs/platforms/javascript/common/migration/v10-to-v11/index.mdx:1287-1297. (2) The cell did NOT use sentryRemixVitePlugin: cells/M-remix-cf/vite.config.ts is `plugins: [remix({...}), ...sentryCloudflareVitePlugin({ autoInstrumentation: false })]` from @sentry/cloudflare/vite, and the package.json has no @sentry/remix/vite usage. sentryRemixVitePlugin appears in this repro repo only in the Bun and Deno Remix cells, and there from the old bare @sentry/remix specifier. (3) So the draft's claim that database spans need sentryCloudflareVitePlugin() IS supported by the cell run and by verify4-M-remix-cf-dbspans (which reran it with a bare plugin and with three noExternal variants), but it is not the only path on the v11 line and probably not the intended one: packages/remix/src/vite/index.ts composes makeRouteManifestPlugin plus makeOrchestrionPlugin, and packages/remix/src/vite/types.ts:12-21 documents buildTimeInstrumentation with @default true. The sentryRemixVitePlugin path is UNTESTED on Cloudflare in this audit. The item should either test it or say explicitly that it prescribes the Cloudflare plugin because the Remix plugin's Cloudflare behavior was not exercised."
+  },
+  {
+    "id": "DOC-F51",
+    "cell": "M-solidstart-cf",
+    "docs_claim": "holds",
+    "current_lines": "grep -rn -i cloudflare docs/platforms/javascript/guides/solidstart/ = 0 hits across index.mdx, install/, features/ and profiling/ OK. guides/cloudflare/frameworks/ has no solidstart.mdx OK. guides/cloudflare/index.mdx:16-23 omits SolidStart OK. The PlatformSection exclusion-list examples hold: common/tracing/streamed-spans/index.mdx:76 and common/index.mdx:31 both still list javascript.solidstart. guides/cloudflare/index.mdx:111 is still '### Setup for Cloudflare Workers'.",
+    "evidence_consistent": "partial",
+    "unsupported_claims": [],
+    "omitted_findings": [
+      "The stream half of the naming limit is missing: verify4-M-solidstart-cf-routenames measured that under the default traceLifecycle 'stream' the span loses the path entirely and is named bare 'GET'. The draft names only the static/URL case.",
+      "verify4-M-solidstart-cf-routenames supplies a verified fix (src/middleware.ts building a radix3 router from vinxi/routes, renaming the root span with getActiveSpan/getRootSpan/spanToJSON and the segment-name-source attribute, registered via middleware: './src/middleware.ts'). The audit page has it; the item body only states the gap.",
+      "Even with the Nitro error plugin, errors thrown while a page renders on the server are still not captured, because SolidStart streams the response.",
+      "Nitro emits no wrangler config for the cloudflare-module preset, so wrangler.jsonc (main pointing at the wrapper, plus the assets directory/binding for .output/public) must be written by hand.",
+      "Skipping rollupConfig.external is silently fatal rather than merely wasteful: Nitro inlines a second @sentry/cloudflare, so Sentry.setTag/captureException in a route handler run against an uninitialised client while the wrapper's transactions still arrive and make the SDK look healthy."
+    ],
+    "wiring_consistent": "partial",
+    "verdict": "correct-and-open",
+    "corrections": [
+      "Extend the route-name limit to both lifecycles: raw URL with source url under 'static', bare 'GET' under the default 'stream'.",
+      "Add the verified vinxi/routes plus radix3 middleware to 'What to change' as the ship-today fix.",
+      "Add the hand-written wrangler.jsonc (main at the wrapper, assets directory .output/public with the ASSETS binding) to the wiring paragraph.",
+      "State that omitting rollupConfig.external fails silently: a second inlined @sentry/cloudflare makes handler-side Sentry calls no-ops while request transactions keep arriving.",
+      "Add that server-rendered page errors stay uncaptured even with the Nitro error plugin."
+    ],
+    "notes": "The errors verdict was refuted to works-after-all by the Nitro error-hook plugin the draft prescribes, so 'Server errors through the Nitro error hook' in Works today is supported. One evidence conflict worth knowing: the refutation's docsImpact says to use @sentry/solid for the browser, while the cell used @sentry/solidstart in src/entry-client.tsx (its browser export condition resolves to the Solid browser SDK) and recorded client errors as works. The draft follows the cell, which is what was measured."
+  }
+]

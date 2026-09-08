@@ -41,7 +41,7 @@ Same under traceLifecycle 'static' (deno-hooks.log) and for the async handler. T
 
 Verdict is confirmed-broken because nothing the SDK ships or the docs describe produces this event: no init placement (Nitro startup plugin is the only supported one for SolidStart 2), neither trace lifecycle, no bundler/orchestrion variant, and no Sentry-provided hook. The fix has to be hand-written by the user.
 
-Commands to rerun (ports are examples): `PORT=47821 node $S/qs/sink.mjs &`; `cd app && NODE_ENV=production npx vite build`; `SENTRY_TUNNEL=http://127.0.0.1:47821/ SENTRY_LIFECYCLE=static PROBE_MW=1 PORT=47825 HOST=127.0.0.1 deno run -A .output/server/index.mjs`. Drop PROBE_MW for the baseline, add PROBE_NITRO_HOOK=1 for the Nitro-hook variant.
+Commands to rerun (ports are examples): `PORT=47821 node $REPRO/_toolbox/sink.mjs &`; `cd app && NODE_ENV=production npx vite build`; `SENTRY_TUNNEL=http://127.0.0.1:47821/ SENTRY_LIFECYCLE=static PROBE_MW=1 PORT=47825 HOST=127.0.0.1 deno run -A .output/server/index.mjs`. Drop PROBE_MW for the baseline, add PROBE_NITRO_HOOK=1 for the Nitro-hook variant.
 
 ## Workaround
 

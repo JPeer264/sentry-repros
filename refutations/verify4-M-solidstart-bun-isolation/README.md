@@ -28,7 +28,7 @@ EXACT CHANGE (server/plugins/sentry.ts):
     Sentry.init({ dsn, tunnel, tracesSampleRate: 1.0, traceLifecycle: 'static',
       integrations: [bunHttpServerIntegration()] });
   });
-plus `npm install $S/pack/sentry-bun-10.67.0.tgz` alongside the other tarballs. Nothing else changes: same vite.config.ts, same `src/middleware.ts`, same `npx vite build`, same `bun .output/server/index.mjs`.
+plus `npm install $REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz` alongside the other tarballs. Nothing else changes: same vite.config.ts, same `src/middleware.ts`, same `npx vite build`, same `bun .output/server/index.mjs`.
 
 === bun, baseline (no integration) — reproduces the report ===
 [bun-baseline] response trace ids: [{"tag":"alpha","traceparent":"fb595b89d81c458da2c0d252309defee-8c75f44859abfdca-1"},{"tag":"beta","traceparent":"fb595b89d81c458da2c0d252309defee-8da138c226ef91ee-1"},{"tag":"gamma","traceparent":"fb595b89d81c458da2c0d252309defee-b06bab4c63659d8e-1"}]

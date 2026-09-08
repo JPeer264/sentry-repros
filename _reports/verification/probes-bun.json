@@ -1,0 +1,322 @@
+[
+ {
+  "id": "B01",
+  "tests_what_it_claims": "yes",
+  "code_notes": "throw.ts/reject.ts cover exactly the seven recorded cases: uncaught throw from a setTimeout callback and at top level, unhandled rejection with default 'warn' and with mode:'strict' (onUnhandledRejectionIntegration), a user process.on('uncaughtException') handler with and without exitEvenIfOtherHandlersAreRegistered. run.sh captures the real exit code (env runs before `local code=$?`), clears the sink between cases, and run-baseline.sh runs byte-equivalent scripts with no SDK. A later timer captures a 'sentinel' message so a surviving process is visible. No gap found.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "results.log: '=== reject-default === ... EXIT_CODE=0' with {\"mechanism\":\"auto.node.onunhandledrejection\",\"level\":\"error\",\"extra\":{\"unhandledPromiseRejection\":true}} plus the sentinel; results-baseline.log: '=== BASELINE reject-default === ... Bun v1.4.2 (macOS arm64) / EXIT_CODE=1'. reject-strict: level \"fatal\", EXIT_CODE=1.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "Matrix row 'Uncaught exception and unhandled rejection in a script: works / works; default warn mode keeps the process alive where bare Bun exits 1 [B01]' and F12 are both directly supported by the SDK/baseline exit-code split in results.log vs results-baseline.log. The 10.73.0 half of the matrix cell is only in the report record, not in the shipped probe (develop-only rebuild rule), which is stated in results.json.",
+  "rerun": "not run",
+  "corrections": [
+   "_records/probes.json gives B01 verdict \"see record\" while every other Bun probe carries works/partial/broken and the README states \"Recorded verdict: works\". Normalise the field to \"works\" (the record summary itself says \"develop: works\" and \"10.73.0: works\") so the id is not a special case for readers of probes.json."
+  ]
+ },
+ {
+  "id": "B02",
+  "tests_what_it_claims": "yes",
+  "code_notes": "probe.ts sets user, tag, context, extra and a manual breadcrumb, emits one console.log, throws two frames deep and captures it, then captureMessage('sentinel') and flush. That is exactly the enrichment surface the title and Expected claim. Line numbers 18/22/26 in probe.ts match the line numbers asserted in the evidence.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "items.json event 1: \"contextKeys\":[\"trace\",\"order\",\"runtime\",\"app\",\"os\",\"device\",\"culture\",\"cloud_resource\"], \"server_name\":\"DJ90J9R5XC.local\", \"runtime\":{\"name\":\"bun\",\"version\":\"1.4.0\"}, both frames \"in_app\":true with context_line and hasPre/hasPost true; breadcrumbs carry the manual entry plus {\"category\":\"console\",\"message\":\"console log before captureException\"}.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "Matrix 'Enrichment (user, tags, contexts, breadcrumbs, context lines): works / works [B02]' is supported. The docs-coverage line about nodecontext.mdx (Bun still gets contexts.os/app/device/culture/cloud_resource, contexts.runtime and server_name) is supported by contextKeys and the os/server_name fields in items.json. B02 is cited in no F-finding.",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "B03",
+  "tests_what_it_claims": "yes",
+  "code_notes": "drive.mjs fires five concurrent GET /a?tag=tN, each handler sets Sentry.setTag('req', tag), awaits 60 ms so the handlers interleave, captures new Error('a') and reads Sentry.getIsolationScope().getScopeData().tags back into the response, and the driver asserts eachExactlyOwnTag (exactly one key, and request_url contains that tag). Both server flavours (Bun.serve fetch handler, node:http createServer) run. This is exactly what the title/Expected claim. One scope note: the Bun.serve app uses only a `fetch` handler, never Bun.serve({ routes }), so B03 produces no route-pattern span names at all.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-serve.log and drive-http.log both end with 'VERDICT errors: 5 tags: [\"t1\",\"t2\",\"t3\",\"t4\",\"t5\"] eachExactlyOwnTag: true', 'distinct error trace ids: 5 server spans matching /a: 5' and 'VERDICT server span trace ids cover error trace ids: true'; every node:http error event carries \"transaction\":\"GET /a\".",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "Supported: 'Per-request isolation under concurrency: works / broken for node:http [B03, B18]' (develop half) and F2's develop half. NOT supported by this probe: (1) the matrix cell 'Server span naming: route pattern with Bun.serve({ routes }), URL otherwise [B03]' - B03 never uses routes: {} and its develop spans are named bare \"GET\" ({\"op\":\"http.server\",\"name\":\"GET\",...,\"query\":\"tag=t1\"}), so the cell cites the wrong probe and also omits that under develop's default stream lifecycle a Bun.serve span is method-only; the route-pattern evidence lives in B09/B10/B11/B12/B17/B19. (2) the matrix cell 'Handler error captured with request context: works / works (Bun.serve) [B03]' - B03 calls captureException inside the handler and never throws from a Bun.serve handler; the thrown-handler-with-request-context evidence is in B05 and B09.",
+  "rerun": "not run",
+  "corrections": [
+   "Capability matrix, row 'Server span naming', Bun cell: re-cite to B09/B11 (or B17/B19) instead of B03, and add develop's method-only naming for a plain Bun.serve fetch handler under the stream lifecycle. B11's logs/plugin.drive.log has the only parameterised evidence: {\"name\":\"GET /hello/:name\",...,\"is_segment\":true,\"origin\":\"auto.http.bun.serve\"}.",
+   "Capability matrix, row 'Handler error captured with request context', Bun cell: the Bun.serve half should cite B05 or B09 (a route that actually throws and whose event carries request.url), not B03."
+  ]
+ },
+ {
+  "id": "B04",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts runs a Bun.serve server and a node:http server in one process; run.sh sends curl requests carrying a fixed sentry-trace/baggage to /out on each; each handler makes an outgoing call (global fetch from Bun.serve, node:http.get from the node:http handler) to an uninstrumented downstream server that records the trace headers it received. Both trace lifecycles are exercised via LIFECYCLE. This matches the title and Expected. The sentinel wait additionally waits for both incoming trace ids so span envelopes are not missed.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "run-static.log: {\"type\":\"transaction\",\"name\":\"GET /out\",\"trace_id\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1\",\"parent_span_id\":\"bbbbbbbbbbbbbbb1\",\"origin\":\"auto.http.bun.serve\",\"spans\":[{\"d\":\"http.client GET http://127.0.0.1:51462/from-bun\",...}]} and downstream {\"url\":\"/from-bun\",\"sentry-trace\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1-b80b9fa5d088bd77-1\"}. run-stream.log shows http.server GET with \"segment\":true and parent_span_id bbbbbbbbbbbbbbb1 for both servers.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "'Incoming sentry-trace continued: works / works [B04]' and the develop half of 'Outgoing fetch span and headers' are directly supported. F1's central claim ('10.73.0 does not trace outgoing fetch on Bun [B04, ...]') is a 10.73.0 observation that the shipped probe cannot produce - the rebuild is develop-only and the recorded fetch-only-b.log / fetch-only-1314-b.log are not in probes/B04. The report's own B04 record and probes.json NOTES do carry that evidence, so the claim is sourced, just not reproducible from this directory.",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "B05",
+  "tests_what_it_claims": "yes",
+  "code_notes": "Three apps under one instrument.ts with release '1.0.0': a Bun.serve app whose /error throws, a node:http app whose /error throws, and a node:http app whose /error calls captureException and answers 500. run.sh drives /ok1 /ok2 /error /sentinel, dumps the sink after the sentinel, again after 65 s (past the 60 s session flush) and again after process exit, and deliberately uses a bare TCP readiness probe so the readiness request is not counted as a request session. That is exactly the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "out-bunserve.txt at every one of the three dump points: [{\"type\":\"session\",\"status\":\"crashed\",\"errors\":1,\"init\":true,\"release\":\"1.0.0\"},...] with no \"type\":\"sessions\" item ever; out-nodehttp-handled.txt at t+65s: {\"type\":\"sessions\",...,\"aggregates\":[{\"started\":\"2026-09-07T08:56:00.000Z\",\"exited\":3,\"errored\":1,\"crashed\":0}]} and after exit {\"type\":\"session\",\"status\":\"exited\",\"errors\":1,\"init\":false}. out-nodehttp.txt: aggregates exited:2 plus a crashed process session, mechanism auto.node.onuncaughtexception.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "Supported: 'one process session only, no request sessions for Bun.serve; node:http request sessions on develop'. NOT in the shipped probe: 'manual startSession/captureSession per request works [B05]' (matrix) and the same clause in F36 - the probe has no manual-session app; that evidence lives in the record's refutation runs ($SCRATCH/deep/verify2-B05-develop-2/app-manual.ts), which are gone. That refutation also records a caveat the matrix and F36 drop: the manual sessions come out as exited/errors:0 even when the request captured an exception.",
+  "rerun": "not run",
+  "corrections": [
+   "Matrix 'Release health sessions' Bun/Deno cells and F36: either add a manual-session variant to probes/B05 or mark the 'manual startSession/captureSession per request works' clause as record-only, and carry over the recorded caveat that the emitted sessions are exited with errors:0 even when the request captured an exception."
+  ]
+ },
+ {
+  "id": "B06",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts emits one counter, one gauge with unit millisecond and one distribution with unit second, each with a custom route attribute, sleeps 7 s past the ~5 s metric flush and reads the sink back itself. That is exactly the claim. No option is passed, which is the point.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "app.log: 'SDK 10.67.0 bun 1.4.0 metrics keys: count,distribution,gauge' and 'SINK: [{\"type\":\"trace_metric\",\"items\":[\"counter probe.count=1 attrs={\\\"route\\\":\\\"/x\\\"}\",\"gauge probe.gauge=42 millisecond attrs=...\",\"distribution probe.distribution=3.5 second attrs=...\"]}]'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "'Metrics: works / works [B06]' is supported. app1314.log is an honest not-run marker for the Bun 1.3.14 leg rather than fabricated output.",
+  "rerun": "matches",
+  "corrections": [
+   "probes/B06/package.json has corrupted dependency specifiers: every entry reads \"file:../../_toolbox/pack/sentry-*-10.67.0.tgz\" (a path-anonymisation artefact with a literal $REPRO). Verified by re-running: a bare `npm install` fails with `ENOENT: no such file or directory, open '/private/tmp/../../_toolbox/pack/sentry-bun-10.67.0.tgz'`. Rewrite the six specifiers to \"file:../../_toolbox/pack/...\" as every other probe has."
+  ]
+ },
+ {
+  "id": "B07",
+  "tests_what_it_claims": "yes",
+  "code_notes": "probe-a prints client.getOptions().enableLogs and emits Sentry.logger.info/warn/error with typed attributes; probe-b installs consoleLoggingIntegration({levels:['log','warn','error']}) and emits console.log/console.warn; probe-c passes the non-existent enableLogs: true alongside consoleLoggingIntegration({levels:['warn','error']}). Each waits 7 s then flushes. That covers the title exactly.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "Re-run (see 'rerun'): probe-a stdout 'enableLogs option value: undefined' and one log envelope with item_count 3 carrying probe/n/ok/tag plus sentry.sdk.name, sentry.sdk.version, server.address, sentry.timestamp.sequence; probe-b {\"level\":\"warn\",\"body\":\"hello\",\"attributes\":{\"sentry.origin\":\"auto.log.console\",...}} and the interpolated info item with sentry.message.template/sentry.message.parameter.0; probe-c item_count 4.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "'Logs (Sentry.logger, console integration): works / works, no option needed [B07]' is supported. B07 is cited in no F-finding.",
+  "rerun": "matches",
+  "corrections": [
+   "probes/B07 ships no result or log file at all (only package.json, package-lock.json, the three probe scripts, sink-ext.mjs and README.md). The README's Run block prints the sink to the terminal and never persists it, so the Observed section was unverifiable from the directory. I re-ran all three probes against sink-ext.mjs on port 32358 with the develop tarballs and every recorded line reproduced; the README should redirect each `curl .../__items` into items-a.json / items-b.json / items-c.json and the probe stdout into run-a.log etc, and those files should be committed.",
+   "In the README's Observed, probe-a's third item is quoted with sentry.timestamp.sequence 0 (with a note calling it a timing artefact). My re-run produced 0/1/2, i.e. the sequence the original record shows, confirming the artefact explanation."
+  ]
+ },
+ {
+  "id": "B08",
+  "tests_what_it_claims": "yes",
+  "code_notes": "exit.ts is exactly the claimed shape: captureException then console.log then process.exit(0), with no flush; natural.ts ends the script without exiting; flush.ts awaits Sentry.flush(2000) before process.exit(0). instrument.ts turns on debug from SENTRY_DEBUG. That is the title claim precisely.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "exit-debug.log ends with 'Sentry Logger [log]: Captured error event `x-exit`' immediately followed by 'captured, process.exit(0)' and no transport line at all; flush.log 'captured, flushed: true'; natural.log 'captured, natural exit'. exit-1314.log / natural-1314.log are honest not-run markers ('no such file or directory: $SCRATCH/bun1314/...').",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "'Short-lived script, exit right after capture: event lost on process.exit; natural exit and await Sentry.flush() deliver [B08]' is supported. F11 additionally claims 'Sentry.close(2000).then(() => process.exit()) and process.exitCode = n all deliver' - neither variant exists in the shipped probe; that evidence sits in the record's two verification runs only.",
+  "rerun": "not run",
+  "corrections": [
+   "The sink contents that carry the finding (`[]` after the process.exit run, the event after natural exit and after flush) are not persisted anywhere in probes/B08: exit.log/flush.log/natural.log hold only the script stdout and sink.log holds only 'sink listening 37261'. Save the three `curl .../__items` dumps alongside them.",
+   "F11's Sentry.close()/process.exitCode variants have no file in probes/B08; either add exit-close.ts and exit-exitcode.ts or mark those two clauses as record-only."
+  ]
+ },
+ {
+  "id": "B09",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts covers all four shapes the record names: a routes: {} handler that reads the body then throws, a routes: {} handler that throws without reading it, a fetch-fallback handler that reads then throws, and a node:http control server in the same process receiving the same POST body. instrument.ts switches dataCollection between {} and { httpBodies: [] } from MODE. probe.mjs posts {\"hello\":\"world\"} to every route and waits for the sentinel. Exactly the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "items-permissive.json: every Bun.serve item ends '...\"cookies\":{},\"query_string\":\"\"}' with no \"data\" key and \"traceBodyAttrs\":{}, while the same run's node:http item has '\"url\":\"http://127.0.0.1:41295/node-throw\",\"cookies\":{},\"data\":\"{\\\"hello\\\":\\\"world\\\"}\"},\"traceBodyAttrs\":{\"http.request.body.size\":17}'. items-nobodies.json is identical for Bun.serve and drops \"data\" from the node:http item.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "Matrix 'Request body capture: broken / broken for Bun.serve; node:http path only [B09]' and F3's first three sentences are supported line for line. F3's workaround (`await captureBodyFromWinterCGRequest(req, getIsolationScope(), \"medium\")`) is not exercised by any file in probes/B09; it comes from the record's third verification run. The README's type-level greps (bunserver.d.ts:16, bunHttpServer.d.ts:31/37) are reproducible only after `npm install`, since node_modules is not committed.",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "B10",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts returns new Response(ReadableStream) from a routes: {} handler, logs the wall-clock time at which the handler returned and at which each chunk is enqueued and the stream closes, and has a second route with a cancel(reason) callback. drive.mjs reads /stream to completion and times it, then aborts /stream-cancel after the first chunk. instrument.ts uses traceLifecycle:'static' so the transaction carries start_timestamp/timestamp, and the sink adds duration_ms and http_status. It therefore measures exactly when the span ends against when the stream ends, which is the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "app.log 'stream: handler returned Response at 1788771076479' vs 'stream: closed at 1788771077381'; drive.log {\"name\":\"GET /stream\",...,\"start_timestamp\":1788771076.479002,\"timestamp\":1788771076.4797041,\"duration_ms\":1,\"http_status\":200} and {\"name\":\"GET /stream-cancel\",...,\"duration_ms\":0,\"status\":\"ok\",\"http_status\":200}; client read took 921 ms; no event for the cancelled stream.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "Matrix 'Streaming responses: broken: span ends when the handler returns [B10]' and F4's first sentence are supported. Two F4 clauses are not in the shipped probe: 'a node:http server on Bun ends the span on response close (907 ms full, 305 ms on abort)' and 'a manual startSpanManual around the body works' - both come from the record's verification directory (app-nodehttp.ts, /stream-manual), which is not shipped. F4's phrasing 'records a 0 ms span' is exact only for /stream-cancel; /stream records duration_ms 1 (2 in the original record).",
+  "rerun": "not run",
+  "corrections": [
+   "F4 cites a node:http comparison (907 ms / 305 ms) and a manual startSpanManual workaround that probes/B10 does not contain. Add app-nodehttp.ts and a /stream-manual route, or mark those two numbers as record-only."
+  ]
+ },
+ {
+  "id": "B11",
+  "tests_what_it_claims": "yes",
+  "code_notes": "build.ts / build-ext.ts / build-db.ts drive Bun.build({ compile: { outfile }, plugins: [sentryBunPlugin()] }) with and without external: ['@sentry/*'], plus a plugin-free `bun build --compile` baseline; app.ts exposes an /injected route reading globalThis.__SENTRY_ORCHESTRION__ and Bun.main.startsWith('/$bunfs/') so the standalone-binary claim is checked from inside the binary, and the binaries are run from an empty cwd. Exactly the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "logs/plugin.drive.log: '/injected 200 {\"bundler\":[\"express\"],\"runtime\":null,\"standalone\":true,...}' then {\"exception\":\"Error: express boom\",\"mechanism\":\"auto.http.express\"} and a span list containing 'handler /users/:id' and 'http.server GET /users/:id'; logs/db.drive.log '{\"bundler\":[\"mysql\"]...}' with [\"db SELECT users\",\"http.server GET /db\"] twice; logs/plugin-ext-{emptycwd,projcwd}.app.log both 'error: Cannot find module \\'@sentry/bun\\' from \\'/$bunfs/root/app-plugin-ext\\''.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "Matrix 'Single-file binary: works with Bun.build({ compile }) and the plugin, but not with external [B11]' and F7 are supported. F6's Bun-side claim ('the plugin build on 10.73.0 covers database drivers ... not Express') is a 10.73.0 statement carried only by the report record. The 'no --plugin flag for the CLI' claim rests on `bun build --help | grep -i plugin` producing no output, which the README asserts but does not persist.",
+  "rerun": "not run",
+  "corrections": [
+   "probes/B11 has no sink.mjs of its own; its Run block says `node $REPRO/_toolbox/sink.mjs` and `EMPTY=$REPRO/probes/B11/cwd-empty`, scratchpad paths that no longer exist (the committed logs show the run actually used $REPRO/probes/B11/cwd-empty). Point the Run block at _toolbox/sink.mjs and at a directory inside the probe."
+  ]
+ },
+ {
+  "id": "B12",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts carries `import './instrument'` as its first line plus a GEN marker the sed edits bump, app-preload.ts carries the same body without the import (used with --preload ./instrument.ts), and server.ts records appEvals, sameBunServe, sameSentryNs and the uncaughtException/unhandledRejection listener counts, which is exactly the mechanism the claim names. drive.mjs waits for both the sentinel event and its span before reading the sink, so span counts are not a race.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "hot.log '[app] ... GEN=2 ... appEvals=2 sameBunServe=false sameSentryNs=false uncaughtListeners=2 rejectionListeners=2' and GEN=3 with 3/3; drive-hot-2.log shows two 'http.server GET /hello/:name' spans with different trace ids, drive-hot-3.log three; drive-watch-2.log and drive-hot-preload-2.log show exactly one each. hot-debug.log verified by me: 'Initializing Sentry' 2, 'Starting sampled root span' 6, 'Sending span envelope' 6 across 6 distinct trace ids, and exactly one 'Not capturing exception because it's already been captured.'",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "Matrix 'Dev modes: --watch fine; --hot stacks a Bun.serve proxy per reload only when the SDK is imported from the entry file, clean with --preload [B12]' and F8 are supported end to end, including F8's 'N+1 root spans after N reloads' and the silence (no warning next to either 'Initializing Sentry' line).",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "B13",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts is Sentry.withElysia(new Elysia()) with a parameterised /user/:id that does an outgoing fetch to a local echo server which reports back the trace headers it saw, a throwing /error and a /sentinel; instrument.ts inits from @sentry/elysia and switches traceLifecycle. The four things the record claims (route names, error mechanism, fetch propagation, sdk.name) are all observable in one run. Exactly the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-stream.log/drive-static.log: {\"exception\":\"elysia boom\",\"mechanism\":\"auto.http.elysia.on_error\",\"handled\":false,\"sdk\":\"sentry.javascript.bun\",\"sdkVersion\":\"10.67.0\"} - sdk.name is sentry.javascript.bun, not sentry.javascript.elysia; static: {\"type\":\"transaction\",\"name\":\"GET /user/:id\",\"source\":\"route\",\"origin\":\"auto.http.elysia\",\"httpRoute\":\"/user/:id\"} with an http.client child, and the echo body's sentry-trace carries the same trace id dd62a0e4db794c3e92d0c1fb55ae7b0d.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "F9 ('@sentry/elysia reports sdk.name: sentry.javascript.bun') is supported verbatim on both lifecycles. The matrix's 'Outgoing fetch span and headers ... broken (no span, no headers) [B04, B13, B15]' and F1's citation of B13 are 10.73.0 statements; the shipped develop run shows the opposite (span plus headers), which is correct but means B13 as shipped cannot be used to check the F1 half it is cited for.",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "B14",
+  "tests_what_it_claims": "yes",
+  "code_notes": "A NestJS 12 platform-express app with SentryGlobalFilter as APP_FILTER and nestIntegration() on an @sentry/bun init, built three ways: build.ts (external ['@sentry/*'] - the documented shape), build2.ts (bundles @sentry/nestjs but keeps @sentry/bun, core, node, server-utils, conventions external) and build4.ts (an onResolve hook that externalises everything @sentry/* except @sentry/nestjs/setup). That matches the README, but note that build2 is not 'bundle Sentry with the app': it is a partial bundle, and no variant in the probe bundles all @sentry/* packages.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-b-...log: '/boom -> 500 <!DOCTYPE html>' plus two events, {\"exception\":\"Error: boom from nest\",\"mechanism\":\"auto.http.nestjs.global_filter\"} and {\"exception\":\"TypeError: undefined is not an object (evaluating 'applicationRef.isHeadersSent')\",\"mechanism\":\"auto.http.express\"}; app-e-...log 'ReferenceError: node is not defined at .../@sentry/nestjs/build/esm/index.js:1:1'; drive-g-...log '/boom -> 500 {\"statusCode\":500,\"message\":\"Internal server error\"}' with one event and a 'middleware SentryGlobalFilter {origin=auto.middleware.nestjs.exception_filter}' span.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "F15's rule 'do not externalize @sentry/* in a Bun bundle that uses @sentry/nestjs/setup' is supported by variant B. F15's sentence 'Express spans and SentryGlobalFilter error capture work once @sentry/nestjs is bundled together with the app' is NOT supported by the shipped probe and is superficially contradicted by it: the probe's only variant that bundles @sentry/nestjs (build2/dist2) fails to boot with 'ReferenceError: node is not defined'. The configuration F15 actually means (no @sentry package external at all) exists only in the record's refutation run (dist-v2, NestJS 12.0.1 + express 5.2.1); the shipped working variant is the different one, build4/dist4.",
+  "rerun": "not run",
+  "corrections": [
+   "probes/B14/package.json has the same corrupted specifiers as B06: \"file:../../_toolbox/pack/sentry-*-10.67.0.tgz\" for all seven @sentry entries. A bare `npm install` fails (verified for the identical B06 form); rewrite them to \"file:../../_toolbox/pack/...\".",
+   "F15: reword 'once @sentry/nestjs is bundled together with the app' so it names the configuration that actually works and distinguishes it from build2/dist2, which bundles @sentry/nestjs while leaving @sentry/bun|core|node|server-utils external and does not boot. Either add the record's 'no @sentry external at all' variant to the probe or state that F15's working shape is record-only."
+  ]
+ },
+ {
+  "id": "B16",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts creates a bun:sqlite Database, a Bun.sql SQL client and a Bun.redis RedisClient at module scope (explicitly to avoid the K11/F5 lazy-load confound) and serves one route per API plus a sentinel; both legs (plain `bun run app.ts` and the sentryBunPlugin bundle) run the same source. That is exactly the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-plain.out and drive-bundled.out: all four transactions carry \"spans\":[] while /sqlite, /sql and /redis return real rows; app-plain.log:100 'No diagnostics-channel injection detected...'; app-bundled.log:101 '[Sentry] Bundler plugin ran, injected libraries=[]'; grep.out shows no sqlite/Bun.sql/Bun.redis/RedisClient reference anywhere in node_modules/@sentry/bun/build.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "Matrix 'Native runtime APIs: bun:sqlite, Bun.sql, Bun.redis: no spans [B16]' and F13 are supported. Note that probes.json records the verdict as 'works' meaning 'the recorded no-span behaviour reproduced', not that the SDK works; the README repeats that wording, which reads oddly next to F13 but is internally consistent.",
+  "rerun": "not run",
+  "corrections": [
+   "probes/B16 has no sink.mjs; the Run block still says `node $REPRO/_toolbox/sink.mjs`, a scratchpad path that no longer exists. Point it at _toolbox/sink.mjs (the README's own Differences section already says the stock toolbox sink was used).",
+   "The README labels its two quoted lines 'tail of app-plain.log' / 'tail of app-bundled.log'; they are lines 100-101 and 100-102 of ~103, not the last lines. Harmless but worth saying 'startup lines'."
+  ]
+ },
+ {
+  "id": "B17",
+  "tests_what_it_claims": "partial",
+  "code_notes": "The four shapes are exactly as described: module-scope createPool (stream and static) via app.ts, per-request createConnection with a top-level `import mysql from 'mysql2/promise'` via app-perreq-static.ts, and per-request createConnection after `await import('mysql2/promise')` inside the handler via app-perreq.ts. What the probe does NOT contain is an unbundled control: every variant runs from dist/ (the sentryBunPlugin bundle), so the 'db spans appear only when bundled' half of the finding is not exercised here.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-pool-stream.log: items [\"db mysql2.pool.connect\",\"db mysql2.connect\",\"db SELECT users\",\"http.server GET /db\"] with attributes db.system.name=mysql, db.query.text=\"SELECT * FROM users\", db.query.summary=\"SELECT users\", db.namespace=app, server.port 3307, sentry.origin auto.db.mysql2.diagnostic_channel; drive-perreqstatic-stream.log the same minus the pool span; drive-perreq-stream.log: {\"type\":\"span\",\"items\":[\"http.server GET /db\"],\"dbSpans\":[]} twice, while /db still returns rows. bundle-channels.txt lists mysql2:connect / execute / pool:connect / query.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "Matrix 'Library spans: database driver ... after a plugin build with a module-scope import; lazily loaded drivers lose spans [B17, X02]' and F5's 'a static import mysql2 with per-request connections is fine, a dynamic import() inside a request is not' are directly supported. The docs-coverage line for B17 ('mysql2 db spans appear only when the app is bundled with Bun.build + sentryBunPlugin ... not for the documented bun --preload flow') has no unbundled leg in this probe; the nearest shipped support is B19's plain-run control and B16's 'No diagnostics-channel injection detected' warning.",
+  "rerun": "not run",
+  "corrections": [
+   "Add a plain `bun run app.ts` (or `bun --preload ./instrument.ts app.ts`) control leg to probes/B17, or re-cite the 'only when bundled' docs claim to B19, which does ship both the plugin build and the plain run."
+  ]
+ },
+ {
+  "id": "B18",
+  "tests_what_it_claims": "yes",
+  "code_notes": "A bare http.createServer with / , /error (synchronous throw), /error-async (handler schedules an unhandled rejection and still answers 200), /slow (setTag + delay + captureMessage) and /sentinel. drive.mjs is a plain node process (so no inherited sentry-trace unsamples the server span), fires three concurrent /slow at 600/300/100 ms, and probes liveness after /error. Four variants: plain bun run, sentryBunPlugin bundle, traceLifecycle static, and a Node 26 baseline of the same app. Exactly the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "README-quoted sink items (unpersisted, see corrections): three iso-A/B/C events with distinct trace ids and \"tags\":{\"reqid\":\"A|B|C\"} each matching its own request.url, one http.server span per /slow, and {\"exception\":\"Error: handler boom\",\"mechanism\":\"auto.node.onuncaughtexception\",\"request\":null}. drive-plain.out: 'GET /error -> 200 ' then 'GET /sentinel?n=2 -> ERR ECONNREFUSED' then 'app alive after drive: no'; drive-node.out differs only in 'GET /error -> ERR UND_ERR_SOCKET'. app-plain.log carries the frame 'at wrapServerEmitRequest (.../@sentry/core/build/esm/integrations/http/server-subscription.js:121:9)'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "Matrix 'node:http handler throw has no request context on either, and on 10.73.0 nothing at all [B18]' and 'Per-request isolation ... [B03, B18]' are supported for the develop half; the 10.73.0 half (no transactions, tags leaking to one trace id) is record-only. F2's workaround (publishing http.server.request.start yourself) is not exercised by any file in probes/B18.",
+  "rerun": "not run",
+  "corrections": [
+   "probes/B18 persists no sink output: the Run block pipes each `curl .../__items` to the terminal, and sink-plain.log / sink-build.log / sink-static.log / sink-node.log each contain only 'sink listening <port>'. The isolation and 'request: null' evidence that carries the verdict therefore exists only inside README.md and _records/results.json. Redirect the four dumps into items-plain.json etc."
+  ]
+ },
+ {
+  "id": "B19",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts holds a module-scope OpenAI client pointed at mock-openai.mjs (a local /v1/chat/completions server returning fixed usage numbers), and the same source is run twice: from the sentryBunPlugin bundle (dist/app.js) and plainly (bun run app.ts). instrument.ts uses traceLifecycle 'static'. That is exactly the claim, and unlike B17 it does ship the unbundled control.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-plugin.log: {\"type\":\"span\",\"items\":[{\"span\":\"gen_ai.chat chat gpt-4o-mini\",\"attrs\":{\"sentry.origin\":\"auto.ai.openai\",\"gen_ai.request.model\":\"gpt-4o-mini\",\"gen_ai.usage.input_tokens\":5,\"gen_ai.usage.output_tokens\":7,\"gen_ai.usage.total_tokens\":12,...}}]}; drive-plain.log has the same GET /ai transaction with its http.client child but no span item and no gen_ai attribute anywhere; app-plain.log:100 'No diagnostics-channel injection detected'. I re-checked `grep -c orchestrion:openai dist/app.js` -> 4.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "Matrix 'Library spans: OpenAI SDK: works / works after a plugin build [B19]' and the docs-coverage line for B19 are supported, including the plugin-vs-plain contrast. F1's citation of B19 is again the 10.73.0 half (no http.client fetch child on that version), which lives in the record only.",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "X01",
+  "tests_what_it_claims": "yes",
+  "code_notes": "One Hono app with a parameterised route, a throwing route and a mounted sub-app, run three ways: unbundled, Bun.build with external ['@sentry/*'] (hono inlined), Bun.build with external ['@sentry/*','hono']. That isolates exactly the split the title claims. drive.mjs waits for the sentinel and then a further window so stream-lifecycle span envelopes are not lost.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-inline.log: all five routes '500 Internal Server Error', five span envelopes all named bare \"http.server GET\" with status error, and no event item at all; run-inline.log:115 \"TypeError: undefined is not an object (evaluating 'c.req[GET_MATCH_RESULT][0]') at matchedRoutes ... at resolveRouteName ... at requestHandler\"; dist-inline/app.js:49 'var GET_MATCH_RESULT = /* @__PURE__ */ Symbol();'. drive-ext.log has the route-named spans and both context_error events.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "F10 ('Hono bundled with hono inlined and @sentry/hono external crashes the middleware [X01, K7]') is supported down to the symbol and the stack frame. X01 also appears in the report's 'Behaviors with no page at all' list, which is a docs statement the probe does not need to support.",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "X02",
+  "tests_what_it_claims": "yes",
+  "code_notes": "Five app variants isolate the mechanism properly: module-scope mysql connection, per-request createConnection with a module-scope import, per-request createConnection after await import('mysql'), and the two no-SDK variants that subscribe to orchestrion:mysql:query directly and count start/end/asyncStart/asyncEnd. dc-gc.mjs removes the SDK, the bundle and mysql entirely and compares a channel held in a variable, one dropped out of scope and a plain dc.subscribe, on Bun and on node --expose-gc. lazy-keep adds the user-held-channel workaround. This is exactly what F5 claims, and the causal chain is properly separated from the SDK.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "log-bun140-lazy.txt '\"startSubscribed\":false' with '\"spans\":[]'; log-bun140-modscope.txt '\"startSubscribed\":true' with '\"spans\":[\"db SELECT id, name FROM users\"]'; log-bun140-lazy-keep.txt '\"startSubscribed\":true' and the span back; log-bun140-nosdk-lazy.txt counts all zero vs nosdk-modscope 1/1/1/1 then 2/2/2/2; log-dc-gc.txt 'bun 1.4.2 ... dropped(lookup)= false plaindropped(lookup)= false / C fired: {\"held\":1,\"dropped\":0,\"plainDropped\":0}' vs 'node v26.5.0 ... {\"held\":1,\"dropped\":1,\"plainDropped\":1}'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "F5 is supported on every point the shipped files cover, including 'on 1.4.0 and 1.3.14 alike' (here 1.4.2 and 1.3.14) and 'the condition is when the instrumented file first evaluates, not when a connection is created'. Two F5 clauses have no file here: the workaround 'add import \"mysql/lib/Connection\" next to import mysql', and the source citation packages/server-utils/src/tracing-channel.ts:200-208 (the probe ships no source check). The docs-coverage line for X02 ('mysql db spans on Bun come only from the sentryBunPlugin bundle') again has no unbundled control - all five variants run from dist-140/dist-1314.",
+  "rerun": "not run",
+  "corrections": [
+   "The log files are named log-bun140-*.txt but were produced with Bun 1.4.2 (the README discloses this: 'the bun140 tag in the file names is kept for continuity with the record'). Rename to log-bun142-* or add a one-line header inside each file, so the filenames stop asserting a version that was not run."
+  ]
+ },
+ {
+  "id": "X03",
+  "tests_what_it_claims": "yes",
+  "code_notes": "Sixteen minimal scripts isolate the defect exactly as the title claims: require('./x.json') with no hook, with a resolve-only hook, with a pure pass-through load hook, and with the Sentry hook; express with and without a hook; e2-ctx dumps what nextLoad returns; e-format-json and e3-workaround apply the two candidate fixes; f-sentry-fixed layers the fix on top of the Sentry hook and reports __SENTRY_ORCHESTRION__.runtime; koa gets its own three scripts; and run.sh sweeps the --unstable-* flag matrix. Nothing is asserted that is not run.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "rerun.log: 'RESULT a-nohook: ok', 'RESULT b-noop: FAIL SyntaxError: Unexpected token \\':\\'' with LOAD_SEEN [\"req.cjs format=undefined source=string\",\"x.json format=undefined source=string\"], 'RESULT b2-resolve-only: ok', 'RESULT c-sentry: FAIL', 'RESULT d3-express-noop: FAIL ... at Object.<anonymous> (.../node_modules/statuses/index.js:15:13)', 'RESULT e-format-json: ok', 'RESULT f-sentry-fixed: ok typeof=function injected=[\"express\",\"express\"]', 'RESULT g-koa: FAIL TypeError: Cannot resolve module \"./index.js\" from \".../generator-function/require.mjs\"', and all eight --unstable* rows FAIL. rerun-283.log is identical except 'RESULT e4-esm-json: FAIL'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_notes": "F20 is supported: the no-op-hook failure, the format-never-set mechanism, the six-line format:'json' fix restoring both the import and the injection, and the separate koa loader path. F20 also names Hapi, Fastify and mysql2 as crashing at import - X03 only runs express and koa, and F20 cites D15 and K3 alongside for those. F20's 'denoland/deno#36243' is the fix PR while the README cites the bug #36240; root cause R5 in the report states both, so this is not a contradiction.",
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "N7",
+  "tests_what_it_claims": "yes",
+  "code_notes": "instrument-n7.ts is the NodeTracerProvider tab copied verbatim (only dsn/tunnel added), instrument-n7-reduced.ts keeps skipOpenTelemetrySetup: true and drops only the symbols that do not exist on develop, probe-imports.ts enumerates the actual @sentry/opentelemetry exports, and app-n7.ts creates a span through the OTEL API alone (trace.getTracer('n7').startActiveSpan('manual')) around an outgoing fetch to a local echo server that reports the headers it received. That is exactly the claim.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "run-tracerprovider.log: \"error: Cannot find module '@sentry/node-core' from '$REPRO/probes/N7/instrument-n7.ts'\"; run-exports.log '@sentry/opentelemetry exports: SentryPropagator, SentryTracerProvider, getScopesFromContext, registerPrepareSpanScope, setOpenTelemetryContextAsyncContextStrategy / SentrySampler: undefined / SentrySpanProcessor: undefined / wrapSamplingDecision: undefined'; items.json contains http.server and http.client spans but no span named 'manual'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_notes": "F47's develop sentence ('the page cannot be assembled at all, since @sentry/node-core no longer exists') is supported verbatim. F47's three 10.73.0 defects and its closing clause 'but a v11 path does exist' are not demonstrated by anything in probes/N7 - both come from the record's verification runs ($SCRATCH/deep/verify3-N7-*), which are not shipped.",
+  "rerun": "not run",
+  "corrections": [
+   "The /work response quoted in the README's Observed (the sentry-trace/baggage JSON proving skipOpenTelemetrySetup changes nothing) is not saved anywhere: run-reduced.log holds only the two startup lines and the curl output goes to the terminal. Redirect the /work curl into work.json.",
+   "The README's source checks (`grep -rn skipOpenTelemetrySetup .../packages/*/src/` and `ls .../packages/node-core`) point at ~/dev/sentry-worktrees/audit-runtime-docs, a worktree outside this repo, so they are not rerunnable from the probe; the same facts are checkable against node_modules/@sentry after install."
+  ]
+ }
+]

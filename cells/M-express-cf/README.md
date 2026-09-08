@@ -22,8 +22,8 @@ Express 5 boots on workerd unchanged and Sentry wires up in one place. Two shape
 
 PACKAGES
   npm install express@5 wrangler@4 mysql2 vite@6 @cloudflare/vite-plugin
-  npm install $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-              $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz
+  npm install $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+              $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz
 
 wrangler.jsonc
   {
@@ -89,9 +89,9 @@ All from $SCRATCH/deep/M-express-cf
 (S=$SCRATCH)
 
 npm install express@5 wrangler@4 mysql2 vite@6 @cloudflare/vite-plugin
-npm install $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz
+npm install $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz
 
-PORT=41338 node $S/qs/sink.mjs > sink.log 2>&1 &     # envelope sink
+PORT=41338 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &     # envelope sink
 node recorder.mjs > recorder.log 2>&1 &              # header recorder on 41339
 
 # Shape A - plain wrangler

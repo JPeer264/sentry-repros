@@ -1,6 +1,6 @@
 # Rerun
 
-Sink:   PORT=41317 node $S/qs/sink.mjs > sink.log 2>&1 &
+Sink:   PORT=41317 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 Build:  cd app && npx vite build
 Run:    PORT=42813 SENTRY_TUNNEL=http://127.0.0.1:41317/ bun build/index.js
 Drive:  curl -s http://127.0.0.1:42813/api/db ; curl -s http://127.0.0.1:42813/api/hello
@@ -17,7 +17,7 @@ Root-cause isolators (no SvelteKit needed):
 
 ## Rerun 2 (2026-09-06, verify4): root cause is bun GC of diagnostics_channel, not a missed retry
 
-Sink: PORT=41777 node $S/qs/sink.mjs > sink.log 2>&1 &
+Sink: PORT=41777 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 
 SvelteKit A/B (identical build, only `src/instrumentation.server.ts` differs):
   A (broken)  instrumentation.server.ts = Sentry.init only
@@ -27,7 +27,7 @@ SvelteKit A/B (identical build, only `src/instrumentation.server.ts` differs):
               curl /api/db -> {"subs":true}; span envelope = ["db mysql2.pool.connect","db mysql2.connect","db SELECT users",
               "function sveltekit.resolve","http.server GET /api/db"]. Same with traceLifecycle:'static'.
 
-micro/ (no SvelteKit, no bundler; npm install $S/pack/sentry-{node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz mysql2@3.24.3):
+micro/ (no SvelteKit, no bundler; npm install $REPRO/_toolbox/pack/sentry-{node,core,server-utils,server-runtime-injection,opentelemetry}-10.67.0.tgz mysql2@3.24.3):
   bun app.mjs    -> after init hasSubscribers=true, at query time=false, no db span   (node app.mjs: true/true + db spans)
   bun app-b.mjs  -> static import of mysql2 before init(): db spans
   bun app-c.mjs  -> globalThis-pinned dc.tracingChannel('mysql2:*'): db spans

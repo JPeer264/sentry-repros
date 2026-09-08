@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>QS-browser — docs verify snippet, verbatim</title>
+  </head>
+  <body>
+    <h1>platform-includes/getting-started-verify/javascript.mdx:53-68, verbatim</h1>
+    <script>
+      window.__scriptErrors = [];
+      window.addEventListener('error', function (e) {
+        window.__scriptErrors.push(String(e.message));
+      });
+    </script>
+
+    <!-- Copied verbatim from platform-includes/getting-started-verify/javascript.mdx lines 53-68 -->
+    <script>
+      function triggerError() {
+           await Sentry.startSpan(
+            { name: "Example Frontend Span", op: "test" },
+            async () => {
+              await new Promise(resolve => setTimeout(resolve, 200));
+
+              throw new Error("Sentry Test Error");
+            },
+          );
+         }
+    </script>
+
+    <button onclick="triggerError()">Break the World</button>
+
+    <script>
+      window.__snippetDefined = typeof window.triggerError === 'function';
+    </script>
+  </body>
+</html>

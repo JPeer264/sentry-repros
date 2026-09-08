@@ -3,7 +3,7 @@ verify4-M-remix-bun-dbspans — Remix v2 + @sentry/remix 10.67.0 (develop) on Bu
 Install (npm, not `bun add`):
   S=<scratchpad>
   npm install --legacy-peer-deps \
-    $S/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry,bun}-10.67.0.tgz \
+    $REPRO/_toolbox/pack/sentry-{remix,node,core,react,browser,browser-utils,replay,replay-canvas,feedback,server-utils,server-runtime-injection,opentelemetry,bun}-10.67.0.tgz \
     '@remix-run/dev@^2.17.0' '@remix-run/express@^2.17.0' '@remix-run/node@^2.17.0' \
     '@remix-run/react@^2.17.0' '@remix-run/server-runtime@^2.17.0' \
     'express@^4.21.2' react react-dom vite@^5 mysql2 typescript
@@ -24,4 +24,4 @@ Minimal express ALS A/B:       bun build-mini.ts; bun dist-mini-a/mini.js (broke
 Plain diagnostics_channel bindStore probe (works on both node and bun):
                                node dc-bindstore-probe.mjs ; bun dc-bindstore-probe.mjs
 
-Sink: PORT=27851 node $S/qs/sink.mjs
+Sink: PORT=27851 node $REPRO/_toolbox/sink.mjs

@@ -3,11 +3,11 @@
 S=$SCRATCH
 
 npm install express@5 wrangler@4 mysql2 mysql@2.18.1 vite@6 @cloudflare/vite-plugin esbuild@0.25
-npm install $S/pack/sentry-cloudflare-10.67.0.tgz $S/pack/sentry-core-10.67.0.tgz \
-            $S/pack/sentry-opentelemetry-10.67.0.tgz $S/pack/sentry-server-utils-10.67.0.tgz
+npm install $REPRO/_toolbox/pack/sentry-cloudflare-10.67.0.tgz $REPRO/_toolbox/pack/sentry-core-10.67.0.tgz \
+            $REPRO/_toolbox/pack/sentry-opentelemetry-10.67.0.tgz $REPRO/_toolbox/pack/sentry-server-utils-10.67.0.tgz
 npm approve-scripts --allow-scripts-pending && npm rebuild   # workerd + esbuild postinstall
 
-PORT=43211 node $S/qs/sink.mjs > sink.log 2>&1 &
+PORT=43211 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
 
 # 1. WORKS - vite build + sentryCloudflareVitePlugin(), lazy express app (src/index.js)
 npx vite build --config vite.config.mjs

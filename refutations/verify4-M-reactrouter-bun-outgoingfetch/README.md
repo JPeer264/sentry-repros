@@ -28,7 +28,7 @@ EXACT CHANGE, in `instrument.server.mjs`:
     integrations: process.versions.bun ? [fetchIntegration(), bunHttpServerIntegration()] : [],
   });
 
-plus `@sentry/bun@10.67.0` in the install line (`$S/pack/sentry-bun-10.67.0.tgz`). `fetchIntegration()` alone is enough for the capability under test; `bunHttpServerIntegration()` additionally supplies the incoming-request span and per-request isolation that the report also found missing.
+plus `@sentry/bun@10.67.0` in the install line (`$REPRO/_toolbox/pack/sentry-bun-10.67.0.tgz`). `fetchIntegration()` alone is enough for the capability under test; `bunHttpServerIntegration()` additionally supplies the incoming-request span and per-request isolation that the report also found missing.
 
 Why the default fails: `nativeNodeFetchIntegration` (packages/node/src/integrations/node-fetch/index.ts) calls `instrumentUndici()`, which is undici-diagnostics-channel based; Bun implements no such channel, hence the `No available Node API to register diagnostics-channel injection hooks` warning. `@sentry/bun`'s `fetchIntegration` (packages/bun/src/integrations/fetch.ts) instead wraps global `fetch` via core's `addFetchInstrumentationHandler` + `instrumentFetchRequest`, which works on Bun. It is a plain `defineIntegration` over `@sentry/core` primitives, so it composes with a `@sentry/react-router` client with no dual-core problem (npm dedupes both to one `@sentry/core` 10.67.0).
 
@@ -59,9 +59,9 @@ Hence `process.versions.bun ? [...] : []`, or `nativeNodeFetchIntegration` disab
 
 The report's other environmental claims all reproduce and are not disputed: the stock `entry.server.tsx` must be rewritten to `renderToReadableStream` on Bun, so `createSentryHandleRequest` (the wiring in the repo's own e2e app, dev-packages/e2e-tests/test-applications/react-router-8-framework, and in the docs) is unusable there; `wrapSentryHandleRequest` + `createSentryHandleError` is the only server-entry shape that works.
 
-NOT RUN: the bun 1.3.14 cross-check — `$S/bun1314/bun-darwin-aarch64/bun` no longer exists on this machine.
+NOT RUN: the bun 1.3.14 cross-check — `$SCRATCH/bun1314/bun-darwin-aarch64/bun` no longer exists on this machine.
 
-Probe dir: $SCRATCH/deep/verify4-M-reactrouter-bun-outgoingfetch/ — `app/instrument.server.mjs` (PROBE_VARIANT=baseline|bunfetch|bunall, PROBE_LIFECYCLE=static|stream), `app/app/routes/fetchout.tsx`, `app/app/routes/flush.tsx`, `app/app/entry.server.tsx`, `app/recorder.mjs`, `run-b.sh` (one variant per invocation), `items-*.json`, `recb.log`/`recc.log`, `REPRO.md`. Rerun: start `PORT=51431 node $S/qs/sink.mjs` and `REC_PORT=51432 node app/recorder.mjs`, then `zsh run-b.sh bunall stream bunall-stream`.
+Probe dir: $SCRATCH/deep/verify4-M-reactrouter-bun-outgoingfetch/ — `app/instrument.server.mjs` (PROBE_VARIANT=baseline|bunfetch|bunall, PROBE_LIFECYCLE=static|stream), `app/app/routes/fetchout.tsx`, `app/app/routes/flush.tsx`, `app/app/entry.server.tsx`, `app/recorder.mjs`, `run-b.sh` (one variant per invocation), `items-*.json`, `recb.log`/`recc.log`, `REPRO.md`. Rerun: start `PORT=51431 node $REPRO/_toolbox/sink.mjs` and `REC_PORT=51432 node app/recorder.mjs`, then `zsh run-b.sh bunall stream bunall-stream`.
 
 ## Workaround
 

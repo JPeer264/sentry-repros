@@ -27,8 +27,8 @@ Probe dir: $SCRATCH/deep/verify4-M-elysia-cf-dbspans/
 Commands (node_modules was removed at the end; reinstall first):
   S=$SCRATCH
   npm install elysia@1.4.30 mysql2 vite@6 @cloudflare/vite-plugin wrangler@4 \
-    $S/pack/sentry-{cloudflare,core,opentelemetry,server-utils,elysia,bun,node,server-runtime-injection}-10.67.0.tgz
-  PORT=41337 node $S/qs/sink.mjs > sink.log 2>&1 &
+    $REPRO/_toolbox/pack/sentry-{cloudflare,core,opentelemetry,server-utils,elysia,bun,node,server-runtime-injection}-10.67.0.tgz
+  PORT=41337 node $REPRO/_toolbox/sink.mjs > sink.log 2>&1 &
   npx vite build
   npx wrangler dev --config dist/v4_elysia_cf_db/wrangler.json --port 41338 --inspector-port 0
   curl -s http://127.0.0.1:41338/db ; curl -s http://127.0.0.1:41338/sentinel

@@ -51,13 +51,13 @@ Each request also got its own trace id (5b3bf407 / bd510b7f / 7df3fe7d), and eve
 Not reproduced/side note: `mysql` (v2, the callback driver) gets no channel injection in this bundle and its handler 500s with `TypeError: SqlString.format is not a function` — a separate nitro-bundling defect, out of scope here.
 
 Files (all absolute), $S = $SCRATCH:
-  $S/deep/verify4-M-nuxt-deno-dbspans/RERUN-b.sh          both variants end to end
-  $S/deep/verify4-M-nuxt-deno-dbspans/app/nuxt.config.ts   deno_server + externals.inline fix
-  $S/deep/verify4-M-nuxt-deno-dbspans/app/server/db.ts     module-scope mysql2/promise pool
-  $S/deep/verify4-M-nuxt-deno-dbspans/app/server/api/{db,dbspan,dbmysql,sentinel}.get.ts
-  $S/deep/verify4-M-nuxt-deno-dbspans/build-b.log build-c.log build-node.log
-  $S/deep/verify4-M-nuxt-deno-dbspans/run-b.log run-c.log run-node.log (app stdout, Sentry debug)
-Commands: `npm install --no-audit --no-fund`; `npx nuxt build` (or `NITRO_PRESET=node-server npx nuxt build`); `PORT=47313 node $S/qs/sink.mjs`; `cd .output && PORT=<p> deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --allow-ffi --unstable-byonm --unstable-detect-cjs ./server/index.mjs`. All processes started were killed.
+  $REPRO/refutations/verify4-M-nuxt-deno-dbspans/RERUN-b.sh          both variants end to end
+  $REPRO/refutations/verify4-M-nuxt-deno-dbspans/app/nuxt.config.ts   deno_server + externals.inline fix
+  $REPRO/refutations/verify4-M-nuxt-deno-dbspans/app/server/db.ts     module-scope mysql2/promise pool
+  $REPRO/refutations/verify4-M-nuxt-deno-dbspans/app/server/api/{db,dbspan,dbmysql,sentinel}.get.ts
+  $REPRO/refutations/verify4-M-nuxt-deno-dbspans/build-b.log build-c.log build-node.log
+  $REPRO/refutations/verify4-M-nuxt-deno-dbspans/run-b.log run-c.log run-node.log (app stdout, Sentry debug)
+Commands: `npm install --no-audit --no-fund`; `npx nuxt build` (or `NITRO_PRESET=node-server npx nuxt build`); `PORT=47313 node $REPRO/_toolbox/sink.mjs`; `cd .output && PORT=<p> deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --allow-ffi --unstable-byonm --unstable-detect-cjs ./server/index.mjs`. All processes started were killed.
 
 No Nuxt e2e app in the repo covers Deno (`dev-packages/e2e-tests/test-applications/nuxt-{3,4,5}` are node/cloudflare only), so nothing here is regression-tested.
 

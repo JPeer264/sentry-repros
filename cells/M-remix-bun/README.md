@@ -194,7 +194,7 @@ Mode A and a nested `http.client GET .../rec` span plus headers in Mode B. Every
 Mode B (route names, LOADER spans, mysql2 spans) is unchanged, so the bundle is instrumented; only
 `fetch` is untouched. This machine now has bun 1.4.2 rather than the recorded 1.4.0, and the
 sibling verification directory
-`$S/deep/verify4-M-remix-bun-outgoingfetch/REPRO.md` already records that Bun publishes no undici
+`$REPRO/refutations/verify4-M-remix-bun-outgoingfetch/REPRO.md` already records that Bun publishes no undici
 diagnostics channels and that plain-bun `fetch` needs `integrations: [fetchIntegration()]` from
 `@sentry/bun` (plus the default `traceLifecycle: 'stream'`) to produce a span. The rebuild was run
 once as recorded, with no extra integrations, so the difference is recorded rather than chased.
