@@ -51,18 +51,18 @@ for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="iss
         fw,rt,v=m2.groups(); rt2={'Cloudflare':'Cloudflare Workers'}.get(rt,rt)
         heading={'no':'No page documents %s on %s','wrong':'The page for %s on %s contradicts the verified run','partial':'The page for %s on %s misses the wiring or the limits','yes':'The page for %s on %s is correct'}[v] % (fw,rt2)
     items.append(dict(id=hid,prio=prio,heading=heading,type=typ,title=title,body=body))
-P0_ORDER=['DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-Q2','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
+P0_ORDER=['DOC-Q7','DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
 for pos,i in enumerate(items): i['pos']=pos
 def key(i): return (['P0','P1','P2'].index(i['prio']), P0_ORDER.index(i['id']) if i['id'] in P0_ORDER else 99, i['pos'])
 items.sort(key=key)
-FOOT='\n\n---\n\n_From the runtime docs audit of September 2026, item %s, see the [docs audit](%s) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._\n'
+FOOT='\n\n---\n\n_From the runtime docs audit of September 2026, item %s, see the [docs audit](%s) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-08 against docs `aebda0ee4` and develop `03aaf42455`, after a second verification pass over every item._\n'
 def notes(i):
     n=[]
     if i['id'] in OWNED: n.append('**Note.** '+OWNED[i['id']]+'.')
     if i['id'] in PAIRS: n.append('**Note.** Touches the same docs file as %s; the two can be filed as one issue.' % PAIRS[i['id']])
     return ('\n\n'.join(n)+'\n\n') if n else ''
 sh=['#!/usr/bin/env bash','# Files the docs issues in getsentry/sentry-docs. Not executed by the audit. Items marked as owned by Linear are commented out.','set -euo pipefail','cd "$(dirname "$0")"','']
-idx=['# Docs issue drafts, P0 to P2','','Ninety-six drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit. P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.','','| # | Prio | Item | Type | Title | File |','| --- | --- | --- | --- | --- | --- |']
+idx=['# Docs issue drafts, P0 to P2','','%d drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit.' % len(items)+' P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.','','| # | Prio | Item | Type | Title | File |','| --- | --- | --- | --- | --- | --- |']
 gist={'P0':[],'P1':[],'P2':[]}
 for n,i in enumerate(items,1):
     fn='%s-%02d-%s.md' % (i['prio'], n, i['id']); i['file']=fn

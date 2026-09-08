@@ -2,13 +2,13 @@ import os
 import json, html as H
 items=json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'_items.json')))
 AUDIT='https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html'
-FOOT=("\n\n---\n\n_From the runtime docs audit of September 2026, item {id}, see the [docs audit]({link}) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._\n")
+FOOT=("\n\n---\n\n_From the runtime docs audit of September 2026, item {id}, see the [docs audit]({link}) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-08 against docs `aebda0ee4` and develop `03aaf42455`, after a second verification pass over every item._\n")
 import re
 def body_md(i):
     md=re.sub(r'\n*Source: runtime docs audit, item [^\n]*$','',i['body_md']).strip()
     return md+FOOT.format(id=i['id'],link=AUDIT)
 def foot_html(i):
-    return ('<hr><p class="foot"><em>From the runtime docs audit of September 2026, item %s, see the <a href="%s">docs audit</a> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p>' % (i['id'], AUDIT))
+    return ('<hr><p class="foot"><em>From the runtime docs audit of September 2026, item %s, see the <a href="%s">docs audit</a> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-08 against docs <code>aebda0ee4</code> and develop <code>03aaf42455</code>, after a second verification pass over every item.</em></p>' % (i['id'], AUDIT))
 def strip_source(bh):
     return re.sub(r'<p>Source: runtime docs audit, item [^<]*</p>\s*$','',bh.strip())
 

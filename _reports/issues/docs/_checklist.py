@@ -10,14 +10,21 @@ OWNER={'X2':'owned by JS-2599','DOC-R20':'owned by SDK-1351','DOC-C1':'v11-gated
 PLAN=[
  ('Every runtime guide', [
    ('must','DOC-R1','the stream-mode includes call static the default'),
-   ('must','DOC-Q1','the verify step promises a transaction that develop never sends'),
-   ('must','DOC-Q3','base-setup spans are named by method; the pages say named transactions'),
+   ('must','DOC-Q1','the verify step and the stream-mode includes describe the static lifecycle as the default'),
+   ('must','DOC-Q3','nothing on the four guides says where a route name comes from'),
    ('should','X1','"Tracing is enabled by default" on the first page of all three guides'),
  ]),
  ('Migration to v11', [
-   ('must','X2','no v10-to-v11 page; the per-runtime instrumentation step is the missing content'),
-   ('must','DOC-R20','the Bun OpenTelemetry setup includes import a package that no longer exists'),
+   ('must','X2','the v10-to-v11 page has no Bun plugin section and no Deno hook paragraph'),
+   ('must','DOC-R20','the Bun OpenTelemetry setup includes import a package and exports that no longer exist'),
    ('later','DOC-R8','v7 migration tables name removed integrations'),
+ ]),
+ ('Browser', [
+   ('must','DOC-Q7','the tracing verify snippet is a SyntaxError: await in a non-async function'),
+   ('should','DOC-Q8','the CDN tab names the tracing bundle and adds replayIntegration(), which records nothing'),
+   ('should','DOC-Q9','Sentry.logger is a silent no-op on the CDN bundles and no page says which bundle has logs'),
+   ('later','DOC-Q10','the sample tracePropagationTargets drops headers on 127.0.0.1'),
+   ('later','DOC-Q11','the verify-flow replay is discarded within the first five seconds'),
  ]),
  ('Node', [
    ('should','DOC-Q5','--require banner, and a first-line ESM import equals --import'),
@@ -37,7 +44,7 @@ PLAN=[
    ('later','DOC-R17','deno serve is never mentioned'),
  ]),
  ('Cloudflare Workers', [
-   ('must','DOC-Q2','the Vite plugin options file is undocumented and the plugin is a silent no-op without wranglerConfigPath'),
+   ('should','DOC-Q2','a wrangler config resolved to the wrong file instruments nothing and logs nothing'),
    ('must','DOC-C1','the nodejs_compat entrypoint the guide documents is gone on develop'),
    ('must','DOC-C5','wrapRequestHandler is imported from an entry that no longer exports it'),
    ('must','DOC-C4','the Vite plugin page documents options that no longer exist and calls the plugin a no-op'),
@@ -58,12 +65,12 @@ PLAN=[
  ]),
  ('Frameworks whose page misses the wiring or the limits', [
    ('should','DOC-F1','Hono on Bun'),('should','DOC-F2','Elysia on Bun'),('should','DOC-F18','Hono on Deno'),('should','DOC-F35','Hono on Workers'),
-   ('should','DOC-F44','Next.js on Workers'),('should','DOC-F45','Nuxt on Workers'),('should','DOC-F46','SvelteKit on Workers'),
+   ('should','DOC-F44','Next.js on Workers'),('should','DOC-F45','Nuxt on Workers'),('should','DOC-F46','SvelteKit on Workers'),('should','DOC-F49','TanStack Start on Workers: no Configure Vite step'),
  ]),
 ]
 TIER={'must':'Must land with v11','should':'Should land with v11','later':'After the release'}
 out=['# v11 docs minimum: getting started and manual setup','',
- 'The docs changes a new user hits on the way from install to the first event, on Node, Bun, Deno and Cloudflare Workers, plus the framework pages that contradict a verified run. Every line links to its draft in [P0](#file-p0-md), [P1](#file-p1-md) or [P2](#file-p2-md). Tiers: **must** blocks or misleads the first setup on develop; **should** is wrong or incomplete for something most users do next; **later** is hygiene. Items owned by a Linear ticket are marked; they still belong in the release, only filed elsewhere.','']
+ 'The docs changes a new user hits on the way from install to the first event, on Node, Bun, Deno, Cloudflare Workers and in the browser, plus the framework pages that contradict a verified run. Every line links to its draft in [P0](#file-p0-md), [P1](#file-p1-md) or [P2](#file-p2-md). Tiers: **must** blocks or misleads the first setup on develop; **should** is wrong or incomplete for something most users do next; **later** is hygiene. Items owned by a Linear ticket are marked; they still belong in the release, only filed elsewhere.','']
 counts={'must':0,'should':0,'later':0}
 for group, rows in PLAN:
     out+=['## %s' % group,'']

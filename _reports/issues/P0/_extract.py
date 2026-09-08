@@ -47,17 +47,17 @@ for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="iss
     body_html=re.search(r'<div class="body">(.*)$',issue,re.S).group(1)
     items.append(dict(id=hid,heading=title_h3,type=typ,title=it,body_html=body_html,body_md=to_md(body_html)))
 
-order=['DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-Q2','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
-assert sorted(order)==sorted(i['id'] for i in items), (order, [i['id'] for i in items])
+order=['DOC-Q7','DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
+order=[o for o in order if o in {i['id'] for i in items}]+[i['id'] for i in items if i['id'] not in order]
 items.sort(key=lambda i: order.index(i['id']))
 
-FOOT=("\n\n---\n\n_From the runtime docs audit of September 2026, item {id}, see the [docs audit]({link}) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._\n")
+FOOT=("\n\n---\n\n_From the runtime docs audit of September 2026, item {id}, see the [docs audit]({link}) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-08 against docs `aebda0ee4` and develop `03aaf42455`, after a second verification pass over every item._\n")
 def body_md(i):
     md=i['body_md']
     md=re.sub(r'\n*Source: runtime docs audit, item [^\n]*$','',md).strip()
     return md+FOOT.format(id=i['id'],link=AUDIT)
 
-sh=['#!/usr/bin/env bash','# Creates the 14 P0 issues in getsentry/sentry-docs. Not executed by the audit; run it yourself when the drafts are final.','set -euo pipefail','cd "$(dirname "$0")"','']
+sh=['#!/usr/bin/env bash','# Creates the P0 issues in getsentry/sentry-docs. Not executed by the audit; run it yourself when the drafts are final.','set -euo pipefail','cd "$(dirname "$0")"','']
 idx=['# P0 issue drafts','','Fourteen drafts for `getsentry/sentry-docs`, in the suggested filing order. Each `.md` file is an issue body; the title is in the table. `create.sh` files them with the GitHub CLI and was not run.','','| # | File | Title | Type | Audit item |','| --- | --- | --- | --- | --- |']
 for n,i in enumerate(items,1):
     fn=f'{n:02d}-{i["id"]}.md'
