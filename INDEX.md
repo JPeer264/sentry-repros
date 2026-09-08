@@ -58,7 +58,7 @@ Every entry is a directory with a README (Install, Run, Expected, Observed). Reb
 | [D13](probes/D13/) | Hono on Deno with the hook and a database | works | yes | yes | None behavioral. Two cosmetic deltas against the recorded excerpt: (1) this run's sink prints exception/runtime/trace_id |
 | [D14](probes/D14/) | node:http server on Deno (no framework) | partial | yes | yes | None substantive. Every recorded claim reproduced on the first run: http.server segment spans named "GET" with sentry.se |
 | [D15](probes/D15/) | mysql2 driver on Deno with the hook | broken | yes | yes | None that affect the verdict "broken". Deviations: (1) Deno 2.8.3 was not re-tested, the CI-pin binary the record used ( |
-| [D16](probes/D16/) | deno compile binary with the hook | see record | yes | yes | None on the verdict. The run script needed exec in its subshell so the baseline server is killed before the binary start |
+| [D16](probes/D16/) | deno compile binary with the hook | works | yes | yes | None on the verdict. The run script needed exec in its subshell so the baseline server is killed before the binary start |
 | [D17](probes/D17/) | OpenAI SDK on Deno via the hook (mock server) | broken | yes | yes | None that changes the verdict. Three cosmetic deltas from the recorded evidence: (1) the record lists two `http.server G |
 | [D18](probes/D18/) | Deno hook with nodeModulesDir variants | partial | yes | yes | Verdict matches (partial): no nodeModulesDir -> mysql resolves from Deno's global npm cache, runtime stays [], no db spa |
 | [N1](probes/N1/) | Deno with only the permissions the docs prescribe | partial | yes | yes | None affecting the verdict. The recorded flag-by-flag table reproduced row for row: server_name and contexts.os.version  |

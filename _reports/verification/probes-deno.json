@@ -1,0 +1,389 @@
+[
+ {
+  "id": "D01",
+  "tests_what_it_claims": "yes",
+  "code_notes": "init.ts wires the sink and arms a 2 s STILL ALIVE timer; throw.ts is an uncaught throw from a setTimeout callback, reject.ts an unhandled rejection, throw-hook.ts/reject-hook.ts the same two with 'import \"@sentry/deno/import\"' as line 1, toplevel-throw.ts a synchronous module-top-level throw, reject-primitive.ts Promise.reject(\"just a string\"), and baseline-throw.ts the same uncaught throw with no Sentry in the process. run.sh clears the sink, records the real exit code (echo \"exit=$?\" immediately after the deno run) and dumps the sink per script. Exactly the six cases plus the exit-code control the record names.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "all.log: '== throw.ts / exit=1 / {\"type\": \"event\", \"level\": \"fatal\", \"excType\": \"Error\", \"exception\": \"d01 uncaught throw\", \"mechanism\": \"auto.deno.global_handlers.error\", \"handled\": false, ..., \"hasContextLine\": true}'; toplevel-throw.ts arrives with mechanism 'auto.deno.global_handlers.unhandledrejection'; reject-primitive.ts '\"excType\": \"UnhandledRejection\", \"exception\": \"Non-Error promise rejection captured with value: just a string\", \"hasContextLine\": false'; hook and no-hook legs are field-identical; '== baseline-throw.ts (no Sentry) / exit=1' with baseline-throw.ts.out 'error: Uncaught Error: d01 uncaught throw'; grep -c 'STILL ALIVE' all.log is 0.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Uncaught exception and unhandled rejection in a script', Deno cell: 'works / works; process exits 1 as without the SDK [D01]' - the develop half is supported line for line by all.log and baseline-throw.ts.out. The '/ 10.73.0' half has no file in probes/D01 (the rebuild is develop-only); it is sourced from the record."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Minor: the Observed section is labelled 'trimmed', and the sink lines it quotes drop the trailing '\"trace_id\": ..., \"environment\": \"production\"' fields that all.log actually carries. Substance identical; worth an ellipsis."
+  ]
+ },
+ {
+  "id": "D02",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main.ts (hook first line) and main-nohook.ts (identical minus that line) set user/tags/extra/custom context, add a manual breadcrumb, emit console.log with an object and console.warn, fetch the sink's /__target, throw from innerThrow() and captureException it, then captureMessage('sentinel') + flush(5000). run.sh runs one entry per flag set, polls until the sentinel is in the sink, and saves items/raw/target per label. The five labels cover exactly the permission cross-product the record names (hook and no-hook x all-four and net-only, plus hook + net+env).",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "raw-hook-all.json: server_name 'DJ90J9R5XC.local', contexts.os {\"name\": \"macOS\", \"version\": \"24.6.0\"}, frame {\"filename\": \"app:///main.ts\", \"lineno\": 28, \"context_line\": \"  throw new Error(`D02 boom ${label}`);\", pre/post 5}. raw-nohook-netonly.json: server_name None, contexts.os {\"name\": \"macOS\"}, frame filename '$REPRO/probes/D02/main-nohook.ts', context_line null, pre/post 0. app-hook-netonly.log: 'error: Uncaught (in promise) NotCapable: Requires env access, run again with the --allow-env flag ... at file://$REPRO/probes/D02/node_modules/@sentry/server-runtime-injection/build/esm/vendored/debug/src/node.js:124:30' with items-hook-netonly.json = []. target-hook-all.json = [{\"url\":\"/__target\",\"st\":null,\"baggage\":null}]. items-hook-all.json has the sentinel event before the exception event.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Enrichment', Deno cell: 'works / works with all four permissions; hook crashes without --allow-env [D02]' - supported for develop by raw-hook-all.json and app-hook-netonly.log.",
+   "F17 'The hook crashes without --allow-env [D02; confirmed twice]. import \"@sentry/deno/import\" loads a vendored debug package that reads process.env at import' - supported. The next clause, 'a scoped --allow-env=DEBUG is not enough', is NOT exercised by any shipped D02 leg (the five labels are all-four, net-only, and net+env; no scoped --allow-env run exists) nor by N1. Record-only.",
+   "F17's 'Without the hook, --allow-net alone works but loses server_name, os.version, context lines and app:// paths' - supported by raw-nohook-netonly.json vs raw-nohook-all.json."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "The Observed section's first block ('Run order (run.sh output)': 'deno exit=0 label=hook-all', 'items: [(\\'event\\', \\'sentinel\\'), ...]') is run.sh terminal output that no shipped file holds. Every line is reconstructible from items-<label>.json, but the run should tee it into a run.log.",
+   "The report's F17 clause about a scoped --allow-env=DEBUG has no leg in probes/D02; mark it record-only or add a sixth label."
+  ]
+ },
+ {
+  "id": "D03",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main-serve.ts (Deno.serve) and main-http.ts (node:http createServer), both with the hook as line 1, handle GET /a?tag=<t> by writing the tag onto the isolation scope (Sentry.setTag) AND onto the active span (getActiveSpan()?.setAttribute), sleeping a randomised 50-150 ms so the five in-flight requests interleave, then capturing Error('boom <t>'). drive.mjs fires t1..t5 with Promise.all, then a sentinel, then re-polls. verify.mjs asserts exactly one tag key per event, that it is the request's own, that request.url ends in the same tag, one http.server span per request, five distinct trace ids and event-trace-id subset. That is the isolation question the title names. Scope note: D03 runs only the default stream lifecycle - it produces no static-lifecycle spans at all.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "verify-serve-run1.txt and verify-http-run1.txt both end with 'summary: boomEvents=5 allTagsOwn=true serverSpansForA=5 distinctTraceIds=5 eventTraceIdsSubsetOfServer=true'; every Deno.serve event line reads 'transaction=<none>' while every node:http line reads 'transaction=GET /a'; serve-result-run1.json holds {\"type\": \"span\", \"trace_id\": \"0a12c18606a54ca29e01d59d9b37c4e5\", \"items\": [{\"name\": \"GET\", \"op\": \"http.server\", ..., \"url\": \"http://127.0.0.1:53312/a?tag=t1\", \"status\": \"ok\", \"is_segment\": true, \"tagAttrs\": {\"reqtag\": \"t1\"}}]}; drive-serve-run1.log / drive-http-run1.log 'responses: [\"ok t1\\n\",...]'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Per-request isolation under concurrency', Deno cell: 'works / works [D03]' - the develop half is supported by both verify-*-run1.txt summaries; the 10.73.0 half is record-only.",
+   "Capability matrix, 'Server span naming', Deno cell: 'with no framework SDK: method only (GET) under the stream lifecycle, URL under static ... [D03, D12]' - the stream half is supported (span name 'GET', no http.route). The 'URL under static' half is NOT: neither D03 nor D12 ever runs traceLifecycle 'static'. See corrections."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Capability matrix, 'Server span naming', Deno cell: the 'URL under static' clause cites [D03, D12], but both probes run only the default stream lifecycle. The static-lifecycle evidence is in D04 (out-develop-static.txt: {\"type\": \"transaction\", \"name\": \"GET /probe\", \"op\": \"http.server\", \"source\": \"url\", ...}), D09 (result-static.json: \"name\": \"POST /throw\", \"source\": \"url\") and D14 (drive-http-static.out: 'transaction: GET /hello/world | source url'). Re-cite to [D03, D12, D04/D09/D14] or move the static half to those ids."
+  ]
+ },
+ {
+  "id": "D04",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main.ts runs a Deno.serve listener and a node:http listener in one process, no import hook, traceLifecycle from LIFECYCLE. run.sh curls /probe on each with a fixed sentry-trace (aaaa..ab-bbbbbbbbbbbbbbbb-1) and a full upstream baggage; each handler makes one global fetch and one node:http.get to recorder.mjs, which records sentry-trace/baggage/traceparent per request, and logs its own active span. Both lifecycles are run. That is exactly the continuation-plus-propagation question the record names. The app never captures an exception, so D04 produces no breadcrumbs of any kind.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "out-develop-stream.txt: '{\"path\": \"/denoserve/via-fetch\", \"sentry-trace\": null, \"baggage\": null, \"traceparent\": null}' and '{\"path\": \"/denoserve/via-http\", \"sentry-trace\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab-843e0fdb246b8b93-1\", \"baggage\": \"...sentry-environment=upstreamenv,sentry-transaction=upstream-tx,...\"}'; the one span envelope carries dsc environment 'upstreamenv' and four items where both http.server segments have parent_span_id 'bbbbbbbbbbbbbbbb'; 'ACTIVE {\"tag\":\"denoserve\",...\"parent_span_id\":\"bbbbbbbbbbbbbbbb\"}'. out-develop-static.txt: '{\"type\": \"transaction\", \"name\": \"GET /probe\", \"op\": \"http.server\", \"source\": \"url\", ..., \"parent_span_id\": \"bbbbbbbbbbbbbbbb\", ..., \"spans\": [{\"op\": \"http.client\", \"description\": \"GET http://127.0.0.1:51354/denoserve/via-http\", ...}]}' - one http.client child for the node:http hop, none for fetch.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Incoming sentry-trace continued', Deno cell: 'works / works [D04]' - develop half supported by both lifecycles.",
+   "Capability matrix, 'Outgoing node:http span and headers', Deno cell: 'works / works [D04, D14]' - supported.",
+   "Capability matrix, 'Outgoing fetch span and headers', Deno cell: 'broken / broken (breadcrumb only) [D04]' - the 'no span, no headers' half is supported; the 'breadcrumb only' half is NOT evidenced by D04 (grep -c breadcrumb over out-develop-stream.txt and out-develop-static.txt is 0). See corrections.",
+   "F16 'Outgoing fetch is not traced [D04, K2], both versions: no span, no headers, trace ends at the first fetch to another service' - the first two clauses are supported here. The 'trace ends' clause is proved most directly by D14, not D04: drive-http-stream.out shows the fetched hop starting a fresh trace ('span: http.server \"GET\" seg=true /echo/users/7 ... trace=b7b95e2ec5224cfba6ae15afc2beae9a ... parent=undefined' against the caller's trace bc491b651f8d4dc98eb95826af27a3b9)."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Capability matrix, 'Outgoing fetch span and headers', Deno cell: the '(breadcrumb only)' clause should cite D02, not D04. D04's app captures no event so it emits no breadcrumbs; D02's raw-hook-all.json carries 'breadcrumb: {\"category\": \"fetch\", \"data\": {\"method\": \"GET\", \"url\": \"http://127.0.0.1:41207/__target\", \"status_code\": 200}, \"type\": \"http\"}' on the same request that produced no span and no headers."
+  ]
+ },
+ {
+  "id": "D05",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main-d05.ts runs a Deno.serve server (/ok, /error which throws, /sentinel) and a node:http server (/ok, /error-catch which captureExceptions and answers 500, /error-throw which throws synchronously) in one process, release '1.0.0', debug: true, integrations: [denoHttpIntegration({ sessionFlushingDelayMS: 2000 })]. drive.mjs drives both and waits for a sessions envelope; drive-serve-only.mjs drives Deno.serve alone and waits a fixed 10 s. That covers the three cases the record names. Two code notes: the Run block's ERROR_MODE=catch env is inert (main-d05.ts reads it but never branches on it; the two 'modes' are two always-present routes that the driver's mode argument selects), and there is no manual-session leg anywhere in the probe.",
+  "observed_faithful": "partial",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-catch.out ends with '{\"type\":\"sessions\",\"release\":\"1.0.0\",\"environment\":\"production\",\"aggregates\":[{\"started\":\"2026-09-07T09:01:00.000Z\",\"exited\":2,\"errored\":1,\"crashed\":0,\"abnormal\":0}]}' after 'http /error-catch -> 500'; app-catch.log 'Sentry Logger [log]: Recorded request session with status: errored' then 'Sending request session aggregate due to flushing schedule'. drive-throw.out: 'http /error-throw -> 400' and aggregates 'exited:3, errored:0, crashed:0' with no 'http boom' event anywhere in the file. drive-serve-only.out: 'waited 10000ms; session envelopes: 0' while the same dump holds the 'serve boom' event (mechanism auto.http.deno, handled false) and four http.server spans.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "F25 'Sessions exist for node:http requests on develop only; Deno.serve never produces them [D05]' - supported by drive-catch.out vs drive-serve-only.out. Its second sentence, 'A sync throw in a node:http listener is swallowed by Deno's compat layer (client gets 400, nothing captured) [D14]', is supported by D05 too (drive-throw.out) and by D14.",
+   "Capability matrix, 'Release health sessions', Deno cell: 'partial: node:http request sessions on develop only; none for Deno.serve; manual sessions work [D05]' - the first two clauses are supported. 'manual sessions work' has no leg in the shipped probe. See corrections."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Capability matrix, 'Release health sessions', Deno cell, and F36's '(B05, D05)': the 'manual sessions work' clause has no file in probes/D05 - main-d05.ts uses only the automatic denoHttpIntegration path, and the startSession/endSession wrapper lives in the record's verification run. This is the Deno counterpart of the B05/F36 entry already in ERRATA.md; the same caveat applies (the record's own workaround note says the manual sessions cannot be marked 'crashed').",
+   "Observed fidelity: two quoted blocks are not verbatim. The 'http boom caught' event line drops '\"hasContextLine\": true', '\"trace_id\"', '\"user\"' and '\"request\"' from the line in drive-catch.out, and the drive-throw.out block starts at 'http /error-throw -> 400' while the file has five earlier response lines (serve /ok x2, serve /error, http /ok x2). No ellipsis marks either cut."
+  ]
+ },
+ {
+  "id": "D06",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main.ts emits two counters with user attributes, a gauge with unit 'none', a distribution with unit 'second' and one counter inside Sentry.startSpan, then waits 7 s and reads /__items BEFORE any flush (AFTER_7S), then captures a sentinel, flushes and reads again (AFTER_FLUSH). That is precisely the 'timer-flushed, five items, one envelope' claim the record makes.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "app.log line 1 'SDK_VERSION 10.67.0 metrics keys: count,distribution,gauge'; line 2 'AFTER_7S [{\"type\":\"span\",...},{\"type\":\"trace_metric\",\"item_count\":5,\"content_type\":\"application/vnd.sentry.items.trace-metric+json\",\"items\":[\"counter d06.requests=1 attrs={...\\\"route\\\":\\\"/a\\\"...} trace_id=yes\", ... \"distribution d06.duration=3.5 second ...\", \"counter d06.in_span=1 ... trace_id=yes\"]}]' - present before any Sentry.flush call.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Metrics', Deno cell: 'works / works [D06]' - develop half supported verbatim by app.log; the 10.73.0 half is record-only."
+  ],
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "D07",
+  "tests_what_it_claims": "yes",
+  "code_notes": "probe-logger.ts calls all six Sentry.logger levels plus logger.fmt with no log option at all and never calls flush; probe-console.ts installs consoleLoggingIntegration() only; probe-console-enablelogs.ts is the control that also passes enableLogs: true through a cast and writes its status lines with Deno.stdout.writeSync so they are not themselves captured. Each waits 7 s for the timer flush. Exactly the three legs the record names.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "probe-logger.items.json is one envelope, 'item_count': 7, with severity numbers 1/5/9/13/17/21 and the fmt item carrying 'sentry.message.template': 'fmt user %s id %s', 'sentry.message.parameter.0': 'alice', 'sentry.message.parameter.1': 42. probe-console.items.json is one envelope, 'item_count': 4, every item with 'sentry.origin': 'auto.log.console'; console.log maps to level 'info' with severity_number 10 and console.info to 9. probe-console-enablelogs.items.json is byte-equivalent in shape (item_count 4, same four items), so enableLogs changes nothing.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Logs (Sentry.logger, console integration)', Deno cell: 'works / works [D07]' - develop half supported by the three items files; the 10.73.0 half is record-only."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "The Observed section quotes probe stdout ('DONE logger calls, waiting 7s, no explicit flush' / 'EXIT'), which the Run block prints to the terminal and no shipped file holds. The strings exist in probe-logger.ts; redirect each run into probe-<name>.out.",
+   "The last Observed block for the enableLogs control is an ad-hoc python tuple rendering, not a file. It is exactly derivable from probe-console-enablelogs.items.json, which does ship."
+  ]
+ },
+ {
+  "id": "D08",
+  "tests_what_it_claims": "yes",
+  "code_notes": "sentry.ts holds the shared init; natural.ts captures and lets the script end; denoexit.ts captures, logs and calls Deno.exit(0) with no flush; flush.ts captures, awaits Sentry.flush(5000), prints the result and then exits. Three distinct error messages (natural-exit-/deno-exit-/flush-exit-<TAG>) make the absence of the Deno.exit event decidable from the sink alone. That is the claim exactly.",
+  "observed_faithful": "no",
+  "verdict_supported": "no",
+  "decisive_lines": "None available from the directory: probes/D08 contains only deno.json, package.json, package-lock.json, sentry.ts, natural.ts, denoexit.ts, flush.ts and README.md. No sink log, no *.out, no items dump. The Run block pipes every 'curl .../__items' to the terminal. The README's Observed lines (the 'deno-exit-dev' item never appearing, 'flush result: true') are internally consistent and consistent with _records/results.json, but no shipped file shows them.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Short-lived script, exit right after capture', Deno cell: 'same with Deno.exit [D08]' - the claim is right and the programs test it, but it cannot be checked against any shipped artefact.",
+   "F11 'Same on Deno with Deno.exit() [D08; confirmed twice]. Natural exit, await Sentry.flush(2000), Sentry.close(2000).then(() => process.exit()) and process.exitCode = n all deliver.' - probes/D08 has no Sentry.close and no exitCode variant (only natural.ts, denoexit.ts, flush.ts), matching the ERRATA's existing B08 note; on the Deno side those two variants are record-only as well."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "probes/D08 ships no result file at all - this is the Deno counterpart of B07. Redirect the three 'curl .../__items' reads into items-natural.json / items-denoexit.json / items-flush.json and each script's stdout into <name>.out, and commit them. Until then the verdict rests on README prose plus _records/results.json.",
+   "The README's Recorded-evidence block and its Observed block disagree on the sink's exception rendering ('natural-exit-dev' vs 'Error: natural-exit-dev'); the README explains this as a sink mapping change, which is fine, but with no shipped dump neither form can be checked."
+  ]
+ },
+ {
+  "id": "D09",
+  "tests_what_it_claims": "yes",
+  "code_notes": "probe.ts is one Deno.serve app with POST /throw, POST /ok and GET /sentinel whose init is parameterised by LIFECYCLE, BODIES (dataCollection.httpBodies) and MAXSIZE (denoServeIntegration maxRequestBodySize); drive-d09.mjs POSTs a JSON body (BODYSIZE controls its length) to both routes and waits for the sentinel. run-d09.sh runs one labelled variant per invocation with its own random ports. The seven labels cover the whole option matrix the record names, including the 'always overrides httpBodies: []' case.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "result-default.json event request '\"data\": \"{\\\"user\\\":\\\"alice\\\",\\\"password\\\":\\\"hunter2\\\",\\\"n\\\":1}\", \"dataLen\": 43' and two stream spans '{\"name\": \"http.server POST\", \"bodyAttrs\": {\"http.request.body.size\": 43, \"http.request.body.data\": \"...password...\"}}' (side note 1: the successful /ok request also carries the password). result-bodies-off.json drops request.data but keeps traceData {\"http.request.body.size\": 43}; result-maxsize-none.json has no data at all; result-maxsize-small.json event data is exactly 1000 chars ending in '...' with the transaction traceData {\"http.request.body.size\": 2010} and drive-maxsize-small.log 'body bytes: 2010'; result-override.json (BODIES=off MAXSIZE=always) has the full 43-byte body back. Side note 2: 'POST /throw' is '\"status\": \"ok\"' in every static result while drive-<label>.log records '/throw -> 500'. Side note 3: grep -c 'request.signal aborts' over app-<label>.log gives 1/1/0/0/0/1/1 for default/static/bodies-off/bodies-off-stream/maxsize-none/maxsize-small/override.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Request body capture', Deno cell: 'works / broken (never captured on 10.73.0) [D09]' - the develop half is supported by all seven results; the 10.73.0 half is record-only, and the README says explicitly that 10.73.0 'is not installed and must not be'.",
+   "F23 '10.73.0 never captures request bodies on Deno.serve [D09]; develop does, with denoServeIntegration({ maxRequestBodySize })' - the develop half is supported (result-maxsize-none/small/override)."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Housekeeping, already disclosed by the README: eleven stale files whose names embed the env arguments (for example 'result-bodies-off LIFECYCLE=static BODIES=off.json') are still in the directory and all contain the default configuration. They should be deleted rather than left next to the real space-free results."
+  ]
+ },
+ {
+  "id": "D10",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main.ts serves three chunked ReadableStream routes (text/plain, text/event-stream, application/octet-stream, three chunks 300 ms apart) under traceLifecycle 'static' with denoServeIntegration({ ignoreStatusCodes: [] }); main-slow.ts is the same with 3 s chunks; main-nosentry.ts is the no-SDK control. drive.mjs reads fully or cancels after the first chunk and sends a delayed sentinel. Seven runs cover the content-type heuristic, the cancel case in two chunk sizes and the no-Sentry baseline - exactly the two failures the record names.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "runA-plain-full.log '\"name\":\"GET /stream-plain\",...,\"duration_ms\":905'; runB-sse-full.log 'duration_ms':905; runC-octet-full.log 'done after 922ms' but '\"name\":\"GET /stream-octet\",...,\"duration_ms\":0'; runE-sse-cancel.log 'cancelling after first chunk' then '\"duration_ms\":602,\"http_status\":200' with app.log showing 'sse: enqueued chunk-2' and 'chunk-3' after the cancel and no UPSTREAM CANCELLED line; runF-sse-slow-cancel.log '--- sink 3s later:' with '\"duration_ms\":6004' arriving after the /sentinel transaction; app-nosentry.log '[app 09:32:56.492] sse: enqueued chunk-1' then '[app 09:32:56.495] sse: UPSTREAM CANCELLED reason=resource closed'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_sentences": [
+   "Capability matrix, 'Streaming responses', Deno cell: 'partial: span covers the stream; application/octet-stream not treated as streaming; client cancel was not propagated upstream at the snapshot, fixed on develop in c619da370 after it [D10]' - all three clauses hold. I checked the fix claim against the SDK: packages/deno/src/utils/streaming.ts at the audit pin (audit-runtime-docs, 6f2da7483d) has no cancel handler at all, while the same file at develop head (audit-runtime-docs-v2, 03aaf42455) has 'cancel(reason) { return reader.cancel(reason); }' at lines 106-107.",
+   "F24 'Streaming: client cancel is not propagated upstream, and application/octet-stream is not treated as streaming [D10, gist D5]. ... The octet-stream half stands.' - supported; classifyResponseStreaming in packages/deno/src/utils/streaming.ts lists only text/event-stream and text/plain-without-Content-Length in both trees, so the octet-stream half is unchanged at develop head."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Observed fidelity, minor: the transaction lines quoted in the Observed section drop '\"trace_id\"', '\"sdk\"' and '\"hasRequestData\"' from the lines actually in runA/runB/runC/runE/runF, with no ellipsis. Values that carry the verdict (name, status, duration_ms, http_status) are exact."
+  ]
+ },
+ {
+  "id": "D11",
+  "tests_what_it_claims": "yes",
+  "code_notes": "cron.ts passes integrations: [Sentry.denoCronIntegration()] explicitly (necessary - see corrections), registers Deno.cron('probe', '* * * * *', <200 ms handler>) and runs for RUN_MS so a 70 s run always crosses a minute boundary. desc-probe.ts prints the Deno.cron property descriptor and tries both plain assignment and Object.defineProperty, which is exactly the 2.9.0-vs-2.8.3 difference the record blames. offset-probe.ts checks DENO_CRON_TEST_SCHEDULE_OFFSET without Sentry. Three cron.ts legs: 2.9.0 with --unstable-cron, 2.8.3 with it, 2.9.0 without it.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "desc-probe-290.log 'descriptor={\"hasGet\":true,\"hasSet\":false,\"hasValue\":false,\"configurable\":true}' + 'assign threw: TypeError: Cannot set property cron of #<Object> which has only a getter' + 'defineProperty ok'; desc-probe-283.log '\"hasValue\":true,\"writable\":true' + 'assign ok'. app-290-cron.log 'error: Uncaught (in promise) TypeError: Cannot set property cron of #<Object> which has only a getter ... at Object.setupOnce (.../@sentry/deno/build/esm/integrations/deno-cron.js:23:12) ... at Module.init (.../@sentry/deno/build/esm/sdk.js:110:18) / exit=1'. sink-items-283.json holds the in_progress + ok pair sharing check_in_id 'ecbcddd5b6b042f0a80b95a6a08af0ee', monitor_slug 'probe', monitor_config {schedule: {crontab, '* * * * *'}, checkin_margin 1, max_runtime 720}, duration 0.2032642364501953. app-290-noflag.log 'Deno.cron=undefined' + 'Deno.cron threw: TypeError: Deno.cron is not a function' + exit=0, sink-items-290-noflag.json has no check_in item. offset-probe.log '2006 ms' / '2002 ms'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_sentences": [
+   "Capability matrix, 'Cron monitors', Deno cell: 'denoCronIntegration crashes init() on Deno 2.9.0, works on 2.8.3 [D11]' - supported.",
+   "F22 'denoCronIntegration crashes init() on Deno 2.9.0 [D11; confirmed four times]. Deno.cron became a getter-only accessor; the integration assigns to it. Works on 2.8.3. Without --unstable-cron it no-ops silently. Workaround: before init, redefine Deno.cron as a writable data property with Object.defineProperty; the SDK fix is the same call in deno-cron.ts.' - every clause is supported by a shipped file, and the SDK source at the pin agrees (packages/deno/src/integrations/deno-cron.ts:23 'Deno.cron = new Proxy(Deno.cron, {')."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Unrecorded but shipped: the D11 README notes that denoCronIntegration is NOT a default integration although its JSDoc says it is, and the SDK at the pin confirms it - packages/deno/src/sdk.ts:29-49 getDefaultIntegrations does not list it, while packages/deno/src/integrations/deno-cron.ts:64 reads 'Enabled by default in the Deno SDK.'. F22 and the crons docs-coverage line say nothing about this, and it changes the reproduction (an app that omits integrations: [denoCronIntegration()] neither crashes on 2.9.0 nor sends check-ins). Worth adding to F22.",
+   "Observed fidelity, minor: the quoted app-290-cron.log stack omits five middle frames (integration.js:89, Array.forEach, setupIntegrations, _setupIntegrations, initAndBind) without an ellipsis."
+  ]
+ },
+ {
+  "id": "D12",
+  "tests_what_it_claims": "yes",
+  "code_notes": "Seven layouts across three axes exactly as the title says: init in a separate instrument.ts imported before Oak (main-hook.ts / main-nohook.ts) versus init in the same module as the '@oak/oak' import (oak-hook.ts / oak-nohook.ts), hook on/off, and OAK_ERROR_LISTENER 0/1; plus main-active.ts answering GET /active with getActiveSpan() and the isolation-scope trace id. run.sh sleeps 2 s after the readiness request so its span envelope flushes before the sink is cleared. All seven mount Oak with app.listen() - there is no Deno.serve(app.fetch) variant anywhere in the directory.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "verify-d12-hook-el0.txt 'summary: events=1 errorEvents=0 spanItems=3' with three 'span: [\"http.server GET | status=ok|error ... route=undefined source=undefined origin=auto.http.deno\"]' lines; verify-d12-hoisted-hook-el0.txt 'summary: events=1 errorEvents=0 spanItems=0' and verify-d12-hoisted-nohook-el1.txt 'summary: events=2 errorEvents=1 spanItems=0' - the module-evaluation-order finding; verify-d12-hook-el1.txt shows the captured 'Error: oak route boom' on trace 0a6f68909edd442ba5c22e7ca687b049, which equals the sentinel's trace and matches none of the three request span traces in the same file; drive-d12-active.log 'GET /active -> {\"activeSpan\":null,\"isolationTrace\":\"4f7518fb1a6549cba393a38939a52e87\"}' twice while verify-d12-active.txt records two distinct request span traces.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "F26 'Oak works when mounted on Deno.serve, not with app.listen() [D12; refuted as a limitation]. app.listen() runs middleware in its own loop outside the SDK's request scope, so errors are swallowed and events are not linked to the request.' - the app.listen() half is fully supported (activeSpan null, unlinked trace ids, no error event without the listener). The first half and the following sentence, 'Deno.serve({ port }, req => app.fetch(req, {}, info)) runs Oak inside the instrumented handler: route errors are captured automatically and linked to the span', have no variant in the shipped probe. See corrections.",
+   "Capability matrix, 'Server span naming', Deno cell [D03, D12]: D12 supports the stream half (spans named 'GET', route=undefined, source=undefined) but runs no static lifecycle - see the D03 entry."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "F26's fix half is record-only. Every entry in probes/D12 (app.ts, app-active.ts, oak-hook.ts, oak-nohook.ts) ends in 'app.listen({ port, hostname })'; grep for 'app.fetch' or 'Deno.serve' over probes/D12/*.ts finds only two comment lines. The Deno.serve(app.fetch) configuration F26 recommends lives in the record's verification runs, not in the shipped directory. Same class as the ERRATA's F15 entry for B14.",
+   "Nit for readers: F26 says the shape 'works ... not with app.listen()'. Under app.listen() the shipped probe does still get three http.server spans per run in the instrument-first layouts; what fails is error capture and request linkage. The report's own next sentence says this correctly."
+  ]
+ },
+ {
+  "id": "D13",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main.ts is a Hono app wired through @sentry/hono/deno with 'import \"@sentry/deno/import\"' as line 1, traceLifecycle 'static', and a module-scope mysql.createConnection created before sentry() runs init (ESM hoisting) - which is the ordering claim the record makes. Routes /users/:id (parameterised, runs the query), /error (throws) and /sentinel. drive.mjs drives all three from a plain node process and dumps the sink after the sentinel; sink.mjs adds span_id/parent_span_id/origin and a /__raw endpoint.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive.out: '{\"type\":\"transaction\",\"name\":\"GET /users/:id\",\"op\":\"http.server\",\"source\":\"route\",\"status\":\"ok\",\"trace_id\":\"a0a6134df64c4e7d9a264332cb2ffef4\",\"span_id\":\"b9a23e97d6ef8622\",\"origin\":\"auto.http.deno\",\"spans\":[{\"op\":\"db\",\"description\":\"SELECT id, name FROM users WHERE id = ?\",\"span_id\":\"a08e54ba40f9a9ae\",\"parent_span_id\":\"b9a23e97d6ef8622\",\"origin\":\"auto.db.mysql\",\"status\":\"ok\"}]}' - the db span's parent is the transaction's span_id; the '{\"type\":\"event\",\"exception\":\"route boom\",\"mechanism\":\"auto.http.hono.context_error\",\"handled\":false,\"sdk\":\"sentry.javascript.hono\",...,\"trace_id\":\"d11f836996cb40ceacf2da84423b370a\",\"span_id\":\"b24fd79954bf1449\"}' shares trace_id and span_id with the 'GET /error' transaction (status internal_error). raw.json db span data carries db.system.name mysql, db.query.summary 'SELECT users', db.namespace app, server.port 3307. app.log '[instrumentation:mysql] Bun/Deno, subscribing eagerly' and '[hono] Patched app.request for internal dispatch tracing.'",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_sentences": [
+   "D13 carries no bracket citation anywhere in deep-probe-report.html - it appears only in its own record section. Nothing to correct; the Hono-on-Deno claims in the framework matrix are sourced from the third-round Hono cell, not from D13."
+  ],
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "D14",
+  "tests_what_it_claims": "yes",
+  "code_notes": "routes.ts holds the shared route table and init; main-http.ts is a bare node:http createServer whose /error-sync throws inside the listener before any await and whose /error throws after an await; main-serve.ts serves the identical routes from Deno.serve; bare-sync-throw.ts is the same sync throw with no Sentry in the process. drive.mjs runs from a plain node process (no inherited sentry-trace) and has a CONC mode for three concurrent /slow requests that set a tag and a user and read the isolation scope back. Six labelled runs plus the bare control cover both lifecycles and both servers - exactly what the record names. One shipped-but-unused file: main-http-hook.ts.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "drive-http-error-sync.out: '\"/error-sync\": \"400 \"', 'transaction: GET /error-sync | source url status ok code 200', and exactly one event line in the whole file (the sentinel). bare-drive.out '/error-sync 400 \"\" conn: close' with app-bare.log printing only 'request /error-sync' - so the swallow is Deno's. drive-http-error-async.out 'sentinelEventArrived=false', '\"/hello/world\": \"FETCH FAILED ECONNREFUSED\"' and 'event: Error: async throw in handler | mech auto.deno.global_handlers.unhandledrejection handled false'. drive-serve-stream.out: '\"/error\": \"500 Internal Server Error\"', '\"/error-sync\": \"500 Internal Server Error\"' and both captured with 'mech auto.http.deno handled false | txn undefined'. drive-http-stream.out: three /slow events each with its own tag and trace; the node:http hop 'span: http.client \"GET 127.0.0.1\" seg=false /echo/users/7 ... parent=bd4010a6e6d9581e' with the echo body carrying sentry-trace and baggage, while '/downstream-fetch' produced a downstream span on a different trace with parent=undefined and an echo body with no sentry-trace.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_sentences": [
+   "Capability matrix, 'Handler error captured with request context', Deno cell: 'works / works (Deno.serve); node:http sync throw swallowed by Deno, async throw kills the process [D14]' - supported; the Deno.serve events carry 'req http://127.0.0.1:41431/error'.",
+   "Capability matrix, 'Outgoing node:http span and headers', Deno cell: 'works / works [D04, D14]' - supported.",
+   "F25's second sentence, 'A sync throw in a node:http listener is swallowed by Deno's compat layer (client gets 400, nothing captured) [D14]' - supported, and the bare control shows the swallow is Deno's, not the SDK's."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "main-http-hook.ts ships and is listed under Files as 'the same app behind import \"@sentry/deno/import\", for the hook variant', but the Run block never invokes it and there is no *-hook* result file in the directory. Either run it as an eighth label or drop it, so a reader does not look for the hook leg.",
+   "Suggestion, not an error: F16's 'trace ends at the first fetch to another service' currently cites [D04, K2]; D14's drive-http-stream.out is the only shipped file that shows the break directly (the fetched hop opens a fresh trace with parent=undefined). Adding D14 to that citation would make the finding self-supporting."
+  ]
+ },
+ {
+  "id": "D15",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts opens a module-scope mysql2/promise pool and serves /users (pool query), /users-conn (per-request createConnection) and /sentinel; main-hook.ts adds 'import \"@sentry/deno/import\"' as its first import and main-nohook.ts omits it; m315/ is the same app pinned to mysql2 3.15.0 so the >= 3.20.0 diagnostics-channel threshold is contrasted. run.sh starts its own sink, drives the routes and dumps items plus a summarised evidence file per label. That is exactly the 'is the hook what makes mysql2 traceable' question the record asks.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "app-hook-clean.log: the '[Sentry] `@sentry/server-runtime-injection` was bundled into your application...' warning, then 'error: Uncaught (in promise) SyntaxError: Unexpected token \\':\\'' on 'const { version } = require(\\'../package.json\\');' at '.../probes/D15/node_modules/mysql2/lib/connection_config.js:13:21'; evidence-hook.txt holds one item only, the captured SyntaxError with mechanism auto.deno.global_handlers.unhandledrejection, and no span and no server. evidence-nohook.txt holds 'db mysql2.pool.connect', 'db mysql2.connect' and 'db SELECT users' with '\"sentry.origin\":\"auto.db.mysql2.diagnostic_channel\"', '\"db.query.text\":\"SELECT * FROM users\"', '\"db.query.summary\":\"SELECT users\"' for both the pool and the per-request connection. m315/evidence-m315-nohook.txt has only http.server spans, and m315/app-m315-hook-clean.log the same connection_config.js:13 crash.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Library spans: database driver', Deno cell: 'works with the hook for mysql; mysql2 works without the hook on develop, crashes with it [D15, D18]' - the mysql2 half is supported by D15 and the mysql half by D18.",
+   "F20 'Any require() of a JSON file fails under the hook [X03, D15, K3; confirmed on 2.8.3 and 2.9.0]' - the mysql2 half is supported on 2.9.0 only; the shipped D15 discloses that the 2.8.3 binary is gone, so 'confirmed on 2.8.3' is record-only for this probe (X03 is the other citation).",
+   "F21 'mysql2 3.20 and later works without the hook [D15; refuted as \"no spans on 10.73.0\"]. It publishes its own channels; @sentry/deno develop ships mysql2Integration in the defaults' - supported: evidence-nohook.txt against m315/evidence-m315-nohook.txt, and packages/deno/src/sdk.ts:46-47 pulls getTracingIntegrations() from @sentry/server-utils, whose list at packages/server-utils/src/integrations/index.ts:30-56 contains mysql2Integration(). The trailing 10.73.0 clause ('mysql2Integration from @sentry/server-utils@10.73.0 can be passed to init and works') is record-only - probes/D15 installs develop tarballs only."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "The Observed section quotes 'run.sh: --- app never listened on 51818'. run.sh does print that string (run.sh:37), but it goes to the terminal and no shipped file holds it; the app-*.log files only hold the app's own output. Redirect run.sh's stdout per label.",
+   "Observed fidelity, minor: the two quoted crash stacks drop trailing frames (app-hook-clean.log) and middle frames (m315/app-m315-hook-clean.log) without an ellipsis. The README does say 'Verbatim trimmed output', so this is disclosure, not error."
+  ]
+ },
+ {
+  "id": "D16",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main.ts is a Deno.serve app with a module-scope mysql@2 connection and /db, /error, /log, /sentinel; run-phase.sh starts it in a chosen working directory, drives it and writes run-/drive-/items- files per label; normalize.sh strips ids so the deno run and binary dumps can be diffed. The probe therefore does test the two things the record claims: that the hook still injects inside the compiled binary and that the binary runs from a directory without node_modules. mysql.d.ts plus '// @ts-types' exist so deno compile's default type-check passes, which is itself part of the claim.",
+  "observed_faithful": "partial",
+  "verdict_supported": "yes",
+  "decisive_lines": "run-binary.log line 1 'injected at startup: {\"runtime\":[\"mysql\"]}' with every following frame under '/var/folders/.../T/deno-compile-app/...', i.e. Deno's compile vfs. drive-binary.log '{\"type\":\"transaction\",\"name\":\"GET /db\",...,\"spans\":[\"db SELECT * FROM users\"]}', '{\"type\":\"event\",\"exception\":\"Error: route boom\",\"mechanism\":\"auto.http.deno\",\"handled\":false,...,\"hasContextLine\":true}' and '{\"type\":\"log\",\"items\":[\"info: hello from deno\"]}'. diff-run-vs-binary.txt is 0 bytes, so norm-run.txt and norm-binary.txt are identical. compile.log 'Check main.ts' + 'Embedded Files ... node_modules/* (37.55MB - 33.5MB unique)' + 'Files: 33.82MB'.",
+  "record_consistent": "partial",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Single-file binary', Deno cell: 'works with deno compile, hook included, 99 MB minimal [D16]' - the 'works, hook included' half is supported by run-binary.log and the zero-byte diff. The '99 MB' figure is not in any shipped file. See corrections.",
+   "F27 'deno compile works, hook included, at 99 MB for the minimal install [D16]; source maps, CJS builds and type declarations make up most of the embedded size. enableLogs: true fails Deno's type check on develop.' - the first clause is supported except for the size; the enableLogs clause is stated only in README prose (no deno check output is persisted), though it is consistent with the SDK, where DenoOptions has no enableLogs key on the develop line (D07 shows logs delivering without it)."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "_records/probes.json gives D16 the verdict 'see record' while its own summary opens 'develop: works' and the README's Observed says 'Rebuild matches the record: works'. Every other Deno probe carries works/partial/broken. Normalise the field to 'works' - the same fix ERRATA.md already records for B01. D16's README is also the only Deno README with no 'Recorded verdict:' line in its Expected section.",
+   "The binary size that the report cites ('99 MB minimal', 'at 99 MB for the minimal install') exists only as README prose ('a 104,018,498 byte (99.2 MiB) binary'); the compiled binary was truncated to a 0-byte placeholder and no ls/du output is persisted. compile.log records only the embedded-file sizes (37.55MB / 33.82MB). Persist the size, or attribute the figure to the record.",
+   "The README's Run block compiles with '--output /tmp/d16-bin/app' and says the binary was started from a directory whose only entry is 'app', but the shipped compile.log was produced with '--output file://$REPRO/probes/D16/bin/app'. The two do not match; re-run the documented line or update the block."
+  ]
+ },
+ {
+  "id": "D17",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts holds the shared init, the openai client pointed at mock.mjs, and /ai plus /sentinel. Three entries differ only in how openai is loaded: main.ts (hook first line + static 'import OpenAI from \"openai\"'), main-nohook.ts (same ESM import, no hook), main-cjs2.ts (hook + createRequire(import.meta.url)(\"openai\")). probe-esm.ts / probe-cjs2.ts print Chat.Completions.prototype.create so the injection is visible, and probe-format.ts registers its own Module.registerHooks load hook to print the format Deno reports for completions.mjs. That covers the record's claim and its root cause. Not covered: any dynamic-import-of-the-ESM-build leg.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "grep -c gen_ai: items-hook.log 0, items-nohook.log 0, items-cjs2.log 1. items-cjs2.log carries 'gen_ai.chat chat gpt-4o-mini' with '\"sentry.origin\":\"auto.ai.openai\"', gen_ai.request.model, input.messages, usage.input_tokens 12 / output_tokens 7 / total_tokens 19. mock-hook.log 'MOCK POST /v1/chat/completions {\"model\":\"gpt-4o-mini\",...}' proves the request really reached the mock in the hook run. probes.log: 'ESM create source: create(body, options) { return this._client.post(...' versus 'CJS create source: create(__apm$arg0, __apm$arg1, ...__apm$args) {', and 'load format for openai/resources/chat/completions/completions.mjs => undefined ctx.format: undefined source type: string'. app-hookdbg.log '[instrumentation:openai] Bun/Deno, subscribing eagerly' and 'Integration installed: OpenAI' with no 'failed to inject' line.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "Capability matrix, 'Library spans: OpenAI SDK', Deno cell: 'broken / broken with the hook; develop works only via createRequire [D17]' - supported for develop by the three items files.",
+   "F19 'The hook cannot instrument statically imported ESM packages, and crashes the ones it does transform [D17]. Deno loads the whole static module graph before the hook registers, so import OpenAI from \"openai\" is never transformed' - the first and third clauses are supported. The middle clause, 'a dynamic import after init is transformed, but Deno reports format: undefined for .mjs, so the transformer injects a require() into an ES module and the app dies', has no leg in the shipped probe: no D17 entry dynamic-imports openai, and no shipped file shows that crash. The short-version sentence 'it turns any .mjs it does transform into a crash' rests on the same record-only run.",
+   "F19's 'Verified ways out on develop: resolve the package to its CommonJS build (\"openai\": \"npm:openai/index.js\" in the import map, or --conditions=require)' - neither way out exists in probes/D17; the only shipped working path is createRequire, which is what the matrix cell says. The two sentences are therefore inconsistent with each other about what was verified where.",
+   "F19's last clause, 'On 10.73.0, which has no OpenAI integration in the Deno defaults, instrumentOpenAiClient(client) from @sentry/core works without the hook' - record-only; probes/D17 installs develop tarballs only. For develop the opposite half checks out: openAIIntegration() is in the Deno defaults via packages/deno/src/sdk.ts:46-47 -> packages/server-utils/src/integrations/index.ts:30-56."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "F19's '.mjs crash' half and its two 'verified ways out' are record-only. Either add a fourth entry to probes/D17 (dynamic import after init; and an import-map or --conditions=require leg), or mark those clauses as coming from the verification runs, so the matrix cell ('works only via createRequire') and F19 stop contradicting each other."
+  ]
+ },
+ {
+  "id": "D18",
+  "tests_what_it_claims": "yes",
+  "code_notes": "Three byte-identical copies of app.ts under no-node-modules-dir/, auto/ and manual/, each with 'import \"@sentry/deno/import\"' as line 1, differing only in deno.json's nodeModulesDir. app.ts prints __SENTRY_ORCHESTRION__ after the hook import and again after the mysql import, prints import.meta.resolve('mysql') so the resolution source is visible, and serves /db, /orch and /sentinel. run.sh runs one variant with SENTRY_DEBUG selectable. That isolates exactly the variable the record names.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "run-no-nmd.log: 'MYSQL_RESOLVED=file://~/Library/Caches/deno/npm/sfw.security.sentry.io/npm/mysql/2.18.1/index.js', 'GET /orch -> {\"orchestrion\":{\"runtime\":[]},\"deno\":\"2.9.0\"}' and '{\"type\":\"transaction\",\"name\":\"GET /db\",...,\"spans\":[]}' with debug on and no warning line anywhere. run-auto.log and run-manual.log: 'GET /orch -> {\"orchestrion\":{\"runtime\":[\"mysql\"]},\"deno\":\"2.9.0\"}' and '\"spans\":[\"db SELECT id, name FROM users\"]', resolving from 'auto/node_modules/.deno/mysql@2.18.1/...' and 'probes/D18/node_modules/mysql/index.js' respectively.",
+  "record_consistent": "yes",
+  "report_claims_supported": "yes",
+  "report_sentences": [
+   "F18 'The hook only transforms modules under a local node_modules [D18, K12]. With Deno's default npm cache layout nothing is injected and nothing warns, with or without debug: true. nodeModulesDir: \"auto\" is required.' - fully supported. The 'nothing warns' half also checks out in the SDK: detectOrchestrionSetup is defined in packages/server-utils/src/orchestrion/detect.ts and referenced only from packages/node/src/sdk/index.ts; grep over packages/deno/src finds no call, which is what the D18 README claims.",
+   "Capability matrix, 'Library spans: database driver', Deno cell: the 'works with the hook for mysql' half is supported by run-auto.log / run-manual.log."
+  ],
+  "rerun": "not run",
+  "corrections": []
+ },
+ {
+  "id": "N1",
+  "tests_what_it_claims": "yes",
+  "code_notes": "main-nh.ts is the docs-shaped app (no hook) that throws three frames deep from src/boom.ts inside a Deno.serve handler; main.ts is the same with the hook as line 1; main-wronghost.ts points the tunnel at localhost while --allow-net allows only 127.0.0.1; main-deploy2.ts proxies Deno.permissions so querySync is missing. run3.sh runs one flag set with '< /dev/null' so a permission prompt cannot hang it, drives it with a separate curl and polls for the sentinel. Five flag sets are run against the docs-shaped app, which is exactly the escalation the record tabulates.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "out2/matrix.txt: dev-nh-a 'server_name': null, 'ctx_os': {'name': 'macOS'} (no version), all four boomFrames hasCtxLine false, absolute filenames; dev-nh-b the three src/boom.ts frames gain hasCtxLine true preCount 5 while main-nh.ts stays false; dev-nh-c is field-identical to dev-nh-b; dev-nh-cs adds 'server_name': 'DJ90J9R5XC.local' and 'ctx_os': {'name': 'macOS', 'version': '24.6.0'} plus 'os.version' on the span attrs; dev-nh-d additionally rewrites every filename to 'app:///main-nh.ts' / 'app:///src/boom.ts' with context lines on the entry file. out2/dev-a/app.log 'error: Uncaught (in promise) NotCapable: Requires env access ... at .../@sentry/server-runtime-injection/build/esm/vendored/debug/src/node.js:124:30' then 'NO_PORT (process exited or never listened)'. out2/dev-wronghost/app.log 'Sentry SDK requires \\'net\\' permission to send events.' with out2/dev-wronghost/items.json = []. out2/dev-deploy2/items.json: both events replaced by '\"exception\":\"TypeError: this.querySync is not a function\",\"mechanism\":\"internal\"'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "F41 'The Deno guide's two permission flags are both too narrow [N1; confirmed three times]. --allow-read=./src gives context lines only for files under that path, so the entry file stays bare, and app:/// path normalization needs read access to ./. --allow-sys is never mentioned and is what restores server_name and contexts.os.version. Nothing prompts and nothing warns ... The one hard failure is the hook, which dies at import without --allow-env.' - every one of those clauses is supported by out2/matrix.txt and out2/dev-a/app.log.",
+   "F41's 'Correct line for the guide: deno run --allow-net=<ingest> --allow-read=. --allow-sys=hostname,osRelease --allow-env main.ts' - that exact flag set is not run by any shipped leg. dev-nh-d uses the unscoped '--allow-net --allow-env --allow-read --allow-sys', which is a superset; the scoped '--allow-read=.' and '--allow-sys=hostname,osRelease' minima come from the record's verification runs. Record-only.",
+   "F41's side finding, 'under a proxied Deno.permissions shim (a Deno Deploy simulation) the SDK throws this.querySync is not a function internally and that internal error replaces the user's event' - supported by out2/dev-deploy2/items.json."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "F41's recommended guide line names two scoped flags ('--allow-read=.', '--allow-sys=hostname,osRelease') that no shipped N1 leg exercises. Either add a sixth label with exactly that set, or attribute the minima to the record.",
+   "Observed fidelity, minor: the out2/dev-deploy2/items.json quote is a field-pruned rendering (the shipped line also carries handled, sdk, runtime, ctx_runtime, ctx_device, ctx_app and a 10-frame frames array) with no ellipsis. The matrix.txt quotes are verbatim apart from the disclosed path shortening."
+  ]
+ },
+ {
+  "id": "N8",
+  "tests_what_it_claims": "yes",
+  "code_notes": "app.ts inits @sentry/deno with the hook, opens a module-scope mysql connection and exports 'default { fetch: handler }' with /ok, /db, /tag?id=, /boom and /sentinel; serve.ts re-exports it for 'deno serve', run.ts is the plain Deno.serve baseline of the same module, and serve-nohook.ts/app-nohook.ts are the docs-shaped copy without the hook line. drive.mjs sends 1 /ok, 1 /db, 10 concurrent /tag, 3 /boom and N /sentinel and reports envelope counts, span lines, an event tally and how many tagged events carry their own tag. That is precisely the entry-shape and --parallel question the record asks.",
+  "observed_faithful": "yes",
+  "verdict_supported": "yes",
+  "decisive_lines": "out-single.txt 'counts -> event: 19, span: 21', 'tagged events=10 matching=10', '21 http.server GET [origin=auto.http.deno]' plus '1 db SELECT users [origin=auto.db.mysql]' for 21 requests. serve-single.log 'Error: serve boom / at Object.handler [as fetch] (.../probes/N8/app.ts:47:11) / at handler (ext:deno_http/00_serve.ts:1168:26) / at .../@sentry/deno/build/esm/integrations/deno-serve.js:72:13 / at .../wrap-deno-request-handler.js:129:25' - the deno serve handler really is inside the integration wrapper. serve-par.log has 16 'INIT worker=' lines all with 'pid=73689', 16 'MYSQL-MODULE-SCOPE' lines and 'deno serve: Listening on http://0.0.0.0:58223/ with 16 threads'; out-par.txt 'counts -> event: 53, span: 55' for 55 requests with 'tagged events=10 matching=10'. out-nohook.txt '19 http.server GET' and no db span line. grep -c session over all four out-*.txt is 0.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "F48 'deno serve works and is documented nowhere [N8; works on both versions]. export default { fetch } under deno serve is instrumented exactly like Deno.serve, the hook applies, errors are captured, and --parallel runs one Sentry.init per worker (16 in one process) with no duplicated telemetry. The Deno guide shows only deno run.' - every clause is supported for develop by the four shipped runs; '[works on both versions]' is record-only (probes/N8 installs the 10.67.0 tarballs only)."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Already disclosed by the README and by _records/results.json, but worth carrying into ERRATA: dedupe did not fire in the shipped rebuild (event counts 19 / 53 instead of the record's 12 / 25), so the record's per-worker dedupe side note cannot be reproduced from this directory. No claim in F48 depends on it."
+  ]
+ },
+ {
+  "id": "N9",
+  "tests_what_it_claims": "yes",
+  "code_notes": "A stock Fresh 2.3.3 (Vite) scaffold with the hook plus Sentry.init prepended to main.ts, routes/boom.tsx throwing inside a route handler, routes/api/[name].tsx as the dynamic-route naming probe, routes/api/data.tsx fetching a local echo server (the K2 probe) and routes/sentinel.tsx. run.sh runs three variants: the built 'deno serve -A _fresh/server.js' production shape, the same with N9_WORKAROUND=1 (the try/catch middleware after app.use(staticFiles())), and a dev run with the hook line commented out. That covers the record's three claims - boots, loses route names, loses route errors - plus the fix.",
+  "observed_faithful": "no",
+  "verdict_supported": "yes",
+  "decisive_lines": "items-prod.json: seven items, six http.server spans and one sentinel event, no event for the /boom request whose span is '{\"name\": \"GET\", \"status\": \"error\", \"is_segment\": true, \"origin\": \"auto.http.deno\"}'; only the '/' request keeps a path ('GET /'), every other route including /api/alice collapses to bare 'GET'. prod.log 'Error: fresh route boom / at GET (.../_fresh-route___boom-CQvAE_M7.js:16:11) / ... / at NoopTracer.startActiveSpan (.../server-entry.js:1432:29) / at renderRoute (.../server-entry.js:5611:28)'. items-prod-workaround.json first item '{\"type\": \"event\", \"exception\": \"Error: fresh route boom\", \"mechanism\": \"generic\", \"handled\": true, ..., \"hasContextLine\": true, ..., \"request\": {\"url\": \"http://127.0.0.1:41504/boom\", ...}}'. items-dev-nohook.json has the same four-item shape with no boot error. build.log '_fresh/server/server-entry.js 1,490.95 kB'.",
+  "record_consistent": "yes",
+  "report_claims_supported": "partial",
+  "report_sentences": [
+   "F49 'Fresh 2 boots but loses route names and route errors [N9; confirmed, with verified fixes]. Fresh 2.3.3 runs with the hook in both vite dev and the built deno serve shape, and K3 does not bite it. But transactions are named by raw path, so /api/[name].tsx never becomes a route pattern, and an error thrown in a route handler is swallowed by Fresh's 500 renderer and never reaches Sentry. A three-line middleware registered after app.use(staticFiles()) fixes both.' - the boot, the naming and the swallowed error are supported by items-prod.json, items-dev-nohook.json and prod.log. Two wording notes: the shipped spans are named by HTTP METHOD only, not 'by raw path' (only '/' keeps its path), and the shipped middleware (N9_WORKAROUND) fixes only the error capture - items-prod-workaround.json's span is still named bare 'GET', so 'fixes both' is not shown by the shipped run."
+  ],
+  "rerun": "not run",
+  "corrections": [
+   "Two lines quoted in the Observed section exist in no shipped file. (1) The workaround event is quoted with '\"trace_id\": \"3a87513472624a42ac80c5b8ebc5a717\"'; grep for that id over probes/N9 hits README.md only - items-prod-workaround.json has trace_id '4e08b69ba68a49e78b717e731dc53179'. The quote comes from the second, clean-install run whose logs ship (verify-prod-workaround.log, port 51936) but whose items file does not. (2) The K2 echo-body line '{\"url\": \"/echo\", \"headers\": {...\"host\": \"127.0.0.1:41338\"}}' is nowhere: run.sh's drive() uses 'curl -s -o /dev/null -w %{http_code}', so no response body is ever saved, and echo.log holds only 'echo on 41338'. The span half of K2 (no http.client span in items-prod.json) is verifiable; the header half is not.",
+   "F49's 'A three-line middleware ... fixes both' overstates the shipped evidence: items-prod-workaround.json shows the error captured with request context but the span still named 'GET'. Either soften to 'fixes the error capture' or add the naming half of the middleware to main.ts and re-run.",
+   "Persist the second run's items files (or drop verify-prod.log / verify-prod-workaround.log), so the directory has one self-consistent run."
+  ]
+ }
+]
