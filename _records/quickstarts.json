@@ -1,0 +1,81 @@
+[
+ {
+  "id": "QS-node",
+  "path": "quickstarts/node",
+  "runtime": "Node v26.5.0",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "Documented path works on develop: --import, first-line import and NODE_OPTIONS give identical telemetry; --require still works but prints a 'no longer supported' banner the docs do not mention. Gaps: the verify step's 'My First Test Transaction' produces no transaction envelope under the default stream lifecycle (span envelope only); plain node:http segment spans are named 'GET' with no source; debug:true prints no SDK name, version or runtime; the ordering warning is overly strict for ESM first-line imports.",
+  "sdk": {
+   "name": "sentry.javascript.node",
+   "version": "10.67.0",
+   "integrations": 45
+  },
+  "variants": {
+   "--import": "yes",
+   "--require": "partial (works, undocumented banner)",
+   "first-line import": "yes",
+   "NODE_OPTIONS --import": "yes"
+  }
+ },
+ {
+  "id": "QS-bun",
+  "path": "quickstarts/bun",
+  "runtime": "bun 1.4.2 (audit ran 1.4.0)",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "Documented path works on develop: --preload, bunfig preload, first-line import, --watch and a Bun.build bundle with the plugin all deliver the same errors, Bun.serve spans, fetch spans with headers and logs. The guide's claim that auto-instrumentation does not work with bundled code is refuted for runtime instrumentation. Gaps: two warnings about missing channel injection on the documented path that no page mentions; Bun error events carry no transaction field; no transaction envelope under the stream lifecycle; debug output names no SDK or runtime; installing the tarballs needs an overrides block (tarball artifact, not a guide defect).",
+  "sdk": {
+   "name": "sentry.javascript.bun",
+   "version": "10.67.0",
+   "integrations": 42
+  },
+  "variants": {
+   "--preload": "yes",
+   "bunfig preload": "yes",
+   "first-line import": "yes",
+   "Bun.build + sentryBunPlugin": "yes",
+   "--watch": "yes"
+  }
+ },
+ {
+  "id": "QS-deno",
+  "path": "quickstarts/deno",
+  "runtime": "deno 2.9.0",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The quick start path works on develop: first-line hook import, the --import flag form and deno serve all deliver errors with context lines and app:// paths, Deno.serve spans and logs. Confirmed gaps: no http.client span and no trace headers on outgoing fetch (K2); Deno.serve spans are named by method only, a URLPattern route gets no name; no transaction envelope under the stream lifecycle; no init banner with SDK or runtime on Deno. The shipped guide's flags (--allow-net, --allow-read) crash the app with NotCapable from the vendored debug package when the hook line is present, and without the hook they silently drop server_name, OS version, context lines and app:// paths. Nothing warns when the hook is absent. The bare --import=@sentry/deno/import form still fails.",
+  "sdk": {
+   "name": "sentry.javascript.deno",
+   "version": "10.67.0",
+   "integrations": 39
+  },
+  "variants": {
+   "quick start flags + hook": "yes",
+   "guide flags only": "no (crash with hook, degraded without)",
+   "no hook line": "yes, silent",
+   "--import flag form": "yes",
+   "deno serve": "yes"
+  }
+ },
+ {
+  "id": "QS-cloudflare",
+  "path": "quickstarts/cloudflare",
+  "runtime": "workerd 2026-09-03 via wrangler 4.129.0",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "withSentry with nodejs_compat works on develop at the documented compatibility_date floor: errors, one http.server span per request, http.client span with propagation headers, logs. The Vite plugin wraps the entry without withSentry in the source and without any experimental flag. Gaps: @sentry/cloudflare/nodejs_compat and Sentry.wrapRequestHandler from the main entry do not exist on develop although the guide shows both; the Vite plugin reads its options from an undocumented instrument.server.* file and falls back silently, and a bare sentryCloudflareVitePlugin() is a silent no-op when the wrangler config is not default-named; server spans are all named GET with source url and error events carry no transaction field; wrangler dev stack traces have no context lines; the segment span reports status ok on a 500; errors inside ctx.waitUntil() are never captured; the request entry with nodejs_als only works with the static lifecycle and sends transaction envelopes; debug output names no SDK or runtime.",
+  "sdk": {
+   "name": "sentry.javascript.cloudflare",
+   "version": "10.67.0",
+   "integrations": 10
+  },
+  "variants": {
+   "withSentry, current date": "yes",
+   "withSentry, 2024-09-23 floor": "yes",
+   "wrapRequestHandler from /request with nodejs_als": "partial (static lifecycle only)",
+   "Vite plugin without withSentry": "partial (works once wranglerConfigPath is set; options file undocumented)",
+   "ctx.waitUntil rejection": "no (not captured)"
+  }
+ }
+]

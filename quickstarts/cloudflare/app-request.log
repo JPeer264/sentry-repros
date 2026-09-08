@@ -1,0 +1,89 @@
+
+ ⛅️ wrangler 4.129.0 (update available 4.129.1)
+───────────────────────────────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41502/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41502/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41502/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41502/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41502/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41502/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41502/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41502/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41502/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41502/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:41502
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: 8b0f94f3adb5495a
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/42" with ID 8b0f94f3adb5495a
+[wrangler:info] GET /users/42 200 OK (12ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /debug-sentry
+  ID: ae84a4d55272b803
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /debug-sentry" with ID ae84a4d55272b803
+Sentry Logger [log]: Captured error event `My first Sentry error!`
+[wrangler:error] Error: My first Sentry error!
+    at routes (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/src/routes.ts:15:11)
+    at null.<anonymous> (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/src/request-wrapper.ts:19:13)
+    at null.<anonymous> (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:162:25)
+    at null.<anonymous> (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/core/src/tracing/trace.ts:139:60)
+    at handleCallbackErrors.status.status [as status] (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+    at handleCallbackErrors (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+    at callback (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+    at null.<anonymous> (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+    at null.<anonymous> (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+    at AsyncContextStack.withScope (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/node_modules/@sentry/core/src/asyncContext/stackStrategy.ts:50:28)
+[wrangler:info] GET /debug-sentry 500 Internal Server Error (22ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /debug-span
+  ID: a6ad674f18647161
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: test
+  name: My First Test Span
+  ID: 8dc77a82c0d14da2
+  parent ID: a6ad674f18647161
+  root ID: a6ad674f18647161
+  root op: http.server
+  root description: GET /debug-span
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:41501/recorder
+  ID: b7744fdfc5ca5f53
+  parent ID: 8dc77a82c0d14da2
+  root ID: a6ad674f18647161
+  root op: http.server
+  root description: GET /debug-span
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:41501/recorder" with ID b7744fdfc5ca5f53
+Sentry Logger [log]: [Tracing] Finishing "test" span "My First Test Span" with ID 8dc77a82c0d14da2
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /debug-span" with ID a6ad674f18647161
+[wrangler:info] GET /debug-span 200 OK (4ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /debug-log
+  ID: b07c05824634d1fd
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /debug-log" with ID b07c05824634d1fd
+[wrangler:info] GET /debug-log 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 9bcc7d53ab3a8971
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 9bcc7d53ab3a8971
+[wrangler:info] GET /sentinel 200 OK (2ms)

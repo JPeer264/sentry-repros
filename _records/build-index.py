@@ -14,6 +14,11 @@ out+=['','## Framework cells','','| Cell | Framework on runtime | | Rebuilt | Ma
 cmap={c['id']:c for c in cells}
 for cid in sorted(set(os.listdir(os.path.join(ROOT,'cells')))|set(cmap)):
     out.append(row('cells', cmap.get(cid,{'id':cid,'framework':cid,'runtime':''})))
+qs=os.path.join(ROOT,'_records','quickstarts.json')
+if os.path.exists(qs):
+    out+=['','## Getting-started paths','','One per runtime, run on 2026-09-08 against the same develop build: the documented install, configure and verify steps, plus the manual-setup variants the guide names.','','| Quick start | Runtime | SDK | Integrations | Result |','| --- | --- | --- | --- | --- |']
+    for q in json.load(open(qs)):
+        out.append('| [%s](%s/) | %s | %s %s | %s | %s |' % (q['id'], q['path'], q['runtime'], q['sdk']['name'], q['sdk']['version'], q['sdk']['integrations'], q['summary'].replace('|','/')))
 c=collections.Counter(r.get('matches') for r in results.values())
 out.append(''); out.append('Rebuild status: %d results; matches: %s.' % (len(results), dict(c)))
 open(os.path.join(ROOT,'INDEX.md'),'w').write('\n'.join(out)+'\n'); print('INDEX.md written', len(results), 'results')

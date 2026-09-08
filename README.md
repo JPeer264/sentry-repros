@@ -11,6 +11,7 @@ The SDK under test is `getsentry/sentry-javascript` at `6f2da7483d` (develop, v1
 | `probes/<ID>/` | 68 runtime probes: B (Bun), D (Deno), C (Cloudflare), N (follow-ups), X (cross-checks) |
 | `cells/M-<framework>-<runtime>/` | 51 framework cells, the full cross product of 17 frameworks and 3 runtimes |
 | `refutations/verify4-*`, `verify5-*` | 114 independent re-tests, one per capability that a cell reported broken or partial |
+| `quickstarts/<runtime>/` | the getting-started path of the docs guide for Node, Bun, Deno and Cloudflare Workers, step by step, with the manual-setup variants the guide names; each has a `run.sh` per variant and results files |
 | `_toolbox/` | `TOOLBOX.md` (rules and conventions the agents followed), `sink.mjs` (the envelope sink), `pack/` (the SDK tarballs) |
 | `_records/` | the JSON records each rebuild was made from, the vendored results, and the index builder |
 | `_reports/` | the deep probe report, the docs audit and the quick starts as HTML, plus the issue and ticket drafts under `issues/` |
