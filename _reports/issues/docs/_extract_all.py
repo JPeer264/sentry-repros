@@ -35,7 +35,7 @@ OWNED={'X2':'owned by Linear JS-2599 (v11 migration guide for docs); do not file
        'DOC-C1':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C2':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C3':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C4':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C5':'v11-gated; file as a sub-issue of Linear SDK-1296'}
 PAIRS={'DOC-F11':'DOC-F28','DOC-F28':'DOC-F11','DOC-F13':'DOC-F30','DOC-F30':'DOC-F13','DOC-F19':'DOC-F36','DOC-F36':'DOC-F19'}
 items=[]
-for m in re.finditer(r'<h3 id="([^"]+)">(.*?)</h3>\s*<div class="issue">(.*?)</details></div>', doc, re.S):
+for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="issue">(.*?)</details></div>', doc, re.S):
     hid,h3,issue=m.groups()
     pm=re.search(r'chip (p[012])',h3)
     if not pm: continue

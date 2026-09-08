@@ -280,14 +280,14 @@
   "file": "P1-28-X3.md"
  },
  {
-  "id": "s5-bun",
+  "id": "DOC-F1",
   "prio": "P1",
-  "heading": "Bun",
+  "heading": "Hono on Bun: documented partial",
   "type": "docs-change",
   "title": "Document Hono on Bun: unbundled run and the Bun.build plugin variant",
   "body": "The Hono guide names Bun at `docs/platforms/javascript/guides/hono/index.mdx:12`, has a Bun install tab at `hono/index.mdx:84-86` and a Bun setup snippet at `hono/index.mdx:290-317`, but it never shows how to start the app or what the runtime delivers. The Bun guide teaches only `bun --preload ./instrument.js app.js` (`bun/index.mdx:106`) and carries a \"Bundled Code Limitation\" alert at `bun/index.mdx:96-98`. `sentryBunPlugin`, `@sentry/bun/plugin` and `Bun.build` appear nowhere in the docs.\n\nVerified on Hono 4.10.x with `@sentry/hono/bun` 10.67.0 on Bun 1.4.0: install `@sentry/hono` plus `@sentry/bun`, call `app.use(sentry(app, { dsn, tracesSampleRate: 1.0 }))` on a fresh `new Hono()`, export `{ port, fetch: app.fetch }`, and run `bun app.ts`. No instrument file and no `--preload` are needed, because the middleware calls `Sentry.init` itself. Building the same entry with `Bun.build({ entrypoints: ['./app.ts'], outdir: './dist', target: 'bun', sourcemap: 'external', plugins: [sentryBunPlugin()] })` from `@sentry/bun/plugin` and running `bun dist/app.js` keeps every capability.\n\nWorks today:\n\n- Unhandled handler errors, with the route as the transaction name\n- Parameterized route names (`GET /users/:id`, source `route`)\n- Per-request isolation across concurrent requests\n- Incoming `sentry-trace`/`baggage` continuation\n- Outgoing `fetch` spans with propagation headers\n- `mysql2` database spans without any build step\n- `Sentry.logger` log envelopes\n\nKnown limits:\n\n- Drivers that do not publish `node:diagnostics_channel` events themselves, such as `mysql`@2, produce spans only in the `Bun.build` bundle.\n- Passing `external` to `Bun.build` splits `hono` from `@sentry/hono` and the patches stop applying.\n\nWhat to change:\n\n- `guides/hono/index.mdx`: add a \"Run your app\" step with a Bun tab showing `bun app.ts` and the `Bun.build` + `sentryBunPlugin()` variant, and state that the `--preload` step is not needed here.\n- `guides/bun/index.mdx:96-98`: rewrite the alert so it describes the plugin build as the supported way to instrument bundled code.",
   "pos": 21,
-  "file": "P1-29-s5-bun.md"
+  "file": "P1-29-DOC-F1.md"
  },
  {
   "id": "DOC-F2",
@@ -430,14 +430,14 @@
   "file": "P1-43-DOC-F17.md"
  },
  {
-  "id": "s5-deno",
+  "id": "DOC-F18",
   "prio": "P1",
-  "heading": "Deno",
+  "heading": "Hono on Deno: documented partial",
   "type": "docs-change",
   "title": "Document the verified Hono on Deno setup and its outgoing fetch limit",
   "body": "The Hono guide already claims Deno support: `docs/platforms/javascript/guides/hono/index.mdx:12` lists Deno among the runtimes, `:88-89` gives the Deno peer dependency as `deno add npm:@sentry/deno`, and `:320-348` shows the Deno tab with `import { sentry } from \"@sentry/hono/deno\"`, `app.use(sentry(app, {...}))` and `Deno.serve(app.fetch)`. The page carries no runtime caveats around `:384`, and `docs/platforms/javascript/guides/deno/index.mdx:1-232` never mentions `node_modules`, `nodeModulesDir`, the `@sentry/deno/import` hook or outgoing `fetch`.\n\nVerified on Hono 4.13.7 with `@sentry/hono/deno` 10.67.0 on Deno 2.9.0: install `@sentry/hono` and `@sentry/deno` into a real on-disk `node_modules` (`npm install`, or `deno add npm:@sentry/hono`), set `{\"nodeModulesDir\": \"manual\"}` in `deno.json`, put `import \"@sentry/deno/import\";` as the first line of the entry file when you want database and library spans, then wire the middleware exactly as the current snippet shows and run `deno run --allow-net --allow-env --allow-read --allow-sys main.ts`.\n\nWorks today:\n\n- Unhandled route errors, with `transaction: \"GET /error\"`.\n- Parameterized names `GET /users/:id` with source `route`.\n- Per-request isolation across concurrent requests.\n- Incoming `sentry-trace`/`baggage` continuation.\n- Database spans for `mysql` (requires the import hook line).\n- Logs.\n\nKnown limits:\n\n- Outgoing `fetch()` is not instrumented on Deno: no `http.client` span and no `sentry-trace`/`baggage` headers, so the downstream service starts a new trace.\n- `node:http`/`node:https` clients are traced normally.\n- Without the import hook line, database and library spans are silently missing.\n\nWhat to change:\n\n- `guides/hono/index.mdx:88-89`: show the `deno.json` and the npm-based install, not `deno add` alone.\n- `guides/hono/index.mdx` near `:320-348`: note the optional `@sentry/deno/import` first line and the permission flags.\n- `guides/hono/index.mdx` near `:384`: add a Deno-only caveat for outgoing `fetch`.\n- `guides/deno/index.mdx`: add an \"Outgoing fetch requests\" section stating the same limit.",
   "pos": 38,
-  "file": "P1-44-s5-deno.md"
+  "file": "P1-44-DOC-F18.md"
  },
  {
   "id": "DOC-F20",
@@ -560,14 +560,14 @@
   "file": "P1-56-DOC-F34.md"
  },
  {
-  "id": "s5-cf",
+  "id": "DOC-F35",
   "prio": "P1",
-  "heading": "Cloudflare",
+  "heading": "Hono on Cloudflare: documented partial",
   "type": "docs-change",
   "title": "Document Hono on Cloudflare Workers: compatibility_date and build-time database spans",
   "body": "The Hono guide already treats Cloudflare Workers as a first-class tab: `docs/platforms/javascript/guides/hono/index.mdx:12` names Cloudflare Workers as a supported runtime, `:65-78` tells Workers users to install `@sentry/cloudflare` as a peer dependency they never import, `:129-144` is the \"Cloudflare Workers: Enable Node.js Compatibility\" Expandable, and `:246-274` shows the `sentry(app, {...})` middleware wiring. Two gaps: the Expandable sets `compatibility_flags: [\"nodejs_compat\"]` but never `compatibility_date`, and the guide's only database sentence, `:162`, is Node.js-only.\n\nVerified on the develop line: `npm install @sentry/hono @sentry/cloudflare hono`, a `wrangler.jsonc` with `compatibility_date: \"2026-05-01\"` and `compatibility_flags: [\"nodejs_compat\"]`, `app.use(sentry(app, { dsn, tracesSampleRate: 1.0 }))` as the first middleware, `export default app`, run with `npx wrangler dev`. For database spans the same app is built through Vite instead: `plugins: [cloudflare(), sentryCloudflareVitePlugin({ autoInstrumentation: false })]` from `@sentry/cloudflare/vite`, with `autoInstrumentation: false` because the Hono middleware already applies `withSentry`.\n\nWorks today:\n\n- Unhandled route errors, parameterized route names (`GET /users/:id`, source `route`), per-request isolation, incoming trace continuation, outgoing `fetch` spans with propagation headers, `Sentry.logger` logs.\n- `db` spans from a `mysql` query, through the Vite build only.\n\nKnown limits:\n\n- A Worker bundled by `wrangler dev`/`wrangler deploy` alone emits no database spans and logs no warning.\n\nWhat to change on `docs/platforms/javascript/guides/hono/index.mdx`:\n\n- Extend the Expandable at `:129-144` to set `compatibility_date` alongside `nodejs_compat`, matching `platform-includes/getting-started-config/javascript.cloudflare.mdx:5`.\n- Add a \"Database spans on Cloudflare Workers\" subsection after `:274` stating that database instrumentation on Workers is build-time only, showing the Vite config above, and linking to `/platforms/javascript/guides/cloudflare/features/vite-plugin/`.",
   "pos": 55,
-  "file": "P1-57-s5-cf.md"
+  "file": "P1-57-DOC-F35.md"
  },
  {
   "id": "DOC-F37",
@@ -780,14 +780,14 @@
   "file": "P1-78-DOC-R18.md"
  },
  {
-  "id": "snot-measured",
+  "id": "DOC-Q1",
   "prio": "P1",
-  "heading": "What this audit did not measure",
+  "heading": "The verify step of all four guides promises a transaction that develop never sends",
   "type": "docs-change",
   "title": "Rewrite the tracing verify step for the stream lifecycle on the Node, Bun, Deno and Cloudflare guides",
   "body": "The tracing verify step tells the reader to wrap work in `Sentry.startSpan({ op: \"test\", name: \"My First Test Transaction\" })` and look for a transaction: `platform-includes/getting-started-verify/javascript.node.mdx:38-53`, `guides/bun/index.mdx:156-172`, `guides/deno/index.mdx:176-190` and `guides/cloudflare/index.mdx:313-335`. The surrounding text on each page says the data appears as named transactions (`getting-started-node/javascript.mdx:120`, `bun/index.mdx:188`, `deno/index.mdx:207`, `cloudflare/index.mdx:364`).\n\nObserved on develop, on all four runtimes with the documented wiring: no `transaction` envelope is sent at all. The manual span arrives as a child item inside a `span` envelope together with the server span, for example `[\"http.client GET 127.0.0.1\", \"test My First Test Span\", \"http.server GET\"]`, because the default `traceLifecycle` is `stream`. The trace is complete and the span is visible in the trace view, but nothing on the page matches the word \"transaction\" a reader is told to look for.\n\nWhat to change:\n\n- On each of the four verify steps, describe what arrives: a trace with a server segment span and the manual span as its child, no transaction.\n- Rename the sample from \"My First Test Transaction\" to a span name, as the proposed quick starts already do.\n- Link the stream lifecycle page, and note that `traceLifecycle: \"static\"` restores the transaction envelope for readers who look for it.",
   "pos": 90,
-  "file": "P1-79-snot-measured.md"
+  "file": "P1-79-DOC-Q1.md"
  },
  {
   "id": "DOC-Q3",

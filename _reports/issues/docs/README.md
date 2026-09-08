@@ -32,7 +32,7 @@ Ninety-six drafts for `getsentry/sentry-docs`, one per finding of the runtime do
 | 26 | P1 | DOC-C7 | new-page | Add a Cloudflare React Router page and fix frameworks/index.mdx and tanstack-start.mdx | `P1-26-DOC-C7.md` |
 | 27 | P1 | X2 | new-page | Add a v10-to-v11 migration page covering Bun, Deno and Cloudflare instrumentation setup | `P1-27-X2.md` |
 | 28 | P1 | X3 | new-page | Add a runtime-by-framework support matrix for Bun, Deno and Cloudflare | `P1-28-X3.md` |
-| 29 | P1 | s5-bun | docs-change | Document Hono on Bun: unbundled run and the Bun.build plugin variant | `P1-29-s5-bun.md` |
+| 29 | P1 | DOC-F1 | docs-change | Document Hono on Bun: unbundled run and the Bun.build plugin variant | `P1-29-DOC-F1.md` |
 | 30 | P1 | DOC-F2 | docs-change | Add a Bun database instrumentation section to the Elysia guide | `P1-30-DOC-F2.md` |
 | 31 | P1 | DOC-F3 | new-page | Add an Express on Bun page covering the Bun.build plugin step | `P1-31-DOC-F3.md` |
 | 32 | P1 | DOC-F4 | new-page | Add a Fastify on Bun page and split Bun db instrumentation by driver | `P1-32-DOC-F4.md` |
@@ -47,7 +47,7 @@ Ninety-six drafts for `getsentry/sentry-docs`, one per finding of the runtime do
 | 41 | P1 | DOC-F15 | limitation-note | Document TanStack Start on Bun: verified setup and its limits | `P1-41-DOC-F15.md` |
 | 42 | P1 | DOC-F16 | new-page | Add a Remix v2 on Bun page for the Bun.build server bundle | `P1-42-DOC-F16.md` |
 | 43 | P1 | DOC-F17 | new-page | Add a SolidStart on Bun page with the @sentry/bun integrations | `P1-43-DOC-F17.md` |
-| 44 | P1 | s5-deno | docs-change | Document the verified Hono on Deno setup and its outgoing fetch limit | `P1-44-s5-deno.md` |
+| 44 | P1 | DOC-F18 | docs-change | Document the verified Hono on Deno setup and its outgoing fetch limit | `P1-44-DOC-F18.md` |
 | 45 | P1 | DOC-F20 | new-page | Add an Express on Deno page describing what @sentry/deno instruments | `P1-45-DOC-F20.md` |
 | 46 | P1 | DOC-F21 | new-page | Add a Fastify on Deno page: full instrumentation without the import hook | `P1-46-DOC-F21.md` |
 | 47 | P1 | DOC-F22 | new-page | Add a Koa on Deno page covering error capture and instrumentation limits | `P1-47-DOC-F22.md` |
@@ -60,7 +60,7 @@ Ninety-six drafts for `getsentry/sentry-docs`, one per finding of the runtime do
 | 54 | P1 | DOC-F32 | new-page | Add a TanStack Start on Deno page with the Deno entry and noExternals | `P1-54-DOC-F32.md` |
 | 55 | P1 | DOC-F33 | new-page | Add a Remix on Deno install page covering installGlobals and build-time setup | `P1-55-DOC-F33.md` |
 | 56 | P1 | DOC-F34 | new-page | Add a SolidStart on Deno install page and record its instrumentation limits | `P1-56-DOC-F34.md` |
-| 57 | P1 | s5-cf | docs-change | Document Hono on Cloudflare Workers: compatibility_date and build-time database spans | `P1-57-s5-cf.md` |
+| 57 | P1 | DOC-F35 | docs-change | Document Hono on Cloudflare Workers: compatibility_date and build-time database spans | `P1-57-DOC-F35.md` |
 | 58 | P1 | DOC-F37 | new-page | Add an Express on Cloudflare Workers page built with the Sentry Cloudflare Vite plugin | `P1-58-DOC-F37.md` |
 | 59 | P1 | DOC-F38 | limitation-note | Note that Fastify does not run on Cloudflare Workers | `P1-59-DOC-F38.md` |
 | 60 | P1 | DOC-F39 | new-page | Add a Koa on Cloudflare Workers page covering the Vite build and module-scope rule | `P1-60-DOC-F39.md` |
@@ -82,7 +82,7 @@ Ninety-six drafts for `getsentry/sentry-docs`, one per finding of the runtime do
 | 76 | P1 | DOC-R14 | docs-change | Document that errors inside ctx.waitUntil() are not captured | `P1-76-DOC-R14.md` |
 | 77 | P1 | DOC-R15 | docs-change | Document Cloudflare Workflows step error capture on the final attempt | `P1-77-DOC-R15.md` |
 | 78 | P1 | DOC-R18 | docs-change | Clarify the session API import path for Cloudflare release health | `P1-78-DOC-R18.md` |
-| 79 | P1 | snot-measured | docs-change | Rewrite the tracing verify step for the stream lifecycle on the Node, Bun, Deno and Cloudflare guides | `P1-79-snot-measured.md` |
+| 79 | P1 | DOC-Q1 | docs-change | Rewrite the tracing verify step for the stream lifecycle on the Node, Bun, Deno and Cloudflare guides | `P1-79-DOC-Q1.md` |
 | 80 | P1 | DOC-Q3 | docs-change | State on the four guides that route names need a framework integration or a routes map | `P1-80-DOC-Q3.md` |
 | 81 | P2 | DOC-B4 | docs-change | Fix Bun guide hygiene: version floor, Hono install command, breadcrumbs, v7 wording | `P2-81-DOC-B4.md` |
 | 82 | P2 | DOC-D5 | docs-change | Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones | `P2-82-DOC-D5.md` |

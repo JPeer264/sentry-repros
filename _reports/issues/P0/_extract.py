@@ -38,7 +38,7 @@ def to_md(fragment):
     return txt.strip()
 
 items=[]
-for m in re.finditer(r'<h3 id="([^"]+)">(.*?)</h3>\s*<div class="issue">(.*?)</details></div>', doc, re.S):
+for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="issue">(.*?)</details></div>', doc, re.S):
     hid, h3, issue = m.group(1), m.group(2), m.group(3)
     if 'chip p0' not in h3: continue
     title_h3=H.unescape(re.sub(r'<[^>]+>','',re.search(r'<span class="ht">(.*?)</span>',h3,re.S).group(1))).strip()

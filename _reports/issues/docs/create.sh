@@ -31,7 +31,7 @@ gh issue create -R getsentry/sentry-docs --title "Add a frameworks page to the D
 gh issue create -R getsentry/sentry-docs --title "Add a Cloudflare React Router page and fix frameworks/index.mdx and tanstack-start.mdx" --body-file P1-26-DOC-C7.md
 # gh issue create -R getsentry/sentry-docs --title "Add a v10-to-v11 migration page covering Bun, Deno and Cloudflare instrumentation setup" --body-file P1-27-X2.md
 gh issue create -R getsentry/sentry-docs --title "Add a runtime-by-framework support matrix for Bun, Deno and Cloudflare" --body-file P1-28-X3.md
-gh issue create -R getsentry/sentry-docs --title "Document Hono on Bun: unbundled run and the Bun.build plugin variant" --body-file P1-29-s5-bun.md
+gh issue create -R getsentry/sentry-docs --title "Document Hono on Bun: unbundled run and the Bun.build plugin variant" --body-file P1-29-DOC-F1.md
 gh issue create -R getsentry/sentry-docs --title "Add a Bun database instrumentation section to the Elysia guide" --body-file P1-30-DOC-F2.md
 gh issue create -R getsentry/sentry-docs --title "Add an Express on Bun page covering the Bun.build plugin step" --body-file P1-31-DOC-F3.md
 gh issue create -R getsentry/sentry-docs --title "Add a Fastify on Bun page and split Bun db instrumentation by driver" --body-file P1-32-DOC-F4.md
@@ -46,7 +46,7 @@ gh issue create -R getsentry/sentry-docs --title "Add a React Router on Bun page
 gh issue create -R getsentry/sentry-docs --title "Document TanStack Start on Bun: verified setup and its limits" --body-file P1-41-DOC-F15.md
 gh issue create -R getsentry/sentry-docs --title "Add a Remix v2 on Bun page for the Bun.build server bundle" --body-file P1-42-DOC-F16.md
 gh issue create -R getsentry/sentry-docs --title "Add a SolidStart on Bun page with the @sentry/bun integrations" --body-file P1-43-DOC-F17.md
-gh issue create -R getsentry/sentry-docs --title "Document the verified Hono on Deno setup and its outgoing fetch limit" --body-file P1-44-s5-deno.md
+gh issue create -R getsentry/sentry-docs --title "Document the verified Hono on Deno setup and its outgoing fetch limit" --body-file P1-44-DOC-F18.md
 gh issue create -R getsentry/sentry-docs --title "Add an Express on Deno page describing what @sentry/deno instruments" --body-file P1-45-DOC-F20.md
 gh issue create -R getsentry/sentry-docs --title "Add a Fastify on Deno page: full instrumentation without the import hook" --body-file P1-46-DOC-F21.md
 gh issue create -R getsentry/sentry-docs --title "Add a Koa on Deno page covering error capture and instrumentation limits" --body-file P1-47-DOC-F22.md
@@ -59,7 +59,7 @@ gh issue create -R getsentry/sentry-docs --title "Add a React Router on Deno pag
 gh issue create -R getsentry/sentry-docs --title "Add a TanStack Start on Deno page with the Deno entry and noExternals" --body-file P1-54-DOC-F32.md
 gh issue create -R getsentry/sentry-docs --title "Add a Remix on Deno install page covering installGlobals and build-time setup" --body-file P1-55-DOC-F33.md
 gh issue create -R getsentry/sentry-docs --title "Add a SolidStart on Deno install page and record its instrumentation limits" --body-file P1-56-DOC-F34.md
-gh issue create -R getsentry/sentry-docs --title "Document Hono on Cloudflare Workers: compatibility_date and build-time database spans" --body-file P1-57-s5-cf.md
+gh issue create -R getsentry/sentry-docs --title "Document Hono on Cloudflare Workers: compatibility_date and build-time database spans" --body-file P1-57-DOC-F35.md
 gh issue create -R getsentry/sentry-docs --title "Add an Express on Cloudflare Workers page built with the Sentry Cloudflare Vite plugin" --body-file P1-58-DOC-F37.md
 gh issue create -R getsentry/sentry-docs --title "Note that Fastify does not run on Cloudflare Workers" --body-file P1-59-DOC-F38.md
 gh issue create -R getsentry/sentry-docs --title "Add a Koa on Cloudflare Workers page covering the Vite build and module-scope rule" --body-file P1-60-DOC-F39.md
@@ -81,7 +81,7 @@ gh issue create -R getsentry/sentry-docs --title "Enable the provider feature fl
 gh issue create -R getsentry/sentry-docs --title "Document that errors inside ctx.waitUntil() are not captured" --body-file P1-76-DOC-R14.md
 gh issue create -R getsentry/sentry-docs --title "Document Cloudflare Workflows step error capture on the final attempt" --body-file P1-77-DOC-R15.md
 gh issue create -R getsentry/sentry-docs --title "Clarify the session API import path for Cloudflare release health" --body-file P1-78-DOC-R18.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the tracing verify step for the stream lifecycle on the Node, Bun, Deno and Cloudflare guides" --body-file P1-79-snot-measured.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the tracing verify step for the stream lifecycle on the Node, Bun, Deno and Cloudflare guides" --body-file P1-79-DOC-Q1.md
 gh issue create -R getsentry/sentry-docs --title "State on the four guides that route names need a framework integration or a routes map" --body-file P1-80-DOC-Q3.md
 gh issue create -R getsentry/sentry-docs --title "Fix Bun guide hygiene: version floor, Hono install command, breadcrumbs, v7 wording" --body-file P2-81-DOC-B4.md
 gh issue create -R getsentry/sentry-docs --title "Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones" --body-file P2-82-DOC-D5.md
