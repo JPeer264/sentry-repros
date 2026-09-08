@@ -99,5 +99,31 @@
    "CommonJS": "yes",
    "lightweight": "removed in v11"
   }
+ },
+ {
+  "id": "QS-react",
+  "path": "quickstarts/react",
+  "runtime": "Chrome 152 headless, develop 03aaf42455; react 19.2.8, react-router 7.18.3 and 8.3.1, redux 5.0.1, esbuild bundles",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's install, init (16 integrations), verify error, logs, feedback widget, tunnel and trace propagation work; spans arrive as span items under a Pageload segment. Defects: three React Router v6/v7 snippets fail on React 19 (ReactDOM.render, a useRoutes snippet with missing imports and a wrong function name, a TypeScript cast inside a jsx block); with the React 19 onCaughtError hook the ErrorBoundary's beforeCapture and captureReactException are deduped away; Redux state carries passwords in clear despite the denylist claim; Profiler ops are ui.mount/ui.update/ui.render, not ui.react.*; the guide's routing API is deprecated in the build; the verify test span ends before its error; no sessions without a release.",
+  "sdk": {
+   "name": "sentry.javascript.react",
+   "version": "10.67.0",
+   "integrations": 16
+  },
+  "variants": {
+   "base (guide config, React 19 root hooks)": "partial",
+   "error boundary with the page's React 19 root": "partial (boundary features deduped)",
+   "error boundary on a plain root": "works",
+   "react-router v7 (guide snippet + wrapCreateBrowserRouterV7)": "works",
+   "react-router v7 declarative snippet": "broken (ReactDOM.render)",
+   "react-router v7 useRoutes snippet": "broken (missing imports)",
+   "react-router v8 version-agnostic API": "works",
+   "Profiler": "partial (op names)",
+   "Redux": "partial (denylist claim)",
+   "component names (Babel plugin)": "not run",
+   "TanStack Router": "not run"
+  }
  }
 ]

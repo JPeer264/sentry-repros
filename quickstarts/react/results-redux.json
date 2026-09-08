@@ -1,0 +1,4825 @@
+{
+  "variant": "redux",
+  "pagePath": "/redux.html",
+  "mode": "production",
+  "meta": {
+    "initialized": true,
+    "SDK_VERSION": "10.67.0",
+    "sdk": {
+      "name": "sentry.javascript.react",
+      "version": "10.67.0",
+      "packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession",
+      "BrowserTracing",
+      "Replay",
+      "Feedback",
+      "SpanStreaming",
+      "WebVitals"
+    ],
+    "options": {
+      "tracesSampleRate": 1,
+      "tracePropagationTargets": [
+        "/^\\//",
+        "/^https:\\/\\/yourserver\\.io\\/api/"
+      ],
+      "replaysSessionSampleRate": 0.1,
+      "replaysOnErrorSampleRate": 1,
+      "tunnel": "/tunnel",
+      "traceLifecycle": "stream",
+      "attachStacktrace": true,
+      "debug": true
+    },
+    "react": "19.2.8"
+  },
+  "steps": [
+    {
+      "label": "boot",
+      "result": {
+        "sdkUp": true,
+        "appUp": true,
+        "pageErrorsAtBoot": [],
+        "feedbackWidget": true
+      }
+    },
+    {
+      "label": "click #btn-throw (index.mdx:361-370, onClick throws \"Sentry Test Error\")",
+      "result": null,
+      "itemsBefore": 0
+    },
+    {
+      "label": "click #btn-span (index.mdx:376-389, startSpan + setTimeout throw)",
+      "result": null,
+      "itemsBefore": 2
+    },
+    {
+      "label": "click #btn-log (index.mdx:397-401, Sentry.logger.*)",
+      "result": null,
+      "itemsBefore": 2
+    },
+    {
+      "label": "click #btn-fetch (relative + absolute same-origin fetch to /recorder)",
+      "result": {
+        "recorderHits": true,
+        "headers": [
+          {
+            "url": "/recorder?from=relative",
+            "sentry-trace": "09c7990b5806430ba70e5d39f4f9ee2b-8c543ca27816e5c6-1",
+            "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=09c7990b5806430ba70e5d39f4f9ee2b,sentry-org_id=0,sentry-replay_id=d112f079a5be47d28beac3a3e1df8c4c,sentry-sampled=true,sentry-sample_rand=0.11058664592535072,sentry-sample_rate=1",
+            "traceparent": null
+          },
+          {
+            "url": "/recorder?from=absolute",
+            "sentry-trace": "09c7990b5806430ba70e5d39f4f9ee2b-be26ef778fb96297-1",
+            "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=09c7990b5806430ba70e5d39f4f9ee2b,sentry-org_id=0,sentry-replay_id=d112f079a5be47d28beac3a3e1df8c4c,sentry-sampled=true,sentry-sample_rand=0.11058664592535072,sentry-sample_rate=1",
+            "traceparent": null
+          }
+        ]
+      },
+      "itemsBefore": 2
+    },
+    {
+      "label": "click #btn-dispatch (INCREMENT x2, SET_PASSWORD, GOVERNMENT_SECRETS)",
+      "result": {
+        "state": {
+          "count": 2,
+          "password": "hunter2",
+          "secret": "area51"
+        }
+      },
+      "itemsBefore": 2
+    },
+    {
+      "label": "click #btn-capture-redux (captureException after dispatching)",
+      "result": null,
+      "itemsBefore": 2
+    }
+  ],
+  "sentinel1": true,
+  "pageloadArrived": true,
+  "summary": {
+    "itemTypes": [
+      "event",
+      "attachment",
+      "event",
+      "attachment",
+      "event",
+      "attachment",
+      "event",
+      "attachment",
+      "span",
+      "log"
+    ],
+    "events": [
+      {
+        "exception": "Error: Sentry Test Error",
+        "mechanism": "auto.browser.global_handlers.onerror",
+        "handled": false,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "react",
+          "state",
+          "culture"
+        ],
+        "transaction": "/redux.html"
+      },
+      {
+        "exception": "Error: Sentry Test Error",
+        "mechanism": "auto.browser.browserapierrors.setTimeout",
+        "handled": false,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "react",
+          "state",
+          "culture"
+        ],
+        "transaction": "/redux.html"
+      },
+      {
+        "exception": "Error: Error with redux state",
+        "mechanism": "generic",
+        "handled": true,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "react",
+          "state",
+          "culture"
+        ],
+        "transaction": "/redux.html"
+      },
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "react",
+          "state",
+          "culture"
+        ],
+        "transaction": "/redux.html"
+      }
+    ],
+    "spans": [
+      {
+        "op": "test",
+        "name": "Example Frontend Span",
+        "is_segment": false,
+        "origin": "manual",
+        "status": "ok"
+      },
+      {
+        "op": "http.client",
+        "name": "GET localhost",
+        "is_segment": false,
+        "origin": "auto.http.browser",
+        "status": "ok"
+      },
+      {
+        "op": "http.client",
+        "name": "GET localhost",
+        "is_segment": false,
+        "origin": "auto.http.browser",
+        "status": "ok"
+      },
+      {
+        "op": "test",
+        "name": "sentinel-span",
+        "is_segment": false,
+        "origin": "manual",
+        "status": "ok"
+      },
+      {
+        "op": "browser.dom_content_loaded_event",
+        "name": "http://localhost:4713/redux.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.load_event",
+        "name": "http://localhost:4713/redux.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.connect",
+        "name": "http://localhost:4713/redux.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.cache",
+        "name": "http://localhost:4713/redux.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.dns",
+        "name": "http://localhost:4713/redux.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.request",
+        "name": "http://localhost:4713/redux.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.response",
+        "name": "http://localhost:4713/redux.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "resource.script",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "resource.other",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-contentful-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok"
+      },
+      {
+        "op": "pageload",
+        "name": "Pageload",
+        "is_segment": true,
+        "source": "url",
+        "origin": "auto.pageload.browser",
+        "url_path": "/redux.html",
+        "status": "error"
+      }
+    ],
+    "logs": [
+      "info: User action",
+      "warn: Slow response",
+      "error: Operation failed"
+    ],
+    "attachments": [
+      {
+        "filename": "redux_state.json",
+        "length": 41
+      },
+      {
+        "filename": "redux_state.json",
+        "length": 50
+      },
+      {
+        "filename": "redux_state.json",
+        "length": 50
+      },
+      {
+        "filename": "redux_state.json",
+        "length": 50
+      }
+    ],
+    "sessions": [],
+    "replay": 0,
+    "headers": [
+      {
+        "url": "/recorder?from=relative",
+        "sentry-trace": "09c7990b5806430ba70e5d39f4f9ee2b-8c543ca27816e5c6-1",
+        "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=09c7990b5806430ba70e5d39f4f9ee2b,sentry-org_id=0,sentry-replay_id=d112f079a5be47d28beac3a3e1df8c4c,sentry-sampled=true,sentry-sample_rand=0.11058664592535072,sentry-sample_rate=1",
+        "traceparent": null
+      },
+      {
+        "url": "/recorder?from=absolute",
+        "sentry-trace": "09c7990b5806430ba70e5d39f4f9ee2b-be26ef778fb96297-1",
+        "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=09c7990b5806430ba70e5d39f4f9ee2b,sentry-org_id=0,sentry-replay_id=d112f079a5be47d28beac3a3e1df8c4c,sentry-sampled=true,sentry-sample_rand=0.11058664592535072,sentry-sample_rate=1",
+        "traceparent": null
+      }
+    ]
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: BrowserTracing",
+    "log: Sentry Logger [log]: Integration installed: Replay",
+    "log: Sentry Logger [log]: Integration installed: Feedback",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Sentry Logger [log]: Integration installed: WebVitals",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: pageload\n  name: Pageload\n  ID: b983c270ce5ee688",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "log: Sentry Logger [log]: [Replay]  Creating new session",
+    "log: Sentry Logger [log]: [Replay]  Starting replay in buffer mode",
+    "log: Sentry Logger [log]: [Replay]  Using compression worker",
+    "log: Sentry Logger [log]: [Replay]  Updating session start time to earliest event in buffer to Tue Sep 08 2026 23:22:08 GMT+0200 (Central European Summer Time)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Captured error event `Sentry Test Error`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: [Tracing] Root span: internal_error -> Global error occurred",
+    "log: Sentry Logger [log]: [Replay]  Converting buffer to session",
+    "log: Sentry Logger [log]: [Replay]  Session duration (0s) is too short, not sending replay.",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: test\n  name: Example Frontend Span\n  ID: a9d10910c2bbbcfa\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" span \"Example Frontend Span\" with ID a9d10910c2bbbcfa",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: http.client\n  name: GET localhost\n  ID: 8c543ca27816e5c6\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: http.client\n  name: GET localhost\n  ID: be26ef778fb96297\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: Captured error event `Sentry Test Error`",
+    "log: Sentry Logger [log]: [Tracing] Root span: internal_error -> Global error occurred",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET localhost\" with ID 8c543ca27816e5c6",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET localhost\" with ID be26ef778fb96297",
+    "log: Sentry Logger [log]: Captured error event `Error with redux state`",
+    "log: Sentry Logger [log]: Captured error event `sentinel`",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: test\n  name: sentinel-span\n  ID: 97f1170dfaa35406\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" span \"sentinel-span\" with ID 97f1170dfaa35406",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dom_content_loaded_event\n  name: http://localhost:4713/redux.html\n  ID: a8a1c4f5a8dac6cd\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dom_content_loaded_event\" span \"http://localhost:4713/redux.html\" with ID a8a1c4f5a8dac6cd",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.load_event\n  name: http://localhost:4713/redux.html\n  ID: 876e95e09ae1be70\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.load_event\" span \"http://localhost:4713/redux.html\" with ID 876e95e09ae1be70",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.connect\n  name: http://localhost:4713/redux.html\n  ID: 8032f0a2a191270b\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.connect\" span \"http://localhost:4713/redux.html\" with ID 8032f0a2a191270b",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.cache\n  name: http://localhost:4713/redux.html\n  ID: 8651bd7addca38de\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.cache\" span \"http://localhost:4713/redux.html\" with ID 8651bd7addca38de",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dns\n  name: http://localhost:4713/redux.html\n  ID: 827e8a06f33f8e20\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dns\" span \"http://localhost:4713/redux.html\" with ID 827e8a06f33f8e20",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.request\n  name: http://localhost:4713/redux.html\n  ID: a0c508d19e58eb1d\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.request\" span \"http://localhost:4713/redux.html\" with ID a0c508d19e58eb1d",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.response\n  name: http://localhost:4713/redux.html\n  ID: 935f231c74e18513\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.response\" span \"http://localhost:4713/redux.html\" with ID 935f231c74e18513",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.script\n  name: localhost\n  ID: 921d86dbbc3992a6\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.script\" span \"localhost\" with ID 921d86dbbc3992a6",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.other\n  name: localhost\n  ID: be2e9b359a62359a\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.other\" span \"localhost\" with ID be2e9b359a62359a",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-paint\n  ID: 875f3d0df4aa881f\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-paint\" with ID 875f3d0df4aa881f",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-contentful-paint\n  ID: 8c2d5babdd6cb281\n  parent ID: b983c270ce5ee688\n  root ID: b983c270ce5ee688\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-contentful-paint\" with ID 8c2d5babdd6cb281",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"pageload\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"pageload\" root span \"Pageload\" with ID b983c270ce5ee688",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.value: 2} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fp.value: 68} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fcp.value: 68} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.request_time: 1.3999999910593033} on pageload span",
+    "log: Sentry Logger [log]: Sending span envelope for trace 09c7990b5806430ba70e5d39f4f9ee2b with 16 spans"
+  ],
+  "pageErrors": [
+    "Sentry Test Error",
+    "Sentry Test Error"
+  ],
+  "itemsAfterVerify": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Test Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Test Error",
+          "mechanism": "auto.browser.global_handlers.onerror",
+          "handled": false,
+          "frames": 7
+        }
+      ],
+      "mechanism": "auto.browser.global_handlers.onerror",
+      "handled": false,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 0,
+          "password": null,
+          "secret": null
+        }
+      },
+      "topFrame": {
+        "function": "onClick",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 41,
+      "payload": {
+        "count": 0,
+        "password": null,
+        "secret": null
+      }
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Test Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Test Error",
+          "mechanism": "auto.browser.browserapierrors.setTimeout",
+          "handled": false,
+          "frames": 1
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.setTimeout",
+      "handled": false,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 2,
+          "password": "hunter2",
+          "secret": "area51"
+        }
+      },
+      "topFrame": {
+        "function": "?",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "extra": {
+        "arguments": []
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > div > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4713/recorder?from=absolute",
+        "ui.click: body > div#app > div > button#btn-dispatch[type=\"button\"]",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 50,
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error with redux state",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error with redux state",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 7
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 2,
+          "password": "hunter2",
+          "secret": "area51"
+        }
+      },
+      "topFrame": {
+        "function": "onClick",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > div > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4713/recorder?from=absolute",
+        "ui.click: body > div#app > div > button#btn-dispatch[type=\"button\"]",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > button#btn-capture-redux[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 50,
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 2,
+          "password": "hunter2",
+          "secret": "area51"
+        }
+      },
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > div > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4713/recorder?from=absolute",
+        "ui.click: body > div#app > div > button#btn-dispatch[type=\"button\"]",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > button#btn-capture-redux[type=\"button\"]",
+        "sentry.event: Error: Error with redux state"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 50,
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "items": [
+        "test Example Frontend Span",
+        "http.client GET localhost",
+        "http.client GET localhost",
+        "test sentinel-span",
+        "browser.dom_content_loaded_event http://localhost:4713/redux.html",
+        "browser.load_event http://localhost:4713/redux.html",
+        "browser.connect http://localhost:4713/redux.html",
+        "browser.cache http://localhost:4713/redux.html",
+        "browser.dns http://localhost:4713/redux.html",
+        "browser.request http://localhost:4713/redux.html",
+        "browser.response http://localhost:4713/redux.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "Example Frontend Span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "a9d10910c2bbbcfa",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "8c543ca27816e5c6",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4713/recorder?from=relative",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 15,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4713/recorder?from=relative",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "url.query": "from=relative",
+            "server.address": "localhost:4713",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.4341,
+            "http.request.domain_lookup_start": 1788902528.4341,
+            "http.request.domain_lookup_end": 1788902528.4341,
+            "http.request.connect_start": 1788902528.4341,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.4341,
+            "http.request.request_start": 1788902528.4342997,
+            "http.request.response_start": 1788902528.4347,
+            "http.request.response_end": 1788902528.4348,
+            "http.request.time_to_first_byte": 0.24230000001192092,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "be26ef778fb96297",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4713/recorder?from=absolute",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 15,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4713/recorder?from=absolute",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "server.address": "localhost:4713",
+            "server.port": 4713,
+            "url.query": "from=absolute",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.4343998,
+            "http.request.domain_lookup_start": 1788902528.4345,
+            "http.request.domain_lookup_end": 1788902528.4345,
+            "http.request.connect_start": 1788902528.4345,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.4347,
+            "http.request.request_start": 1788902528.4347,
+            "http.request.response_start": 1788902528.4350998,
+            "http.request.response_end": 1788902528.4352,
+            "http.request.time_to_first_byte": 0.24270000000298023,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "97f1170dfaa35406",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "a8a1c4f5a8dac6cd",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "876e95e09ae1be70",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "8032f0a2a191270b",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "8651bd7addca38de",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "827e8a06f33f8e20",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "a0c508d19e58eb1d",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "935f231c74e18513",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "921d86dbbc3992a6",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4713/redux.js",
+          "status_code": 200,
+          "duration_ms": 4,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4713",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4713/redux.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1616717,
+            "http.response.body.size": 1616417,
+            "http.response.body.decoded_size": 1616417,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.2005,
+            "http.request.domain_lookup_start": 1788902528.2005,
+            "http.request.domain_lookup_end": 1788902528.2005,
+            "http.request.connect_start": 1788902528.2005,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.2005,
+            "http.request.request_start": 1788902528.2025,
+            "http.request.response_start": 1788902528.2036,
+            "http.request.response_end": 1788902528.2041,
+            "http.request.time_to_first_byte": 0.011200000002980232,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "be2e9b359a62359a",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4713/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4713",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4713/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.2561,
+            "http.request.domain_lookup_start": 1788902528.2561,
+            "http.request.domain_lookup_end": 1788902528.2561,
+            "http.request.connect_start": 1788902528.2561,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.2561,
+            "http.request.request_start": 1788902528.2561998,
+            "http.request.response_start": 1788902528.2567997,
+            "http.request.response_end": 1788902528.2568998,
+            "http.request.time_to_first_byte": 0.06440000000596047,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "875f3d0df4aa881f",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "8c2d5babdd6cb281",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "error",
+          "span_id": "b983c270ce5ee688",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4713/redux.html",
+          "url_path": "/redux.html",
+          "duration_ms": 310,
+          "attributes": {
+            "sentry.status.message": "internal_error",
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/redux.html",
+            "url.full": "http://localhost:4713/redux.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 50,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 2,
+            "browser.web_vital.fp.value": 68,
+            "browser.web_vital.fcp.value": 68,
+            "browser.web_vital.ttfb.request_time": 1.3999999910593033,
+            "browser.performance.time_origin": 1788902528.1924,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "state.type": "redux",
+            "react.version": "19.2.8",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "Replay",
+              "Feedback",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        }
+      ]
+    },
+    {
+      "type": "log",
+      "items": [
+        "info: User action",
+        "warn: Slow response",
+        "error: Operation failed"
+      ],
+      "attributes": [
+        {
+          "userId": "123",
+          "sentry.sdk.name": "sentry.javascript.react",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sentry.trace.parent_span_id": "b983c270ce5ee688",
+          "sentry.timestamp.sequence": 0
+        },
+        {
+          "duration": 5000,
+          "sentry.sdk.name": "sentry.javascript.react",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sentry.trace.parent_span_id": "b983c270ce5ee688",
+          "sentry.timestamp.sequence": 0
+        },
+        {
+          "reason": "timeout",
+          "sentry.sdk.name": "sentry.javascript.react",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sentry.trace.parent_span_id": "b983c270ce5ee688",
+          "sentry.timestamp.sequence": 1
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Test Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Test Error",
+          "mechanism": "auto.browser.global_handlers.onerror",
+          "handled": false,
+          "frames": 7
+        }
+      ],
+      "mechanism": "auto.browser.global_handlers.onerror",
+      "handled": false,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 0,
+          "password": null,
+          "secret": null
+        }
+      },
+      "topFrame": {
+        "function": "onClick",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 41,
+      "payload": {
+        "count": 0,
+        "password": null,
+        "secret": null
+      }
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Test Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Test Error",
+          "mechanism": "auto.browser.browserapierrors.setTimeout",
+          "handled": false,
+          "frames": 1
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.setTimeout",
+      "handled": false,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 2,
+          "password": "hunter2",
+          "secret": "area51"
+        }
+      },
+      "topFrame": {
+        "function": "?",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "extra": {
+        "arguments": []
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > div > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4713/recorder?from=absolute",
+        "ui.click: body > div#app > div > button#btn-dispatch[type=\"button\"]",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 50,
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error with redux state",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error with redux state",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 7
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 2,
+          "password": "hunter2",
+          "secret": "area51"
+        }
+      },
+      "topFrame": {
+        "function": "onClick",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > div > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4713/recorder?from=absolute",
+        "ui.click: body > div#app > div > button#btn-dispatch[type=\"button\"]",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > button#btn-capture-redux[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 50,
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/react",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "react",
+        "state",
+        "culture"
+      ],
+      "react": {
+        "version": "19.2.8"
+      },
+      "state": {
+        "type": "redux",
+        "value": {
+          "count": 2,
+          "password": "hunter2",
+          "secret": "area51"
+        }
+      },
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4713/redux.js",
+        "in_app": true
+      },
+      "transaction": "/redux.html",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "tags": {
+        "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+      },
+      "breadcrumbs": [
+        "redux.action:",
+        "ui.click: body > div#app > div > div > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > div > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > div > div > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4713/recorder?from=absolute",
+        "ui.click: body > div#app > div > button#btn-dispatch[type=\"button\"]",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "redux.action:",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body > div#app > div > button#btn-capture-redux[type=\"button\"]",
+        "sentry.event: Error: Error with redux state"
+      ],
+      "request": {
+        "url": "http://localhost:4713/redux.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "attachment",
+      "filename": "redux_state.json",
+      "length": 50,
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.react",
+      "sdk_version": "10.67.0",
+      "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+      "items": [
+        "test Example Frontend Span",
+        "http.client GET localhost",
+        "http.client GET localhost",
+        "test sentinel-span",
+        "browser.dom_content_loaded_event http://localhost:4713/redux.html",
+        "browser.load_event http://localhost:4713/redux.html",
+        "browser.connect http://localhost:4713/redux.html",
+        "browser.cache http://localhost:4713/redux.html",
+        "browser.dns http://localhost:4713/redux.html",
+        "browser.request http://localhost:4713/redux.html",
+        "browser.response http://localhost:4713/redux.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "Example Frontend Span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "a9d10910c2bbbcfa",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "8c543ca27816e5c6",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4713/recorder?from=relative",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 15,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4713/recorder?from=relative",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "url.query": "from=relative",
+            "server.address": "localhost:4713",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.4341,
+            "http.request.domain_lookup_start": 1788902528.4341,
+            "http.request.domain_lookup_end": 1788902528.4341,
+            "http.request.connect_start": 1788902528.4341,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.4341,
+            "http.request.request_start": 1788902528.4342997,
+            "http.request.response_start": 1788902528.4347,
+            "http.request.response_end": 1788902528.4348,
+            "http.request.time_to_first_byte": 0.24230000001192092,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "be26ef778fb96297",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4713/recorder?from=absolute",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 15,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4713/recorder?from=absolute",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "server.address": "localhost:4713",
+            "server.port": 4713,
+            "url.query": "from=absolute",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.4343998,
+            "http.request.domain_lookup_start": 1788902528.4345,
+            "http.request.domain_lookup_end": 1788902528.4345,
+            "http.request.connect_start": 1788902528.4345,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.4347,
+            "http.request.request_start": 1788902528.4347,
+            "http.request.response_start": 1788902528.4350998,
+            "http.request.response_end": 1788902528.4352,
+            "http.request.time_to_first_byte": 0.24270000000298023,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "97f1170dfaa35406",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "a8a1c4f5a8dac6cd",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "876e95e09ae1be70",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "8032f0a2a191270b",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "8651bd7addca38de",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "827e8a06f33f8e20",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "a0c508d19e58eb1d",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "http://localhost:4713/redux.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "935f231c74e18513",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "921d86dbbc3992a6",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4713/redux.js",
+          "status_code": 200,
+          "duration_ms": 4,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4713",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4713/redux.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1616717,
+            "http.response.body.size": 1616417,
+            "http.response.body.decoded_size": 1616417,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.2005,
+            "http.request.domain_lookup_start": 1788902528.2005,
+            "http.request.domain_lookup_end": 1788902528.2005,
+            "http.request.connect_start": 1788902528.2005,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.2005,
+            "http.request.request_start": 1788902528.2025,
+            "http.request.response_start": 1788902528.2036,
+            "http.request.response_end": 1788902528.2041,
+            "http.request.time_to_first_byte": 0.011200000002980232,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "be2e9b359a62359a",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4713/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4713",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4713/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788902528.2561,
+            "http.request.domain_lookup_start": 1788902528.2561,
+            "http.request.domain_lookup_end": 1788902528.2561,
+            "http.request.connect_start": 1788902528.2561,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788902528.2561,
+            "http.request.request_start": 1788902528.2561998,
+            "http.request.response_start": 1788902528.2567997,
+            "http.request.response_end": 1788902528.2568998,
+            "http.request.time_to_first_byte": 0.06440000000596047,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "875f3d0df4aa881f",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "8c2d5babdd6cb281",
+          "parent_span_id": "b983c270ce5ee688",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "error",
+          "span_id": "b983c270ce5ee688",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4713/redux.html",
+          "url_path": "/redux.html",
+          "duration_ms": 310,
+          "attributes": {
+            "sentry.status.message": "internal_error",
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/redux.html",
+            "url.full": "http://localhost:4713/redux.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 50,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 2,
+            "browser.web_vital.fp.value": 68,
+            "browser.web_vital.fcp.value": 68,
+            "browser.web_vital.ttfb.request_time": 1.3999999910593033,
+            "browser.performance.time_origin": 1788902528.1924,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b983c270ce5ee688",
+            "sentry.sdk.name": "sentry.javascript.react",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "state.type": "redux",
+            "react.version": "19.2.8",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "Replay",
+              "Feedback",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory",
+            "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c"
+          }
+        }
+      ]
+    },
+    {
+      "type": "log",
+      "items": [
+        "info: User action",
+        "warn: Slow response",
+        "error: Operation failed"
+      ],
+      "attributes": [
+        {
+          "userId": "123",
+          "sentry.sdk.name": "sentry.javascript.react",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sentry.trace.parent_span_id": "b983c270ce5ee688",
+          "sentry.timestamp.sequence": 0
+        },
+        {
+          "duration": 5000,
+          "sentry.sdk.name": "sentry.javascript.react",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sentry.trace.parent_span_id": "b983c270ce5ee688",
+          "sentry.timestamp.sequence": 0
+        },
+        {
+          "reason": "timeout",
+          "sentry.sdk.name": "sentry.javascript.react",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sentry.trace.parent_span_id": "b983c270ce5ee688",
+          "sentry.timestamp.sequence": 1
+        }
+      ]
+    }
+  ],
+  "headers": [
+    {
+      "url": "/recorder?from=relative",
+      "sentry-trace": "09c7990b5806430ba70e5d39f4f9ee2b-8c543ca27816e5c6-1",
+      "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=09c7990b5806430ba70e5d39f4f9ee2b,sentry-org_id=0,sentry-replay_id=d112f079a5be47d28beac3a3e1df8c4c,sentry-sampled=true,sentry-sample_rand=0.11058664592535072,sentry-sample_rate=1",
+      "traceparent": null
+    },
+    {
+      "url": "/recorder?from=absolute",
+      "sentry-trace": "09c7990b5806430ba70e5d39f4f9ee2b-be26ef778fb96297-1",
+      "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=09c7990b5806430ba70e5d39f4f9ee2b,sentry-org_id=0,sentry-replay_id=d112f079a5be47d28beac3a3e1df8c4c,sentry-sampled=true,sentry-sample_rand=0.11058664592535072,sentry-sample_rate=1",
+      "traceparent": null
+    }
+  ],
+  "raw": [
+    {
+      "envHeader": {
+        "event_id": "88f06f52d7624b53970e27367d7cddeb",
+        "sent_at": "2026-09-08T21:22:08.326Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Sentry Test Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "dispatchDiscreteEvent",
+                    "in_app": true,
+                    "lineno": 12123,
+                    "colno": 40
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "dispatchEvent",
+                    "in_app": true,
+                    "lineno": 12142,
+                    "colno": 11
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "dispatchEventForPluginEventSystem",
+                    "in_app": true,
+                    "lineno": 10095,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "batchedUpdates$1",
+                    "in_app": true,
+                    "lineno": 2158,
+                    "colno": 40
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 10379,
+                    "colno": 9
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "processDispatchQueue",
+                    "in_app": true,
+                    "lineno": 10003,
+                    "colno": 17
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "onClick",
+                    "in_app": true,
+                    "lineno": 43381,
+                    "colno": 17
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.global_handlers.onerror",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4713/redux.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "b983c270ce5ee688",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b"
+          },
+          "react": {
+            "version": "19.2.8"
+          },
+          "state": {
+            "state": {
+              "type": "redux",
+              "value": {
+                "count": 0,
+                "password": null,
+                "secret": null
+              }
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "event_id": "88f06f52d7624b53970e27367d7cddeb",
+        "timestamp": 1788902528.324,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.react",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/react",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/redux.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788902528.246,
+            "category": "redux.action",
+            "data": {
+              "type": "@@redux/INIT5.2.b.8.q.i"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.318,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-throw[type=\"button\"]"
+          }
+        ],
+        "tags": {
+          "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "88f06f52d7624b53970e27367d7cddeb",
+        "sent_at": "2026-09-08T21:22:08.326Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "attachment",
+        "length": 41,
+        "filename": "redux_state.json"
+      },
+      "payload": {
+        "count": 0,
+        "password": null,
+        "secret": null
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "6330090c10394dd18cab4776cc5af16d",
+        "sent_at": "2026-09-08T21:22:08.482Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Sentry Test Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 43394,
+                    "colno": 21
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.browserapierrors.setTimeout",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "6330090c10394dd18cab4776cc5af16d",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4713/redux.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "b983c270ce5ee688",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b"
+          },
+          "react": {
+            "version": "19.2.8"
+          },
+          "state": {
+            "state": {
+              "type": "redux",
+              "value": {
+                "count": 2,
+                "password": "hunter2",
+                "secret": "area51"
+              }
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788902528.482,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.react",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/react",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/redux.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788902528.246,
+            "category": "redux.action",
+            "data": {
+              "type": "@@redux/INIT5.2.b.8.q.i"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.318,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.325,
+            "category": "sentry.event",
+            "event_id": "88f06f52d7624b53970e27367d7cddeb",
+            "level": "error",
+            "message": "Error: Sentry Test Error"
+          },
+          {
+            "timestamp": 1788902528.366,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-span[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.399,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-log[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.433,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-fetch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.448,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "/recorder?from=relative",
+              "__span": "8c543ca27816e5c6",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788902528.448,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4713/recorder?from=absolute",
+              "__span": "be26ef778fb96297",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-dispatch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "INCREMENT"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "INCREMENT"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "SET_PASSWORD",
+              "password": "hunter2"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "GOVERNMENT_SECRETS",
+              "secret": "area51"
+            },
+            "type": "info"
+          }
+        ],
+        "tags": {
+          "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+        },
+        "extra": {
+          "arguments": []
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "6330090c10394dd18cab4776cc5af16d",
+        "sent_at": "2026-09-08T21:22:08.482Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "attachment",
+        "length": 50,
+        "filename": "redux_state.json"
+      },
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "430dc3e02f1d4ef1a3ff66763d984edb",
+        "sent_at": "2026-09-08T21:22:08.500Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Error with redux state",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "dispatchDiscreteEvent",
+                    "in_app": true,
+                    "lineno": 12123,
+                    "colno": 40
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "dispatchEvent",
+                    "in_app": true,
+                    "lineno": 12142,
+                    "colno": 11
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "dispatchEventForPluginEventSystem",
+                    "in_app": true,
+                    "lineno": 10095,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "batchedUpdates$1",
+                    "in_app": true,
+                    "lineno": 2158,
+                    "colno": 40
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 10379,
+                    "colno": 9
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "processDispatchQueue",
+                    "in_app": true,
+                    "lineno": 10003,
+                    "colno": 17
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "onClick",
+                    "in_app": true,
+                    "lineno": 43455,
+                    "colno": 41
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "430dc3e02f1d4ef1a3ff66763d984edb",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4713/redux.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "b983c270ce5ee688",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b"
+          },
+          "react": {
+            "version": "19.2.8"
+          },
+          "state": {
+            "state": {
+              "type": "redux",
+              "value": {
+                "count": 2,
+                "password": "hunter2",
+                "secret": "area51"
+              }
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788902528.5,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.react",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/react",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/redux.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788902528.246,
+            "category": "redux.action",
+            "data": {
+              "type": "@@redux/INIT5.2.b.8.q.i"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.318,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.325,
+            "category": "sentry.event",
+            "event_id": "88f06f52d7624b53970e27367d7cddeb",
+            "level": "error",
+            "message": "Error: Sentry Test Error"
+          },
+          {
+            "timestamp": 1788902528.366,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-span[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.399,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-log[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.433,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-fetch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.448,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "/recorder?from=relative",
+              "__span": "8c543ca27816e5c6",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788902528.448,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4713/recorder?from=absolute",
+              "__span": "be26ef778fb96297",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-dispatch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "INCREMENT"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "INCREMENT"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "SET_PASSWORD",
+              "password": "hunter2"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "GOVERNMENT_SECRETS",
+              "secret": "area51"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.482,
+            "category": "sentry.event",
+            "event_id": "6330090c10394dd18cab4776cc5af16d",
+            "level": "error",
+            "message": "Error: Sentry Test Error"
+          },
+          {
+            "timestamp": 1788902528.5,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-capture-redux[type=\"button\"]"
+          }
+        ],
+        "tags": {
+          "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "430dc3e02f1d4ef1a3ff66763d984edb",
+        "sent_at": "2026-09-08T21:22:08.500Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "attachment",
+        "length": 50,
+        "filename": "redux_state.json"
+      },
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "aef5ebf9e4ad449ca2e4e20d381f0871",
+        "sent_at": "2026-09-08T21:22:08.502Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4713/redux.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 43358,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "aef5ebf9e4ad449ca2e4e20d381f0871",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4713/redux.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "b983c270ce5ee688",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b"
+          },
+          "react": {
+            "version": "19.2.8"
+          },
+          "state": {
+            "state": {
+              "type": "redux",
+              "value": {
+                "count": 2,
+                "password": "hunter2",
+                "secret": "area51"
+              }
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788902528.502,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.react",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/react",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/redux.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788902528.246,
+            "category": "redux.action",
+            "data": {
+              "type": "@@redux/INIT5.2.b.8.q.i"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.318,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.325,
+            "category": "sentry.event",
+            "event_id": "88f06f52d7624b53970e27367d7cddeb",
+            "level": "error",
+            "message": "Error: Sentry Test Error"
+          },
+          {
+            "timestamp": 1788902528.366,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-span[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.399,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-log[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.433,
+            "category": "ui.click",
+            "message": "body > div#app > div > div > button#btn-fetch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.448,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "/recorder?from=relative",
+              "__span": "8c543ca27816e5c6",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788902528.448,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4713/recorder?from=absolute",
+              "__span": "be26ef778fb96297",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-dispatch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "INCREMENT"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "INCREMENT"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "SET_PASSWORD",
+              "password": "hunter2"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.467,
+            "category": "redux.action",
+            "data": {
+              "type": "GOVERNMENT_SECRETS",
+              "secret": "area51"
+            },
+            "type": "info"
+          },
+          {
+            "timestamp": 1788902528.482,
+            "category": "sentry.event",
+            "event_id": "6330090c10394dd18cab4776cc5af16d",
+            "level": "error",
+            "message": "Error: Sentry Test Error"
+          },
+          {
+            "timestamp": 1788902528.5,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-capture-redux[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788902528.5,
+            "category": "sentry.event",
+            "event_id": "430dc3e02f1d4ef1a3ff66763d984edb",
+            "level": "error",
+            "message": "Error: Error with redux state"
+          }
+        ],
+        "tags": {
+          "replayId": "d112f079a5be47d28beac3a3e1df8c4c"
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "aef5ebf9e4ad449ca2e4e20d381f0871",
+        "sent_at": "2026-09-08T21:22:08.502Z",
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "attachment",
+        "length": 50,
+        "filename": "redux_state.json"
+      },
+      "payload": {
+        "count": 2,
+        "password": "hunter2",
+        "secret": "area51"
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-08T21:22:10.009Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+          "org_id": "0",
+          "replay_id": "d112f079a5be47d28beac3a3e1df8c4c",
+          "sampled": "true",
+          "sample_rand": "0.11058664592535072",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 16,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "Example Frontend Span",
+            "span_id": "a9d10910c2bbbcfa",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.3672,
+            "end_timestamp": 1788902528.3675,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "GET localhost",
+            "span_id": "8c543ca27816e5c6",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.4335,
+            "end_timestamp": 1788902528.4487,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.client",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4713/recorder?from=relative",
+                "type": "string"
+              },
+              "type": {
+                "value": "fetch",
+                "type": "string"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "url.query": {
+                "value": "from=relative",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4713",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 11,
+                "type": "integer"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788902528.4341,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788902528.4341,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788902528.4341,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788902528.4341,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788902528.4341,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788902528.4342997,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788902528.4347,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788902528.4348,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.24230000001192092,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "GET localhost",
+            "span_id": "be26ef778fb96297",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.4341,
+            "end_timestamp": 1788902528.4489,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.client",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4713/recorder?from=absolute",
+                "type": "string"
+              },
+              "type": {
+                "value": "fetch",
+                "type": "string"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4713",
+                "type": "string"
+              },
+              "server.port": {
+                "value": 4713,
+                "type": "integer"
+              },
+              "url.query": {
+                "value": "from=absolute",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 11,
+                "type": "integer"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788902528.4343998,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788902528.4345,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788902528.4345,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788902528.4345,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788902528.4347,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788902528.4347,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788902528.4350998,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788902528.4352,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.24270000000298023,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sentinel-span",
+            "span_id": "97f1170dfaa35406",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.5026,
+            "end_timestamp": 1788902528.5026,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4713/redux.html",
+            "span_id": "a8a1c4f5a8dac6cd",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.2519,
+            "end_timestamp": 1788902528.2519,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dom_content_loaded_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4713/redux.html",
+            "span_id": "876e95e09ae1be70",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.2526,
+            "end_timestamp": 1788902528.2526,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.load_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4713/redux.html",
+            "span_id": "8032f0a2a191270b",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.1927,
+            "end_timestamp": 1788902528.1927,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.connect",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4713/redux.html",
+            "span_id": "8651bd7addca38de",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.1927,
+            "end_timestamp": 1788902528.1927,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.cache",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4713/redux.html",
+            "span_id": "827e8a06f33f8e20",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.1927,
+            "end_timestamp": 1788902528.1927,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dns",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4713/redux.html",
+            "span_id": "a0c508d19e58eb1d",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.193,
+            "end_timestamp": 1788902528.1945999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.request",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4713/redux.html",
+            "span_id": "935f231c74e18513",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.1944,
+            "end_timestamp": 1788902528.1945999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.response",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "921d86dbbc3992a6",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.2005,
+            "end_timestamp": 1788902528.2041,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.script",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4713",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4713/redux.js",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 1616717,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 1616417,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 1616417,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788902528.2005,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788902528.2005,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788902528.2005,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788902528.2005,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788902528.2005,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788902528.2025,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788902528.2036,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788902528.2041,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.011200000002980232,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "be2e9b359a62359a",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.2561,
+            "end_timestamp": 1788902528.2568998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.other",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4713",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4713/favicon.ico",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 404,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 309,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788902528.2561,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788902528.2561,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788902528.2561,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788902528.2561,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788902528.2561,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788902528.2561998,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788902528.2567997,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788902528.2568998,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.06440000000596047,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-paint",
+            "span_id": "875f3d0df4aa881f",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.2604,
+            "end_timestamp": 1788902528.2604,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-contentful-paint",
+            "span_id": "8c2d5babdd6cb281",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "parent_span_id": "b983c270ce5ee688",
+            "start_timestamp": 1788902528.2604,
+            "end_timestamp": 1788902528.2604,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Pageload",
+            "span_id": "b983c270ce5ee688",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "start_timestamp": 1788902528.1924,
+            "end_timestamp": 1788902528.5026,
+            "is_segment": true,
+            "status": "error",
+            "attributes": {
+              "sentry.status.message": {
+                "value": "internal_error",
+                "type": "string"
+              },
+              "sentry.origin": {
+                "value": "auto.pageload.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "pageload",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "url",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/redux.html",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4713/redux.html",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 50,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "idleTimeout",
+                "type": "string"
+              },
+              "browser.web_vital.ttfb.value": {
+                "value": 2,
+                "type": "integer"
+              },
+              "browser.web_vital.fp.value": {
+                "value": 68,
+                "type": "integer"
+              },
+              "browser.web_vital.fcp.value": {
+                "value": 68,
+                "type": "integer"
+              },
+              "browser.web_vital.ttfb.request_time": {
+                "value": 1.3999999910593033,
+                "type": "double"
+              },
+              "browser.performance.time_origin": {
+                "value": 1788902528.1924,
+                "type": "double"
+              },
+              "browser.performance.navigation.activation_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "state.type": {
+                "value": "redux",
+                "type": "string"
+              },
+              "react.version": {
+                "value": "19.2.8",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "Replay",
+                  "Feedback",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "sdk": {
+          "name": "sentry.javascript.react",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "log",
+        "item_count": 3,
+        "content_type": "application/vnd.sentry.items.log+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "timestamp": 1788902528.3999,
+            "level": "info",
+            "body": "User action",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "severity_number": 9,
+            "attributes": {
+              "userId": {
+                "value": "123",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              },
+              "sentry.trace.parent_span_id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.timestamp.sequence": {
+                "value": 0,
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "timestamp": 1788902528.4000998,
+            "level": "warn",
+            "body": "Slow response",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "severity_number": 13,
+            "attributes": {
+              "duration": {
+                "value": 5000,
+                "type": "integer"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              },
+              "sentry.trace.parent_span_id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.timestamp.sequence": {
+                "value": 0,
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "timestamp": 1788902528.4002,
+            "level": "error",
+            "body": "Operation failed",
+            "trace_id": "09c7990b5806430ba70e5d39f4f9ee2b",
+            "severity_number": 17,
+            "attributes": {
+              "reason": {
+                "value": "timeout",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.react",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "d112f079a5be47d28beac3a3e1df8c4c",
+                "type": "string"
+              },
+              "sentry.trace.parent_span_id": {
+                "value": "b983c270ce5ee688",
+                "type": "string"
+              },
+              "sentry.timestamp.sequence": {
+                "value": 1,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

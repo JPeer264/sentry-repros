@@ -5,7 +5,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | Path | Group | Guide | Variants | Status | Note |
 | --- | --- | --- | --- | --- | --- |
 | [QS-browser](browser/) | browser | javascript (plain browser) | npm ESM, loader script, CDN bundle, late initialization, esm-without-import | done | headless Chrome (playwright-core + system Chrome); npm, CDN (two bundles), late initialization, CommonJS and 127.0.0.1 variants run; loader script not runnable offline; lightweight page removed in v11 (SDK-1352) |
-| QS-react | browser framework | react | npm, manual setup | planned | build plus headless Chrome |
+| [QS-react](react/) | browser framework | react | npm, manual setup | done | esbuild + headless Chrome; nine variants run across the guide, error boundary, React Router v7/v8, Profiler and Redux; component names (Babel plugin) and TanStack Router not run |
 | QS-vue | browser framework | vue | npm, manual setup | planned | build plus headless Chrome |
 | QS-angular | browser framework | angular | npm, manual setup | planned | build plus headless Chrome |
 | QS-svelte | browser framework | svelte | npm, manual setup | planned | build plus headless Chrome |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 31 planned, 5 done, 4 not measurable.
+Totals: 30 planned, 6 done, 4 not measurable.
