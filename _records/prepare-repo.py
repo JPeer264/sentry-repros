@@ -22,7 +22,7 @@ for dp, dns, fns in os.walk(ROOT):
     dns[:]=[d for d in dns if d not in SKIP_DIRS and not d.startswith('.next')]
     for fn in fns:
         p=os.path.join(dp,fn)
-        if os.path.splitext(fn)[1].lower() in BIN_EXT or fn=='prepare-repo.py': continue
+        if os.path.splitext(fn)[1].lower() in BIN_EXT or (fn.endswith('.py') and os.path.basename(dp)=='_records'): continue
         try: b=open(p,'rb').read()
         except Exception: continue
         if b'\0' in b[:8192]: continue

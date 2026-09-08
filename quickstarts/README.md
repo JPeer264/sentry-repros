@@ -1,10 +1,10 @@
 # Getting-started paths
 
-One directory per docs guide: the install, configure and verify steps as a new user would run them, with the manual-setup variants the guide names, against the develop build. Status from `_records/getting-started-plan.json`.
+One directory per docs guide: the install, configure and verify steps as a new user would run them, with the manual-setup variants the guide names, against the develop build. Status from `_records/getting-started-plan.json`; a done row links its directory, whose README carries the observations and the per-variant `results-*.json`.
 
 | Path | Group | Guide | Variants | Status | Note |
 | --- | --- | --- | --- | --- | --- |
-| QS-browser | browser | javascript (plain browser) | npm ESM, loader script, CDN bundle, late initialization, esm-without-import | planned | headless Chrome; lightweight mode page is removed in v11 (SDK-1352) |
+| [QS-browser](browser/) | browser | javascript (plain browser) | npm ESM, loader script, CDN bundle, late initialization, esm-without-import | done | headless Chrome (playwright-core + system Chrome); npm, CDN (two bundles), late initialization, CommonJS and 127.0.0.1 variants run; loader script not runnable offline; lightweight page removed in v11 (SDK-1352) |
 | QS-react | browser framework | react | npm, manual setup | planned | build plus headless Chrome |
 | QS-vue | browser framework | vue | npm, manual setup | planned | build plus headless Chrome |
 | QS-angular | browser framework | angular | npm, manual setup | planned | build plus headless Chrome |
@@ -13,10 +13,10 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-ember | browser framework | ember | npm, manual setup | planned | build plus headless Chrome |
 | QS-gatsby | browser framework | gatsby | npm, manual setup | planned | build plus headless Chrome |
 | QS-wasm | browser | wasm | npm | planned | headless Chrome with a wasm module |
-| QS-node | plain runtime | node | documented, manual variants | done |  |
-| QS-bun | plain runtime | bun | documented, manual variants | done | bun 1.4.2 |
-| QS-deno | plain runtime | deno | documented, manual variants | done | deno 2.9.0 |
-| QS-cloudflare | plain runtime | cloudflare | documented, manual variants | done | wrangler local |
+| [QS-node](node/) | plain runtime | node | documented, manual variants | done |  |
+| [QS-bun](bun/) | plain runtime | bun | documented, manual variants | done | bun 1.4.2 |
+| [QS-deno](deno/) | plain runtime | deno | documented, manual variants | done | deno 2.9.0 |
+| [QS-cloudflare](cloudflare/) | plain runtime | cloudflare | documented, manual variants | done | wrangler local |
 | QS-cloudflare-pages | plain runtime | cloudflare (Pages functions middleware) | sentryPagesPlugin | planned | wrangler pages dev |
 | QS-express | node framework | express | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-fastify | node framework | fastify | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
@@ -44,3 +44,5 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-electron | desktop | electron | npm | not measurable | separate repository getsentry/sentry-electron; not the develop of sentry-javascript |
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
+
+Totals: 31 planned, 5 done, 4 not measurable.

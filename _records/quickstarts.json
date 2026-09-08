@@ -77,5 +77,27 @@
    "Vite plugin without withSentry": "partial (works once wranglerConfigPath is set; options file undocumented)",
    "ctx.waitUntil rejection": "no (not captured)"
   }
+ },
+ {
+  "id": "QS-browser",
+  "path": "quickstarts/browser",
+  "runtime": "Chrome 152 headless, develop 03aaf42455",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "npm path delivers errors, pageload and navigation spans, http.client spans with headers on localhost, logs, sessions with the v11 page lifecycle and unhandled status, and a buffer replay once the session is older than five seconds. Defects: the tracing verify snippet is a SyntaxError (await in a non-async function); the CDN tab names bundle.tracing.min.js while adding replayIntegration(), which records nothing; Sentry.logger and Sentry.metrics are silent no-ops on the tracing CDN bundles; the documented tracePropagationTargets drops headers on 127.0.0.1; no contexts.browser/os/device on events; debug output names no SDK or browser; the commonjs, esm, esm-without-import, late-initialization and lightweight install pages are Node-only and never render for the browser.",
+  "sdk": {
+   "name": "sentry.javascript.browser",
+   "version": "10.67.0",
+   "integrations": 15
+  },
+  "variants": {
+   "npm ESM": "partial (verify snippet broken, otherwise works)",
+   "CDN bundle.tracing.replay": "partial (no logs)",
+   "CDN as printed (bundle.tracing + replayIntegration)": "no replay",
+   "loader script": "not run (served by Sentry)",
+   "late initialization": "partial (Node-only page; pre-init errors lost)",
+   "CommonJS": "yes",
+   "lightweight": "removed in v11"
+  }
  }
 ]
