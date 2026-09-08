@@ -71,9 +71,17 @@ open(os.path.join(OUT,'create.sh'),'w').write('\n'.join(sh)+'\n'); os.chmod(os.p
 open(os.path.join(OUT,'README.md'),'w').write('\n'.join(idx)+'\n')
 json.dump(items, open(os.path.join(OUT,'_items.json'),'w'), indent=1)
 MEAN={'P0':'a page that loses data for a common setup','P1':'a page that is wrong or missing for something users will hit','P2':'consistency and hygiene'}
+def slug(h):
+    h=h.lower().replace(' ','-')
+    return re.sub(r'[^a-z0-9_\-]','',h)
 for p in ('P0','P1','P2'):
     head='# %s docs issues, %s\n\n%d drafts for `getsentry/sentry-docs`. Each section is one issue: the heading is the proposed title, the body is the proposed description. From the runtime docs audit of the Bun, Deno and Cloudflare guides, September 2026.\n\n' % (p, MEAN[p], len(gist[p]))
-    open(os.path.join(GIST,'%s.md' % p),'w').write(head+'\n\n'.join(gist[p])+'\n')
+    toc=['## Contents','']
+    for sec in gist[p]:
+        h=sec.split('\n',1)[0][3:]
+        it=re.search(r'\*\*Audit item:\*\* (\S+) · \*\*Type:\*\* (\S+)', sec)
+        toc.append('- [%s](#%s) · %s · %s' % (h, slug(h), it.group(1), it.group(2)))
+    open(os.path.join(GIST,'%s.md' % p),'w').write(head+'\n'.join(toc)+'\n\n'+'\n\n'.join(gist[p])+'\n')
 gidx=['# Runtime docs audit, proposed issues for sentry-docs','','Ninety proposed GitHub issues for `getsentry/sentry-docs` from the audit of the Bun, Deno and Cloudflare guides against the shipped SDK (develop at `6f2da7483d`, September 2026). One file per priority; within P0 the order is the suggested filing order.','','| Priority | Meaning | Drafts |','| --- | --- | --- |']
 for p in ('P0','P1','P2'): gidx.append('| [%s](#file-%s-md) | %s | %d |' % (p, p.lower(), MEAN[p], len(gist[p])))
 gidx+=['','Reproductions, report pages and the same drafts as individual body files: %s' % BASE.replace('/blob/','/tree/'),'','Seven drafts carry a note: X2 and DOC-R20 are owned by Linear tickets already in progress, and DOC-C1 to DOC-C5 are v11-gated and belong under the v11 docs umbrella. Three pairs touch the same docs file and can be filed as one issue each: DOC-F11 with DOC-F28, DOC-F13 with DOC-F30, DOC-F19 with DOC-F36.','']
