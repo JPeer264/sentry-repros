@@ -10,4 +10,4 @@ Workarounds: import drivers and create pools at module scope, or pin the channel
 
 **Work item.** Retain the channel references in the SDK. File the Bun report with the minimal probe.
 
-**Evidence.** Probe records X02, B17 in `_reports/deep-probe-report.html`; reproductions `probes/X02/`, `probes/B17/`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Probe records X02, B17 in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproductions [`probes/X02/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/probes/X02), [`probes/B17/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/probes/B17). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

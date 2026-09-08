@@ -8,4 +8,4 @@ Priority: Low
 
 **Work item.** Fix both READMEs in one PR.
 
-**Evidence.** First-round probes D-HOOK, CF-EXPORTS, see the code-defects table in `_reports/docs-audit.html`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** First-round probes D-HOOK, CF-EXPORTS, see the code-defects table in the [docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

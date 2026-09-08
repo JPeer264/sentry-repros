@@ -8,4 +8,4 @@ With `Sentry.init` from `@sentry/elysia`, there is no `http.server` span on Deno
 
 **Work item.** Pick the base SDK by runtime in `@sentry/elysia`. Same root as JS-3582 and JS-3583 on Node.
 
-**Evidence.** Cell record M-elysia-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-elysia-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-elysia-deno in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-elysia-deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-elysia-deno), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

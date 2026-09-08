@@ -3,21 +3,21 @@ ROOT=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),'..
 import json, os, re, html as H
 OUT=os.path.dirname(os.path.abspath(__file__))
 os.makedirs(OUT, exist_ok=True)
-REPORT='_reports/deep-probe-report.html'
-AUDIT='_reports/docs-audit.html'
-REPRO='.'
+REPORT='https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html'
+AUDIT='https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html'
+REPRO='https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements'
 def cells(*ids):
     recs=', '.join(ids)
-    paths=', '.join('`cells/%s/`' % i for i in ids)
-    return '**Evidence.** Cell record%s %s in `%s`; reproduction%s %s, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).' % ('s' if len(ids)>1 else '', recs, REPORT, 's' if len(ids)>1 else '', paths)
+    paths=', '.join('[`cells/%s/`](%s/cells/%s)' % (i, REPRO, i) for i in ids)
+    return '**Evidence.** Cell record%s %s in the [deep probe report](%s); reproduction%s %s, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).' % ('s' if len(ids)>1 else '', recs, REPORT, 's' if len(ids)>1 else '', paths)
 def probes(*ids):
     have=[i for i in ids if os.path.isdir(os.path.join(ROOT,'probes',i))]
     first=[i for i in ids if i not in have]
     out='**Evidence.** '
     if have:
-        out+='Probe record%s %s in `%s`; reproduction%s %s. ' % ('s' if len(have)>1 else '', ', '.join(have), REPORT, 's' if len(have)>1 else '', ', '.join('`probes/%s/`' % i for i in have))
+        out+='Probe record%s %s in the [deep probe report](%s); reproduction%s %s. ' % ('s' if len(have)>1 else '', ', '.join(have), REPORT, 's' if len(have)>1 else '', ', '.join('[`probes/%s/`](%s/probes/%s)' % (i, REPRO, i) for i in have))
     if first:
-        out+='First-round probe%s %s, see the code-defects table in `%s`. ' % ('s' if len(first)>1 else '', ', '.join(first), AUDIT)
+        out+='First-round probe%s %s, see the code-defects table in the [docs audit](%s). ' % ('s' if len(first)>1 else '', ', '.join(first), AUDIT)
     return out+'Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).'
 
 T=[]
@@ -256,7 +256,7 @@ On develop the client is cached per isolate. The Dedupe integration then treats 
 
 **Work item.** Reset the dedupe state per request, or leave Dedupe out of the Cloudflare defaults when the client is cached.
 
-''' + '**Evidence.** Cloudflare section of `' + REPORT + '` (develop regression) and the Cloudflare quick start verification in `_reports/quick-starts.html`.')
+''' + '**Evidence.** Cloudflare section of the [deep probe report](' + REPORT + ') (develop regression) and the [quick start verification](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/quick-starts.html).')
 
 t(CFG, 'The `/request` entry runs without an async-context strategy under the stream lifecycle', ['JavaScript','Cloudflare Workers','Bug'], 'High', '''
 `wrapRequestHandler` from `@sentry/cloudflare/request` sets up a reduced client with no async-context strategy. Under the default stream lifecycle some requests turn into legacy transaction envelopes and events are dropped; `traceLifecycle: "static"` avoids it. On Workers with `nodejs_compat`, Remix wired through this entry loses per-request isolation unless `setAsyncLocalStorageAsyncContextStrategy` is called first.
@@ -284,21 +284,21 @@ Bun has e2e apps for Elysia, Next.js and mysql, and integration suites for Hono 
 
 **Work item.** Port the cells into `dev-packages/e2e-tests/test-applications/`, one per framework, starting with the four Node HTTP frameworks on the plugin build.
 
-''' + '**Evidence.** `cells/M-*-bun/`, and the framework grid in `%s`.' % REPORT)
+''' + '**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-bun` directories), and the framework grid in the [deep probe report](%s).' % REPORT)
 
 t(DENOT, 'Add e2e apps for the verified Deno framework cells', ['JavaScript','Deno','Tests'], 'Medium', '''
 Only `hono-4 (deno)` runs a real framework on Deno in CI; the Deno orchestrion suites publish channels by hand (JS-3523). Sixteen framework cells were verified on Deno 2.9, with the wiring in their records. Fastify works with no hook, Next.js, Nuxt (node-server output), SvelteKit and Astro work with one integration added, and the rest need the JSON hook or the esbuild build.
 
 **Work item.** Port the cells into e2e apps, starting with Fastify, Next.js, Nuxt, SvelteKit and Astro, and add Deno 2.9 to the runner (JS-3524).
 
-''' + '**Evidence.** `cells/M-*-deno/`, and the framework grid in `%s`.' % REPORT)
+''' + '**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-deno` directories), and the framework grid in the [deep probe report](%s).' % REPORT)
 
 t(CFT, 'Make the Cloudflare framework e2e apps required and add the missing ones', ['JavaScript','Cloudflare Workers','Tests'], 'Medium', '''
 `react-router-8-cloudflare`, `tanstackstart-react-cloudflare` and `sveltekit-3-cloudflare-workers` are `optional` in CI (`.github/workflows/build.yml:1131`), so the wiring the Cloudflare framework pages describe does not run on pull requests. No app covers Express, Koa, Hapi or NestJS behind `httpServerHandler` with the Vite plugin, Elysia with `aot: false`, Oak, Fresh, Remix through `@sentry/remix/cloudflare`, or SolidStart.
 
 **Work item.** Promote the three apps to required and port the nine missing cells.
 
-''' + '**Evidence.** `cells/M-*-cf/`, and the framework grid in `%s`.' % REPORT)
+''' + '**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-cf` directories), and the framework grid in the [deep probe report](%s).' % REPORT)
 
 for rt, ids in [('Bun', 'DOC-B1, DOC-B2, DOC-B3, DOC-B4, DOC-R1 (Bun include), DOC-R8, DOC-R11, DOC-R12, DOC-F1 to DOC-F17'), ('Deno', 'DOC-D1 to DOC-D6, DOC-R2, DOC-R5, DOC-R6, DOC-R7, DOC-R8, DOC-R11, DOC-R17, DOC-F18 to DOC-F34'), ('Cloudflare', 'DOC-C6, DOC-C7, DOC-C8, DOC-R4, DOC-R7, DOC-R10, DOC-R11, DOC-R13 to DOC-R16, DOC-R18, DOC-R19, DOC-F35 to DOC-F51')]:
     t(DOCS, 'Track the %s docs issues from the runtime docs audit' % rt, ['JavaScript','Task'], 'Medium', '''
@@ -306,13 +306,13 @@ Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runt
 
 **Work item.** Link each GitHub issue as it is filed; close when the last one is merged.
 
-**Evidence.** Docs audit with the proposed issue text per item: `%s`
+**Evidence.** [Docs audit](%s) with the proposed issue text per item
 ''' % (rt, ids, AUDIT))
 
 # files
 order=[BUN,DENO,CF,BUNG,DENOG,CFG,XP,BUNT,DENOT,CFT,DOCS]
 T.sort(key=lambda x:(order.index(x['milestone'])))
-idx=['# Linear ticket drafts','','Project: Improve Server Runtime + Framework Compatibility [JS]. Not created. Evidence paths are relative to the repository root.','','| # | Milestone | Title | Labels | Priority | File |','| --- | --- | --- | --- | --- | --- |']
+idx=['# Linear ticket drafts','','Project: Improve Server Runtime + Framework Compatibility [JS]. Not created. Evidence links point at https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements.','','| # | Milestone | Title | Labels | Priority | File |','| --- | --- | --- | --- | --- | --- |']
 for n,x in enumerate(T,1):
     slug=re.sub(r'[^a-z0-9]+','-',x['title'].lower()).strip('-')[:60]
     fn='%02d-%s.md' % (n, slug); x['file']=fn; x['n']=n

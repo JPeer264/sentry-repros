@@ -8,4 +8,4 @@ Next.js 15 App Router builds and serves on Deno 2.9 with `deno run -A node_modul
 
 **Work item.** Disable runtime channel injection automatically on Deno until the JSON shim lands, and add the WinterCG fetch integration to the Next.js server defaults when the runtime is Deno.
 
-**Evidence.** Cell record M-nextjs-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-nextjs-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-nextjs-deno in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-nextjs-deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-nextjs-deno), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

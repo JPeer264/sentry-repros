@@ -10,4 +10,4 @@ Database spans need every driver in both `ssr.external` and `environments.ssr.bu
 
 **Work item.** Register an OpenTelemetry context manager on Deno so framework-set attributes reach the active span, and consider a Fresh integration for errors and route names.
 
-**Evidence.** Cell record M-fresh-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-fresh-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-fresh-deno in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-fresh-deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-fresh-deno), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

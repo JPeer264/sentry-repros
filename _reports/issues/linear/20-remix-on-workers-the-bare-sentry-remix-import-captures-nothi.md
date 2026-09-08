@@ -8,4 +8,4 @@ In a Remix Vite build with `ssr.target: "webworker"`, `import * as Sentry from "
 
 **Work item.** Make the bare import fail loudly in a webworker build, or resolve it to the Cloudflare entry through the export conditions.
 
-**Evidence.** Cell record M-remix-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-remix-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-remix-cf in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-remix-cf/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-remix-cf), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

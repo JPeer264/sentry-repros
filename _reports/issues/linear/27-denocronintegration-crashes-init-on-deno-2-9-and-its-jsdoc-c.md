@@ -8,4 +8,4 @@ Priority: High
 
 **Work item.** Define the proxy with `Object.defineProperty`, add Deno 2.9 to CI (JS-3524), fix the JSDoc.
 
-**Evidence.** Probe record D11 in `_reports/deep-probe-report.html`; reproduction `probes/D11/`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Probe record D11 in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`probes/D11/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/probes/D11). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

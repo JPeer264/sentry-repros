@@ -10,4 +10,4 @@ Database spans come from the transform `sentrySvelteKit()` already installs, but
 
 **Work item.** Have `sentryHandle` rename the root span from `event.route.id` on Cloudflare, and look at why the flat install needs `noExternal`.
 
-**Evidence.** Cell record M-sveltekit-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-sveltekit-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-sveltekit-cf in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-sveltekit-cf/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-sveltekit-cf), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

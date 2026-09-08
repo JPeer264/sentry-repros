@@ -8,4 +8,4 @@ Unless `sentryTanstackStart()` is the first Vite plugin and `@sentry/*` stays ex
 
 **Work item.** Make the plugin robust to ordering or fail with a clear message, and find why the route patterns do not reach the server span on Bun.
 
-**Evidence.** Cell record M-tanstack-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-tanstack-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-tanstack-bun in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-tanstack-bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-tanstack-bun), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

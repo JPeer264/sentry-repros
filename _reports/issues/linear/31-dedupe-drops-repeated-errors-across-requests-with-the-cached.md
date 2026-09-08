@@ -8,4 +8,4 @@ On develop the client is cached per isolate. The Dedupe integration then treats 
 
 **Work item.** Reset the dedupe state per request, or leave Dedupe out of the Cloudflare defaults when the client is cached.
 
-**Evidence.** Cloudflare section of `_reports/deep-probe-report.html` (develop regression) and the Cloudflare quick start verification in `_reports/quick-starts.html`.
+**Evidence.** Cloudflare section of the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html) (develop regression) and the [quick start verification](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/quick-starts.html).

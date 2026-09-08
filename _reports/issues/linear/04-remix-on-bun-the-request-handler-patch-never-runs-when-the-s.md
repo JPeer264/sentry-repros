@@ -10,4 +10,4 @@ Two app-side traps: `"sideEffects": false` in the app's `package.json` makes `Bu
 
 **Work item.** Apply the request handler patch to an inlined server runtime (the plugin can transform it), and warn when `sideEffects: false` drops an instrumented import.
 
-**Evidence.** Cell record M-remix-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-remix-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-remix-bun in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-remix-bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-remix-bun), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

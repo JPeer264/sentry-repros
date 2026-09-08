@@ -1,6 +1,6 @@
 # Linear ticket drafts
 
-Project: Improve Server Runtime + Framework Compatibility [JS]. Not created. Evidence paths are relative to the repository root.
+Project: Improve Server Runtime + Framework Compatibility [JS]. Not created. Evidence links point at https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements.
 
 | # | Milestone | Title | Labels | Priority | File |
 | --- | --- | --- | --- | --- | --- |

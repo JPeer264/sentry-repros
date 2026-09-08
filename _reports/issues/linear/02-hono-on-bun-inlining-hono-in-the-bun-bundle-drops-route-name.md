@@ -8,4 +8,4 @@ Priority: Medium
 
 **Work item.** Make the patch survive an inlined `hono`, or detect the split at init and warn with the fix.
 
-**Evidence.** Cell record M-hono-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-hono-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-hono-bun in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-hono-bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-hono-bun), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

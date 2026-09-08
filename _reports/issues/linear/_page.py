@@ -68,7 +68,7 @@ details summary{cursor:pointer;color:var(--accent);font-size:13px;margin:0 0 8px
 <div class="wrap"><nav><p>Milestones</p><ul>__NAV__</ul></nav><main>
 <h1>Tickets for the runtime compatibility project</h1>
 <p class="lede">Forty drafts for the Linear project Improve Server Runtime + Framework Compatibility [JS], grouped by milestone, in the shape the project's existing issues use: what was observed, the cause where known, a work item, and the evidence. Nothing has been created.</p>
-<div class="alert"><p><strong>Before filing.</strong> Evidence lines name files in the runtime audit repository: the cell and probe reproductions, and the report pages under <code>_reports/</code>. Existing tickets that already cover a finding are referenced by id and not drafted again: JS-3508, JS-3517, JS-3518, JS-3509, JS-3510, JS-3572, JS-3580 and JS-3581. The Markdown files are in <code>_reports/issues/linear/</code> of that repository.</p></div>
+<div class="alert"><p><strong>Before filing.</strong> Evidence lines link into the <a href="https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements">runtime audit repository</a>: the cell and probe reproductions, and the report pages under <code>_reports/</code>. Existing tickets that already cover a finding are referenced by id and not drafted again: JS-3508, JS-3517, JS-3518, JS-3509, JS-3510, JS-3572, JS-3580 and JS-3581. The Markdown files are in <a href="https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/_reports/issues/linear">_reports/issues/linear/</a>.</p></div>
 __SECTIONS__
 </main></div>
 <script>

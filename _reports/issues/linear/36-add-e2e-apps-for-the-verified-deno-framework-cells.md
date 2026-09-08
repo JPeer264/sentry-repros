@@ -8,4 +8,4 @@ Only `hono-4 (deno)` runs a real framework on Deno in CI; the Deno orchestrion s
 
 **Work item.** Port the cells into e2e apps, starting with Fastify, Next.js, Nuxt, SvelteKit and Astro, and add Deno 2.9 to the runner (JS-3524).
 
-**Evidence.** `cells/M-*-deno/`, and the framework grid in `_reports/deep-probe-report.html`.
+**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-deno` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).

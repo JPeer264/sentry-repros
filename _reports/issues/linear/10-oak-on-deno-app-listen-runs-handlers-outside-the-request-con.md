@@ -8,4 +8,4 @@ Mounted with `app.listen()`, Oak handlers run outside the request's async contex
 
 **Work item.** Decide whether the `app.listen()` path can be instrumented. At minimum, make the SDK warn when a request handler runs with no active span, and consider an Oak route-naming integration.
 
-**Evidence.** Cell record M-oak-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-oak-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-oak-deno in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-oak-deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-oak-deno), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

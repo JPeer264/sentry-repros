@@ -8,4 +8,4 @@ Priority: Medium
 
 **Work item.** Promote the three apps to required and port the nine missing cells.
 
-**Evidence.** `cells/M-*-cf/`, and the framework grid in `_reports/deep-probe-report.html`.
+**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-cf` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).

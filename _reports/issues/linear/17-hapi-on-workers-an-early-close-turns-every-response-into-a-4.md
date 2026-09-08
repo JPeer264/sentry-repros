@@ -8,4 +8,4 @@ On workerd the response emits `close` before `finish` with `writableEnded` still
 
 **Work item.** Handle the early `close` inside `hapiIntegration` or the Cloudflare HTTP server shim, so Hapi on workerd needs no app-side extension.
 
-**Evidence.** Cell record M-hapi-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-hapi-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-hapi-cf in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-hapi-cf/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-hapi-cf), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

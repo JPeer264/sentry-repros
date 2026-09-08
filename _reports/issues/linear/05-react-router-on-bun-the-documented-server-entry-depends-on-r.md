@@ -8,4 +8,4 @@ Bun resolves `react-dom/server` to a build without `renderToPipeableStream`, so 
 
 **Work item.** Ship a `renderToReadableStream` variant of `createSentryHandleRequest`, or name `wrapSentryHandleRequest` as the Bun path in the package docs.
 
-**Evidence.** Cell record M-reactrouter-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-reactrouter-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).
+**Evidence.** Cell record M-reactrouter-bun in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproduction [`cells/M-reactrouter-bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-reactrouter-bun), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

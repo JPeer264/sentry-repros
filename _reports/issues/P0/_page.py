@@ -1,14 +1,14 @@
 import os
 import json, html as H
 items=json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'_items.json')))
-AUDIT='_reports/docs-audit.html'
-FOOT=("\n\n---\n\n_From the runtime docs audit of September 2026, item {id}; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._\n")
+AUDIT='https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html'
+FOOT=("\n\n---\n\n_From the runtime docs audit of September 2026, item {id}, see the [docs audit]({link}) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._\n")
 import re
 def body_md(i):
     md=re.sub(r'\n*Source: runtime docs audit, item [^\n]*$','',i['body_md']).strip()
-    return md+FOOT.format(id=i['id'],link=AUDIT+'#'+i['id'])
+    return md+FOOT.format(id=i['id'],link=AUDIT)
 def foot_html(i):
-    return ('<hr><p class="foot"><em>From the runtime docs audit of September 2026, item %s; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p>' % i['id'])
+    return ('<hr><p class="foot"><em>From the runtime docs audit of September 2026, item %s, see the <a href="%s">docs audit</a> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p>' % (i['id'], AUDIT))
 def strip_source(bh):
     return re.sub(r'<p>Source: runtime docs audit, item [^<]*</p>\s*$','',bh.strip())
 
@@ -61,7 +61,7 @@ details summary{cursor:pointer;color:var(--accent);font-size:13.5px;margin:0 0 8
 <p class="lede">Thirteen issues for <code>getsentry/sentry-docs</code>, one per P0 item of the runtime docs audit, shown as they would read on GitHub. Nothing has been filed. The order below is the suggested filing order: the four items that mislead every reader of a runtime guide first, then the framework pages that contradict a verified run.</p>
 <div class="alert"><p><strong>Before filing.</strong> Three pairs touch the same docs file and could be filed as one issue each: the two Nuxt presets items (DOC-F11, DOC-F28), the two Astro runtime-alert items (DOC-F13, DOC-F30) and the two Elysia runtime-list items (DOC-F19, DOC-F36).</p></div>
 <div class="tw"><table><thead><tr><th>#</th><th>Title</th><th>Audit item</th><th>Type</th></tr></thead><tbody>__ROWS__</tbody></table></div>
-__CARDS_ANCHOR__<p>The body files and a <code>create.sh</code> with one <code>gh issue create</code> line per draft are in <code>_reports/issues/P0/</code> of the runtime audit repository. The script was not run.</p>
+__CARDS_ANCHOR__<p>The body files and a <code>create.sh</code> with one <code>gh issue create</code> line per draft are in <a href="https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/_reports/issues/P0">_reports/issues/P0/</a> of the runtime audit repository. The script was not run.</p>
 </main>
 <script>
 document.addEventListener('click', function (ev) {

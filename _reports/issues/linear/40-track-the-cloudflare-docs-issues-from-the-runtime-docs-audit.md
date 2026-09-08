@@ -8,4 +8,4 @@ Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runt
 
 **Work item.** Link each GitHub issue as it is filed; close when the last one is merged.
 
-**Evidence.** Docs audit with the proposed issue text per item: `_reports/docs-audit.html`
+**Evidence.** [Docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) with the proposed issue text per item
