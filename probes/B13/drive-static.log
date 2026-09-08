@@ -1,0 +1,30 @@
+{
+ "route": "/user/42",
+ "status": 200,
+ "responseHeaders": {
+  "sentry-trace": "dd62a0e4db794c3e92d0c1fb55ae7b0d-b6d473c3d7978772-1",
+  "baggage": "sentry-environment=production,sentry-public_key=public,sentry-trace_id=dd62a0e4db794c3e92d0c1fb55ae7b0d,sentry-transaction=GET%20%2Fuser%2F%3Aid,sentry-sampled=true,sentry-sample_rand=0.24320876688610948,sentry-sample_rate=1"
+ },
+ "body": {
+  "id": "42",
+  "echoed": {
+   "url": "/downstream/42",
+   "sentry-trace": "dd62a0e4db794c3e92d0c1fb55ae7b0d-aee2f3e842e9b015-1",
+   "baggage": "sentry-environment=production,sentry-public_key=public,sentry-trace_id=dd62a0e4db794c3e92d0c1fb55ae7b0d,sentry-sampled=true,sentry-sample_rand=0.24320876688610948,sentry-sample_rate=1"
+  }
+ }
+}
+{
+ "route": "/error",
+ "status": 500,
+ "responseHeaders": {
+  "sentry-trace": null,
+  "baggage": null
+ }
+}
+--- sink items ---
+{"type":"transaction","name":"GET /user/:id","op":"http.server","source":"route","status":"ok","origin":"auto.http.elysia","trace_id":"dd62a0e4db794c3e92d0c1fb55ae7b0d","sdk":"sentry.javascript.bun","httpRoute":"/user/:id","spans":["middleware Request","middleware sentryOnRequest","middleware Parse","middleware Transform","middleware BeforeHandle","handler Handle","http.client GET http://127.0.0.1:45875/downstream/42","middleware AfterHandle","middleware sentryOnAfterHandle","middleware MapResponse"]}
+{"type":"event","exception":"elysia boom","mechanism":"auto.http.elysia.on_error","handled":false,"sdk":"sentry.javascript.bun","sdkVersion":"10.67.0","runtime":{"name":"bun","version":"1.4.0"},"transaction":"GET /error","trace_id":"fcb040a399b1439b843231fced017c57","hasContextLine":true}
+{"type":"transaction","name":"GET /error","op":"http.server","source":"route","status":"internal_error","origin":"auto.http.elysia","trace_id":"fcb040a399b1439b843231fced017c57","sdk":"sentry.javascript.bun","httpRoute":"/error","spans":["middleware Request","middleware sentryOnRequest","middleware Parse","middleware Transform","middleware BeforeHandle","handler Handle","middleware Error","middleware sentryOnError"]}
+{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.bun","sdkVersion":"10.67.0","runtime":{"name":"bun","version":"1.4.0"},"trace_id":"7dd8a50fd55a4577b108a01ade106eb8","hasContextLine":true}
+{"type":"transaction","name":"GET /sentinel","op":"http.server","source":"route","status":"ok","origin":"auto.http.elysia","trace_id":"7dd8a50fd55a4577b108a01ade106eb8","sdk":"sentry.javascript.bun","httpRoute":"/sentinel","spans":["middleware Request","middleware sentryOnRequest","middleware Parse","middleware Transform","middleware BeforeHandle","handler Handle","middleware AfterHandle","middleware sentryOnAfterHandle","middleware MapResponse"]}

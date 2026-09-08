@@ -1,0 +1,10 @@
+GET / -> 200 ok
+GET /slow?id=C&ms=100 -> 200 slow C
+GET /slow?id=B&ms=300 -> 200 slow B
+GET /slow?id=A&ms=600 -> 200 slow A
+GET /error-async -> 200 scheduled rejection
+GET /sentinel?n=1 -> 200 sentinel
+sentinel-1 arrived: true
+GET /error -> 200 
+GET /sentinel?n=2 -> ERR ECONNREFUSED
+app alive after drive: no

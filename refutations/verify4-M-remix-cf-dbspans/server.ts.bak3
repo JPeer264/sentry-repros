@@ -1,0 +1,29 @@
+import { createRequestHandler } from '@remix-run/cloudflare';
+import * as SentryCF from '@sentry/cloudflare';
+import { wrapRequestHandler } from '@sentry/cloudflare/request';
+import { instrumentBuild } from '@sentry/remix/cloudflare';
+// @ts-ignore -- built by `remix vite:build`
+import * as remixBuild from './build/server/index.js';
+
+SentryCF.setAsyncLocalStorageAsyncContextStrategy();
+
+const handleRequest = createRequestHandler(instrumentBuild(remixBuild as any), 'production');
+
+export default {
+  async fetch(request: Request, env: any, ctx: ExecutionContext): Promise<Response> {
+    return wrapRequestHandler(
+      {
+        options: {
+          dsn: 'http://public@127.0.0.1:1/1',
+          tracesSampleRate: 1.0,
+          traceLifecycle: 'static',
+          tunnel: "http://127.0.0.1:38217/",
+          debug: true,
+        },
+        request,
+        context: ctx,
+      },
+      async () => (await handleRequest(request, { env, ctx })) as Response,
+    );
+  },
+};

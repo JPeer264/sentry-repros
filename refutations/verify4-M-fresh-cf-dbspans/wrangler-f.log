@@ -1,0 +1,75 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52129/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52129/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52129/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52129/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52129/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52129/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52129/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52129/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52129/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52129/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:52129
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq2
+  ID: a0b509926510cda2
+Sentry Logger [log]: Captured error event `No such module "_fresh/lib/_stream_readable.js".`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq2" with ID a0b509926510cda2
+[wrangler:info] GET /dbq2 500 Internal Server Error (29ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /wdb
+  ID: b1ca38ff416ece35
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT id, name FROM users
+  ID: b731031dd1ca0d5a
+  parent ID: b1ca38ff416ece35
+  root ID: b1ca38ff416ece35
+  root op: http.server
+  root description: GET /wdb
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT id, name FROM users" with ID b731031dd1ca0d5a
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /wdb" with ID b1ca38ff416ece35
+Sentry Logger [log]: Captured error event `Received packet in the wrong sequence.`
+[wrangler:error] Error: Received packet in the wrong sequence.
+    at Protocol2._parsePacket (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83096:19)
+    at Parser2._parsePacket2 [as _parsePacket] (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:76695:14)
+    at Parser2.write7 [as write] (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:76387:14)
+    at Protocol2.write (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:82911:20)
+    at Socket.<anonymous> (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83529:32)
+    at Socket.<anonymous> (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83948:15)
+    at Socket.emit (node-internal:events:311:32)
+    at addChunk (node-internal:streams_readable:580:12)
+    at readableAddChunkPushByteMode (node-internal:streams_readable:525:3)
+    at Readable.push (node-internal:streams_readable:398:7)
+    at Protocol2._enqueue (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:82991:52)
+    at Protocol2.handshake2 [as handshake] (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:82921:27)
+    at Connection3.connect2 [as connect] (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83553:22)
+    at Connection3._implyConnect (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83888:14)
+    at Connection3.__apm$wrapped (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83621:16)
+    at __apm$traced (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83624:30)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83692:18)
+    at Connection3.query3 [as query] (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:83690:37)
+    at server_default.fetch.remoteAddr.transport (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist4/worker.mjs:84706:22)
+    at [object Object]
+[wrangler:info] GET /wdb 500 Internal Server Error (59ms)

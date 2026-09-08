@@ -1,0 +1,51 @@
+mount=serve ready 41406
+[router-use] /users/7 span=true matched=["(.*)","/users/:id"]
+[router-use] /error span=true matched=["(.*)","/error"]
+[uncaught application error]: Error - oak bun boom
+
+request: {
+  url: "http://127.0.0.1:41406/error",
+  method: "GET",
+  hasBody: false,
+}
+response: {
+  status: 500,
+  type: "text",
+  hasBody: true,
+  writable: true,
+}
+
+    at <anonymous> ($REPRO/cells/M-oak-bun/app.ts:29:40)
+    at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+    at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+    at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+    at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+    at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+    at <anonymous> ($REPRO/cells/M-oak-bun/app.ts:58:11)
+    at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+    at <anonymous> ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/application.js:324:31)
+    at <anonymous> ($REPRO/cells/M-oak-bun/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43)
+24 |   return next();
+25 | });
+26 | 
+27 | router.get("/users/:id", ctx => { ctx.response.body = { id: ctx.params.id }; });
+28 | router.get("/ok", ctx => { ctx.response.body = "ok"; });
+29 | router.get("/error", () => { throw new Error("oak bun boom"); });
+                                            ^
+error: oak bun boom
+      at $REPRO/cells/M-oak-bun/app.ts:29:40
+      at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+      at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+      at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+      at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+      at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+      at $REPRO/cells/M-oak-bun/app.ts:58:11
+      at dispatch ($REPRO/cells/M-oak-bun/node_modules/@oak/oak/middleware.js:36:13)
+      at $REPRO/cells/M-oak-bun/node_modules/@oak/oak/application.js:324:31
+      at $REPRO/cells/M-oak-bun/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+GET - /error failed
+[router-use] /db span=true matched=["(.*)","/db"]
+[router-use] /downstream span=true matched=["(.*)","/downstream"]
+[router-use] /log span=true matched=["(.*)","/log"]
+[router-use] /ok span=true matched=["(.*)","/ok"]
+[router-use] /sentinel span=true matched=["(.*)","/sentinel"]

@@ -1,0 +1,20 @@
+nodehttp listening on 41318
+3 | import { createServer } from 'node:http';
+4 | 
+5 | const server = createServer((req, res) => {
+6 |   const url = req.url || '/';
+7 |   if (url === '/error') {
+8 |     throw new Error('nodehttp boom');
+                  ^
+error: nodehttp boom
+      at $REPRO/probes/B05/app-nodehttp.ts:8:15
+      at emit (node:events:103:22)
+      at $REPRO/probes/B05/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:98:37
+      at wrapServerEmitRequest ($REPRO/probes/B05/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:125:9)
+      at $REPRO/probes/B05/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:97:15
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at unknown:1:1
+      at onNodeHTTPRequest (node:_http_server:531:22)
+

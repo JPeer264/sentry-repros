@@ -1,0 +1,97 @@
+/db-mysql1 -> {"rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+/db-mysql2-query -> {"rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+/db-mysql2-execute -> {"rows":[{"id":1,"name":"ada"}]}
+/db-mysql2-pool -> {"rows":[{"name":"linus"}]}
+[
+ {
+  "type": "transaction",
+  "name": "GET /db-mysql1",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "7965fdf2188146108dac293e855f31e9",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /db-mysql1",
+   "handler fastify - route-handler"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /db-mysql2-query",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "880238fe30544672bffb03d74afdcb6f",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /db-mysql2-query",
+   "handler fastify - route-handler",
+   "db SELECT id, name FROM users"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /db-mysql2-execute",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "b7c1d58dde094068810c812f0b352a37",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /db-mysql2-execute",
+   "handler fastify - route-handler",
+   "db SELECT id, name FROM users WHERE id = ?"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /db-mysql2-pool",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "5194f940ca2e41d6b84dc9d679291d7b",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /db-mysql2-pool",
+   "handler fastify - route-handler",
+   "db mysql2.pool.connect",
+   "db mysql2.connect",
+   "db SELECT name FROM users WHERE id = ?"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "undefined: sentinel",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.bun",
+  "runtime": "bun",
+  "hasContextLine": true,
+  "transaction": "GET /sentinel",
+  "trace_id": "014a01cff589425eb5425181b90a1cb1",
+  "user": {
+   "ip_address": "127.0.0.1"
+  },
+  "request": {
+   "url": "http://127.0.0.1:47312/sentinel",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "host": "127.0.0.1:47312",
+    "connection": "keep-alive",
+    "accept": "*/*",
+    "accept-language": "*",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node",
+    "accept-encoding": "gzip, deflate"
+   }
+  },
+  "environment": "production"
+ }
+]

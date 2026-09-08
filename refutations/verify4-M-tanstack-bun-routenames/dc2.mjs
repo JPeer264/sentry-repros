@@ -1,0 +1,11 @@
+import dc from 'node:diagnostics_channel';
+import http from 'node:http';
+const names = ['http.server.request.start','http.server.response.finish','http.server.response.created','http.client.request.created','http.client.request.start'];
+const fired=[];
+for (const n of names) dc.channel(n).subscribe(()=>fired.push(n));
+const server = http.createServer((req,res)=>{res.end('ok')});
+await new Promise(r=>server.listen(41778,r));
+await new Promise((res)=>{ http.get('http://127.0.0.1:41778/x', r=>{r.resume(); r.on('end',res)}) });
+await new Promise(r=>setTimeout(r,100));
+console.log('runtime', typeof Bun!=='undefined'?'bun':'node', process.version, 'fired:', JSON.stringify(fired));
+server.close(); process.exit(0);

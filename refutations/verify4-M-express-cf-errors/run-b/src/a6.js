@@ -1,0 +1,19 @@
+import { httpServerHandler } from 'cloudflare:node';
+import * as Sentry from '@sentry/cloudflare';
+import { expressIntegration } from '@sentry/server-utils';
+import { buildApp } from './routes.js';
+
+const app = buildApp();
+app.listen(8080);
+
+export default Sentry.withSentry(
+  () => ({
+    dsn: 'https://public@example.invalid/1',
+    tunnel: 'http://127.0.0.1:39411/',
+    tracesSampleRate: 1.0,
+    traceLifecycle: 'static',
+    sendDefaultPii: true,
+    integrations: [expressIntegration()],
+  }),
+  httpServerHandler({ port: 8080 }),
+);

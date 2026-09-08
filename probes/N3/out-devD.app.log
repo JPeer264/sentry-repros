@@ -1,0 +1,71 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                                       Resource                  Mode
+env.COUNTER (Counter)                         Durable Object            local
+env.SINK_URL ("http://127.0.0.1:53821/")      Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:44333/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:44333/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:44333/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:44333/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:44333/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:44333/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:44333/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:44333/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:44333/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:44333/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:44333
+[wrangler:info] GET /db 200 OK (10ms)
+[wrangler:info] GET /do 200 OK (2ms)
+[wrangler:info] GET /rpc 200 OK (2ms)
+[wrangler:info] GET /injected 200 OK (1ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: route boom Error[0m
+
+      at fetch (file://$REPRO/probes/N3/dist/n3_agent/index.js:10036:39)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:9605:19)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:8784:18)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3229:84)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/N3/dist/n3_agent/index.js:3477:67)
+      at handleCallbackErrors (file://$REPRO/probes/N3/dist/n3_agent/index.js:2782:24)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3477:40)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3475:11)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3267:10)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:6827:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:6823:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:1342:13)
+      at withActiveSpan (file://$REPRO/probes/N3/dist/n3_agent/index.js:3265:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3470:10)
+      at runCallback (file://$REPRO/probes/N3/dist/n3_agent/index.js:3477:33)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3229:11)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3454:20)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3220:48)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:6827:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:6823:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:1339:26)
+      at startSpanManual (file://$REPRO/probes/N3/dist/n3_agent/index.js:3219:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:8778:11)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3267:10)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:6827:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:6823:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:1342:13)
+      at withActiveSpan (file://$REPRO/probes/N3/dist/n3_agent/index.js:3265:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:3259:10)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:6827:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:6823:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_agent/index.js:1342:13)
+      at continueTrace (file://$REPRO/probes/N3/dist/n3_agent/index.js:3256:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_agent/index.js:8774:10)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: route boom [0m
+
+
+[wrangler:info] GET /error 500 Internal Server Error (5ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_09-33-27_610.log"

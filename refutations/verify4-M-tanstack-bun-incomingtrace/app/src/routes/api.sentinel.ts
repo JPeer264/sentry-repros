@@ -1,0 +1,6 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { captureMessage, flush } from '../probe/sentry';
+
+export const Route = createFileRoute('/api/sentinel')({
+  server: { handlers: { GET: async () => { captureMessage('sentinel'); await flush(3000); return new Response('ok'); } } },
+});

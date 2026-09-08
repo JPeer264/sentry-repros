@@ -1,0 +1,19 @@
+serve /ok -> 200
+serve /ok -> 200
+serve /error -> 500
+http /ok -> 200
+http /ok -> 200
+http /error-catch -> 500
+serve /sentinel -> 200
+session envelopes: 1
+{"type":"event","exception":"serve boom","mechanism":"auto.http.deno","handled":false,"sdk":"sentry.javascript.deno","runtime":"deno","hasContextLine":true,"trace_id":"4e68ba713b5b45fd99b33276f6225c64","request":{"url":"http://127.0.0.1:52848/error","method":"GET","hasData":false,"headers":{"accept":"*/*","accept-encoding":"gzip, deflate","accept-language":"*","connection":"keep-alive","host":"127.0.0.1:52848","sec-fetch-mode":"cors","user-agent":"node"}},"release":"1.0.0","environment":"production"}
+{"type":"event","exception":"http boom caught","mechanism":"generic","handled":true,"sdk":"sentry.javascript.deno","runtime":"deno","hasContextLine":true,"transaction":"GET /error-catch","trace_id":"5ea3e989b07743b99b9afc7f0bb4d62d","user":{"ip_address":"127.0.0.1"},"request":{"url":"http://127.0.0.1:52849/error-catch","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:52849","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"}},"release":"1.0.0","environment":"production"}
+{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.deno","runtime":"deno","hasContextLine":true,"trace_id":"5bc1d1df72a745079a95f46ffb1aff0c","request":{"url":"http://127.0.0.1:52848/sentinel","method":"GET","hasData":false,"headers":{"accept":"*/*","accept-encoding":"gzip, deflate","accept-language":"*","connection":"keep-alive","host":"127.0.0.1:52848","sec-fetch-mode":"cors","user-agent":"node"}},"release":"1.0.0","environment":"production"}
+{"type":"span","trace_id":"f50189840f0e4aa291a602ff7b23595b","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"span","trace_id":"1bd49afc6e1e4f7ea41dd716d701bfae","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"span","trace_id":"4e68ba713b5b45fd99b33276f6225c64","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"span","trace_id":"4e89e70136da438180b7145eaeec4c5c","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"bce7382993ad4b3eb18e5d0091a61577","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"5ea3e989b07743b99b9afc7f0bb4d62d","items":["http.server GET"],"raw":[{"name":"GET","status":"error","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"5bc1d1df72a745079a95f46ffb1aff0c","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"sessions","release":"1.0.0","environment":"production","aggregates":[{"started":"2026-09-07T09:01:00.000Z","exited":2,"errored":1,"crashed":0,"abnormal":0}]}

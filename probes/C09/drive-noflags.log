@@ -1,0 +1,15 @@
+/hello 200 hello
+/error 500 <html error page>
+}
+/downstream 200 {"url":"/users/7","sentry-trace":"beadf5f0c7414b218675cd8a68e83d1e-a0517b7b70f428eb-1","baggage":"sentry-environment=production,sentry-public_key=public,sentry-trace_id=beadf5f0c7414b218675cd8a68e83d1e,sentry-sampled=true,sentry-sample_rand=0.6583408056976296,sentry-sample_rate=1"}
+/integrations 200 {"integrations":["Dedupe","EventFilters","FunctionToString","ConversationId","LinkedErrors","Fetch","HttpServer","RequestData","Console","SpanStreaming"],"hasClient":true}
+/sentinel 200 sentinel
+--- sink ---
+{"type":"transaction","name":"GET","op":"http.server","source":"url","status":"ok","trace_id":"a7261f799ea346ac80993387e5867fef","sdk":"sentry.javascript.cloudflare","spans":[],"hasRequestData":false}
+{"type":"span","trace_id":"0df1a3ab1f2f419b972d58ab309aa2bf","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}
+{"type":"event","exception":"Error: route boom","mechanism":"auto.http.cloudflare","handled":false,"sdk":"sentry.javascript.cloudflare","runtime":"cloudflare","hasContextLine":false,"trace_id":"0df1a3ab1f2f419b972d58ab309aa2bf","environment":"production"}
+{"type":"span","trace_id":"beadf5f0c7414b218675cd8a68e83d1e","items":["http.client GET 127.0.0.1"],"raw":[{"name":"GET 127.0.0.1","status":"ok","parent_span_id":"8343b7b957bb05a0","is_segment":false,"origin":"auto.http.fetch"}]}
+{"type":"span","trace_id":"beadf5f0c7414b218675cd8a68e83d1e","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}
+{"type":"span","trace_id":"1c77d8a4c10a417e98db3f3d5c992e19","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}
+{"type":"event","message":"sentinel","exception":"undefined: sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.cloudflare","runtime":"cloudflare","hasContextLine":false,"trace_id":"f4f5b334d1784cbda88e72298a012010","environment":"production"}
+{"type":"span","trace_id":"f4f5b334d1784cbda88e72298a012010","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}

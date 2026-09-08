@@ -1,0 +1,13 @@
+import './instrument.mjs';
+import * as Sentry from '@sentry/node';
+import dc from 'node:diagnostics_channel';
+await new Promise(r => setTimeout(r, 300));
+if (typeof Bun !== 'undefined') Bun.gc(true);
+console.log('[probe] subs before mysql2 load =', dc.tracingChannel('mysql2:query').start.hasSubscribers);
+const mysql = (await import('mysql2/promise')).default;
+console.log('[probe] subs after mysql2 load =', dc.tracingChannel('mysql2:query').start.hasSubscribers);
+const pool = mysql.createPool({ host: '127.0.0.1', port: 3307, user: 'root', database: 'app', connectionLimit: 2 });
+await Sentry.startSpan({ name: 'probe-root', op: 'test' }, async () => { await pool.query('SELECT * FROM users'); });
+Sentry.captureMessage('sentinel');
+await Sentry.flush(3000);
+await pool.end();

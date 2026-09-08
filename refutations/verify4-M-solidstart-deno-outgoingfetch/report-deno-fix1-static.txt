@@ -1,0 +1,21 @@
+### app boot (rb-deno-fix1-static)
+[probe] sentry init fetchfix=1 lifecycle=static
+➜ Listening on: http://127.0.0.1:52143/
+### GET /api/fetchout
+{"recorded":true}
+### GET /api/fetchout-http
+{"http":true}
+### GET /api/sentinel
+{"sentinel":true}
+### sink items (rb-deno-fix1-static)
+{"type":"transaction","name":"GET /api/fetchout","op":"http.server","source":"url","status":"ok","trace_id":"01b436c2e88e4252a096a187add4a0b0","sdk":"sentry.javascript.solidstart","spans":["http.server GET /api/fetchout","middleware GET /api/fetchout","http.server GET /api/fetchout","db mysql2.connect","http.client GET http://127.0.0.1:52142/recorder"],"hasRequestData":false}
+{"type":"transaction","name":"GET /api/fetchout-http","op":"http.server","source":"url","status":"ok","trace_id":"7386f99348b847d4b8e44aa9e8251755","sdk":"sentry.javascript.solidstart","spans":["http.server GET /api/fetchout-http","middleware GET /api/fetchout-http","http.server GET /api/fetchout-http","http.client GET http://127.0.0.1:52142/recorder-http"],"hasRequestData":false}
+{"type":"event","message":"sentinel","exception":"undefined: sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.solidstart","runtime":"node","hasContextLine":true,"transaction":"GET /api/sentinel","trace_id":"eda46f6b41884fabbba43d4cc43086ac","user":{"ip_address":"127.0.0.1"},"request":{"url":"http://127.0.0.1:52143/api/sentinel","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:52143","user-agent":"curl/8.7.1","accept":"*/*"}},"environment":"production"}
+{"type":"transaction","name":"GET /api/sentinel","op":"http.server","source":"url","status":"ok","trace_id":"eda46f6b41884fabbba43d4cc43086ac","sdk":"sentry.javascript.solidstart","spans":["http.server GET /api/sentinel","middleware GET /api/sentinel","http.server GET /api/sentinel"],"hasRequestData":false}
+### recorder hits (rb-deno-fix1-static)
+{"url":"/recorder","sentryTrace":"01b436c2e88e4252a096a187add4a0b0-88a4e22052b89d6b-1","baggage":"yes"}
+{"url":"/recorder-http","sentryTrace":"7386f99348b847d4b8e44aa9e8251755-95021495454850e4-1","baggage":"yes"}
+$REPRO/refutations/verify4-M-solidstart-deno-outgoingfetch/run-b.sh: line 52: 77913 Terminated: 15          PORT=$SINK node $REPRO/_toolbox/sink.mjs > "$TAG-sink.log" 2>&1
+$REPRO/refutations/verify4-M-solidstart-deno-outgoingfetch/run-b.sh: line 52: 77914 Terminated: 15          REC_PORT=$REC node recorder-b.mjs > "$TAG-rec.log" 2>&1
+$REPRO/refutations/verify4-M-solidstart-deno-outgoingfetch/run-b.sh: line 52: 77991 Killed: 9               deno run -A .output/server/index.mjs > "$TAG-app.log" 2>&1
+### done rb-deno-fix1-static

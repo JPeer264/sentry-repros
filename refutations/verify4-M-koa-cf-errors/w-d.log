@@ -1,0 +1,129 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                     Resource                  Mode
+env.SENTRY_DEBUG ("1")      Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:44741/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:44741/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:44741/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:44741/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:44741/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:44741/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:44741/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:44741/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:44741/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:44741/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:44741
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:koa] "koa" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:koa] subscribing to channels
+Sentry Logger [log]: Integration installed: Koa
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a6804ca8229a6690
+KOA:APPLICATION: use bound 
+
+KOA:APPLICATION: use -
+
+KOA:APPLICATION: listen
+
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: /integrations
+  ID: b719319b7501450e
+  parent ID: a6804ca8229a6690
+  root ID: a6804ca8229a6690
+  root op: http.server
+  root description: GET /integrations
+Sentry Logger [log]: [Tracing] Finishing "router" span "/integrations" with ID b719319b7501450e
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /integrations" with ID a6804ca8229a6690
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 9e37f39ac32d476cb5f7661011180702 with 2 spans
+[wrangler:info] GET /integrations 200 OK (21ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b3c91103597366fd
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: /users/:id
+  ID: 82f57993970222af
+  parent ID: b3c91103597366fd
+  root ID: b3c91103597366fd
+  root op: http.server
+  root description: GET /users/:id
+Sentry Logger [log]: [Tracing] Finishing "router" span "/users/:id" with ID 82f57993970222af
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/:id" with ID b3c91103597366fd
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 684077b632fb4d47abb96c2677d8ee5a with 2 spans
+[wrangler:info] GET /users/42 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 8d121e57b9269ec5
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: /boom/:id
+  ID: 82858f0cce58a175
+  parent ID: 8d121e57b9269ec5
+  root ID: 8d121e57b9269ec5
+  root op: http.server
+  root description: GET /boom/:id
+Sentry Logger [log]: [Tracing] Finishing "router" span "/boom/:id" with ID 82858f0cce58a175
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+    Error: koa-cf boom
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:57053:11)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:35432:20)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:17415:19)
+        at handleCallbackErrors2.handleCallbackErrors.status.status [as status] (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:17753:17)
+        at Module.handleCallbackErrors2 [as handleCallbackErrors] (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:16773:30)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:17752:37)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:17748:18)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:17487:16)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:8148:14)
+        at Object.withScope2 [as withScope] (file://$REPRO/refutations/verify4-M-koa-cf-errors/dist-d/koa_cf_d/index.js:8147:25)
+  
+
+
+Sentry Logger [log]: Captured error event `koa-cf boom`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom/:id" with ID 8d121e57b9269ec5
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace affae71abd4644fbac876e5514b8dce3 with 2 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 8f9c395a3b9f7bec
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: /sentinel
+  ID: 90e98d706d06a28a
+  parent ID: 8f9c395a3b9f7bec
+  root ID: 8f9c395a3b9f7bec
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "router" span "/sentinel" with ID 90e98d706d06a28a
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 8f9c395a3b9f7bec
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace a9264a51ae97413591d01e30bcb6f317 with 2 spans
+[wrangler:info] GET /boom/7 500 Internal Server Error (6ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_21-41-59_563.log"

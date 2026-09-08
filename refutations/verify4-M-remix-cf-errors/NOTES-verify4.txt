@@ -1,0 +1,32 @@
+verify4-M-remix-cf-errors : Remix v2.17.5 + Remix Vite plugin on Cloudflare Workers, develop SDK 10.67.0
+ports: sink 38411, wrangler 38412
+
+Rerun:
+  npm install --legacy-peer-deps
+  npx remix vite:build
+  PORT=38411 node $S/qs/sink.mjs > sink-run.log 2>&1 &
+  npx wrangler dev --port 38412 --inspector-port 0 > wr.log 2>&1 &
+  curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:38412/boom/1     # loader throws Error
+  curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:38412/boomresp/1 # loader throws Response 500
+  curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:38412/api/boom   # resource route throws Error
+  curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:38412/act # action throws Error
+  curl -s -o /dev/null 'http://127.0.0.1:38412/sentinel?t=x'               # sentinel
+  curl -s http://127.0.0.1:38411/__items
+
+Variants run (build log names):
+  build-docs.log  entry.server.tsx: import * as Sentry from '@sentry/remix'  (docs snippet)
+                  -> rollup warning "sentryHandleError is not exported by .../index.client.js",
+                     handleError === undefined at runtime, only the thrown Response captured.
+  build-B.log     entry.server.tsx: import * as Sentry from '@sentry/remix/cloudflare'
+                  -> all 4 error shapes captured, mechanism auto.function.remix.server handled:false.
+  build-A.log     no handleError export at all -> no error events at all.
+  (patched)       node_modules/@sentry/remix/build/esm/server/instrumentServer.js, instrumentBuildCallback:
+                     if (!wrappedEntry.module.handleError) wrappedEntry.module.handleError = sentryHandleError;
+                     else if (!wrappedEntry.module.handleError.__sentry_original__)
+                       fill(wrappedEntry.module, "handleError", wrapHandleErrorWithSentry);
+                  -> all 4 captured with NO user handleError; no duplicate for the thrown Response.
+                  (patch reverted afterwards)
+  build-C.log     docs import '@sentry/remix' + vite ssr.resolve.conditions:
+                     ['workerd','worker','module','import','default']
+                  -> no rollup warning, all errors captured. User-side workaround for the exports-map order.
+  build-S.log     variant B with traceLifecycle removed (stream default) -> errors captured, span envelopes.

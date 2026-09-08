@@ -1,0 +1,69 @@
+=== throw-timer ===
+10 | if (process.env.WHERE === "toplevel") {
+11 |   throw new Error("B01 uncaught exception (top level)");
+12 | }
+13 | 
+14 | setTimeout(() => {
+15 |   throw new Error("B01 uncaught exception (timer)");
+                 ^
+error: B01 uncaught exception (timer)
+      at $REPRO/probes/B01/throw.ts:15:13
+
+EXIT_CODE=1
+{"type": "event", "exception": "Error: B01 uncaught exception (timer)", "mechanism": "auto.node.onuncaughtexception", "handled": false, "level": "fatal", "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "6da6ff2ab7a249f0aa4a3ced6f338adb", "environment": "production"}
+
+=== throw-toplevel ===
+ 6 |     console.log("USER_HANDLER saw:", (err as Error).message);
+ 7 |   });
+ 8 | }
+ 9 | 
+10 | if (process.env.WHERE === "toplevel") {
+11 |   throw new Error("B01 uncaught exception (top level)");
+                 ^
+error: B01 uncaught exception (top level)
+      at $REPRO/probes/B01/throw.ts:11:13
+
+EXIT_CODE=1
+{"type": "event", "exception": "Error: B01 uncaught exception (top level)", "mechanism": "auto.node.onuncaughtexception", "handled": false, "level": "fatal", "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "e66ba15fe6164505999352a802a1456e", "environment": "production"}
+
+=== reject-default ===
+This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason:
+Error: B01 unhandled rejection
+    at $REPRO/probes/B01/reject.ts:4:20
+EXIT_CODE=0
+{"type": "event", "exception": "Error: B01 unhandled rejection", "mechanism": "auto.node.onunhandledrejection", "handled": false, "level": "error", "extra": {"unhandledPromiseRejection": true}, "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "c90f8d8b05b7477aa422097c43224bdf", "environment": "production"}
+{"type": "event", "message": "sentinel", "exception": "undefined: sentinel", "mechanism": "generic", "handled": true, "level": "info", "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "c90f8d8b05b7477aa422097c43224bdf", "environment": "production"}
+
+=== reject-strict ===
+1 | import "./instrument";
+2 | import * as Sentry from "@sentry/bun";
+3 | 
+4 | Promise.reject(new Error("B01 unhandled rejection"));
+                       ^
+error: B01 unhandled rejection
+      at $REPRO/probes/B01/reject.ts:4:20
+
+EXIT_CODE=1
+{"type": "event", "exception": "Error: B01 unhandled rejection", "mechanism": "auto.node.onunhandledrejection", "handled": false, "level": "fatal", "extra": {"unhandledPromiseRejection": true}, "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "3fc251cc623e463cb99b170a20442364", "environment": "production"}
+
+=== userhandler-default ===
+USER_HANDLER saw: B01 uncaught exception (timer)
+EXIT_CODE=0
+{"type": "event", "exception": "Error: B01 uncaught exception (timer)", "mechanism": "auto.node.onuncaughtexception", "handled": false, "level": "fatal", "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "bf85a628f1724acc88bd793447a3854c", "environment": "production"}
+{"type": "event", "message": "sentinel", "exception": "undefined: sentinel", "mechanism": "generic", "handled": true, "level": "info", "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "bf85a628f1724acc88bd793447a3854c", "environment": "production"}
+
+=== userhandler-exiteven ===
+10 | if (process.env.WHERE === "toplevel") {
+11 |   throw new Error("B01 uncaught exception (top level)");
+12 | }
+13 | 
+14 | setTimeout(() => {
+15 |   throw new Error("B01 uncaught exception (timer)");
+                 ^
+error: B01 uncaught exception (timer)
+      at $REPRO/probes/B01/throw.ts:15:13
+
+USER_HANDLER saw: B01 uncaught exception (timer)
+EXIT_CODE=1
+{"type": "event", "exception": "Error: B01 uncaught exception (timer)", "mechanism": "auto.node.onuncaughtexception", "handled": false, "level": "fatal", "sdk": "sentry.javascript.bun", "runtime": "bun", "hasContextLine": true, "trace_id": "e1605009553b4ecb9593e8688d2e9b3f", "environment": "production"}
+

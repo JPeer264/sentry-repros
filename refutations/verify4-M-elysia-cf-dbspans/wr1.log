@@ -1,0 +1,128 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                             Resource                  Mode
+env.TRACE_LIFECYCLE ("static")      Environment Variable      local
+
+Attaching additional modules:
+┌─────────────────────────────────┬──────┬─────────────┐
+│ Name                            │ Type │ Size        │
+├─────────────────────────────────┼──────┼─────────────┤
+│ assets/index-BJ-rB6RC.js        │ esm  │ 132.11 KiB  │
+├─────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-C-UQAop9.js │ esm  │ 4463.51 KiB │
+├─────────────────────────────────┼──────┼─────────────┤
+│ Total (2 modules)               │      │ 4595.62 KiB │
+└─────────────────────────────────┴──────┴─────────────┘
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41839/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41839/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41839/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41839/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41839/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41839/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41839/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41839/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41839/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41839/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:41839
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:mysql2] "mysql2" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql2] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql2
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db2
+  ID: b0ae2a05ddddb627
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.pool.connect
+  ID: 925ba865ea833f13
+  parent ID: b0ae2a05ddddb627
+  root ID: b0ae2a05ddddb627
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.connect
+  ID: b948a791073c0382
+  parent ID: 925ba865ea833f13
+  root ID: b0ae2a05ddddb627
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT * FROM users
+  ID: 818987c7ecfeafec
+  parent ID: b0ae2a05ddddb627
+  root ID: b0ae2a05ddddb627
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.pool.connect" with ID 925ba865ea833f13
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.connect" with ID b948a791073c0382
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT * FROM users" with ID 818987c7ecfeafec
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db2" with ID b0ae2a05ddddb627
+[wrangler:info] GET /db2 200 OK (31ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db1
+  ID: 9355347afa01269f
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT * FROM users
+  ID: bad796181088d6b4
+  parent ID: 9355347afa01269f
+  root ID: 9355347afa01269f
+  root op: http.server
+  root description: GET /db1
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT * FROM users" with ID bad796181088d6b4
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db1" with ID 9355347afa01269f
+[wrangler:info] GET /db1 200 OK (13ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db2exec
+  ID: ba3ebb387154efc5
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.pool.connect
+  ID: aff46b5b0bdb4666
+  parent ID: ba3ebb387154efc5
+  root ID: ba3ebb387154efc5
+  root op: http.server
+  root description: GET /db2exec
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT ? + ? AS solution
+  ID: 9aa303f531f79d5c
+  parent ID: ba3ebb387154efc5
+  root ID: ba3ebb387154efc5
+  root op: http.server
+  root description: GET /db2exec
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.pool.connect" with ID aff46b5b0bdb4666
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT ? + ? AS solution" with ID 9aa303f531f79d5c
+Sentry Logger [log]: Captured error event `Cannot perform I/O on behalf of a different request. I/O objects (such as streams, request/response bodies, and others) created in the context of one request handler cannot be accessed from a different request's handler. This is a limitation of Cloudflare Workers which allows us to improve overall performance. (I/O type: Writable)`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db2exec" with ID ba3ebb387154efc5
+[wrangler:info] GET /db2exec 500 Internal Server Error (5ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: af8c21ea3a3f8a5b
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID af8c21ea3a3f8a5b
+[wrangler:info] GET /sentinel 200 OK (2ms)

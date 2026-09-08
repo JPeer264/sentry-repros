@@ -1,0 +1,30 @@
+Starting production server
+Server is running on http://localhost:52923
+215 | });
+216 | async function loader$1({ params, request }) {
+217 | 	const mode = new URL(request.url).searchParams.get("mode");
+218 | 	const active = Sentry.getActiveSpan();
+219 | 	const activeName = active ? Sentry.spanToJSON(active).description ?? "?" : "NO-ACTIVE-SPAN";
+220 | 	if (mode === "error") throw new Error("loader boom on bun");
+                                       ^
+error: loader boom on bun
+      at loader$1 ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/build/server/assets/server-build-B2sv9HJn.js:220:34)
+      at callRouteHandler ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/data.js:14:21)
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/routes.js:57:18
+      at recurseRight ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/instrumentation.js:217:18)
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/instrumentation.js:230:26
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/@sentry/react-router/build/esm/server/createServerInstrumentation.js:97:36
+      at handleCallbackErrors ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at loader ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/@sentry/react-router/build/esm/server/createServerInstrumentation.js:87:17)
+      at handleDocumentRequest ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/server.js:213:36)
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/server.js:123:21
+      at recurseRight ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/instrumentation.js:217:18)
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/instrumentation.js:231:10
+      at request ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/@sentry/react-router/build/esm/server/createServerInstrumentation.js:35:36)
+      at recurseRight ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/instrumentation.js:236:10)
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/instrumentation.js:169:36
+
+GET /users/1?mode=error 500 - - 21.010 ms
+GET /flush 200 - - 4.296 ms

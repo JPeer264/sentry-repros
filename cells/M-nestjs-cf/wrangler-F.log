@@ -1,0 +1,49 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:42317/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:42317/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:42317/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:42317/cdn-cgi/local/explorer/api - OpenAPI schema
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mThe CommonJS "module" variable is treated as a global variable in an ECMAScript module and may not work as expected[0m [commonjs-variable-in-esm]
+
+    dist/worker.js:6411:4:
+[37m      6411 │     [32mmodule[37m.exports = {};
+           ╵     [32m~~~~~~[0m
+
+  This file is considered to be an ECMAScript module because of the "export" keyword here:
+
+    dist/worker.js:85282:0:
+[37m      85282 │ [32mexport[37m {
+            ╵ [32m~~~~~~[0m
+
+
+⎔ Starting local server...
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mservice core:user:m-nestjs-cf: Uncaught Error: No such module "node:process".[0m
+
+    at null.<anonymous> (worker.js:14437:10) in require
+    at null.<anonymous> (worker.js:99200:20) in node_modules/mysql2/lib/pool_cluster.js
+    at null.<anonymous> (worker.js:14463:53) in __require2
+    at null.<anonymous> (worker.js:99618:23) in node_modules/mysql2/promise.js
+    at null.<anonymous> (worker.js:14463:53) in __require2
+    at null.<anonymous> (worker.js:99806:31)
+
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe Workers runtime failed to start. There was likely a problem with the workerd binary or your configuration.[0m
+
+  Runtime stderr:
+  {"timestamp":"1788723081086","level":"error","source":"src/workerd/server/json-logger.c++:127","message":"service core:user:m-nestjs-cf: Uncaught Error: No such module \"node:process\".\n  at worker.js:14437:10 in require\n  at worker.js:99200:20 in node_modules/mysql2/lib/pool_cluster.js\n  at worker.js:14463:53 in __require2\n  at worker.js:99618:23 in node_modules/mysql2/promise.js\n  at worker.js:14463:53 in __require2\n  at worker.js:99806:31","context_depth":0}
+
+
+[32mIf you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose[0m
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_19-31-20_506.log"

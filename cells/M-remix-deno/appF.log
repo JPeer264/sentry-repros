@@ -1,0 +1,14 @@
+[probe] sentry initialized: true lifecycle: static
+[Sentry] `@sentry/server-runtime-injection` was bundled into your application, so mysql2 and any other instrumented dependency load uninstrumented. Keep `@sentry/server-runtime-injection` external in your server bundle, or use the Sentry bundler plugin for build-time instrumentation. See https://docs.sentry.io/platforms/javascript/guides/node/troubleshooting/
+This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason:
+SyntaxError: Unexpected token ':'
+    at Object.compileFunction (ext:core/01_core.js:1106:31)
+    at wrapSafe (node:module:1666:21)
+    at Module._compile (node:module:1691:23)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+    at Module.require (node:module:1609:19)
+    at require (node:module:1815:16)
+    at Object.<anonymous> (file://$REPRO/cells/M-remix-deno/node_modules/mysql2/lib/connection_config.js:13:21)
+    at Module._compile (node:module:1709:34)
+    at Module.load (node:module:1572:16)

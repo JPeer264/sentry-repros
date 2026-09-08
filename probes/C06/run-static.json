@@ -1,0 +1,107 @@
+[
+ {
+  "type": "transaction",
+  "name": "GET /d1",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "origin": "auto.http.cloudflare",
+  "trace_id": "76549da29bc64e5f801da41aefc4799b",
+  "spans": [
+   {
+    "op": "db.query",
+    "description": "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)",
+    "origin": "auto.db.cloudflare.d1",
+    "status": "ok",
+    "data": {
+     "sentry.origin": "auto.db.cloudflare.d1",
+     "sentry.op": "db.query",
+     "db.system.name": "cloudflare-d1",
+     "db.operation.name": "exec",
+     "db.query.text": "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)",
+     "db.query.summary": "CREATE TABLE users"
+    }
+   },
+   {
+    "op": "db.query",
+    "description": "INSERT INTO users (name) VALUES (?)",
+    "origin": "auto.db.cloudflare.d1",
+    "status": "ok",
+    "data": {
+     "sentry.origin": "auto.db.cloudflare.d1",
+     "sentry.op": "db.query",
+     "db.system.name": "cloudflare-d1",
+     "db.operation.name": "run",
+     "db.query.text": "INSERT INTO users (name) VALUES (?)",
+     "db.query.summary": "INSERT users",
+     "cloudflare.d1.duration": 0,
+     "cloudflare.d1.rows_read": 1,
+     "cloudflare.d1.rows_written": 2
+    }
+   },
+   {
+    "op": "db.query",
+    "description": "SELECT id, name FROM users WHERE name = ?",
+    "origin": "auto.db.cloudflare.d1",
+    "status": "ok",
+    "data": {
+     "sentry.origin": "auto.db.cloudflare.d1",
+     "sentry.op": "db.query",
+     "db.system.name": "cloudflare-d1",
+     "db.operation.name": "all",
+     "db.query.text": "SELECT id, name FROM users WHERE name = ?",
+     "db.query.summary": "SELECT users",
+     "cloudflare.d1.duration": 0,
+     "cloudflare.d1.rows_read": 3,
+     "cloudflare.d1.rows_written": 0
+    }
+   },
+   {
+    "op": "db.query",
+    "description": "SELECT COUNT(*) AS n FROM users",
+    "origin": "auto.db.cloudflare.d1",
+    "status": "ok",
+    "data": {
+     "sentry.origin": "auto.db.cloudflare.d1",
+     "sentry.op": "db.query",
+     "db.system.name": "cloudflare-d1",
+     "db.operation.name": "first",
+     "db.query.text": "SELECT COUNT(*) AS n FROM users",
+     "db.query.summary": "SELECT users"
+    }
+   },
+   {
+    "op": "db.query",
+    "description": "D1 batch",
+    "origin": "auto.db.cloudflare.d1",
+    "status": "ok",
+    "data": {
+     "sentry.origin": "auto.db.cloudflare.d1",
+     "sentry.op": "db.query",
+     "db.system.name": "cloudflare-d1",
+     "db.operation.name": "batch",
+     "db.query.text": "INSERT INTO users (name) VALUES (?)\nSELECT name FROM users WHERE name = ?",
+     "db.operation.batch.size": 2
+    }
+   }
+  ]
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "undefined: sentinel",
+  "sdk": "sentry.javascript.cloudflare",
+  "trace_id": "87a6d81b198f46fc806ed33369370af7",
+  "breadcrumbs": []
+ },
+ {
+  "type": "transaction",
+  "name": "GET /sentinel",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "origin": "auto.http.cloudflare",
+  "trace_id": "87a6d81b198f46fc806ed33369370af7",
+  "spans": []
+ }
+]

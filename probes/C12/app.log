@@ -1,0 +1,58 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                                            Resource                  Mode
+env.SENTRY_TUNNEL ("http://127.0.0.1:44712/")      Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:44711/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:44711/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:44711/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:44711/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:44711/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:44711/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:44711/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:44711/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:44711/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:44711/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:44711
+[wrangler:info] GET /ok 200 OK (9ms)
+[wrangler:info] GET /ok 200 OK (1ms)
+[wrangler:error] Error: c12 route boom
+    at Object.fetch (file://$REPRO/probes/C12/src/index.ts:22:15)
+    at null.<anonymous> (file://$REPRO/probes/C12/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentFetch.ts:41:89)
+    at null.<anonymous> (file://$REPRO/probes/C12/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:162:25)
+    at null.<anonymous> (file://$REPRO/probes/C12/node_modules/@sentry/core/src/tracing/trace.ts:139:60)
+    at handleCallbackErrors.status.status [as status] (file://$REPRO/probes/C12/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+    at handleCallbackErrors (file://$REPRO/probes/C12/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+    at callback (file://$REPRO/probes/C12/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+    at null.<anonymous> (file://$REPRO/probes/C12/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+    at null.<anonymous> (file://$REPRO/probes/C12/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+    at null.<anonymous> (file://$REPRO/probes/C12/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+[wrangler:info] GET /error 500 Internal Server Error (53ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)
+c12 console log { route: '/telemetry' }
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mc12 console warn[0m
+
+
+[wrangler:info] GET /telemetry 200 OK (3ms)
+[wrangler:info] GET /ok 200 OK (2ms)
+[wrangler:info] GET /ok 200 OK (2ms)
+[wrangler:info] GET /ok 200 OK (1ms)
+[wrangler:info] GET /ok 200 OK (2ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)
+c12 console log { route: '/telemetry' }
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mc12 console warn[0m
+
+
+[wrangler:info] GET /telemetry 200 OK (2ms)
+c12 console log { route: '/flush' }
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mc12 console warn[0m
+
+
+[wrangler:info] GET /flush 200 OK (2ms)
+[wrangler:info] GET /sentinel 200 OK (1ms)

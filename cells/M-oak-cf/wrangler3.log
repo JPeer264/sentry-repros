@@ -1,0 +1,248 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                              Resource                  Mode
+env.SENTRY_LIFECYCLE ("static")      Environment Variable      local
+
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41537/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41537/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41537/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41537/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:41537
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: bce2cda93e99e1a8
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/42" with ID bce2cda93e99e1a8
+[wrangler:info] GET /users/42 200 OK (16ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /error/7
+  ID: 8dc7974eeb1d3a08
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:41537/error/7',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/src/index.ts:17:9)
+      at next (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+      at Application.fetch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/application.ts:720:30)
+      at Object.fetch (file://$REPRO/cells/M-oak-cf/src/index.ts:57:18)
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error/7" with ID 8dc7974eeb1d3a08
+Sentry Logger [log]: Captured error event `oak-route-boom`
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/cells/M-oak-cf/src/index.ts:17:9)
+    at next (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+    at Application.fetch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/application.ts:720:30)
+    at Object.fetch (file://$REPRO/cells/M-oak-cf/src/index.ts:57:18)
+[wrangler:info] GET /error/7 500 Internal Server Error (89ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 85c3d00249935c6f
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 85c3d00249935c6f
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /error/7
+  ID: 8b875dc2e2f1bd5f
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:41537/error/7',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/src/index.ts:17:9)
+      at next (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+      at Application.fetch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/application.ts:720:30)
+      at Object.fetch (file://$REPRO/cells/M-oak-cf/src/index.ts:57:18)
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error/7" with ID 8b875dc2e2f1bd5f
+Sentry Logger [log]: Captured error event `oak-route-boom`
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/cells/M-oak-cf/src/index.ts:17:9)
+    at next (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+    at Application.fetch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/application.ts:720:30)
+    at Object.fetch (file://$REPRO/cells/M-oak-cf/src/index.ts:57:18)
+[wrangler:info] GET /error/7 500 Internal Server Error (39ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /isolate/alpha
+  ID: 991b1700b1cc697b
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /isolate/bravo
+  ID: 8e5e85812b285c78
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /isolate/charlie
+  ID: b6d7ffbd8d3d3664
+Sentry Logger [log]: Captured error event `iso-charlie`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /isolate/charlie" with ID b6d7ffbd8d3d3664
+[wrangler:info] GET /isolate/charlie 200 OK (57ms)
+Sentry Logger [log]: Captured error event `iso-bravo`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /isolate/bravo" with ID 8e5e85812b285c78
+[wrangler:info] GET /isolate/bravo 200 OK (69ms)
+Sentry Logger [log]: Captured error event `iso-alpha`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /isolate/alpha" with ID 991b1700b1cc697b
+[wrangler:info] GET /isolate/alpha 200 OK (99ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 90f11e210de0ccd6
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 90f11e210de0ccd6
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /error/9
+  ID: 85d261dd101857fe
+  parent ID: 1111222233334444
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:41537/error/9',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/src/index.ts:17:9)
+      at next (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+      at Application.fetch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/application.ts:720:30)
+      at Object.fetch (file://$REPRO/cells/M-oak-cf/src/index.ts:57:18)
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error/9" with ID 85d261dd101857fe
+Sentry Logger [log]: Captured error event `oak-route-boom`
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/cells/M-oak-cf/src/index.ts:17:9)
+    at next (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/middleware.ts:93:12)
+    at Application.fetch (file://$REPRO/cells/M-oak-cf/node_modules/@oak/oak/application.ts:720:30)
+    at Object.fetch (file://$REPRO/cells/M-oak-cf/src/index.ts:57:18)
+[wrangler:info] GET /error/9 500 Internal Server Error (36ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /fetch
+  ID: b5424ad063cfe0f0
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:41538/__record
+  ID: a2dc7e1adcf6986d
+  parent ID: b5424ad063cfe0f0
+  root ID: b5424ad063cfe0f0
+  root op: http.server
+  root description: GET /fetch
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:41538/__record" with ID a2dc7e1adcf6986d
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /fetch" with ID b5424ad063cfe0f0
+[wrangler:info] GET /fetch 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /log
+  ID: 900ae08175d8e310
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /log" with ID 900ae08175d8e310
+[wrangler:info] GET /log 200 OK (1ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: b1968e87bfef89d5
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID b1968e87bfef89d5
+[wrangler:info] GET /sentinel 200 OK (1ms)
+Your Worker has access to the following bindings:
+Binding                              Resource                  Mode
+env.SENTRY_LIFECYCLE ("static")      Environment Variable      local
+
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_19-27-57_265.log"

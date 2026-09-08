@@ -1,0 +1,166 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding            Resource      Mode
+env.ASSETS         Assets        local
+
+⎔ Starting local server...
+[wrangler:info] ✨ Parsed 1 valid header rule.
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:53825/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:53825/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:53825/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:53825/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:53825/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:53825/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:53825/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:53825/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:53825/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:53825/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:53825
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/users/42
+  ID: 959e7383afce73ba
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/users/42" with ID 959e7383afce73ba
+[wrangler:info] GET /api/users/42 200 OK (34ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/boom
+  ID: bc22e8555731464f
+✘ [ERROR] [request error] [unhandled] [GET] http://127.0.0.1:53825/api/boom
+
+   Dn [Error]: solidstart-cf boom
+      at o (file://$REPRO/cells/M-solidstart-cf/.vinxi/build/ssr/boom.js:1:20)
+      ... 8 lines matching cause stack trace ...
+      at async jsonError (file://$REPRO/cells/M-solidstart-cf/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10) {
+    cause: Error: solidstart-cf boom
+        at a (file://$REPRO/cells/M-solidstart-cf/.vinxi/build/ssr/boom.js:1:20)
+        at null.<anonymous> (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/nitro/nitro.mjs:1:224055)
+        at null.<anonymous> (async file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:29361:20)
+        at null.<anonymous> (async file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:22791:20)
+        at async Object.callAsync (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/nitro/nitro.mjs:1:72643)
+        at null.<anonymous> (async file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:22878:7)
+        at async b (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/nitro/nitro.mjs:1:24693)
+        at null.<anonymous> (async file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:30279:22)
+        at null.<anonymous> (async file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:13974:19)
+        at async jsonError (file://$REPRO/cells/M-solidstart-cf/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10),
+    statusCode: 500,
+    fatal: false,
+    unhandled: true,
+    statusMessage: undefined,
+    data: undefined
+  }
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/boom" with ID bc22e8555731464f
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/trace
+  ID: 9a7a7f2e512cf9c8
+Sentry Logger [log]: Captured error event `trace-probe`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/trace" with ID 9a7a7f2e512cf9c8
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/iso
+  ID: 9456f0a329710c26
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/iso
+  ID: b81bd26509f1ac5a
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/iso
+  ID: ae45468c518dd067
+[wrangler:info] GET /api/boom 500 Server Error (10ms)
+[wrangler:info] GET /api/trace 200 OK (4ms)
+Sentry Logger [log]: Captured error event `iso-gamma`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/iso" with ID b81bd26509f1ac5a
+[wrangler:info] GET /api/iso 200 OK (70ms)
+Sentry Logger [log]: Captured error event `iso-alpha`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/iso" with ID ae45468c518dd067
+[wrangler:info] GET /api/iso 200 OK (127ms)
+Sentry Logger [log]: Captured error event `iso-beta`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/iso" with ID 9456f0a329710c26
+[wrangler:info] GET /api/iso 200 OK (144ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/fetchout
+  ID: 92cb3490b2c68cf2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:53819/rec
+  ID: 8e397333d9d271dd
+  parent ID: 92cb3490b2c68cf2
+  root ID: 92cb3490b2c68cf2
+  root op: http.server
+  root description: GET /api/fetchout
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:53819/rec" with ID 8e397333d9d271dd
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/fetchout" with ID 92cb3490b2c68cf2
+[wrangler:info] GET /api/fetchout 200 OK (9ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/logme
+  ID: a6b049414cc5e9f2
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/logme" with ID a6b049414cc5e9f2
+[wrangler:info] GET /api/logme 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/trace
+  ID: ac105e3fa422346a
+  parent ID: bbbbbbbbbbbbbbbb
+Sentry Logger [log]: Captured error event `trace-probe`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/trace" with ID ac105e3fa422346a
+[wrangler:info] GET /api/trace 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/db
+  ID: 942bb0865cbf7f02
+✘ [ERROR] [request error] [unhandled] [GET] http://127.0.0.1:53825/api/db
+
+   TypeError: _3.hasOwnProperty is not a function
+      at requireSafer (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/_/promise.mjs:1:174381)
+      ... 8 lines matching cause stack trace ...
+      at null.<anonymous> (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/nitro/nitro.mjs:1:216496) {
+    cause: TypeError: _3.hasOwnProperty is not a function
+        at requireSafer (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/_/promise.mjs:1:174381)
+        at null.<anonymous> (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/_/promise.mjs:1:309687)
+        at requireLib$1 (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/_/promise.mjs:1:312317)
+        at requireString (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/_/promise.mjs:1:312389)
+        at requirePacket (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/_/promise.mjs:1:314493)
+        at .output/server/chunks/_/promise.mjs (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/_/promise.mjs:1:328662)
+        at __init (file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:11:61)
+        at .output/server/chunks/build/db2.mjs (file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:22052:5)
+        at __init (file://$REPRO/cells/M-solidstart-cf/.wrangler/tmp/dev-nlkkwh/worker.js:11:61)
+        at null.<anonymous> (file://$REPRO/cells/M-solidstart-cf/.output/server/chunks/nitro/nitro.mjs:1:216496),
+    statusCode: 500,
+    fatal: false,
+    unhandled: true,
+    statusMessage: undefined,
+    data: undefined
+  }
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/db" with ID 942bb0865cbf7f02
+[wrangler:info] GET /api/db 500 Server Error (15ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /api/sentinel
+  ID: a7833437fafa7c22
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /api/sentinel" with ID a7833437fafa7c22
+[wrangler:info] GET /api/sentinel 200 OK (2ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_10-35-45_101.log"

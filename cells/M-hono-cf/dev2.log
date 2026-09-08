@@ -1,0 +1,73 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:47612/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:47612/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:47612/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:47612/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:47612/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:47612/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:47612/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:47612/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:47612/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:47612/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:47612
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mInvalid Sentry Dsn: http://127.0.0.1:41207/1[0m
+
+
+[wrangler:info] GET / 404 Not Found (160ms)
+[wrangler:info] GET /users/42 200 OK (3ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: hono-cf-boom[0m
+
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/src/index.ts:31:9)
+      at dispatch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:22:23)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:22:46)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/@sentry/hono/src/cloudflare/middleware.ts:54:11)
+      at dispatch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:22:23)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:5:12)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/hono-base.js:308:31)
+      at #dispatch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/hono-base.js:318:5)
+      at Hono2.fetch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/hono-base.js:332:17)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentFetch.ts:41:89)
+
+
+[wrangler:info] GET /boom/7 500 Internal Server Error (5ms)
+[wrangler:info] GET /iso/aaa 200 OK (64ms)
+[wrangler:info] GET /iso/bbb 200 OK (61ms)
+[wrangler:info] GET /iso/ccc 200 OK (61ms)
+[wrangler:info] GET /users/99 200 OK (2ms)
+[wrangler:info] GET /fetchout 200 OK (5ms)
+[wrangler:info] GET /log 200 OK (2ms)
+[wrangler:info] GET /db 200 OK (6ms)
+[wrangler:info] GET /sentinel 200 OK (1ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[wrangler:info] GET /users/42 200 OK (14ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: hono-cf-boom[0m
+
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/src/index.ts:31:9)
+      at dispatch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:22:23)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:22:46)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/@sentry/hono/src/cloudflare/middleware.ts:54:11)
+      at dispatch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:22:23)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/compose.js:5:12)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/hono-base.js:308:31)
+      at #dispatch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/hono-base.js:318:5)
+      at Hono2.fetch (file://$REPRO/cells/M-hono-cf/node_modules/hono/dist/hono-base.js:332:17)
+      at null.<anonymous> (file://$REPRO/cells/M-hono-cf/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentFetch.ts:41:89)
+
+
+[wrangler:info] GET /boom/7 500 Internal Server Error (7ms)
+[wrangler:info] GET /iso/bbb 200 OK (64ms)
+[wrangler:info] GET /iso/ccc 200 OK (65ms)
+[wrangler:info] GET /iso/aaa 200 OK (65ms)
+[wrangler:info] GET /users/99 200 OK (2ms)
+[wrangler:info] GET /fetchout 200 OK (2ms)
+[wrangler:info] GET /log 200 OK (2ms)
+[wrangler:info] GET /db 200 OK (9ms)
+[wrangler:info] GET /sentinel 200 OK (1ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_10-26-34_421.log"

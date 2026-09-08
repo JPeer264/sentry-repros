@@ -1,0 +1,18 @@
+serve /ok -> 200
+serve /ok -> 200
+serve /error -> 500
+http /ok -> 200
+http /ok -> 200
+http /error-throw -> 400
+serve /sentinel -> 200
+session envelopes: 1
+{"type":"event","exception":"serve boom","mechanism":"auto.http.deno","handled":false,"sdk":"sentry.javascript.deno","runtime":"deno","hasContextLine":true,"trace_id":"eb833662c1ad4a278834e6c411d4159b","request":{"url":"http://127.0.0.1:52848/error","method":"GET","hasData":false,"headers":{"accept":"*/*","accept-encoding":"gzip, deflate","accept-language":"*","connection":"keep-alive","host":"127.0.0.1:52848","sec-fetch-mode":"cors","user-agent":"node"}},"release":"1.0.0","environment":"production"}
+{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.deno","runtime":"deno","hasContextLine":true,"trace_id":"5a87241f0924434f81a8858a33bf71a8","request":{"url":"http://127.0.0.1:52848/sentinel","method":"GET","hasData":false,"headers":{"accept":"*/*","accept-encoding":"gzip, deflate","accept-language":"*","connection":"keep-alive","host":"127.0.0.1:52848","sec-fetch-mode":"cors","user-agent":"node"}},"release":"1.0.0","environment":"production"}
+{"type":"span","trace_id":"49b36cfae02649b28200d0b88e42df81","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"span","trace_id":"20e3fea27e9944309a4bc09b70cfe48b","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"span","trace_id":"eb833662c1ad4a278834e6c411d4159b","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"span","trace_id":"e78fa7d2740244cdab72546e47e70e72","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"1c3bfa119796402faaaaa1996daf67e9","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"9980ca0bc7ab42bd84dff95fbefc9020","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"5a87241f0924434f81a8858a33bf71a8","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.deno"}]}
+{"type":"sessions","release":"1.0.0","environment":"production","aggregates":[{"started":"2026-09-07T09:02:00.000Z","exited":3,"errored":0,"crashed":0,"abnormal":0}]}

@@ -1,0 +1,217 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41337/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41337/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41337/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41337/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41337/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41337/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41337/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41337/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41337/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41337/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:41337
+[wrangler:info] GET /api/world 404 Not Found (7ms)
+[wrangler:info] GET / 200 unknown (3ms)
+[wrangler:info] GET /__items 404 Not Found (1ms)
+[wrangler:info] GET / 200 unknown (2ms)
+[wrangler:info] GET /users/42 200 unknown (1ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[wrangler:info] GET /api/ok 404 Not Found (7ms)
+[wrangler:info] GET /api/users/42 404 Not Found (1ms)
+[wrangler:info] GET / 200 unknown (2ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /plain
+  ID: 8a9cb49787e764a7
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /plain" with ID 8a9cb49787e764a7
+[wrangler:info] GET /plain 200 unknown (17ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: b1c57c379b3ca0c8
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/42" with ID b1c57c379b3ca0c8
+[wrangler:info] GET /users/42 200 unknown (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom
+  ID: 939217159bcf4561
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom" with ID 939217159bcf4561
+[wrangler:info] GET /boom 500 Internal Server Error (4ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom[0m
+
+      at null.<anonymous> (file://$REPRO/cells/M-express-cf/src/index.js:16:9)
+      at Layer.handleRequest (file://$REPRO/cells/M-express-cf/node_modules/router/lib/layer.js:152:17)
+      at next (file://$REPRO/cells/M-express-cf/node_modules/router/lib/route.js:157:13)
+      at Route.dispatch (file://$REPRO/cells/M-express-cf/node_modules/router/lib/route.js:117:3)
+      at handle (file://$REPRO/cells/M-express-cf/node_modules/router/index.js:435:11)
+      at Layer.handleRequest (file://$REPRO/cells/M-express-cf/node_modules/router/lib/layer.js:152:17)
+      at null.<anonymous> (file://$REPRO/cells/M-express-cf/node_modules/router/index.js:295:15)
+      at processParams (file://$REPRO/cells/M-express-cf/node_modules/router/index.js:582:12)
+      at next (file://$REPRO/cells/M-express-cf/node_modules/router/index.js:291:5)
+      at router.handle (file://$REPRO/cells/M-express-cf/node_modules/router/index.js:186:3)
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /logit
+  ID: 952d6f4aa22aeb00
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /logit" with ID 952d6f4aa22aeb00
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /fetchout
+  ID: 9794af6b8207243d
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:41339/recorder
+  ID: 87f72dabd083db4a
+  parent ID: 9794af6b8207243d
+  root ID: 9794af6b8207243d
+  root op: http.server
+  root description: GET /fetchout
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:41339/recorder" with ID 87f72dabd083db4a
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /fetchout" with ID 9794af6b8207243d
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: a2214a8c9c406c06
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID a2214a8c9c406c06
+[wrangler:info] GET /logit 200 unknown (2ms)
+[wrangler:info] GET /fetchout 200 unknown (7ms)
+[wrangler:info] GET /sentinel 200 unknown (4ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom
+  ID: 883688485cd7e59b
+Sentry Logger [log]: Captured error event `express-cf-boom`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom" with ID 883688485cd7e59b
+[wrangler:info] GET /boom 500 unknown (28ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: b32656e67dc3cf13
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID b32656e67dc3cf13
+[wrangler:info] GET /sentinel 200 unknown (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /tagged
+  ID: 89cf6fc54248ff08
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /tagged
+  ID: 90d51c43b7242a25
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /tagged
+  ID: a332f937a9cded81
+Sentry Logger [log]: Captured error event `tagged-gamma`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /tagged" with ID a332f937a9cded81
+[wrangler:info] GET /tagged 200 unknown (55ms)
+Sentry Logger [log]: Captured error event `tagged-beta`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /tagged" with ID 90d51c43b7242a25
+[wrangler:info] GET /tagged 200 unknown (306ms)
+Sentry Logger [log]: Captured error event `tagged-alpha`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /tagged" with ID 89cf6fc54248ff08
+[wrangler:info] GET /tagged 200 unknown (611ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: a809e380edc0ec7f
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID a809e380edc0ec7f
+[wrangler:info] GET /sentinel 200 unknown (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /tagged
+  ID: 8227e90e9973c90d
+  parent ID: bbbbbbbbbbbbbbbb
+Sentry Logger [log]: Captured error event `tagged-trace`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /tagged" with ID 8227e90e9973c90d
+[wrangler:info] GET /tagged 200 unknown (4ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db
+  ID: b6d9eef2c10205c3
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db" with ID b6d9eef2c10205c3
+[wrangler:info] GET /db 500 unknown (26ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: b8e547774a10d7d6
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID b8e547774a10d7d6
+[wrangler:info] GET /sentinel 200 unknown (4ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db
+  ID: a1b6bf13572bd95a
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db" with ID a1b6bf13572bd95a
+[wrangler:info] GET /db 200 unknown (24ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 9475adb58606146c
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 9475adb58606146c
+[wrangler:info] GET /sentinel 200 unknown (5ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_19-25-36_458.log"

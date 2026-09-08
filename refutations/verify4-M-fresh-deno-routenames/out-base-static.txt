@@ -1,0 +1,7 @@
+=== base-static (mode=baseline lifecycle=static, vite dev)
+users:200 boom:500 child:200 sentinel:200
+transaction | GET /api/users/42 | op=http.server | src=url | route=None | segsrc=url  spans= []
+transaction | GET /api/boom | op=http.server | src=url | route=None | segsrc=url  spans= []
+transaction | GET /api/child | op=http.server | src=url | route=None | segsrc=url  spans= ['custom work', 'via-tracer']
+transaction | GET /api/sentinel | op=http.server | src=url | route=None | segsrc=url  spans= []
+event | sentinel | mech=generic handled=True | tx=GET /api/sentinel

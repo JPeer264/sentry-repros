@@ -1,0 +1,517 @@
+[
+ {
+  "milestone": "Bun + Framework gaps",
+  "title": "Framework SDKs on Bun record no request or fetch spans unless the Bun integrations are added by hand",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "`@sentry/nextjs`, `@sentry/nuxt`, `@sentry/sveltekit`, `@sentry/astro`, `@sentry/react-router`, `@sentry/tanstackstart-react`, `@sentry/solidstart` and `@sentry/remix` initialize the Node SDK. On Bun 1.4.0, Bun never publishes `http.server.request.start` and Node's undici fetch channels never fire, so with the documented wiring route names, per-request isolation, incoming trace continuation and outgoing fetch spans are all absent. Errors and logs still arrive, so nothing looks broken.\n\nVerified fix in every cell: install `@sentry/bun` next to the framework SDK and add `bunServerIntegration()` or `bunHttpServerIntegration()` (whichever server the framework uses) plus `fetchIntegration()` to the server init, gated on `typeof Bun !== \"undefined\"`. The repo's own e2e app `nextjs-16-bun` does this in `sentry.server.config.ts`.\n\n**Work item.** Detect Bun in the framework server inits and add the two integrations there, so the documented wiring works unchanged. Until then, one shared docs snippet (DOC-B3 in the audit).\n\n**Evidence.** Cell records M-nextjs-bun, M-nuxt-bun, M-sveltekit-bun, M-astro-bun, M-reactrouter-bun, M-tanstack-bun, M-solidstart-bun, M-remix-bun in `_reports/deep-probe-report.html`; reproductions `cells/M-nextjs-bun/`, `cells/M-nuxt-bun/`, `cells/M-sveltekit-bun/`, `cells/M-astro-bun/`, `cells/M-reactrouter-bun/`, `cells/M-tanstack-bun/`, `cells/M-solidstart-bun/`, `cells/M-remix-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "01-framework-sdks-on-bun-record-no-request-or-fetch-spans-unles.md",
+  "n": 1
+ },
+ {
+  "milestone": "Bun + Framework gaps",
+  "title": "Hono on Bun: inlining `hono` in the Bun bundle drops route names and error capture",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "`bun app.ts` with `@sentry/hono/bun` gives `GET /user/:id` (source `route`) and the `auto.http.hono.context_error` event. A `Bun.build` with `sentryBunPlugin()` and `external: [\"@sentry/*\"]` keeps `@sentry/hono` external but inlines `hono`; the middleware patches then miss, transactions fall back to `GET /user/42` (source `url`) and no error is captured. Keeping `hono` external as well, or dropping `external` entirely, restores both.\n\n**Work item.** Make the patch survive an inlined `hono`, or detect the split at init and warn with the fix.\n\n**Evidence.** Cell record M-hono-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-hono-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "02-hono-on-bun-inlining-hono-in-the-bun-bundle-drops-route-name.md",
+  "n": 2
+ },
+ {
+  "milestone": "Bun + Framework gaps",
+  "title": "NestJS on Bun: the documented `@sentry/nestjs` init loses route names, and the plugin build fails without Nest peers as externals",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "NestJS 11 boots on Bun 1.4.0 with a `tsconfig.json` that has `experimentalDecorators` and `emitDecoratorMetadata`. With `Sentry.init` from `@sentry/nestjs`, route names are lost on Bun; initializing from `@sentry/bun` and adding `nestIntegration()` from `@sentry/nestjs` restores them. Route names and the Express middleware and handler spans exist only in the bundled build; `bun src/main.ts` gives URL-named transactions and no child spans.\n\nThe `Bun.build` with `sentryBunPlugin()` fails with `Could not resolve: \"@nestjs/microservices/microservices-module\"` unless Nest's lazily required optional peers are listed as `external` (`@nestjs/microservices`, `@nestjs/microservices/microservices-module`, `@nestjs/websockets`, `@nestjs/websockets/socket-module`, `@nestjs/platform-express/multer`, `class-validator`, `class-transformer`, `cache-manager`).\n\n**Work item.** Make `@sentry/nestjs` init pick the Bun SDK on Bun, and have the plugin treat Nest's optional peers as external by default.\n\n**Evidence.** Cell record M-nestjs-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-nestjs-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "03-nestjs-on-bun-the-documented-sentry-nestjs-init-loses-route-.md",
+  "n": 3
+ },
+ {
+  "milestone": "Bun + Framework gaps",
+  "title": "Remix on Bun: the request handler patch never runs when the server runtime is inlined",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Plain `bun server.mjs` sends errors and logs only, no transactions and no spans. Bundling the server entry with `Bun.build({ plugins: [sentryBunPlugin()] })` and running `bun dist/server.js` gives route-named transactions, `LOADER routes/users.$id` children, database spans and outgoing fetch spans. Because the bundle inlines `@remix-run/server-runtime`, Sentry's `createRequestHandler` patch never runs, so per-request isolation and incoming trace continuation only work when the app wraps the adapter handler in `withIsolationScope` and `continueTrace` itself, or adds `bunHttpServerIntegration({ spans: false })`.\n\nTwo app-side traps: `\"sideEffects\": false` in the app's `package.json` makes `Bun.build` tree-shake the side-effect-only driver import, and `express` must go back on `external` after the plugin has run.\n\n**Work item.** Apply the request handler patch to an inlined server runtime (the plugin can transform it), and warn when `sideEffects: false` drops an instrumented import.\n\n**Evidence.** Cell record M-remix-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-remix-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "04-remix-on-bun-the-request-handler-patch-never-runs-when-the-s.md",
+  "n": 4
+ },
+ {
+  "milestone": "Bun + Framework gaps",
+  "title": "React Router on Bun: the documented server entry depends on `renderToPipeableStream`, which Bun does not provide",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Bun resolves `react-dom/server` to a build without `renderToPipeableStream`, so `createSentryHandleRequest({ renderToPipeableStream, ... })` from the guide cannot be used. The verified entry uses `renderToReadableStream` with `Sentry.wrapSentryHandleRequest(handler)` and `export const handleError = Sentry.createSentryHandleError({ logErrors: true })`. With that, the documented `instrumentations` export, and the Bun integrations from the umbrella ticket, all seven capabilities pass.\n\n**Work item.** Ship a `renderToReadableStream` variant of `createSentryHandleRequest`, or name `wrapSentryHandleRequest` as the Bun path in the package docs.\n\n**Evidence.** Cell record M-reactrouter-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-reactrouter-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "05-react-router-on-bun-the-documented-server-entry-depends-on-r.md",
+  "n": 5
+ },
+ {
+  "milestone": "Bun + Framework gaps",
+  "title": "TanStack Start on Bun: Vite plugin order crashes the build, and parameterized route names are never produced",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Unless `sentryTanstackStart()` is the first Vite plugin and `@sentry/*` stays external in the Nitro server build, `vite build` dies with `Cannot read properties of null (reading 'getVariableForExportName')`, because Nitro bundles the SDK. With that fixed and the Bun integrations added, errors, isolation, incoming trace, outgoing fetch and logs work under `bun --preload ./instrument.server.mjs .output/server/index.mjs`. Parameterized route names such as `GET /api/user/$id` are still not produced on Bun, and database spans need the diagnostics-channel pin from the Bun channel ticket.\n\n**Work item.** Make the plugin robust to ordering or fail with a clear message, and find why the route patterns do not reach the server span on Bun.\n\n**Evidence.** Cell record M-tanstack-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-tanstack-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "06-tanstack-start-on-bun-vite-plugin-order-crashes-the-build-an.md",
+  "n": 6
+ },
+ {
+  "milestone": "Bun + Framework gaps",
+  "title": "Nuxt `bun` preset: the server init is never loaded because Bun ignores `NODE_OPTIONS`",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Improvement"
+  ],
+  "priority": "Medium",
+  "body": "The documented start command loads `sentry.server.config.mjs` through `node --import`. Bun ignores `NODE_OPTIONS` and has no `--import` flag, so under `NITRO_PRESET=bun` and `bun .output/server/index.mjs` the SDK never initializes unless `sentry: { autoInjectServerSentry: \"top-level-import\" }` is set in `nuxt.config.ts`. With that and the Bun integrations, six of seven capabilities pass. Nitro bundling `mysql2` breaks every query with `genFunc$1 is not a function` regardless of Sentry; `nitro.externals.external: [\"mysql2\"]` avoids it.\n\n**Work item.** Default `autoInjectServerSentry` to `top-level-import` when the Nitro preset is `bun`, or fail the build with the instruction.\n\n**Evidence.** Cell record M-nuxt-bun in `_reports/deep-probe-report.html`; reproduction `cells/M-nuxt-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "07-nuxt-bun-preset-the-server-init-is-never-loaded-because-bun-.md",
+  "n": 7
+ },
+ {
+  "milestone": "Deno + Framework gaps",
+  "title": "Express, Hapi, Koa and NestJS on Deno: hook order and JSON-require failures per framework",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "With `import \"@sentry/deno/import\"` as the first line, Express and Hapi fail at import with `SyntaxError: Unexpected token ':'` and Koa with `Cannot resolve module \"./index.js\"`, because any module load hook makes Deno compile `require(\"*.json\")` as JavaScript (denoland/deno#36240). Without the hook they run, but transactions are URL-named, there are no child spans and handler errors are not captured.\n\nVerified shapes: a JSON load hook registered before the framework import restores route names for Hapi and NestJS; Koa needs the hook registered after its own import through `await import(\"@sentry/deno/import\")` for driver spans; bundling with esbuild and `sentryOrchestrionPlugin()` from `@sentry/server-utils/orchestrion/esbuild` gives Hapi and Koa route names, framework spans and error capture with no runtime hook at all. NestJS with `@sentry/nestjs` alone gets everything except parameterized route names.\n\n**Work item.** Once the JSON shim in the Deno milestone ships, re-run the four cells and remove the per-framework workarounds. Add real-library Deno scenarios for these four (JS-3523).\n\n**Evidence.** Cell records M-express-deno, M-hapi-deno, M-koa-deno, M-nestjs-deno in `_reports/deep-probe-report.html`; reproductions `cells/M-express-deno/`, `cells/M-hapi-deno/`, `cells/M-koa-deno/`, `cells/M-nestjs-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "08-express-hapi-koa-and-nestjs-on-deno-hook-order-and-json-requ.md",
+  "n": 8
+ },
+ {
+  "milestone": "Deno + Framework gaps",
+  "title": "Fresh on Deno: errors swallowed, no route names, and the route Fresh sets is dropped for lack of a context manager",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Three separate gaps. Fresh's `App.handler()` catches every route and middleware error and renders its own 500, so nothing reaches Sentry; `captureConsoleIntegration({ levels: [\"error\"] })` or an explicit capture in the app's error handler works. Spans stay unparameterized unless a middleware reads `ctx.route` and calls `updateSpanName` on the root span. Fresh itself sets `http.route` through `trace.getActiveSpan()` from `@opentelemetry/api`, which returns `undefined` because the Deno SDK registers a tracer provider but no context manager, so Fresh's own route enrichment is lost.\n\nDatabase spans need every driver in both `ssr.external` and `environments.ssr.build.rollupOptions.external`, because `@fresh/plugin-vite` sets `resolve.noExternal: true`.\n\n**Work item.** Register an OpenTelemetry context manager on Deno so framework-set attributes reach the active span, and consider a Fresh integration for errors and route names.\n\n**Evidence.** Cell record M-fresh-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-fresh-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "09-fresh-on-deno-errors-swallowed-no-route-names-and-the-route-.md",
+  "n": 9
+ },
+ {
+  "milestone": "Deno + Framework gaps",
+  "title": "Oak on Deno: `app.listen()` runs handlers outside the request context",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Mounted with `app.listen()`, Oak handlers run outside the request's async context: `getActiveSpan()` is undefined, errors are never captured, and tags and trace ids leak between requests. Mounted with `Deno.serve(app.fetch)`, errors, isolation, incoming trace, database spans and logs work with no extra wiring. Route names need a `router.use()` middleware registered before the routes that renames the span from `ctx.matched?.at(-1)?.path` and sets the segment name source to `route`.\n\n**Work item.** Decide whether the `app.listen()` path can be instrumented. At minimum, make the SDK warn when a request handler runs with no active span, and consider an Oak route-naming integration.\n\n**Evidence.** Cell record M-oak-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-oak-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "10-oak-on-deno-app-listen-runs-handlers-outside-the-request-con.md",
+  "n": 10
+ },
+ {
+  "milestone": "Deno + Framework gaps",
+  "title": "Elysia on Deno: `@sentry/elysia` init delegates to the Bun SDK and never instruments `Deno.serve`",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "With `Sentry.init` from `@sentry/elysia`, there is no `http.server` span on Deno, every request in the process shares one trace, incoming `sentry-trace` headers are ignored, and tags and request URLs bleed between concurrent requests, because that init delegates to `@sentry/bun`. Initializing from `@sentry/deno` before `Deno.serve` and importing only `withElysia` (plus `fetchIntegration` from `@sentry/elysia` for outgoing requests) makes errors, route names, isolation, incoming trace, outgoing fetch, database spans and logs work, at the cost of `sdk.name` reporting `sentry.javascript.deno`.\n\n**Work item.** Pick the base SDK by runtime in `@sentry/elysia`. Same root as JS-3582 and JS-3583 on Node.\n\n**Evidence.** Cell record M-elysia-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-elysia-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "11-elysia-on-deno-sentry-elysia-init-delegates-to-the-bun-sdk-a.md",
+  "n": 11
+ },
+ {
+  "milestone": "Deno + Framework gaps",
+  "title": "Nuxt `deno_server` preset has no request instrumentation",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "With `nitro: { preset: \"deno_server\" }` and the documented wiring, there are no `http.server` spans, `getActiveSpan()` is undefined in handlers, every request shares one isolation scope and one trace id, and incoming trace headers are ignored. The default `node-server` output run under `deno run` works, with route names, incoming trace continuation and isolation, because Nitro's node-server entry uses `node:http`, which the Deno SDK instruments. Outgoing fetch needs `winterCGFetchIntegration()` from `@sentry/vercel-edge` on either preset (JS-3517).\n\n**Work item.** Cover Nitro's `Deno.serve` entry in the `@sentry/nuxt` server side, or state the preset limit in the package and the docs.\n\n**Evidence.** Cell record M-nuxt-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-nuxt-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "12-nuxt-deno-server-preset-has-no-request-instrumentation.md",
+  "n": 12
+ },
+ {
+  "milestone": "Deno + Framework gaps",
+  "title": "Next.js on Deno fails every request unless runtime channel injection is off",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Next.js 15 App Router builds and serves on Deno 2.9 with `deno run -A node_modules/next/dist/bin/next build` and `start`. With the default `Sentry.init`, every request returns 500 with `SyntaxError: Unexpected token ':'`, because the runtime channel hook makes `require(\"*.json\")` fail (denoland/deno#36240). `enableRuntimeChannelInjection: false` fixes it; drivers with their own diagnostics channels (mysql2 3.11+, ioredis 5.11+) then get spans, hook-dependent drivers (mysql 2.x, pg) do not. Outgoing fetch needs `integrations: [winterCGFetchIntegration()]` from `@sentry/vercel-edge`, already a dependency of `@sentry/nextjs`.\n\n**Work item.** Disable runtime channel injection automatically on Deno until the JSON shim lands, and add the WinterCG fetch integration to the Next.js server defaults when the runtime is Deno.\n\n**Evidence.** Cell record M-nextjs-deno in `_reports/deep-probe-report.html`; reproduction `cells/M-nextjs-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "13-next-js-on-deno-fails-every-request-unless-runtime-channel-i.md",
+  "n": 13
+ },
+ {
+  "milestone": "Deno + Framework gaps",
+  "title": "Deno leaks the AsyncLocalStorage store across requests after a dynamic import",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Deno leaks the AsyncLocalStorage store out of a handler that awaits a dynamic `import()`. Node with the same build does not. Scope data set during one request (tags, user, contexts, breadcrumbs) appears on later requests. Fresh on Deno is confirmed broken, because its route chunks load lazily; Nuxt on the `deno_server` preset and SolidStart on Deno are partial. The app-level mitigation is to replace the isolation scope in a middleware before `ctx.next()`.\n\n**Work item.** File the upstream Deno bug with the minimal reproduction from the Fresh cell, and evaluate an SDK-side guard: a fresh isolation scope per `Deno.serve` request that does not inherit a stale store.\n\n**Evidence.** Cell records M-fresh-deno, M-nuxt-deno, M-solidstart-deno in `_reports/deep-probe-report.html`; reproductions `cells/M-fresh-deno/`, `cells/M-nuxt-deno/`, `cells/M-solidstart-deno/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "14-deno-leaks-the-asynclocalstorage-store-across-requests-after.md",
+  "n": 14
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "No warning when a Worker is bundled without build-time instrumentation",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Improvement"
+  ],
+  "priority": "High",
+  "body": "Express, Koa, Hapi and NestJS boot on workerd behind `enable_nodejs_http_server_modules` and `httpServerHandler` from `cloudflare:node`, and Fresh and Elysia run as plain fetch handlers. A Worker bundled by `wrangler dev` or `wrangler deploy` alone then emits no route names, no framework spans and no database spans, and logs nothing. Built with `sentryCloudflareVitePlugin()` from `@sentry/cloudflare/vite`, or with `sentryOrchestrionPlugin()` from `@sentry/server-utils/orchestrion/esbuild` for non-Vite builds, all of them arrive. On Bun the same situation prints a debug-level line (JS-3508); on Cloudflare there is nothing.\n\n**Work item.** Detect at init on workerd that no channel injection happened and warn at the default log level, naming both plugins. Document `sentryOrchestrionPlugin`, which is exported from six entry points and documented nowhere.\n\n**Evidence.** Cell records M-express-cf, M-koa-cf, M-hapi-cf, M-nestjs-cf, M-fresh-cf, M-elysia-cf in `_reports/deep-probe-report.html`; reproductions `cells/M-express-cf/`, `cells/M-koa-cf/`, `cells/M-hapi-cf/`, `cells/M-nestjs-cf/`, `cells/M-fresh-cf/`, `cells/M-elysia-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "15-no-warning-when-a-worker-is-bundled-without-build-time-instr.md",
+  "n": 15
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "Koa on Workers: instrumented `use()` starts a span at startup, which workerd rejects",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Creating the Koa app at module scope makes the Worker fail to start with `Disallowed operation called within global scope`, because the instrumented `app.use()` starts a span outside any request. The app, every `use()`, the router wiring and `app.listen()` must run inside the fetch handler behind a memoized promise; `httpServerHandler({ port })` may stay at module scope. With that and the Vite plugin build, all seven capabilities pass, including `auto.middleware.koa` errors and `http.route`.\n\n**Work item.** Make the Koa `use` instrumentation record nothing when there is no active request or isolation scope, so module-scope construction works on workerd.\n\n**Evidence.** Cell record M-koa-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-koa-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "16-koa-on-workers-instrumented-use-starts-a-span-at-startup-whi.md",
+  "n": 16
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "Hapi on Workers: an early `close` turns every response into a 499 and the error event never fires",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "On workerd the response emits `close` before `finish` with `writableEnded` still false. Hapi reads that as a client disconnect, answers 499, and its `request` and `error` events never fire, so `hapiIntegration` captures nothing. An app-side `onRequest` extension that drops the premature `close` before Hapi's transmit sees it restores capture, the transaction name and the `auto.function.hapi` mechanism. Route names, isolation, incoming trace, outgoing fetch, database spans and logs work with build-time instrumentation.\n\n**Work item.** Handle the early `close` inside `hapiIntegration` or the Cloudflare HTTP server shim, so Hapi on workerd needs no app-side extension.\n\n**Evidence.** Cell record M-hapi-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-hapi-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "17-hapi-on-workers-an-early-close-turns-every-response-into-a-4.md",
+  "n": 17
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "SvelteKit on Workers: the segment span keeps the URL and never gets the route id",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Unlike the Node SvelteKit SDK, the transaction or segment span on Workers is named by the Cloudflare request handler and keeps the raw URL: `GET /users/42` with source `url` under the static lifecycle, bare `GET` under the default stream lifecycle. The SvelteKit route id and `http.route` only reach a child span. A user-land `handle` inserted between `initCloudflareSentryHandle` and `sentryHandle` that renames the root span with `getActiveSpan` and `getRootSpan` from `@sentry/sveltekit` fixes it in both lifecycles.\n\nDatabase spans come from the transform `sentrySvelteKit()` already installs, but on a flat `node_modules` (npm or Yarn) they are missing until `ssr: { noExternal: [/^@sentry\\//] }` is added; pnpm needs nothing.\n\n**Work item.** Have `sentryHandle` rename the root span from `event.route.id` on Cloudflare, and look at why the flat install needs `noExternal`.\n\n**Evidence.** Cell record M-sveltekit-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-sveltekit-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "18-sveltekit-on-workers-the-segment-span-keeps-the-url-and-neve.md",
+  "n": 18
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "Nuxt on Workers: parameterless routes are named by method only",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "With the documented `sentryCloudflareNitroPlugin` wiring, six of seven capabilities pass. Only routes with parameters, such as `/api/users/[id]`, get their route pattern; a parameterless route such as `/api/health` is reported as bare `GET` under the stream lifecycle and as the request URL under static. A second Nitro plugin that renames the root span from `event.context.matchedRoute` with `getActiveSpan`, `getRootSpan` and `spanToJSON` produced identical output to a patched SDK.\n\n**Work item.** Rename the root span from the matched Nitro route inside `sentryCloudflareNitroPlugin`.\n\n**Evidence.** Cell record M-nuxt-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-nuxt-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "19-nuxt-on-workers-parameterless-routes-are-named-by-method-onl.md",
+  "n": 19
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "Remix on Workers: the bare `@sentry/remix` import captures nothing in a webworker SSR build",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "In a Remix Vite build with `ssr.target: \"webworker\"`, `import * as Sentry from \"@sentry/remix\"` resolves to the browser build, `handleError` ends up undefined, and no error is captured, with only a rollup warning. The same code imported from `@sentry/remix/cloudflare` captures loader, action and resource-route errors and thrown 5xx responses on both lifecycles. Per-request isolation needs `withSentry` from `@sentry/cloudflare` around a handler built with `instrumentBuild`; `wrapRequestHandler` from the `/request` entry does not establish isolation on Workers unless the async-context strategy is set first (separate ticket). Database spans need `sentryCloudflareVitePlugin()` in the Vite config; without it, queries run, no span appears, and nothing warns.\n\n**Work item.** Make the bare import fail loudly in a webworker build, or resolve it to the Cloudflare entry through the export conditions.\n\n**Evidence.** Cell record M-remix-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-remix-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "20-remix-on-workers-the-bare-sentry-remix-import-captures-nothi.md",
+  "n": 20
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "Next.js via OpenNext: outgoing fetch is uninstrumented without the Cloudflare fetch integration",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "With the documented OpenNext wiring, errors, route names, isolation, incoming trace and logs pass. Outgoing `fetch` and `node:http` requests produce no `http.client` span and carry no `sentry-trace` or `baggage` header, because the Workers runtime provides a native fetch that the Node HTTP instrumentation never sees. Installing `@sentry/cloudflare` explicitly (it is not a transitive dependency of `@sentry/nextjs`) and adding `fetchIntegration()` from it to `sentry.server.config.ts` restores both. mysql2 needs `disableEval: true` or `pool.query` throws `EvalError: Code generation from strings disallowed`.\n\n**Work item.** Add the Cloudflare fetch integration to the Next.js server defaults when the runtime is workerd.\n\n**Evidence.** Cell record M-nextjs-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-nextjs-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "21-next-js-via-opennext-outgoing-fetch-is-uninstrumented-withou.md",
+  "n": 21
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "SolidStart on Workers: no server-side code path and no server-to-client trace",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Feature"
+  ],
+  "priority": "Medium",
+  "body": "`@sentry/solidstart` has no Cloudflare export; its server entry initializes the Node SDK. The verified shape keeps `@sentry/solidstart` for the browser and wraps the built Nitro handler with `withSentry` from `@sentry/cloudflare` in a hand-written `worker.mjs`, with `@sentry/cloudflare` kept external through `server.rollupConfig` so Nitro does not inline a second copy. Server errors need a Nitro plugin that forwards the `error` hook to `captureException`. Route names come from the raw URL, and nothing injects a `sentry-trace` meta tag into the SSR HTML, so there is no server-to-client continuation. Database spans were not exercised.\n\n**Work item.** A `@sentry/solidstart/cloudflare` path: init from the Cloudflare SDK, the error hook, and the meta tags. Or a documented limit.\n\n**Evidence.** Cell record M-solidstart-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-solidstart-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "22-solidstart-on-workers-no-server-side-code-path-and-no-server.md",
+  "n": 22
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "Fresh on Workers: the Sentry Vite plugin breaks the driver when no worker environment exists",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Low",
+  "body": "Fresh's own Vite plugin emits `_fresh/server.js` whose default export is already a fetch handler, so it runs on Workers with no adapter. Putting `sentryCloudflareVitePlugin()` into Fresh's `vite.config.ts` breaks the database driver under workerd, because there is no Cloudflare worker environment for the plugin to instrument. The working shape keeps the SDK and the driver external to the SSR build and bundles the wrangler entry separately with the orchestrion esbuild plugin. Errors are swallowed by Fresh's default handler and spans are named by method only, as on the other runtimes.\n\n**Work item.** Make the Cloudflare Vite plugin a no-op with a warning when the Vite config has no worker environment.\n\n**Evidence.** Cell record M-fresh-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-fresh-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "23-fresh-on-workers-the-sentry-vite-plugin-breaks-the-driver-wh.md",
+  "n": 23
+ },
+ {
+  "milestone": "Cloudflare + Framework gaps",
+  "title": "Decision: Fastify does not run on Cloudflare Workers",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Task"
+  ],
+  "priority": "Low",
+  "body": "Fastify 5.12.3 behind `httpServerHandler` with `nodejs_compat` and `enable_nodejs_http_server_modules`: constructing the app at module scope throws `Disallowed operation called within global scope`, because Fastify's boot generates random values and schedules work. Constructing it lazily on the first request then fails when any route is registered, because the router compiles matchers with `new Function` and Workers forbid runtime code generation, with no compatibility flag that lifts it. Fastify 4 behaves the same. A plain `node:http` server behind the same config serves requests, so the Cloudflare half is fine. No Sentry capability could be exercised.\n\n**Work item.** Record the decision and state it in the Cloudflare and Fastify docs (audit DOC-F38). No SDK work.\n\n**Evidence.** Cell record M-fastify-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-fastify-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "24-decision-fastify-does-not-run-on-cloudflare-workers.md",
+  "n": 24
+ },
+ {
+  "milestone": "Bun Functionality Gaps",
+  "title": "Bun garbage-collects the diagnostics channels the SDK subscribes to",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Bun's `node:diagnostics_channel` holds channels weakly and collects a channel together with its subscribers when nothing keeps a strong reference. The SDK drops the channel object it subscribes to (`packages/server-utils/src/tracing-channel.ts:200-208`), so an instrumented module that first evaluates inside a request, such as mysql's lazily required `lib/Connection.js` or a driver imported dynamically in a handler, never gets spans. Reproduced on develop and 10.73.0, bun 1.4.0 and 1.3.14, and in the database-span cells of six framework SDKs on Bun. Node keeps subscribed channels alive.\n\nWorkarounds: import drivers and create pools at module scope, or pin the channels after `Sentry.init()` with `dc.tracingChannel(name)` held on `globalThis`.\n\n**Work item.** Retain the channel references in the SDK. File the Bun report with the minimal probe.\n\n**Evidence.** Probe records X02, B17 in `_reports/deep-probe-report.html`; reproductions `probes/X02/`, `probes/B17/`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "25-bun-garbage-collects-the-diagnostics-channels-the-sdk-subscr.md",
+  "n": 25
+ },
+ {
+  "milestone": "Deno Functionality Gaps",
+  "title": "Ship a JSON load-hook shim for the module hook",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Registering any `Module.registerHooks` load hook on Deno 2.9 makes CommonJS `require(\"*.json\")` compile as JavaScript (denoland/deno#36240, fix in denoland/deno#36243, both open). Under `@sentry/deno/import` that breaks Express, Hapi, Fastify, mysql2, Koa's dependencies and NestJS at import with `SyntaxError: Unexpected token ':'`. A second load hook that delegates and sets `format: \"json\"` for `.json` URLs works around it, verified with the hook on and off.\n\n**Work item.** Register that shim in `register.ts` until the Deno fix ships, with a version check to drop it afterwards.\n\n**Evidence.** Probe record X03 in `_reports/deep-probe-report.html`; reproduction `probes/X03/`. First-round probe D-JSON, see the code-defects table in `_reports/docs-audit.html`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "26-ship-a-json-load-hook-shim-for-the-module-hook.md",
+  "n": 26
+ },
+ {
+  "milestone": "Deno Functionality Gaps",
+  "title": "`denoCronIntegration` crashes `init` on Deno 2.9, and its JSDoc claims a default it is not",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "`packages/deno/src/integrations/deno-cron.ts:23` assigns `Deno.cron = new Proxy(Deno.cron, ...)`. On Deno 2.9.0 `Deno.cron` is a getter-only property, so `Sentry.init` with this integration throws `TypeError: Cannot set property cron of #<Object> which has only a getter`. It works on 2.8.3, the CI pin. Line 18 returns silently when `Deno.cron` is absent, so without `--unstable-cron` the integration does nothing. The JSDoc at line 64 says \"Enabled by default\", but the integration is not in the default set at `packages/deno/src/sdk.ts:31-49`.\n\n**Work item.** Define the proxy with `Object.defineProperty`, add Deno 2.9 to CI (JS-3524), fix the JSDoc.\n\n**Evidence.** Probe record D11 in `_reports/deep-probe-report.html`; reproduction `probes/D11/`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "27-denocronintegration-crashes-init-on-deno-2-9-and-its-jsdoc-c.md",
+  "n": 27
+ },
+ {
+  "milestone": "Deno Functionality Gaps",
+  "title": "The import hook is silent when it transforms nothing",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Improvement"
+  ],
+  "priority": "Medium",
+  "body": "Three cases end with no instrumentation and no message. The hook only transforms packages under a local `node_modules`; from Deno's npm cache nothing is injected. Without `--allow-env` the first-line import crashes with `NotCapable: Requires env access`, and a scoped `--allow-env=...` is not enough. The `--import=@sentry/deno/import` form shown in the package README is resolved as a file path and rejected; only the first-line import or `--import=./node_modules/@sentry/deno/build/import.mjs` registers the hook. `init()` itself never warns when the hook is absent (#23892).\n\n**Work item.** One diagnostic path: warn at init when no injection happened, say why when it can be known (no local `node_modules`, hook not registered), and accept the bare specifier or fix the README.\n\n**Evidence.** Probe record D02 in `_reports/deep-probe-report.html`; reproduction `probes/D02/`. First-round probe D-HOOK, see the code-defects table in `_reports/docs-audit.html`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "28-the-import-hook-is-silent-when-it-transforms-nothing.md",
+  "n": 28
+ },
+ {
+  "milestone": "Deno Functionality Gaps",
+  "title": "Events report the package as `denoland:sentry`",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Bug"
+  ],
+  "priority": "Low",
+  "body": "`packages/deno/src/client.ts:36` sets `sdk.packages[0].name` to `denoland:sentry`, while the package ships on npm only and every documented install uses `npm:@sentry/deno`.\n\n**Work item.** Report `npm:@sentry/deno`, matching the other SDKs.\n\n**Evidence.** Probe record D02 in `_reports/deep-probe-report.html`; reproduction `probes/D02/`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "29-events-report-the-package-as-denoland-sentry.md",
+  "n": 29
+ },
+ {
+  "milestone": "CF Functionality Gaps",
+  "title": "Errors inside `ctx.waitUntil()` are never captured",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "An error thrown or a promise rejected inside `ctx.waitUntil(promise)` is never captured, on both trace lifecycles and on develop and 10.73.0. The SDK's `waitUntil` handling in `packages/cloudflare/src/flush.ts` and `packages/cloudflare/src/client.ts:280-295` is flush and invocation bookkeeping; no error-capture path is attached. `ctx.waitUntil(work().catch(e => Sentry.captureException(e)))` is the app-side shape.\n\n**Work item.** Wrap the promise handed to `waitUntil` so a rejection is captured once, then rethrown.\n\n**Evidence.** Probe record C01 in `_reports/deep-probe-report.html`; reproduction `probes/C01/`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "30-errors-inside-ctx-waituntil-are-never-captured.md",
+  "n": 30
+ },
+ {
+  "milestone": "CF Functionality Gaps",
+  "title": "Dedupe drops repeated errors across requests with the cached client",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "On develop the client is cached per isolate. The Dedupe integration then treats an identical error thrown in a later request as a duplicate: hitting the same failing route twice sends one event, and the second arrives only after a different event goes out. `enableDedupe: false` turns it off. On 10.73.0, with a client per request, every hit produced an event.\n\n**Work item.** Reset the dedupe state per request, or leave Dedupe out of the Cloudflare defaults when the client is cached.\n\n**Evidence.** Cloudflare section of `_reports/deep-probe-report.html` (develop regression) and the Cloudflare quick start verification in `_reports/quick-starts.html`.",
+  "file": "31-dedupe-drops-repeated-errors-across-requests-with-the-cached.md",
+  "n": 31
+ },
+ {
+  "milestone": "CF Functionality Gaps",
+  "title": "The `/request` entry runs without an async-context strategy under the stream lifecycle",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "`wrapRequestHandler` from `@sentry/cloudflare/request` sets up a reduced client with no async-context strategy. Under the default stream lifecycle some requests turn into legacy transaction envelopes and events are dropped; `traceLifecycle: \"static\"` avoids it. On Workers with `nodejs_compat`, Remix wired through this entry loses per-request isolation unless `setAsyncLocalStorageAsyncContextStrategy` is called first.\n\n**Work item.** Set the strategy in the request entry whenever AsyncLocalStorage is available, and otherwise force the static lifecycle there with a warning.\n\n**Evidence.** Cell record M-remix-cf in `_reports/deep-probe-report.html`; reproduction `cells/M-remix-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0). Also the Cloudflare section of the deep probe report.",
+  "file": "32-the-request-entry-runs-without-an-async-context-strategy-und.md",
+  "n": 32
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "SolidStart names transactions by URL and swallows API-route errors on every runtime",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "SolidStart mounts the whole app as one Nitro catch-all handler, so the SDK's Nitro route parameterization never fires: server transactions arrive as `GET /users/456` with source `url` on Node, Bun, Deno and Workers. Errors thrown in a file API route (`src/routes/api/*.ts`) or during page render are turned into a 500 by SolidStart's internal h3 app before Nitro's error hook, so no event is sent, and the guide's own verification snippet produces nothing. Only `withServerActionInstrumentation`, or a user h3 middleware registered first in the array form of `createMiddleware`, captures them.\n\n**Work item.** A SolidStart middleware in `@sentry/solidstart` that names the span from the route manifest and captures API-route errors.\n\n**Evidence.** Cell records M-solidstart-bun, M-solidstart-deno, M-solidstart-cf in `_reports/deep-probe-report.html`; reproductions `cells/M-solidstart-bun/`, `cells/M-solidstart-deno/`, `cells/M-solidstart-cf/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "33-solidstart-names-transactions-by-url-and-swallows-api-route-.md",
+  "n": 33
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "Package READMEs show wiring that does not resolve",
+  "labels": [
+   "JavaScript",
+   "Task"
+  ],
+  "priority": "Low",
+  "body": "`packages/deno/README.md:70` and `src/import.mjs:10` show `--import=@sentry/deno/import`, which Deno resolves as a file path and rejects. `packages/cloudflare/README.md:82-99` imports `wrapRequestHandler` from the main entry, which develop no longer exports (`ERR_PACKAGE_PATH_NOT_EXPORTED`); it lives on `@sentry/cloudflare/request`.\n\n**Work item.** Fix both READMEs in one PR.\n\n**Evidence.** First-round probes D-HOOK, CF-EXPORTS, see the code-defects table in `_reports/docs-audit.html`. Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "34-package-readmes-show-wiring-that-does-not-resolve.md",
+  "n": 34
+ },
+ {
+  "milestone": "Bun Test Coverage",
+  "title": "Add e2e apps for the verified Bun framework cells",
+  "labels": [
+   "JavaScript",
+   "Bun",
+   "Tests"
+  ],
+  "priority": "Medium",
+  "body": "Bun has e2e apps for Elysia, Next.js and mysql, and integration suites for Hono and two drivers. No Bun app runs Express, Koa, Hapi, Fastify, Oak, Fresh, NestJS, Remix, SolidStart, SvelteKit, Astro, React Router, TanStack Start or Nuxt, although all fourteen were verified to work with the wiring in the cell records. Each cell in the reproduction folder is a runnable app with a README that lists install, run and expected output.\n\n**Work item.** Port the cells into `dev-packages/e2e-tests/test-applications/`, one per framework, starting with the four Node HTTP frameworks on the plugin build.\n\n**Evidence.** `cells/M-*-bun/`, and the framework grid in `_reports/deep-probe-report.html`.",
+  "file": "35-add-e2e-apps-for-the-verified-bun-framework-cells.md",
+  "n": 35
+ },
+ {
+  "milestone": "Deno Test Coverage",
+  "title": "Add e2e apps for the verified Deno framework cells",
+  "labels": [
+   "JavaScript",
+   "Deno",
+   "Tests"
+  ],
+  "priority": "Medium",
+  "body": "Only `hono-4 (deno)` runs a real framework on Deno in CI; the Deno orchestrion suites publish channels by hand (JS-3523). Sixteen framework cells were verified on Deno 2.9, with the wiring in their records. Fastify works with no hook, Next.js, Nuxt (node-server output), SvelteKit and Astro work with one integration added, and the rest need the JSON hook or the esbuild build.\n\n**Work item.** Port the cells into e2e apps, starting with Fastify, Next.js, Nuxt, SvelteKit and Astro, and add Deno 2.9 to the runner (JS-3524).\n\n**Evidence.** `cells/M-*-deno/`, and the framework grid in `_reports/deep-probe-report.html`.",
+  "file": "36-add-e2e-apps-for-the-verified-deno-framework-cells.md",
+  "n": 36
+ },
+ {
+  "milestone": "CF Test Coverage",
+  "title": "Make the Cloudflare framework e2e apps required and add the missing ones",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Tests"
+  ],
+  "priority": "Medium",
+  "body": "`react-router-8-cloudflare`, `tanstackstart-react-cloudflare` and `sveltekit-3-cloudflare-workers` are `optional` in CI (`.github/workflows/build.yml:1131`), so the wiring the Cloudflare framework pages describe does not run on pull requests. No app covers Express, Koa, Hapi or NestJS behind `httpServerHandler` with the Vite plugin, Elysia with `aot: false`, Oak, Fresh, Remix through `@sentry/remix/cloudflare`, or SolidStart.\n\n**Work item.** Promote the three apps to required and port the nine missing cells.\n\n**Evidence.** `cells/M-*-cf/`, and the framework grid in `_reports/deep-probe-report.html`.",
+  "file": "37-make-the-cloudflare-framework-e2e-apps-required-and-add-the-.md",
+  "n": 37
+ },
+ {
+  "milestone": "Documentation Correctness",
+  "title": "Track the Bun docs issues from the runtime docs audit",
+  "labels": [
+   "JavaScript",
+   "Task"
+  ],
+  "priority": "Medium",
+  "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Bun. Items: DOC-B1, DOC-B2, DOC-B3, DOC-B4, DOC-R1 (Bun include), DOC-R8, DOC-R11, DOC-R12, DOC-F1 to DOC-F17. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** Docs audit with the proposed issue text per item: `_reports/docs-audit.html`",
+  "file": "38-track-the-bun-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 38
+ },
+ {
+  "milestone": "Documentation Correctness",
+  "title": "Track the Deno docs issues from the runtime docs audit",
+  "labels": [
+   "JavaScript",
+   "Task"
+  ],
+  "priority": "Medium",
+  "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Deno. Items: DOC-D1 to DOC-D6, DOC-R2, DOC-R5, DOC-R6, DOC-R7, DOC-R8, DOC-R11, DOC-R17, DOC-F18 to DOC-F34. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** Docs audit with the proposed issue text per item: `_reports/docs-audit.html`",
+  "file": "39-track-the-deno-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 39
+ },
+ {
+  "milestone": "Documentation Correctness",
+  "title": "Track the Cloudflare docs issues from the runtime docs audit",
+  "labels": [
+   "JavaScript",
+   "Task"
+  ],
+  "priority": "Medium",
+  "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Cloudflare. Items: DOC-C6, DOC-C7, DOC-C8, DOC-R4, DOC-R7, DOC-R10, DOC-R11, DOC-R13 to DOC-R16, DOC-R18, DOC-R19, DOC-F35 to DOC-F51. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** Docs audit with the proposed issue text per item: `_reports/docs-audit.html`",
+  "file": "40-track-the-cloudflare-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 40
+ }
+]

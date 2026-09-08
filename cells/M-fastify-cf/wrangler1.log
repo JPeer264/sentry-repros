@@ -1,0 +1,42 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+AVVIO: exec root
+
+AVVIO: enqueue root bound _after
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mservice core:user:fastify-cf: Uncaught Error: Disallowed operation called within global scope. Asynchronous I/O (ex: fetch() or connect()), setting a timeout, and generating random values are not allowed within global scope. To fix this error, perform this operation within a handler. https://developers.cloudflare.com/workers/runtime-apis/handlers/[0m
+
+    at null.<anonymous> (index.js:34099:21) in fastify
+    at null.<anonymous> (index.js:34567:38)
+
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe Workers runtime failed to start. There was likely a problem with the workerd binary or your configuration.[0m
+
+  Runtime stderr:
+  {"timestamp":"1788722756535","level":"error","source":"src/workerd/server/json-logger.c++:127","message":"service core:user:fastify-cf: Uncaught Error: Disallowed operation called within global scope. Asynchronous I/O (ex: fetch() or connect()), setting a timeout, and generating random values are not allowed within global scope. To fix this error, perform this operation within a handler. [4mhttps://developers.cloudflare.com/workers/runtime-apis/handlers/\n[0m  at index.js:34099:21 in fastify\n  at index.js:34567:38","context_depth":0}
+
+
+[32mIf you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose[0m
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:47313/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:47313/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:47313/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:47313/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:47313/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:47313/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:47313/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:47313/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:47313/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:47313/cdn-cgi/local/explorer/api - OpenAPI schema
+Error [ERR_IPC_CHANNEL_CLOSED]: Channel closed
+    at target.send (node:internal/child_process:778:16)
+    at $REPRO/cells/M-fastify-cf/app/node_modules/wrangler/wrangler-dist/cli.js:359810:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  code: 'ERR_IPC_CHANNEL_CLOSED'
+}
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_19-25-55_765.log"

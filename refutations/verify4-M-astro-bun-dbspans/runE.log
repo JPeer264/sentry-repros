@@ -1,0 +1,11 @@
+1 | // Generic form of the workaround: retain every channel this process ever creates.
+2 | import * as dc from 'node:diagnostics_channel';
+3 | const kept = (globalThis.__keptChannels = []);
+4 | const origChannel = dc.channel;
+5 | const origTracing = dc.tracingChannel;
+6 | dc.channel = name => { const c = origChannel(name); kept.push(c); return c; };
+    ^
+TypeError: Attempted to assign to readonly property.
+      at $REPRO/refutations/verify4-M-astro-bun-dbspans/pinall.mjs:6:1
+
+Bun v1.4.0 (macOS arm64)

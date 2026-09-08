@@ -1,0 +1,37 @@
+== requests ==
+ok1 -> 200
+ok2 -> 200
+error -> 500
+sentinel -> 200
+== waiting for sentinel ==
+== sink after sentinel ==
+[{"type":"session","status":"crashed","errors":1,"init":true,"release":"1.0.0","sid":"ce5836bba6dc4aa78dc0b8c05f95218f"},{"type":"event","exception":"bunserve boom","mechanism":"auto.http.bun.serve","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"b167466f9dbd4077b9c04a5d006dcd23","request":{"url":"http://127.0.0.1:41348/error","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:41348","user-agent":"curl/8.7.1","accept":"*/*"}},"release":"1.0.0","environment":"production"},{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"e4ca4ae8bb0e414fb18bc0f42fd66ca4","request":{"url":"http://127.0.0.1:41348/sentinel","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:41348","user-agent":"curl/8.7.1","accept":"*/*"}},"release":"1.0.0","environment":"production"}]
+== sink at t+65s ==
+[{"type":"session","status":"crashed","errors":1,"init":true,"release":"1.0.0","sid":"ce5836bba6dc4aa78dc0b8c05f95218f"},{"type":"event","exception":"bunserve boom","mechanism":"auto.http.bun.serve","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"b167466f9dbd4077b9c04a5d006dcd23","request":{"url":"http://127.0.0.1:41348/error","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:41348","user-agent":"curl/8.7.1","accept":"*/*"}},"release":"1.0.0","environment":"production"},{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"e4ca4ae8bb0e414fb18bc0f42fd66ca4","request":{"url":"http://127.0.0.1:41348/sentinel","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:41348","user-agent":"curl/8.7.1","accept":"*/*"}},"release":"1.0.0","environment":"production"}]
+== stop ==
+stop -> 200
+app exit code 1
+== sink after app exit ==
+[{"type":"session","status":"crashed","errors":1,"init":true,"release":"1.0.0","sid":"ce5836bba6dc4aa78dc0b8c05f95218f"},{"type":"event","exception":"bunserve boom","mechanism":"auto.http.bun.serve","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"b167466f9dbd4077b9c04a5d006dcd23","request":{"url":"http://127.0.0.1:41348/error","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:41348","user-agent":"curl/8.7.1","accept":"*/*"}},"release":"1.0.0","environment":"production"},{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"e4ca4ae8bb0e414fb18bc0f42fd66ca4","request":{"url":"http://127.0.0.1:41348/sentinel","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:41348","user-agent":"curl/8.7.1","accept":"*/*"}},"release":"1.0.0","environment":"production"}]
+== app log ==
+bunserve listening on 41348
+ 6 | const server = Bun.serve({
+ 7 |   port,
+ 8 |   fetch(req) {
+ 9 |     const { pathname } = new URL(req.url);
+10 |     if (pathname === '/error') {
+11 |       throw new Error('bunserve boom');
+                     ^
+error: bunserve boom
+      at fetch ($REPRO/probes/B05/app-bunserve.ts:11:17)
+      at $REPRO/probes/B05/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at handleCallbackErrors ($REPRO/probes/B05/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at unknown:1:1
+GET - /error failed
+
+Bun v1.4.0 (macOS arm64)

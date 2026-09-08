@@ -1,0 +1,12 @@
+---
+import mysql from 'mysql';
+export const prerender = false;
+const connection = mysql.createConnection({ host: '127.0.0.1', port: 3307, user: 'root', database: 'app' });
+const rows = await new Promise((resolve, reject) => {
+  connection.query('SELECT id, name FROM users WHERE id > 1', (err, res) => {
+    connection.end();
+    err ? reject(err) : resolve(res);
+  });
+});
+---
+<html><body><h1>db1 {JSON.stringify(rows)}</h1></body></html>

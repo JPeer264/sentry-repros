@@ -1,0 +1,13 @@
+import dc from 'node:diagnostics_channel';
+const gc = globalThis.Bun ? () => Bun.gc(true) : (globalThis.gc || (() => {}));
+const hits = { plainSubscribe: 0, channelSubscribe: 0, tracing: 0 };
+dc.subscribe('p:plain', () => { hits.plainSubscribe++; });
+dc.channel('p:chan').subscribe(() => { hits.channelSubscribe++; });
+dc.tracingChannel('p:trace').start.subscribe(() => { hits.tracing++; });
+gc(); gc();
+await new Promise(r => setTimeout(r, 50));
+gc(); gc();
+dc.channel('p:plain').publish({});
+dc.channel('p:chan').publish({});
+dc.tracingChannel('p:trace').traceSync(() => {}, {});
+console.log(JSON.stringify({ runtime: globalThis.Bun ? 'bun' : 'node', ...hits }));

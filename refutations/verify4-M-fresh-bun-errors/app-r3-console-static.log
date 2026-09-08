@@ -1,0 +1,37 @@
+[main.ts] wiring = baseline
+fresh-on-bun listening on 51874 wiring baseline
+1 | import { d as define } from "../server-entry.mjs";
+2 | import "@sentry/bun";
+3 | const handler$1 = define.handlers({
+4 |   GET() {
+5 |     throw new Error("fresh-bun-route-boom");
+                  ^
+error: fresh-bun-route-boom
+      at GET ($REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/assets/_fresh-route___boom-DbtcDdt4.mjs:5:15)
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5615:20
+      at renderRoute ($REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5598:28)
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5455:30
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:6726:20
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5455:30
+      at freshServeStaticFiles ($REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:6536:24)
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5455:30
+      at segmentMiddleware ($REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5562:26)
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5455:30
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5484:22
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:6389:67
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at processTicksAndRejections (native:7:39)
+
+1 | import { d as define } from "../server-entry.mjs";
+2 | import "@sentry/bun";
+3 | const handler$1 = define.handlers({
+4 |   async GET() {
+5 |     await new Promise((r) => setTimeout(r, 5));
+6 |     throw new Error("fresh-bun-route-boom-async");
+                  ^
+error: fresh-bun-route-boom-async
+      at GET ($REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/assets/_fresh-route___boomasync-DhaSdWLY.mjs:6:15)
+      at $REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5615:20
+      at renderRoute ($REPRO/refutations/verify4-M-fresh-bun-errors/app/_fresh/server/server-entry.mjs:5598:28)
+      at processTicksAndRejections (native:7:39)
+

@@ -1,0 +1,17 @@
+import * as Sentry from '@sentry/nuxt';
+
+export default defineNitroPlugin(nitroApp => {
+  const original = nitroApp.h3App.handler;
+  nitroApp.h3App.handler = (event: any) =>
+    Sentry.continueTrace(
+      {
+        sentryTrace: getRequestHeader(event, 'sentry-trace'),
+        baggage: getRequestHeader(event, 'baggage'),
+      },
+      () =>
+        Sentry.startSpan(
+          { name: `${event.method} ${event.path}`, op: 'http.server', forceTransaction: true },
+          () => original(event),
+        ),
+    );
+});

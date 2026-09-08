@@ -1,0 +1,119 @@
+GET /ai (1) -> 200 {"id":"chatcmpl-mock-1","text":"Hello from the mock (1)"}
+GET /ai (2) -> 200 {"id":"chatcmpl-mock-2","text":"Hello from the mock (2)"}
+GET /injected -> {"integrations":["OpenAI"],"bundler":["openai"]}
+[
+ {
+  "type": "span",
+  "trace_id": "25a094c6dd4a4262842ca79e752893f6",
+  "items": [
+   {
+    "name": "chat gpt-4o-mini",
+    "op": "gen_ai.chat",
+    "parent": true,
+    "status": "ok",
+    "attrs": {
+     "sentry.origin": "auto.ai.openai",
+     "sentry.op": "gen_ai.chat",
+     "gen_ai.provider.name": "openai",
+     "gen_ai.operation.name": "chat",
+     "gen_ai.request.model": "gpt-4o-mini",
+     "gen_ai.input.messages": "[{\"role\":\"user\",\"content\":\"Say hi\"}]",
+     "gen_ai.response.id": "chatcmpl-mock-1",
+     "gen_ai.response.model": "gpt-4o-mini-2025-01-01",
+     "gen_ai.usage.input_tokens": 12,
+     "gen_ai.usage.output_tokens": 7,
+     "gen_ai.usage.total_tokens": 19,
+     "gen_ai.response.finish_reasons": "[\"stop\"]",
+     "gen_ai.response.text": "[\"Hello from the mock (1)\"]"
+    }
+   },
+   {
+    "name": "GET",
+    "op": "http.server",
+    "parent": false,
+    "status": "ok",
+    "attrs": {
+     "sentry.origin": "auto.http.cloudflare",
+     "sentry.op": "http.server"
+    }
+   }
+  ]
+ },
+ {
+  "type": "span",
+  "trace_id": "e23faf47db2548d8ac14f3bb1b09ee99",
+  "items": [
+   {
+    "name": "chat gpt-4o-mini",
+    "op": "gen_ai.chat",
+    "parent": true,
+    "status": "ok",
+    "attrs": {
+     "sentry.origin": "auto.ai.openai",
+     "sentry.op": "gen_ai.chat",
+     "gen_ai.provider.name": "openai",
+     "gen_ai.operation.name": "chat",
+     "gen_ai.request.model": "gpt-4o-mini",
+     "gen_ai.input.messages": "[{\"role\":\"user\",\"content\":\"Say hi\"}]",
+     "gen_ai.response.id": "chatcmpl-mock-2",
+     "gen_ai.response.model": "gpt-4o-mini-2025-01-01",
+     "gen_ai.usage.input_tokens": 12,
+     "gen_ai.usage.output_tokens": 7,
+     "gen_ai.usage.total_tokens": 19,
+     "gen_ai.response.finish_reasons": "[\"stop\"]",
+     "gen_ai.response.text": "[\"Hello from the mock (2)\"]"
+    }
+   },
+   {
+    "name": "GET",
+    "op": "http.server",
+    "parent": false,
+    "status": "ok",
+    "attrs": {
+     "sentry.origin": "auto.http.cloudflare",
+     "sentry.op": "http.server"
+    }
+   }
+  ]
+ },
+ {
+  "type": "span",
+  "trace_id": "b22d00418a304900893aa94540be0cc6",
+  "items": [
+   {
+    "name": "GET",
+    "op": "http.server",
+    "parent": false,
+    "status": "ok",
+    "attrs": {
+     "sentry.origin": "auto.http.cloudflare",
+     "sentry.op": "http.server"
+    }
+   }
+  ]
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "undefined: sentinel",
+  "sdk": "sentry.javascript.cloudflare",
+  "sdkVersion": "10.67.0",
+  "trace_id": "625ee25427b9476d8e92b460a5d18a07"
+ },
+ {
+  "type": "span",
+  "trace_id": "625ee25427b9476d8e92b460a5d18a07",
+  "items": [
+   {
+    "name": "GET",
+    "op": "http.server",
+    "parent": false,
+    "status": "ok",
+    "attrs": {
+     "sentry.origin": "auto.http.cloudflare",
+     "sentry.op": "http.server"
+    }
+   }
+  ]
+ }
+]

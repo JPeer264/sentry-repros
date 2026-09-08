@@ -1,0 +1,25 @@
+Starting production server
+Server is running on http://localhost:52931
+215 | });
+216 | async function loader$1({ params, request }) {
+217 | 	const mode = new URL(request.url).searchParams.get("mode");
+218 | 	const active = Sentry.getActiveSpan();
+219 | 	const activeName = active ? Sentry.spanToJSON(active).description ?? "?" : "NO-ACTIVE-SPAN";
+220 | 	if (mode === "error") throw new Error("loader boom on bun");
+                                       ^
+error: loader boom on bun
+      at loader$1 ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/build/server/assets/server-build-xd4D0Lpo.js:220:34)
+      at callRouteHandler ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/data.js:14:21)
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/routes.js:57:18
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/router.js:2459:86
+      at runHandler ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/router.js:2465:5)
+      at callLoaderOrAction ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/router.js:2503:25)
+      at map (native:1:11)
+      at defaultDataStrategy ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/router.js:2253:35)
+      at callDataStrategyImpl ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/router.js:2425:22)
+      at callDataStrategy ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/router/router.js:1759:23)
+      at handleDocumentRequest ($REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/server.js:213:36)
+      at $REPRO/refutations/verify4-M-reactrouter-bun-incomingtrace/app/node_modules/react-router/dist/production/lib/server-runtime/server.js:123:21
+
+GET /users/1?mode=error 500 - - 20.819 ms
+GET /flush 200 - - 4.175 ms

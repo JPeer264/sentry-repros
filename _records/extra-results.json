@@ -1,0 +1,42 @@
+[
+ {
+  "id": "D09",
+  "path": "$REPRO/probes/D09",
+  "rebuilt": "yes",
+  "matches": "yes",
+  "observed": "All 7 variants reproduce the record: body captured by default on Deno.serve (event request.data 43 bytes, span http.request.body.size and .data), httpBodies [] removes the data, maxRequestBodySize none/small/always behave as typed; side notes reproduce (body on the successful /ok span, throwing route transaction status ok, the Deno 2.9.0 request.signal warning only when the body is read).",
+  "difference": "None in behavior. Five stale result files from a mis-run first attempt (env vars quoted into the label) remain in the directory and are flagged in the README.",
+  "install": "cd probes/D09 && npm install",
+  "run": "cd probes/D09 && ./run-d09.sh default; ./run-d09.sh static LIFECYCLE=static; ./run-d09.sh bodies-off LIFECYCLE=static BODIES=off; ./run-d09.sh bodies-off-stream BODIES=off; ./run-d09.sh maxsize-none LIFECYCLE=static MAXSIZE=none; ./run-d09.sh maxsize-small LIFECYCLE=static MAXSIZE=small BODYSIZE=2000; ./run-d09.sh override LIFECYCLE=static BODIES=off MAXSIZE=always"
+ },
+ {
+  "id": "D16",
+  "path": "$REPRO/probes/D16",
+  "rebuilt": "yes",
+  "matches": "yes",
+  "observed": "deno check passes; deno compile succeeds with a 99.2 MiB binary; run from a directory with only the binary: hook injects mysql inside the binary, GET /db transaction with a nested db SELECT * FROM users span, unhandled auto.http.deno event with a context line, and the log; normalized diff against deno run is empty; enableLogs true still fails deno check with TS2353.",
+  "difference": "None on the verdict. The run script needed exec in its subshell so the baseline server is killed before the binary starts; the compiled binaries were truncated to 0 bytes instead of deleted, so a 0-byte app placeholder remains and the README says the compile line recreates it.",
+  "install": "cd probes/D16 && npm install",
+  "run": "cd probes/D16; PORT=52118 node sink.mjs & deno check main.ts; ./run-phase.sh run . deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys main.ts; deno compile --allow-net --allow-env --allow-read --allow-sys --output /tmp/d16-bin/app main.ts; ./run-phase.sh binary /tmp/d16-bin ./app; ./normalize.sh items-run.json > norm-run.txt; ./normalize.sh items-binary.json > norm-binary.txt; diff norm-run.txt norm-binary.txt"
+ },
+ {
+  "id": "M-tanstack-deno",
+  "path": "$REPRO/cells/M-tanstack-deno",
+  "rebuilt": "yes",
+  "matches": "yes",
+  "observed": "errors works (mechanism auto.middleware.tanstackstart.request, transaction GET /api/error); route names broken (source url, GET /api/user/42, GET /param/42, GET /users/123); isolation works (three tags on three trace ids); incoming trace works (trace aaaa..., parent bbbbbbbbbbbbbbbb); outgoing fetch broken (no http.client span, recorder saw sentryTrace null, baggage null); db spans work (db SELECT id, name FROM users); logs work (info: probe-log-from-handler)",
+  "difference": "None on verdicts. Cosmetic: every transaction also carries a `middleware globalRequestMiddleware` child span (record had empty spans arrays); MariaDB rows read Ada/Linus. Harness: run-probes.sh now waits on the three isolation curl pids instead of a bare `wait`; the build script uses two `cat >` redirections instead of `cp`.",
+  "install": "cd cells/M-tanstack-deno && npm install --no-audit --no-fund && node node_modules/esbuild/install.js && node node_modules/@swc/core/postinstall.js",
+  "run": "cd cells/M-tanstack-deno && npm run build && SUFFIX=rebuild bash ./run-probes.sh"
+ },
+ {
+  "id": "M-nextjs-cf",
+  "path": "$REPRO/cells/M-nextjs-cf",
+  "rebuilt": "yes",
+  "matches": "yes",
+  "observed": "errors works (mechanism auto.function.nextjs.route_handler, transaction GET /api/error, HTTP 500); route names work (GET /api/users/[id], source route); isolation works (three tags on three trace ids); incoming trace works (trace aaaa..., parent bbbbbbbbbbbbbbbb); outgoing fetch broken (recorder saw sentryTrace null and baggage null for fetch and node:http); db spans partial (mysql2 spans db mysql2.pool.connect, db mysql2.connect, db SELECT id, name FROM users; mysql@2 route has no db span); logs work (info: m-nextjs-cf log from route handler); client errors not-run. Init warning: [Sentry] Failed to register diagnostics-channel injection hooks.",
+  "difference": "No verdict differs. Setup deltas the record omits: package.json build script must be `next build` (the recovered partial copy had `opennextjs-cloudflare build`, which recurses); the mysql2 pool needs `disableEval: true` on workerd or pool.query throws EvalError (spans still emitted in that case); a `mysql-shim.d.ts` with `declare module 'mysql';` is needed for the type check.",
+  "install": "cd cells/M-nextjs-cf && npm install",
+  "run": "cd cells/M-nextjs-cf && PORT=41337 node sink.mjs & npx opennextjs-cloudflare build && npx wrangler dev --port 41338 --inspector-port 0, then the curl sequence in README.md"
+ }
+]

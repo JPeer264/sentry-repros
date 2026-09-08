@@ -1,0 +1,126 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding            Resource      Mode
+env.ASSETS         Assets        local
+
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41321/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41321/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41321/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41321/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41321/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41321/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41321/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41321/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41321/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41321/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] ✨ Parsed 2 valid header rules.
+[wrangler:info] Ready on http://localhost:41321
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: Integration installed: RewriteFrames
+Sentry Logger [log]: Integration installed: SvelteKitSpansEnhancement
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a13971d981d6fc8c
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.server
+  name: GET /users/[id]
+  ID: 8bb0d4d5abef376a
+  parent ID: a13971d981d6fc8c
+  root ID: a13971d981d6fc8c
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "http.server" span "GET /users/[id]" with ID 8bb0d4d5abef376a
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID a13971d981d6fc8c
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 7e59d76de2b34f5690b37c97f61d9aa1 with 2 spans
+[wrangler:info] GET /users/99 200 OK (30ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b7880a92d3738b86
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.server
+  name: GET /db-mysql
+  ID: 907fbb947d5d3126
+  parent ID: b7880a92d3738b86
+  root ID: b7880a92d3738b86
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT users
+  ID: a8e3bcbb192d65cc
+  parent ID: 907fbb947d5d3126
+  root ID: b7880a92d3738b86
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT users" with ID a8e3bcbb192d65cc
+Sentry Logger [log]: [Tracing] Finishing "http.server" span "GET /db-mysql" with ID 907fbb947d5d3126
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID b7880a92d3738b86
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace be4eb42db4824ed3a3f3fbe0a86769fc with 3 spans
+[wrangler:info] GET /db-mysql 200 OK (33ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 9d23c3840fd3a011
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.server
+  name: GET /outfetch
+  ID: a5e1c2bfe5e1b956
+  parent ID: 9d23c3840fd3a011
+  root ID: 9d23c3840fd3a011
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET 127.0.0.1
+  ID: afb6997ee8eb4476
+  parent ID: a5e1c2bfe5e1b956
+  root ID: 9d23c3840fd3a011
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET 127.0.0.1" with ID afb6997ee8eb4476
+Sentry Logger [log]: [Tracing] Finishing "http.server" span "GET /outfetch" with ID a5e1c2bfe5e1b956
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID 9d23c3840fd3a011
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 74aab85ce403438597d65c83873a2718 with 3 spans
+[wrangler:info] GET /outfetch 200 OK (5ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 85ef6dcda27c1351
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.server
+  name: GET /sentinel
+  ID: abbd1b8e5549a2d7
+  parent ID: 85ef6dcda27c1351
+  root ID: 85ef6dcda27c1351
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: Captured error event `sentinel-stream`
+Sentry Logger [log]: [Tracing] Finishing "http.server" span "GET /sentinel" with ID abbd1b8e5549a2d7
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID 85ef6dcda27c1351
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 045f71f7145f453488753015d917ee87 with 2 spans
+[wrangler:info] GET /sentinel 200 OK (10ms)

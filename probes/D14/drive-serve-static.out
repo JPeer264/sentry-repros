@@ -1,0 +1,333 @@
+RESPONSES
+{
+ "/hello/world": "200 hello world",
+ "/error": "500 Internal Server Error",
+ "/error-async": "404 not found",
+ "/captured": "200 captured",
+ "/downstream": "200 {\"traceId\":\"f82a17f1e7fa482d8a7af2ac41c6af47\",\"spanId\":\"99b99b28dc1ebba1\",\"echo\":{\"path\":\"/echo/users/7\",\"headers\":{\"baggage\":\"sentry-environment=production,sentry-public_key=public,sentry-trace_id=f82a17f1e7fa482d8a7af2ac41c6af47,sentry-sampled=true,sentry-sample_rand=0.34689539183822027,sentry-sample_rate=1\",\"connection\":\"keep-alive\",\"host\":\"127.0.0.1:41432\",\"sentry-trace\":\"f82a17f1e7fa482d8a7af2ac41c6af47-b3700d9fc9f4ecb8-1\"}}}",
+ "CONC": [
+  "200 {\"id\":\"A\",\"tagNow\":\"A\",\"userNow\":\"A\",\"activeSpan\":\"9a3f625a99f163d1\"}",
+  "200 {\"id\":\"B\",\"tagNow\":\"B\",\"userNow\":\"B\",\"activeSpan\":\"bd68ebef96348e3b\"}",
+  "200 {\"id\":\"C\",\"tagNow\":\"C\",\"userNow\":\"C\",\"activeSpan\":\"9b8d7fdd927b686a\"}"
+ ],
+ "/sentinel": "200 sentinel"
+}
+sentinelEventArrived=true
+
+LINES
+transaction: GET /hello/world | source url status ok code 200 | trace 1d3d081167774f68962f6dd5df802842 id b3683ec6340f5503 parent undefined | spans []
+transaction: GET /error | source url status ok code undefined | trace 64d127b83b7646078787434062fe6bc6 id 9c5d955c74f3e260 parent undefined | spans []
+event: Error: async throw in handler | mech auto.http.deno handled false | txn undefined | trace 64d127b83b7646078787434062fe6bc6 span 9c5d955c74f3e260 | tags undefined user undefined | req http://127.0.0.1:41432/error
+transaction: GET /captured | source url status ok code 200 | trace c5a112cd07d049c0825e6a5227e28fed id 946d94ee44e6ead0 parent undefined | spans []
+event: Error: captured in handler | mech generic handled true | txn undefined | trace c5a112cd07d049c0825e6a5227e28fed span 946d94ee44e6ead0 | tags undefined user undefined | req http://127.0.0.1:41432/captured
+transaction: GET /echo/users/7 | source url status ok code 200 | trace f82a17f1e7fa482d8a7af2ac41c6af47 id 9d853fe048d24b8f parent b3700d9fc9f4ecb8 | spans []
+transaction: GET /downstream | source url status ok code 200 | trace f82a17f1e7fa482d8a7af2ac41c6af47 id 99b99b28dc1ebba1 parent undefined | spans ["http.client GET http://127.0.0.1:41432/echo/users/7 [b3700d9fc9f4ecb8<-99b99b28dc1ebba1] ok"]
+transaction: GET /slow | source url status ok code 200 | trace 1f37e97b07df4ad791c4abdf25c39dc9 id 9a3f625a99f163d1 parent undefined | spans []
+event: slow-A | mech generic handled true | txn undefined | trace 1f37e97b07df4ad791c4abdf25c39dc9 span 9a3f625a99f163d1 | tags {"reqId":"A"} user A | req http://127.0.0.1:41432/slow?id=A&ms=300
+transaction: GET /slow | source url status ok code 200 | trace a3cb830b56dc4fa498f78aee7d7a3db9 id bd68ebef96348e3b parent undefined | spans []
+event: slow-B | mech generic handled true | txn undefined | trace a3cb830b56dc4fa498f78aee7d7a3db9 span bd68ebef96348e3b | tags {"reqId":"B"} user B | req http://127.0.0.1:41432/slow?id=B&ms=300
+transaction: GET /slow | source url status ok code 200 | trace 86f88f5a0de44c48aa310056b7fc9165 id 9b8d7fdd927b686a parent undefined | spans []
+event: slow-C | mech generic handled true | txn undefined | trace 86f88f5a0de44c48aa310056b7fc9165 span 9b8d7fdd927b686a | tags {"reqId":"C"} user C | req http://127.0.0.1:41432/slow?id=C&ms=300
+transaction: GET /sentinel | source url status ok code 200 | trace 7e57386a10f24fbb826c64ced13f5283 id 91b7a76de4c49e05 parent undefined | spans []
+event: sentinel | mech generic handled true | txn undefined | trace 7e57386a10f24fbb826c64ced13f5283 span 91b7a76de4c49e05 | tags undefined user undefined | req http://127.0.0.1:41432/sentinel
+
+SINK
+[
+ {
+  "type": "transaction",
+  "name": "GET /hello/world",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "1d3d081167774f68962f6dd5df802842",
+  "span_id": "b3683ec6340f5503",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /error",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "trace_id": "64d127b83b7646078787434062fe6bc6",
+  "span_id": "9c5d955c74f3e260",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "exception": "Error: async throw in handler",
+  "mechanism": "auto.http.deno",
+  "handled": false,
+  "sdk": "sentry.javascript.deno",
+  "runtime": "deno",
+  "hasContextLine": true,
+  "trace_id": "64d127b83b7646078787434062fe6bc6",
+  "span_id": "9c5d955c74f3e260",
+  "request": {
+   "url": "http://127.0.0.1:41432/error",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate",
+    "accept-language": "*",
+    "connection": "keep-alive",
+    "host": "127.0.0.1:41432",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node"
+   }
+  },
+  "environment": "production"
+ },
+ {
+  "type": "transaction",
+  "name": "GET /captured",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "c5a112cd07d049c0825e6a5227e28fed",
+  "span_id": "946d94ee44e6ead0",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "exception": "Error: captured in handler",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.deno",
+  "runtime": "deno",
+  "hasContextLine": true,
+  "trace_id": "c5a112cd07d049c0825e6a5227e28fed",
+  "span_id": "946d94ee44e6ead0",
+  "request": {
+   "url": "http://127.0.0.1:41432/captured",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate",
+    "accept-language": "*",
+    "connection": "keep-alive",
+    "host": "127.0.0.1:41432",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node"
+   }
+  },
+  "environment": "production"
+ },
+ {
+  "type": "transaction",
+  "name": "GET /echo/users/7",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "f82a17f1e7fa482d8a7af2ac41c6af47",
+  "span_id": "9d853fe048d24b8f",
+  "parent_span_id": "b3700d9fc9f4ecb8",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /downstream",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "f82a17f1e7fa482d8a7af2ac41c6af47",
+  "span_id": "99b99b28dc1ebba1",
+  "sdk": "sentry.javascript.deno",
+  "spans": [
+   "http.client GET http://127.0.0.1:41432/echo/users/7 [b3700d9fc9f4ecb8<-99b99b28dc1ebba1] ok"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /slow",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "1f37e97b07df4ad791c4abdf25c39dc9",
+  "span_id": "9a3f625a99f163d1",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "message": "slow-A",
+  "exception": "undefined: slow-A",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.deno",
+  "runtime": "deno",
+  "hasContextLine": true,
+  "trace_id": "1f37e97b07df4ad791c4abdf25c39dc9",
+  "span_id": "9a3f625a99f163d1",
+  "user": {
+   "id": "A"
+  },
+  "tags": {
+   "reqId": "A"
+  },
+  "request": {
+   "url": "http://127.0.0.1:41432/slow?id=A&ms=300",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate",
+    "accept-language": "*",
+    "connection": "keep-alive",
+    "host": "127.0.0.1:41432",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node"
+   }
+  },
+  "environment": "production"
+ },
+ {
+  "type": "transaction",
+  "name": "GET /slow",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "a3cb830b56dc4fa498f78aee7d7a3db9",
+  "span_id": "bd68ebef96348e3b",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "message": "slow-B",
+  "exception": "undefined: slow-B",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.deno",
+  "runtime": "deno",
+  "hasContextLine": true,
+  "trace_id": "a3cb830b56dc4fa498f78aee7d7a3db9",
+  "span_id": "bd68ebef96348e3b",
+  "user": {
+   "id": "B"
+  },
+  "tags": {
+   "reqId": "B"
+  },
+  "request": {
+   "url": "http://127.0.0.1:41432/slow?id=B&ms=300",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate",
+    "accept-language": "*",
+    "connection": "keep-alive",
+    "host": "127.0.0.1:41432",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node"
+   }
+  },
+  "environment": "production"
+ },
+ {
+  "type": "transaction",
+  "name": "GET /slow",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "86f88f5a0de44c48aa310056b7fc9165",
+  "span_id": "9b8d7fdd927b686a",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "message": "slow-C",
+  "exception": "undefined: slow-C",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.deno",
+  "runtime": "deno",
+  "hasContextLine": true,
+  "trace_id": "86f88f5a0de44c48aa310056b7fc9165",
+  "span_id": "9b8d7fdd927b686a",
+  "user": {
+   "id": "C"
+  },
+  "tags": {
+   "reqId": "C"
+  },
+  "request": {
+   "url": "http://127.0.0.1:41432/slow?id=C&ms=300",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate",
+    "accept-language": "*",
+    "connection": "keep-alive",
+    "host": "127.0.0.1:41432",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node"
+   }
+  },
+  "environment": "production"
+ },
+ {
+  "type": "transaction",
+  "name": "GET /sentinel",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "7e57386a10f24fbb826c64ced13f5283",
+  "span_id": "91b7a76de4c49e05",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "undefined: sentinel",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.deno",
+  "runtime": "deno",
+  "hasContextLine": true,
+  "trace_id": "7e57386a10f24fbb826c64ced13f5283",
+  "span_id": "91b7a76de4c49e05",
+  "request": {
+   "url": "http://127.0.0.1:41432/sentinel",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate",
+    "accept-language": "*",
+    "connection": "keep-alive",
+    "host": "127.0.0.1:41432",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node"
+   }
+  },
+  "environment": "production"
+ }
+]

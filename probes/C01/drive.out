@@ -1,0 +1,35 @@
+=== GET /enriched-throw?q=1 ===
+HTTP/1.1 500 
+Transfer-Encoding: chunked
+Date: Mon, 07 Sep 2026 08:54:44 GMT
+Content-Type: text/plain;charset=UTF-8
+
+Error: c01 handler boom
+    at Object.fetch (file://$REPRO/probes/C01/src/index.ts:22:15)
+    at null.<anonymous> (file://$REPRO/probes/C01/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentFetch.ts:41:89)
+    at null.<anonymous> (file://$REPRO/probes/C01/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:162:25)
+    at null.<anonymous> (file://$REPRO/probes/C01/node_modules/@sentry/core/src/tracing/trace.ts:139:60)
+    at handleCallbackErrors.status.status [as status] (file://$REPRO/probes/C01/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+    at handleCallbackErrors (file://$REPRO/probes/C01/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+    at callback (file://$REPRO/probes/C01/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+    at null.<anonymous> (file://$REPRO/probes/C01/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+    at null.<anonymous> (file://$REPRO/probes/C01/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+    at null.<anonymous> (file://$REPRO/probes/C01/node_modules/@sentry/server-utils/src/async-context.ts:51:14)=== GET /waituntil-throw ===
+HTTP/1.1 200 OK
+Transfer-Encoding: chunked
+Content-Type: text/plain;charset=UTF-8
+
+waituntil-throw scheduled
+=== GET /waituntil-reject ===
+HTTP/1.1 200 OK
+Transfer-Encoding: chunked
+Content-Type: text/plain;charset=UTF-8
+
+waituntil-reject scheduled
+=== GET /sentinel?n=1 ===
+HTTP/1.1 200 OK
+Transfer-Encoding: chunked
+Content-Type: text/plain;charset=UTF-8
+
+sentinel
+=== sentinel arrived after 1 polls ===

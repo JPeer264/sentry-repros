@@ -1,0 +1,23 @@
+/hello 200 hello
+/error 500 <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>An error has occurred</title>
+        <style id="global-styles">.dumper-dump, .dumper-dump pre, .dumper-dump code, .dumper-dump samp {
+  font-family: JetBrains Mono, monaspace argon, Menlo, Monaco, Consolas, monospace;
+}
+
+/downstream 200 {"url":"/users/7","sentry-trace":"2472b0bf50c7464c9082184f5377ae1c-938089842bca245b-1","baggage":"sentry-environment=production,sentry-public_key=public,sentry-trace_id=2472b0bf50c7464c9082184f5377ae1c,sentry-sampled=true,sentry-sample_rand=0.33595259127866184,sentry-sample_rate=1"}
+/integrations 200 {"integrations":["Dedupe","EventFilters","FunctionToString","ConversationId","LinkedErrors","Fetch","HttpServer","RequestData","Console","SpanStreaming"],"hasClient":true}
+/sentinel 200 sentinel
+--- sink ---
+{"type":"transaction","name":"GET","op":"http.server","source":"url","status":"ok","trace_id":"3559e28ad7214a3b8b7a4cc183eb0bdf","sdk":"sentry.javascript.cloudflare","spans":[],"hasRequestData":false}
+{"type":"span","trace_id":"058612c0626c431a8dfaf96aed77733d","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}
+{"type":"event","exception":"Error: route boom","mechanism":"auto.http.cloudflare","handled":false,"sdk":"sentry.javascript.cloudflare","runtime":"cloudflare","hasContextLine":false,"trace_id":"058612c0626c431a8dfaf96aed77733d","environment":"production"}
+{"type":"span","trace_id":"2472b0bf50c7464c9082184f5377ae1c","items":["http.client GET 127.0.0.1"],"raw":[{"name":"GET 127.0.0.1","status":"ok","parent_span_id":"a0705e7dfe2532e4","is_segment":false,"origin":"auto.http.fetch"}]}
+{"type":"span","trace_id":"2472b0bf50c7464c9082184f5377ae1c","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}
+{"type":"span","trace_id":"e309d39cfa7d46699ae92922edf4b43a","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}
+{"type":"event","message":"sentinel","exception":"undefined: sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.cloudflare","runtime":"cloudflare","hasContextLine":false,"trace_id":"e1e77221ff0e49cc8a90b02955b5284e","environment":"production"}
+{"type":"span","trace_id":"e1e77221ff0e49cc8a90b02955b5284e","items":["http.server GET"],"raw":[{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.cloudflare"}]}

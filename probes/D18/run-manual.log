@@ -1,0 +1,13 @@
+== manual (debug=0)
+GET /db -> 200 {"rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+GET /orch -> {"orchestrion":{"runtime":["mysql"]},"deno":"2.9.0"}
+SINK:
+{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","trace_id":"a1957b7447864706a9e80030caa348dd","sdk":"sentry.javascript.deno","spans":["db SELECT id, name FROM users"],"hasRequestData":false}
+{"type":"transaction","name":"GET /orch","op":"http.server","source":"url","status":"ok","trace_id":"e471b52a23bf4da7bd56f746b4f9b659","sdk":"sentry.javascript.deno","spans":[],"hasRequestData":false}
+{"type":"event","message":"sentinel","exception":"undefined: sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.deno","runtime":"deno","hasContextLine":true,"trace_id":"244abbf73a5a482eba23dc0c771686b8","request":{"url":"http://127.0.0.1:41933/sentinel","method":"GET","hasData":false,"headers":{"accept":"*/*","accept-encoding":"gzip, deflate","accept-language":"*","connection":"keep-alive","host":"127.0.0.1:41933","sec-fetch-mode":"cors","user-agent":"node"}},"environment":"production"}
+{"type":"transaction","name":"GET /sentinel","op":"http.server","source":"url","status":"ok","trace_id":"244abbf73a5a482eba23dc0c771686b8","sdk":"sentry.javascript.deno","spans":[],"hasRequestData":false}
+-- app.log:
+ORCH_AFTER_IMPORT_HOOK={"runtime":[]}
+MYSQL_RESOLVED=file://$REPRO/probes/D18/node_modules/mysql/index.js
+ORCH_AFTER_MYSQL_IMPORT={"runtime":[]}
+APP_READY 41933

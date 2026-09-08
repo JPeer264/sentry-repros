@@ -1,0 +1,108 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                                            Resource                  Mode
+env.Q (probe-q)                                    Queue                     local
+env.SENTRY_TUNNEL ("http://127.0.0.1:41711/")      Environment Variable      local
+
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41721/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41721/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41721/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41721/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41721/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41721/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41721/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41721/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41721/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41721/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+⎔ Connection status updated
+Your Worker has access to the following bindings:
+Binding                                            Resource                  Mode
+env.Q (probe-q)                                    Queue                     local
+env.SENTRY_TUNNEL ("http://127.0.0.1:41711/")      Environment Variable      local
+
+[wrangler:info] Ready on http://localhost:41721
+[wrangler:info] GET /send 200 OK (15ms)
+[wrangler:info] QUEUE probe-q 3/3 (15ms)
+[wrangler:info] GET /send-bad 200 OK (3ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: consumer boom n=99 attempt=1 Error[0m
+
+      at queue (file://$REPRO/probes/C05/src/index.ts:42:17)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:88:73)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:54:24)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C05/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/core/src/currentScopes.ts:85:18)
+      at startSpan (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:36:12)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:86:14)
+      at withIsolationScope (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:85:25)
+      at withIsolationScope (file://$REPRO/probes/C05/node_modules/@sentry/core/src/currentScopes.ts:140:14)
+      at wrapQueueHandler (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:26:10)
+      at apply (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:88:18)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: consumer boom n=99 attempt=1 [0m
+
+
+[wrangler:info] QUEUE probe-q 0/1 (5ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: consumer boom n=99 attempt=2 Error[0m
+
+      at queue (file://$REPRO/probes/C05/src/index.ts:42:17)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:88:73)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:54:24)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C05/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C05/node_modules/@sentry/core/src/currentScopes.ts:85:18)
+      at startSpan (file://$REPRO/probes/C05/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:36:12)
+      at null.<anonymous> (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:86:14)
+      at withIsolationScope (file://$REPRO/probes/C05/node_modules/@sentry/server-utils/src/async-context.ts:85:25)
+      at withIsolationScope (file://$REPRO/probes/C05/node_modules/@sentry/core/src/currentScopes.ts:140:14)
+      at wrapQueueHandler (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:26:10)
+      at apply (file://$REPRO/probes/C05/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentQueue.ts:88:18)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: consumer boom n=99 attempt=2 [0m
+
+
+[wrangler:warn] Dropped message "7479911cfc2c4cf911d303fc1dec9fd3" on queue "probe-q" after 2 failed attempts!
+[wrangler:info] QUEUE probe-q 0/1 (3ms)
+[wrangler:info] GET /send-sentinel 200 OK (5ms)
+[wrangler:info] QUEUE probe-q 1/1 (6ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_08-57-15_892.log"

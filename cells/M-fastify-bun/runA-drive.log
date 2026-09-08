@@ -1,0 +1,27 @@
+GET /users/42 -> {"id":"42","name":"ok"}
+GET /error -> {"statusCode":500,"error":"Internal Server Error","message":"fastify boom"}
+GET /iso x3 -> {"n":1} {"n":2} {"n":3}
+GET /downstream -> {"downstream":200}
+GET /db -> {"rows":2}
+GET /log -> {"logged":true}
+GET /users/7 (incoming trace) -> {"id":"7","name":"ok"}
+--- SINK ---
+{"type":"event","exception":"fastify boom","mechanism":"auto.function.fastify","handled":false,"trace":"a1c6f595392d40a7b333ebb543835d8b","parent":"aa1cea4259726962","tx":"GET /error","sdk":"sentry.javascript.bun"}
+{"type":"event","exception":"iso 1","mechanism":"generic","handled":true,"tags":{"reqtag":"1"},"trace":"208bb096083443c6a6dddad6fd4744f2","parent":"a263b3ff27c4019c","tx":"GET /iso","sdk":"sentry.javascript.bun"}
+{"type":"event","exception":"iso 2","mechanism":"generic","handled":true,"tags":{"reqtag":"2"},"trace":"80714f70bc5b434b9ae2880d23f22283","parent":"81e45e25ee082ab6","tx":"GET /iso","sdk":"sentry.javascript.bun"}
+{"type":"event","exception":"iso 3","mechanism":"generic","handled":true,"tags":{"reqtag":"3"},"trace":"8eda5ae18012409991f1644ebb2c976b","parent":"9936163dd8546833","tx":"GET /iso","sdk":"sentry.javascript.bun"}
+{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"trace":"d624d49e372f41e797f44decb13a3b36","parent":"aa6eeb1a891571ae","tx":"GET /sentinel","sdk":"sentry.javascript.bun"}
+{"type":"span","items":["[7ce0cb0a/p:b7f5a14e] handler /users/:id","[7ce0cb0a/p:9eab28d9] handler /users/:id","[7ce0cb0a/p:-] http.server GET /users/:id"]}
+{"type":"span","items":["[5d143eea/p:83a4c677] handler /users/:id","[5d143eea/p:97639753] handler /users/:id","[5d143eea/p:-] http.server GET /users/:id"]}
+{"type":"span","items":["[a1c6f595/p:b9718bb4] handler /error","[a1c6f595/p:aa1cea42] handler /error","[a1c6f595/p:-] http.server GET /error"]}
+{"type":"span","items":["[208bb096/p:a263b3ff] handler /iso","[208bb096/p:9b2d564a] handler /iso","[208bb096/p:-] http.server GET /iso"]}
+{"type":"span","items":["[80714f70/p:81e45e25] handler /iso","[80714f70/p:9059b9d3] handler /iso","[80714f70/p:-] http.server GET /iso"]}
+{"type":"span","items":["[8eda5ae1/p:9936163d] handler /iso","[8eda5ae1/p:b8436eb0] handler /iso","[8eda5ae1/p:-] http.server GET /iso"]}
+{"type":"span","items":["[81e1a7d4/p:b5cb166a] http.client GET 127.0.0.1","[81e1a7d4/p:97440efd] handler /downstream","[81e1a7d4/p:af1e83b8] handler /downstream","[81e1a7d4/p:-] http.server GET /downstream"]}
+{"type":"span","items":["[7bfb655e/p:82887163] handler /db","[7bfb655e/p:b2fff384] handler /db","[7bfb655e/p:-] http.server GET /db"]}
+{"type":"span","items":["[f7c1f45f/p:94bd7f4b] handler /log","[f7c1f45f/p:944c2034] handler /log","[f7c1f45f/p:-] http.server GET /log"]}
+{"type":"span","items":["[aabbccdd/p:a799363f] handler /users/:id","[aabbccdd/p:bfef50b8] handler /users/:id","[aabbccdd/p:11223344] http.server GET /users/:id"]}
+{"type":"span","items":["[d624d49e/p:aa6eeb1a] handler /sentinel","[d624d49e/p:b0457452] handler /sentinel","[d624d49e/p:-] http.server GET /sentinel"]}
+{"type":"log","items":["info: hello from fastify on bun trace=f7c1f45f"]}
+--- RECORDER ---
+[{"url":"/hit","sentryTrace":"81e1a7d4c5314153884a65dca35a52e9-bdea3e9bb43a6a81-1","baggage":"sentry-environment=production,sentry-public_key=public,sentry-trace_id=81e1a7d4c5314153884a65dca35a52e9,sentry-org_id=1,sentry-transaction=GET%20%2Fdownstream,sentry-sampled=true,sentry-sample_rand=0.876985061268519,sentry-sample_rate=1"}]

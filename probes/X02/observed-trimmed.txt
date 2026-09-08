@@ -1,0 +1,51 @@
+=== bun140 modscope
+GET /db -> {"variant":"modscope","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"startSubscribed":true}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":["db SELECT id, name FROM users"]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]
+
+=== bun140 inreq
+GET /db -> {"variant":"inreq","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"startSubscribed":false}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":[]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]
+
+=== bun140 lazy
+GET /db -> {"variant":"lazy","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"loadedBefore":[],"loadedAfter":[],"startSubscribed":false}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":[]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]
+
+=== bun140 nosdk-lazy
+GET /db -> {"variant":"nosdk-lazy","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":0,"end":0,"asyncStart":0,"asyncEnd":0,"error":0},"startSubscribed":false,"rawStartSubscribed":false,"loaded":["mysql"]}
+-- second request
+GET /db -> {"variant":"nosdk-lazy","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":0,"end":0,"asyncStart":0,"asyncEnd":0,"error":0},"startSubscribed":false,"rawStartSubscribed":false,"loaded":["mysql"]}
+
+=== bun140 nosdk-modscope
+GET /db -> {"variant":"nosdk-modscope","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":1,"end":1,"asyncStart":1,"asyncEnd":1,"error":0},"startSubscribed":true,"rawStartSubscribed":true,"loaded":["mysql"]}
+-- second request
+GET /db -> {"variant":"nosdk-modscope","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":2,"end":2,"asyncStart":2,"asyncEnd":2,"error":0},"startSubscribed":true,"rawStartSubscribed":true,"loaded":["mysql"]}
+
+=== bun140 lazy-keep
+GET /db -> {"variant":"lazy-keep","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"loadedBefore":[],"loadedAfter":[],"startSubscribed":true}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":["db SELECT id, name FROM users"]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]
+
+=== bun1314 modscope
+GET /db -> {"variant":"modscope","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"startSubscribed":true}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":["db SELECT id, name FROM users"]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]
+
+=== bun1314 inreq
+GET /db -> {"variant":"inreq","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"startSubscribed":false}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":[]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]
+
+=== bun1314 lazy
+GET /db -> {"variant":"lazy","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"loadedBefore":[],"loadedAfter":[],"startSubscribed":false}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":[]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]
+
+=== bun1314 nosdk-lazy
+GET /db -> {"variant":"nosdk-lazy","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":0,"end":0,"asyncStart":0,"asyncEnd":0,"error":0},"startSubscribed":false,"rawStartSubscribed":false,"loaded":["mysql"]}
+-- second request
+GET /db -> {"variant":"nosdk-lazy","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":0,"end":0,"asyncStart":0,"asyncEnd":0,"error":0},"startSubscribed":false,"rawStartSubscribed":false,"loaded":["mysql"]}
+
+=== bun1314 nosdk-modscope
+GET /db -> {"variant":"nosdk-modscope","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":1,"end":1,"asyncStart":1,"asyncEnd":1,"error":0},"startSubscribed":true,"rawStartSubscribed":true,"loaded":["mysql"]}
+-- second request
+GET /db -> {"variant":"nosdk-modscope","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"counts":{"start":2,"end":2,"asyncStart":2,"asyncEnd":2,"error":0},"startSubscribed":true,"rawStartSubscribed":true,"loaded":["mysql"]}
+
+=== bun1314 lazy-keep
+GET /db -> {"variant":"lazy-keep","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}],"loadedBefore":[],"loadedAfter":[],"startSubscribed":true}
+SINK: [{"type":"transaction","name":"GET /db","op":"http.server","source":"url","status":"ok","sdk":"sentry.javascript.bun","spans":["db SELECT id, name FROM users"]},{"type":"event","message":"sentinel","sdk":"sentry.javascript.bun","runtime":"bun"}]

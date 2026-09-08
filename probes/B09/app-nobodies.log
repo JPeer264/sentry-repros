@@ -1,0 +1,44 @@
+MODE nobodies {"httpBodies":[]}
+bun.serve on 41296, node:http on 41297
+ 9 |   port: PORT,
+10 |   hostname: '127.0.0.1',
+11 |   routes: {
+12 |     '/throw-read': async (req: Request) => {
+13 |       const body = await req.text();
+14 |       throw new Error(`route boom (read body) ${body}`);
+                     ^
+error: route boom (read body) {"hello":"world"}
+      at $REPRO/probes/B09/app.ts:14:17
+      at $REPRO/probes/B09/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at processTicksAndRejections (native:7:39)
+POST - http://127.0.0.1:41296/throw-read failed
+12 |     '/throw-read': async (req: Request) => {
+13 |       const body = await req.text();
+14 |       throw new Error(`route boom (read body) ${body}`);
+15 |     },
+16 |     '/throw': async (_req: Request) => {
+17 |       throw new Error('route boom (unread body)');
+                     ^
+error: route boom (unread body)
+      at /throw ($REPRO/probes/B09/app.ts:17:17)
+      at $REPRO/probes/B09/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at handleCallbackErrors ($REPRO/probes/B09/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at unknown:1:1
+POST - /throw failed
+24 |   },
+25 |   async fetch(req: Request) {
+26 |     const url = new URL(req.url);
+27 |     if (url.pathname === '/fetch-throw') {
+28 |       const body = await req.text();
+29 |       throw new Error(`fetch boom (read body) ${body}`);
+                     ^
+error: fetch boom (read body) {"hello":"world"}
+      at fetch ($REPRO/probes/B09/app.ts:29:17)
+      at $REPRO/probes/B09/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at processTicksAndRejections (native:7:39)
+POST - http://127.0.0.1:41296/fetch-throw failed

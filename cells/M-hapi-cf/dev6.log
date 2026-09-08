@@ -1,0 +1,251 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Using secrets defined in dist/m_hapi_cf/.dev.vars
+Your Worker has access to the following bindings:
+Binding                                Resource                  Mode
+env.SENTRY_LIFECYCLE ("(hidden)")      Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41780/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41780/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41780/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41780/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41780/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41780/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41780/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41780/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41780/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41780/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:41780
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:@hapi/hapi] "@hapi/hapi" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:@hapi/hapi] subscribing to channels
+Sentry Logger [log]: Integration installed: Hapi
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /ok
+  ID: 94faa057c1e8a7c2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /ok
+  ID: 965ec2c9a5b7c31c
+  parent ID: 94faa057c1e8a7c2
+  root ID: 94faa057c1e8a7c2
+  root op: http.server
+  root description: GET /ok
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /ok" with ID 965ec2c9a5b7c31c
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: b7b22496afefcd81
+  parent ID: 94faa057c1e8a7c2
+  root ID: 94faa057c1e8a7c2
+  root op: http.server
+  root description: GET /ok
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID b7b22496afefcd81
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /ok" with ID 94faa057c1e8a7c2
+[wrangler:info] GET /ok 200 unknown (29ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: a4f392d9eda7ad28
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /users/{id}
+  ID: 8d7fbfdf7df8f94f
+  parent ID: a4f392d9eda7ad28
+  root ID: a4f392d9eda7ad28
+  root op: http.server
+  root description: GET /users/{id}
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /users/{id}" with ID 8d7fbfdf7df8f94f
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: bbb9153d445c153d
+  parent ID: a4f392d9eda7ad28
+  root ID: a4f392d9eda7ad28
+  root op: http.server
+  root description: GET /users/{id}
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID bbb9153d445c153d
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/{id}" with ID a4f392d9eda7ad28
+[wrangler:info] GET /users/42 200 unknown (4ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db
+  ID: b3e8f719e01de011
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /db
+  ID: a6709d483a2262d8
+  parent ID: b3e8f719e01de011
+  root ID: b3e8f719e01de011
+  root op: http.server
+  root description: GET /db
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT id, name FROM users
+  ID: af085528b4e9dca9
+  parent ID: a6709d483a2262d8
+  root ID: b3e8f719e01de011
+  root op: http.server
+  root description: GET /db
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT id, name FROM users" with ID af085528b4e9dca9
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /db" with ID a6709d483a2262d8
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: bd4c805aa23c67cc
+  parent ID: b3e8f719e01de011
+  root ID: b3e8f719e01de011
+  root op: http.server
+  root description: GET /db
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID bd4c805aa23c67cc
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db" with ID b3e8f719e01de011
+[wrangler:info] GET /db 200 unknown (10ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /error/7
+  ID: a6c97d95c3656c51
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /error/{id}
+  ID: a0ab602244b23be2
+  parent ID: a6c97d95c3656c51
+  root ID: a6c97d95c3656c51
+  root op: http.server
+  root description: GET /error/{id}
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /error/{id}" with ID a0ab602244b23be2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: ad2688cfdac983a2
+  parent ID: a6c97d95c3656c51
+  root ID: a6c97d95c3656c51
+  root op: http.server
+  root description: GET /error/{id}
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID ad2688cfdac983a2
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error/{id}" with ID a6c97d95c3656c51
+[wrangler:info] GET /error/7 500 unknown (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /error-ext/8
+  ID: 8a78b44eea93ed6b
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /error-ext/{id}
+  ID: 97021c14bddf11d8
+  parent ID: 8a78b44eea93ed6b
+  root ID: 8a78b44eea93ed6b
+  root op: http.server
+  root description: GET /error-ext/{id}
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /error-ext/{id}" with ID 97021c14bddf11d8
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: 80f4e168375a86cd
+  parent ID: 8a78b44eea93ed6b
+  root ID: 8a78b44eea93ed6b
+  root op: http.server
+  root description: GET /error-ext/{id}
+Sentry Logger [log]: Captured error event `hapi-cf-ext-boom`
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID 80f4e168375a86cd
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error-ext/{id}" with ID 8a78b44eea93ed6b
+[wrangler:info] GET /error-ext/8 500 unknown (4ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /fetch
+  ID: b13f8237cf5ac37c
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /fetch
+  ID: a1935a7804d8916f
+  parent ID: b13f8237cf5ac37c
+  root ID: b13f8237cf5ac37c
+  root op: http.server
+  root description: GET /fetch
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:41778/__record
+  ID: b02cf34e6e611085
+  parent ID: a1935a7804d8916f
+  root ID: b13f8237cf5ac37c
+  root op: http.server
+  root description: GET /fetch
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:41778/__record" with ID b02cf34e6e611085
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /fetch" with ID a1935a7804d8916f
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: a5de56085f9a789d
+  parent ID: b13f8237cf5ac37c
+  root ID: b13f8237cf5ac37c
+  root op: http.server
+  root description: GET /fetch
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID a5de56085f9a789d
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /fetch" with ID b13f8237cf5ac37c
+[wrangler:info] GET /fetch 200 unknown (4ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /log
+  ID: bd59c0c84559b68d
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /log
+  ID: 8970ca665b45e8c3
+  parent ID: bd59c0c84559b68d
+  root ID: bd59c0c84559b68d
+  root op: http.server
+  root description: GET /log
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /log" with ID 8970ca665b45e8c3
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: aed28d33affbec7b
+  parent ID: bd59c0c84559b68d
+  root ID: bd59c0c84559b68d
+  root op: http.server
+  root description: GET /log
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID aed28d33affbec7b
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /log" with ID bd59c0c84559b68d
+[wrangler:info] GET /log 200 unknown (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 8ee8789a241a373e
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /sentinel
+  ID: 85e93a76c15f082d
+  parent ID: 8ee8789a241a373e
+  root ID: 8ee8789a241a373e
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /sentinel" with ID 85e93a76c15f082d
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: a0db20cc2832aca0
+  parent ID: 8ee8789a241a373e
+  root ID: 8ee8789a241a373e
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID a0db20cc2832aca0
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 8ee8789a241a373e
+[wrangler:info] GET /sentinel 200 unknown (2ms)

@@ -1,0 +1,11 @@
+verify4-M-nuxt-bun-routenames
+
+sink: PORT=52411 node sink.mjs ; app: PORT=52413 bun run .output/server/index.mjs
+build: (cd app && NITRO_PRESET=<bun|node-server> npx nuxt build)
+
+A  @sentry/nuxt only,          NITRO_PRESET=bun          -> 0 spans (build-A.log/run-A2.log)
+B  @sentry/nuxt only,          NITRO_PRESET=node-server  -> 0 spans (build-B.log/run-B.log)
+C  + bunServer+bunHttpServer,  NITRO_PRESET=node-server  -> GET /users/:id, source=route, origin auto.http.server
+D  + bunServerIntegration,     NITRO_PRESET=bun          -> GET /users/:id, source=route, origin auto.http.bun.serve
+F  + both integrations,        NITRO_PRESET=bun          -> same as D, no duplicate spans, errors keep transaction name
+G  F + traceLifecycle:'static',NITRO_PRESET=bun          -> transaction GET /users/:id source=route; GET /api/ping source=url

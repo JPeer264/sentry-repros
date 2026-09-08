@@ -1,0 +1,37 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                          Resource                  Mode
+env.SINK_PORT ("45311")          Environment Variable      local
+env.DB_HOST ("127.0.0.1")        Environment Variable      local
+env.DB_PORT ("3307")             Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:57431/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:57431/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:57431/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:57431/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:57431/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:57431/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:57431/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:57431/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:57431/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:57431/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:57431
+✘ [ERROR] Uncaught RuntimeError: unreachable
+
+      at wasm://wasm/008a260a:wasm-function[647]:0x13cd18
+      at wasm://wasm/008a260a:wasm-function[182]:0xa07f7
+      at wasm://wasm/008a260a:wasm-function[1327]:0x183b8d
+      at wasm://wasm/008a260a:wasm-function[5132]:0x1f9883
+      at wasm://wasm/008a260a:wasm-function[5584]:0x1fe4f8
+      at Q (file://$REPRO/probes/N2/.wrangler/tmp/dev-kUIFVi/n2-prisma-nosentry.js:27777:9)
+      at i (file://$REPRO/probes/N2/.wrangler/tmp/dev-kUIFVi/n2-prisma-nosentry.js:27751:18) 
+
+
+[wrangler:info] GET /users 200 OK (10035ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_09-33-48_908.log"

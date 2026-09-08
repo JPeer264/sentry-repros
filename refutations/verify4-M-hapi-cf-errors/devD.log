@@ -1,0 +1,162 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                                Resource                  Mode
+env.SENTRY_LIFECYCLE ("(hidden)")      Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:55823/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:55823/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:55823/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:55823/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:55823/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:55823/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:55823/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:55823/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:55823/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:55823/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:55823
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:@hapi/hapi] "@hapi/hapi" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:@hapi/hapi] subscribing to channels
+Sentry Logger [log]: Integration installed: Hapi
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 8eae8accf585402e
+MARK BOOT handlerState=true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onRequest
+  ID: 80c1f71099cf84d6
+  parent ID: 8eae8accf585402e
+  root ID: 8eae8accf585402e
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onRequest" with ID 80c1f71099cf84d6
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: /error/{id}
+  ID: bb94ee6a38c2b0cc
+  parent ID: 8eae8accf585402e
+  root ID: 8eae8accf585402e
+  root op: http.server
+  root description: GET /error/{id}
+Sentry Logger [log]: [Tracing] Finishing "router" span "/error/{id}" with ID bb94ee6a38c2b0cc
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: 96a78ce817431326
+  parent ID: 8eae8accf585402e
+  root ID: 8eae8accf585402e
+  root op: http.server
+  root description: GET /error/{id}
+MARK onPreResponse /error/31 isBoom=true writableEnded=false
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID 96a78ce817431326
+MARK res 'close' +3ms writableEnded=false writableFinished=false endCalled=false
+MARK res.end() called +4ms writableEnded(native)=false
+MARK res.end() called +4ms writableEnded(native)=true
+MARK res 'finish' +4ms writableEnded=true
+MARK response-event /error/31 writableEnded=true writableFinished=true finalStatus=499 isBoom=true hasClose=undefined
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error/{id}" with ID 8eae8accf585402e
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 08783c66a1d44b8f971a6764d77e538b with 4 spans
+[wrangler:info] GET /error/31 500 unknown (25ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: bc449b4c277fceee
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onRequest
+  ID: a0acbbfd5d642a16
+  parent ID: bc449b4c277fceee
+  root ID: bc449b4c277fceee
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onRequest" with ID a0acbbfd5d642a16
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: /error/{id}
+  ID: a02cc2bc37626242
+  parent ID: bc449b4c277fceee
+  root ID: bc449b4c277fceee
+  root op: http.server
+  root description: GET /error/{id}
+Sentry Logger [log]: [Tracing] Finishing "router" span "/error/{id}" with ID a02cc2bc37626242
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: bb24dbbf79dfc64f
+  parent ID: bc449b4c277fceee
+  root ID: bc449b4c277fceee
+  root op: http.server
+  root description: GET /error/{id}
+MARK onPreResponse /error/32 isBoom=true writableEnded=false
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID bb24dbbf79dfc64f
+MARK res 'close' +1ms writableEnded=false writableFinished=false endCalled=false
+MARK res.end() called +1ms writableEnded(native)=false
+MARK res 'finish' +1ms writableEnded=true
+MARK ERROR-CHANNEL /error/32 err=hapi-cf-route-boom-32 tags=internal,error
+Sentry Logger [log]: Captured error event `hapi-cf-route-boom-32`
+MARK response-event /error/32 writableEnded=true writableFinished=true finalStatus=500 isBoom=false hasClose=function
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error/{id}" with ID bc449b4c277fceee
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace e2b5f08b5c7d434caf5440c8e4b50b0a with 4 spans
+[wrangler:info] GET /error/32 500 unknown (8ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a7857962efbe0049
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onRequest
+  ID: a7c891a18d78c9f5
+  parent ID: a7857962efbe0049
+  root ID: a7857962efbe0049
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onRequest" with ID a7c891a18d78c9f5
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: /sentinel
+  ID: 8c1e4b7a7fa0895c
+  parent ID: a7857962efbe0049
+  root ID: a7857962efbe0049
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "router" span "/sentinel" with ID 8c1e4b7a7fa0895c
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: middleware
+  name: ext - onPreResponse
+  ID: a8d829aba2fbf438
+  parent ID: a7857962efbe0049
+  root ID: a7857962efbe0049
+  root op: http.server
+  root description: GET /sentinel
+MARK onPreResponse /sentinel isBoom=false writableEnded=false
+Sentry Logger [log]: [Tracing] Finishing "middleware" span "ext - onPreResponse" with ID a8d829aba2fbf438
+MARK res 'close' +2ms writableEnded=false writableFinished=false endCalled=false
+MARK res.end() called +2ms writableEnded(native)=false
+MARK res.end() called +2ms writableEnded(native)=true
+MARK res 'finish' +2ms writableEnded=true
+MARK response-event /sentinel writableEnded=true writableFinished=true finalStatus=499 isBoom=true hasClose=undefined
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID a7857962efbe0049
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 7ad139a09274418d86001005b7d831db with 4 spans
+[wrangler:info] GET /sentinel 200 unknown (4ms)

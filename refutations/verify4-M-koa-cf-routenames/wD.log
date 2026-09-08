@@ -1,0 +1,48 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52749/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52749/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52749/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52749/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52749/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52749/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52749/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52749/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52749/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52749/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:52749
+KOA:APPLICATION: use bound 
+
+KOA:APPLICATION: use -
+
+KOA:APPLICATION: use bound 
+
+KOA:APPLICATION: use -
+
+KOA:APPLICATION: listen
+
+[wrangler:info] GET /users/42 200 OK (16ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+    Error: koa-cf boom
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-routenames/routes.js:26:11)
+        at dispatch (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/koa-compose/index.js:42:32)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/@koa/router/dist/index.mjs:1055:18)
+        at dispatch (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/koa-compose/index.js:42:32)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/koa-compose/index.js:34:12)
+        at RouterImplementation.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/@koa/router/dist/index.mjs:974:38)
+        at dispatch (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/koa-compose/index.js:42:32)
+        at null.<anonymous> (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/koa-compose/index.js:34:12)
+        at Application.handleRequest (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/koa/lib/application.js:204:12)
+        at Server.handleRequest (file://$REPRO/refutations/verify4-M-koa-cf-routenames/node_modules/koa/lib/application.js:175:21)
+  
+
+
+[wrangler:info] GET /boom/7 500 Internal Server Error (4ms)
+[wrangler:info] GET /sentinel 200 OK (4ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_21-41-50_135.log"

@@ -1,0 +1,42 @@
+=== BASELINE throw-timer ===
+ 7 | if (process.env.WHERE === "toplevel") {
+ 8 |   throw new Error("B01 uncaught exception (top level)");
+ 9 | }
+10 | 
+11 | setTimeout(() => {
+12 |   throw new Error("B01 uncaught exception (timer)");
+                                                       ^
+error: B01 uncaught exception (timer)
+      at <anonymous> ($REPRO/probes/B01/baseline/throw.ts:12:51)
+
+Bun v1.4.2 (macOS arm64)
+EXIT_CODE=1
+
+=== BASELINE throw-toplevel ===
+3 |     console.log("USER_HANDLER saw:", (err as Error).message);
+4 |   });
+5 | }
+6 | 
+7 | if (process.env.WHERE === "toplevel") {
+8 |   throw new Error("B01 uncaught exception (top level)");
+                ^
+error: B01 uncaught exception (top level)
+      at $REPRO/probes/B01/baseline/throw.ts:8:13
+
+Bun v1.4.2 (macOS arm64)
+EXIT_CODE=1
+
+=== BASELINE reject-default ===
+1 | Promise.reject(new Error("B01 unhandled rejection"));
+                       ^
+error: B01 unhandled rejection
+      at $REPRO/probes/B01/baseline/reject.ts:1:20
+
+Bun v1.4.2 (macOS arm64)
+EXIT_CODE=1
+
+=== BASELINE userhandler-default ===
+USER_HANDLER saw: B01 uncaught exception (timer)
+baseline still alive
+EXIT_CODE=0
+

@@ -1,0 +1,9 @@
+import * as Sentry from "@sentry/deno";
+
+Sentry.init({
+  dsn: "https://public@example.com/1",
+  tunnel: Deno.env.get("TUNNEL"),
+  tracesSampleRate: 1.0,
+  traceLifecycle: (Deno.env.get("LIFECYCLE") ?? "static") as "static" | "stream",
+  debug: Deno.env.get("SENTRY_DEBUG") === "1",
+});

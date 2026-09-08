@@ -1,0 +1,40 @@
+verify4-M-hapi-cf-routenames -- Hapi 21 on Cloudflare workerd, transaction route names
+
+A) plain wrangler dev (wrangler.jsonc, main=src/eager.mjs), traceLifecycle static
+   transaction | GET /ok                    | op=http.server | source=url | spans=[]
+   transaction | GET /users/42               | op=http.server | source=url | spans=[]
+   transaction | GET /posts/9/comments/3     | op=http.server | source=url | spans=[]
+
+B) vite build + sentryCloudflareVitePlugin, lazy routes, traceLifecycle static
+   transaction | GET /ok                          | source=route | spans=["router GET /ok"]
+   transaction | GET /users/{id}                   | source=route | spans=["router GET /users/{id}"]
+   transaction | GET /posts/{pid}/comments/{cid}   | source=route | spans=["router GET /posts/{pid}/comments/{cid}"]
+
+B2) same build, traceLifecycle stream (develop default)
+   span | items=["router /ok","http.server GET /ok"]
+   span | items=["router /users/{id}","http.server GET /users/{id}"]
+   span | items=["router /posts/{pid}/comments/{cid}","http.server GET /posts/{pid}/comments/{cid}"]
+
+C) NO VITE: esbuild pre-bundle + @sentry/server-utils/orchestrion/esbuild, run by
+   wrangler's own `build.command`, single `npx wrangler dev --config wrangler.custombuild.jsonc`
+   transaction | GET /ok                          | source=route | spans=["router GET /ok"]
+   transaction | GET /users/{id}                   | source=route | spans=["router GET /users/{id}"]
+   transaction | GET /posts/{pid}/comments/{cid}   | source=route | spans=["router GET /posts/{pid}/comments/{cid}"]
+
+D) module-scope server.route() with build-time instrumentation (esbuild build, eager entry):
+   Uncaught Error: Disallowed operation called within global scope. Asynchronous I/O
+   (ex: fetch() or connect()), setting a timeout, and generating random values are not
+   allowed within global scope.  at worker.js:60489:38 in route
+   Control: same esbuild build with sentryOrchestrionPlugin({buildTimeInstrumentation:false})
+   boots fine with module-scope routes -> the injected transform is the cause.
+
+E) root cause of D (dcprobe/worker.mjs):
+   {"typeofHasSubscribers":"function","valueHasSubscribers":"function hasSubscribers() { [native code] }",
+    "plainChannelTypeof":"function",
+    "globalScopeRunStores":"throw: Disallowed operation called within global scope. Asynchronou",
+    "inHandler":"ok"}
+   workerd's node:diagnostics_channel exposes Channel.hasSubscribers as a METHOD, not the
+   boolean getter Node.js specifies. orchestrion's injected guard
+   `ch.start.hasSubscribers || ch.end.hasSubscribers || ...` is therefore always truthy, so
+   every instrumented call enters `channel.start.runStores(...)` even with zero subscribers,
+   and runStores is a disallowed global-scope operation on workerd.

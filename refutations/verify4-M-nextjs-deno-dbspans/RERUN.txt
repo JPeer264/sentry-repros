@@ -1,0 +1,24 @@
+S=$SCRATCH
+D=$S/deep/verify4-M-nextjs-deno-dbspans
+
+# deps (node_modules removed after the run)
+cd $D && npm install --no-audit --no-fund next@15.5.4 react@19.1.0 react-dom@19.1.0 mysql2@3 mysql@2 ioredis@5.4.1 \
+  $S/pack/sentry-{nextjs,node,core,opentelemetry,react,browser,browser-utils,server-utils,server-runtime-injection,vercel-edge,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+
+docker run -d --rm --name deep-v4ndb-redis -p 41339:6379 redis:7-alpine
+PORT=41337 node $S/qs/sink.mjs > $D/sink.log 2>&1 &
+
+# A. default externals (ioredis bundled by Sentry, mysql/mysql2 external), no runtime hook
+cd $D && SINK_PORT=41337 REDIS_PORT=41339 deno run -A node_modules/next/dist/bin/next build
+cd $D && SINK_PORT=41337 REDIS_PORT=41339 deno run -A node_modules/next/dist/bin/next start -p 41338
+curl -s http://127.0.0.1:41338/api/{dbredis,dbmysql2,dbmysql,sentinel}
+curl -s http://127.0.0.1:41337/__items
+
+# B. same, stream lifecycle: prefix LIFECYCLE=stream
+# C. default docs wiring (runtime hook ON -> every route 500s): prefix RUNTIME_INJECTION=1
+# D. mysql force-bundled variant (distDir .next-bundlemysql): prefix BUNDLE_MYSQL=1 on build and start
+# E. Node control for D: node node_modules/next/dist/bin/next start -p 41340
+
+# minimal Deno registerHooks/JSON repro (no Sentry involved)
+cd $D/minhook && deno run -A main.cjs   # -> json FAILED: SyntaxError Unexpected token ':'
+cd $D/minhook && node main.cjs          # -> json ok: {"a":1}

@@ -1,0 +1,30 @@
+{
+ "route": "/user/42",
+ "status": 200,
+ "responseHeaders": {
+  "sentry-trace": "1ea46d085b774ecfb7fd6f23f064621a-87901f2a38df6881-1",
+  "baggage": "sentry-environment=production,sentry-public_key=public,sentry-trace_id=1ea46d085b774ecfb7fd6f23f064621a,sentry-transaction=GET%20%2Fuser%2F%3Aid,sentry-sampled=true,sentry-sample_rand=0.18559691974186587,sentry-sample_rate=1"
+ },
+ "body": {
+  "id": "42",
+  "echoed": {
+   "url": "/downstream/42",
+   "sentry-trace": "1ea46d085b774ecfb7fd6f23f064621a-b805b9f92ee4f114-1",
+   "baggage": "sentry-environment=production,sentry-public_key=public,sentry-trace_id=1ea46d085b774ecfb7fd6f23f064621a,sentry-sampled=true,sentry-sample_rand=0.18559691974186587,sentry-sample_rate=1"
+  }
+ }
+}
+{
+ "route": "/error",
+ "status": 500,
+ "responseHeaders": {
+  "sentry-trace": null,
+  "baggage": null
+ }
+}
+--- sink items ---
+{"type":"event","exception":"elysia boom","mechanism":"auto.http.elysia.on_error","handled":false,"sdk":"sentry.javascript.bun","sdkVersion":"10.67.0","runtime":{"name":"bun","version":"1.4.0"},"transaction":"GET /error","trace_id":"16028f7e1ed04e1ebee57fa370a3fbe2","hasContextLine":true}
+{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.bun","sdkVersion":"10.67.0","runtime":{"name":"bun","version":"1.4.0"},"trace_id":"6c66f62c73cf4a31975118c353a711f0","hasContextLine":true}
+{"type":"span","items":["middleware sentryOnRequest [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware Request [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware Parse [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware Transform [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware BeforeHandle [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","http.client GET 127.0.0.1 [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","handler /user/:id [seg=false src=- route=/user/:id status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware sentryOnAfterHandle [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware AfterHandle [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware MapResponse [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","http.server GET /user/:id [seg=true src=- route=/user/:id status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]","middleware AfterResponse [seg=false src=- route=- status=ok trace=1ea46d085b774ecfb7fd6f23f064621a]"]}
+{"type":"span","items":["middleware sentryOnRequest [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","middleware Request [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","middleware Parse [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","middleware Transform [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","middleware BeforeHandle [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","handler /error [seg=false src=- route=/error status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","middleware sentryOnError [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","middleware Error [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]","http.server GET /error [seg=true src=- route=/error status=error trace=16028f7e1ed04e1ebee57fa370a3fbe2]","middleware AfterResponse [seg=false src=- route=- status=ok trace=16028f7e1ed04e1ebee57fa370a3fbe2]"]}
+{"type":"span","items":["middleware sentryOnRequest [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware Request [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware Parse [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware Transform [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware BeforeHandle [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","handler /sentinel [seg=false src=- route=/sentinel status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware sentryOnAfterHandle [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware AfterHandle [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware MapResponse [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]","http.server GET /sentinel [seg=true src=- route=/sentinel status=ok trace=6c66f62c73cf4a31975118c353a711f0]","middleware AfterResponse [seg=false src=- route=- status=ok trace=6c66f62c73cf4a31975118c353a711f0]"]}

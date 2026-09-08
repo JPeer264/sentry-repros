@@ -1,0 +1,52 @@
+verify4-M-hapi-cf-routenames / run2 -- Hapi 21 on workerd, transaction route names
+sink: PORT=53911 node sink.mjs ; worker ports 53912/53913 ; traceLifecycle static unless noted
+
+A) plain wrangler dev, module-scope routes, NO bundler plugin
+   npx wrangler dev --config wr2-eager.jsonc --port 53912 --inspector-port 0
+   transaction | GET /ok                  | source= url | spans= []
+   transaction | GET /users/42            | source= url | spans= []
+   transaction | GET /posts/9/comments/3  | source= url | spans= []
+
+A2) same build, /probe handler logging Sentry.getActiveSpan() from inside the Hapi handler
+   PROBE {"hasActive":true,"activeJson":{"name":"GET /probe", ... "sentry.origin":"auto.http.cloudflare",
+          "sentry.op":"http.server","sentry.segment.name.source":"url", ...}}
+   -> the Cloudflare request span IS the active span inside Hapi handlers/exts (ALS survives the
+      node:http shim), so user code can rename it.
+
+B) plain wrangler dev, module-scope routes, NO bundler plugin, + 4-line onPreResponse ext:
+     const root = Sentry.getRootSpan(Sentry.getActiveSpan());
+     Sentry.updateSpanName(root, `${request.method.toUpperCase()} ${request.route.path}`);
+     root.setAttribute(Sentry.SENTRY_SEGMENT_NAME_SOURCE, 'route');
+   npx wrangler dev --config wr2-manual.jsonc --port 53912 --inspector-port 0
+   transaction | GET /ok                        | source= route | spans= []
+   transaction | GET /users/{id}                 | source= route | spans= []
+   transaction | GET /posts/{pid}/comments/{cid} | source= route | spans= []
+
+B2) same, traceLifecycle 'stream' (develop default, wr2-manual-stream.jsonc)
+   span | ["http.server GET /ok"]
+   span | ["http.server GET /users/{id}"]
+   span | ["http.server GET /posts/{pid}/comments/{cid}"]
+
+C) NO VITE: esbuild + sentryOrchestrionPlugin from '@sentry/server-utils/orchestrion/esbuild',
+   run by wrangler's own build.command (wr2-orch.jsonc), lazy route registration
+   transaction | GET /ok                        | source= route | spans= ["router GET /ok"]
+   transaction | GET /users/{id}                 | source= route | spans= ["router GET /users/{id}"]
+   transaction | GET /posts/{pid}/comments/{cid} | source= route | spans= ["router GET /posts/{pid}/comments/{cid}"]
+
+D) vite build + sentryCloudflareVitePlugin (vite.config.run2.mjs, lazy route registration)
+   npx vite build --config vite.config.run2.mjs
+   npx wrangler dev --config dist-vite2/v4b_hapi_vite/wrangler.json --port 53912 --inspector-port 0
+   transaction | GET /ok                        | source= route | spans= ["router GET /ok"]
+   transaction | GET /users/{id}                 | source= route | spans= ["router GET /users/{id}"]
+   transaction | GET /posts/{pid}/comments/{cid} | source= route | spans= ["router GET /posts/{pid}/comments/{cid}"]
+
+E) build-time instrumentation + module-scope server.route() (wr2-orch-eager.jsonc) -> isolate never boots
+   service core:user:v4b-hapi-orch-eager: Uncaught Error: Disallowed operation called within global
+   scope. Asynchronous I/O (ex: fetch() or connect()), setting a timeout, and generating random values
+   are not allowed within global scope.
+     at worker.js:60489:38 in route
+     at worker.js:81183:10 in registerRoutes
+   cause, in the generated bundle (dist-run2e/worker.mjs:59547):
+     var tr_ch_apm_hasSubscribers = (ch) => ch.start.hasSubscribers || ch.end.hasSubscribers || ...
+   workerd exposes Channel.hasSubscribers as a METHOD (Node.js specifies a boolean getter), so the
+   guard is always truthy and every instrumented call enters runStores() even with zero subscribers.

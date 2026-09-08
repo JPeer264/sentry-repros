@@ -1,0 +1,21 @@
+bunserve listening on 41317
+ 6 | const server = Bun.serve({
+ 7 |   port,
+ 8 |   fetch(req) {
+ 9 |     const { pathname } = new URL(req.url);
+10 |     if (pathname === '/error') {
+11 |       throw new Error('bunserve boom');
+                     ^
+error: bunserve boom
+      at fetch ($REPRO/probes/B05/app-bunserve.ts:11:17)
+      at $REPRO/probes/B05/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at handleCallbackErrors ($REPRO/probes/B05/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at unknown:1:1
+GET - /error failed
+
+Bun v1.4.0 (macOS arm64)

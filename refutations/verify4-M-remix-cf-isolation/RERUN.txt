@@ -1,0 +1,24 @@
+Rerun (Remix v2 on Cloudflare Workers, isolation probe)
+
+npm install --legacy-peer-deps          # tarballs are already in package.json (file:../../pack/*.tgz)
+npx remix vite:build                    # NOT `vite build` (Vite 6 skips build/server)
+PORT=47213 node recorder.mjs &          # envelope recorder, keeps tags/url/trace_id
+
+# broken shape (wrapRequestHandler, no ALS strategy)
+npx wrangler dev --config wrangler-B-baseline.jsonc --port 47215 --inspector-port 0 &
+APP_PORT=47215 node drive.mjs
+
+# working shape (withSentry from the @sentry/cloudflare main entry), static lifecycle
+npx wrangler dev --config wrangler-C-withsentry.jsonc --port 47217 --inspector-port 0 &
+APP_PORT=47217 node drive.mjs
+
+# working shape, stream lifecycle (develop default)
+npx wrangler dev --config wrangler-E-stream.jsonc --port 47219 --inspector-port 0 &
+APP_PORT=47219 node drive.mjs
+
+# working shape, wrapRequestHandler + setAsyncLocalStorageAsyncContextStrategy()
+npx wrangler dev --config wrangler-D-fix.jsonc --port 47221 --inspector-port 0 &
+APP_PORT=47221 node drive.mjs
+
+drive.mjs fires GET /tag/{alpha,bravo,charlie} concurrently (each setTag('probe_tag', t),
+sleeps 400ms, then captureMessage), then GET /sentinel as the sentinel event.

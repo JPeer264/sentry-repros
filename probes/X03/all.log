@@ -1,0 +1,105 @@
+--- a-nohook
+JSON_OK {"hello":"world","n":1}
+RESULT a-nohook: ok
+--- b-noop
+RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+LOAD_SEEN ["req.cjs format=undefined source=string","x.json format=undefined source=string"]
+--- b2-resolve-only
+JSON_OK {"hello":"world","n":1}
+RESULT b2-resolve-only: ok
+--- c-sentry
+RESULT c-sentry: FAIL SyntaxError: Unexpected token ':'
+--- d2-express-nohook
+RESULT d2-express-nohook: ok typeof=function
+--- d3-express-noop
+RESULT d3-express-noop: FAIL SyntaxError: Unexpected token ':'
+SyntaxError: Unexpected token ':'
+    at Object.compileFunction (ext:core/01_core.js:1106:31)
+    at wrapSafe (node:module:1666:21)
+    at Module._compile (node:module:1691:23)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+    at Module.require (node:module:1609:19)
+    at require (node:module:1815:16)
+    at Object.<anonymous> (file://$REPRO/probes/X03/node_modules/statuses/index.js:15:13)
+    at Module._compile (node:module:1709:34)
+    at Module.load (node:module:1572:16)
+--- d-express
+RESULT d-express: FAIL SyntaxError: Unexpected token ':'
+--- e-format-json
+JSON_OK {"hello":"world","n":1}
+RESULT e-format-json: ok
+--- e2-ctx
+CTX x.json {"conditions":["node","require"],"importAttributes":{}}
+RES {"shortCircuit":true,"srcType":"string","srcHead":"{ \"hello\": \"world\", \"n\": 1 }\n"}
+RES_KEYS ["source","format","shortCircuit"]
+RESULT e2-ctx: FAIL SyntaxError: Unexpected token ':'
+--- e3-workaround
+JSON_OK {"hello":"world","n":1}
+RESULT e3-workaround: ok {"hello":"world","n":1}
+--- e4-esm-json
+RESULT e4-esm-json: ok {"hello":"world","n":1}
+--- e4b-esm-json-nohook
+RESULT e4b-esm-json-nohook: ok {"hello":"world","n":1}
+--- f-sentry-fixed
+RESULT f-sentry-fixed: ok typeof=function injected=["express","express"]
+--- g0-koa-nohook
+RESULT g0-koa-nohook: ok typeof=function
+--- g-koa
+RESULT g-koa: FAIL TypeError: TypeError: Cannot resolve module "./index.js" from "file://$REPRO/probes/X03/node_modules/generator-function/require.mjs"
+    at loadESMFromCJS (node:module:1751:56)
+    at Module._compile (node:module:1694:14)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+    at Module.require (node:module:1609:19)
+    at require (node:module:1815:16)
+    at Object.<anonymous> (file://$REPRO/probes/X03/node_modules/is-generator-function/index.js:12:28)
+    at Module._compile (node:module:1709:34)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+TypeError: TypeError: Cannot resolve module "./index.js" from "file://$REPRO/probes/X03/node_modules/generator-function/require.mjs"
+    at loadESMFromCJS (node:module:1751:56)
+    at Module._compile (node:module:1694:14)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+    at Module.require (node:module:1609:19)
+    at require (node:module:1815:16)
+    at Object.<anonymous> (file://$REPRO/probes/X03/node_modules/is-generator-function/index.js:12:28)
+    at Module._compile (node:module:1709:34)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+    at loadESMFromCJS (node:module:1751:56)
+    at Module._compile (node:module:1694:14)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+    at Module.require (node:module:1609:19)
+    at require (node:module:1815:16)
+    at Object.<anonymous> (file://$REPRO/probes/X03/node_modules/is-generator-function/index.js:12:28)
+    at Module._compile (node:module:1709:34)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+--- g2-koa-sentry
+RESULT g2-koa-sentry: FAIL TypeError: TypeError: Cannot resolve module "./index.js" from "file://$REPRO/probes/X03/node_modules/generator-function/require.mjs"
+    at loadESMFromCJS (node:module:1751:56)
+    at Module._compile (node:module:1694:14)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+    at Module.require (node:module:1609:19)
+    at require (node:module:1815:16)
+    at Object.<anonymous> (file://$REPRO/probes/X03/node_modules/is-generator-function/index.js:12:28)
+    at Module._compile (node:module:1709:34)
+    at Module.load (node:module:1572:16)
+    at Module._load (node:module:1274:14)
+--- unstable flags on b-noop
+--unstable-node-globals -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+--unstable-sloppy-imports -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+--unstable-detect-cjs -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+--unstable-bare-node-builtins -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+--unstable-npm-lazy-caching -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+--unstable-unsafe-proto -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+--unstable -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+all-four-combined -> RESULT b-noop: FAIL SyntaxError: Unexpected token ':'
+--- sink
+{"type": "event", "message": "sentinel c-sentry FAIL SyntaxError: Unexpected token ':'", "exception": "undefined: sentinel c-sentry FAIL SyntaxError: Unexpected token ':'", "mechanism": "generic", "handled": true, "sdk": "sentry.javascript.deno", "runtime": "deno", "hasContextLine": true, "trace_id": "d092cae13605419b8fcdd17652b09e19", "release": "x03", "environment": "production"}
+{"type": "event", "message": "sentinel d-express FAIL SyntaxError: Unexpected token ':'", "exception": "undefined: sentinel d-express FAIL SyntaxError: Unexpected token ':'", "mechanism": "generic", "handled": true, "sdk": "sentry.javascript.deno", "runtime": "deno", "hasContextLine": true, "trace_id": "78488ba13643476ea8077d32fb788e51", "release": "x03", "environment": "production"}
+{"type": "event", "message": "sentinel f-sentry-fixed ok", "exception": "undefined: sentinel f-sentry-fixed ok", "mechanism": "generic", "handled": true, "sdk": "sentry.javascript.deno", "runtime": "deno", "hasContextLine": true, "trace_id": "cadb44ec05d14bbcaa97608df15290a8", "release": "x03", "environment": "production"}

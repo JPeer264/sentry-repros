@@ -1,0 +1,70 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52119/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52119/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52119/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52119/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:52119
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /wdb
+  ID: ae616a078bda7a01
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /wdb" with ID ae616a078bda7a01
+Sentry Logger [log]: Captured error event `Dynamic require of "diagnostics_channel" is not supported`
+[wrangler:error] Error: Dynamic require of "diagnostics_channel" is not supported
+    at node_modules/mysql/lib/Connection.js (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:36758:24)
+    at __require3 (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:23:50)
+    at loadClass (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:37949:19)
+    at Object.createConnection (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:37906:24)
+    at Object.fetch (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:64847:50)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:25905:107)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:14922:25)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:4464:60)
+    at handleCallbackErrors.status.status [as status] (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist/worker.mjs:4761:13)
+[wrangler:info] GET /wdb 500 Internal Server Error (54ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq2
+  ID: 9b28d7bd2485ed24
+Sentry Logger [log]: Integration skipped because it was already installed: Mysql
+Sentry Logger [log]: Captured error event `Dynamic require of "diagnostics_channel" is not supported`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq2" with ID 9b28d7bd2485ed24
+[wrangler:info] GET /dbq2 500 Internal Server Error (4ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq
+  ID: 8ec9525f854b69cf
+Sentry Logger [log]: Captured error event `Dynamic require of "events" is not supported`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq" with ID 8ec9525f854b69cf
+[wrangler:info] GET /dbq 500 Internal Server Error (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 961f8aff12a0fd3d
+Sentry Logger [log]: Captured error event `sentinel-null`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 961f8aff12a0fd3d
+[wrangler:info] GET /sentinel 200 OK (2ms)

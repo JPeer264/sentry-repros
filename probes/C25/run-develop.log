@@ -1,0 +1,14 @@
+/rpc 200 hello x
+/rpc-error 200 caught rpc boom
+/svc-fetch 200 api fetch /inner sentry-trace=0ab71f6d5f034e78b48c496b22f8a885-8f8480acc58f40ae-1
+/sentinel 200 sentinel
+--- sink ---
+{"type":"span","items":["rpc hello trace=4932b3c606a64a8d8f64f9c6037bda36 span=a8e86ddbbaa81446 parent=85b8e284c6be46e5 status=ok origin=auto.faas.cloudflare.worker_entrypoint"]}
+{"type":"span","items":["http.server GET trace=4932b3c606a64a8d8f64f9c6037bda36 span=85b8e284c6be46e5 parent=- status=ok origin=auto.http.cloudflare"]}
+{"type":"event","exception":"rpc boom","mechanism":"auto.faas.cloudflare.worker_entrypoint","handled":false,"trace_id":"92363b76071c4c86a488141e3dced25b","span_id":"ba3741c97e419506"}
+{"type":"span","items":["rpc hello trace=92363b76071c4c86a488141e3dced25b span=ba3741c97e419506 parent=9011883b21f856b5 status=error origin=auto.faas.cloudflare.worker_entrypoint"]}
+{"type":"span","items":["http.server GET trace=92363b76071c4c86a488141e3dced25b span=9011883b21f856b5 parent=- status=ok origin=auto.http.cloudflare"]}
+{"type":"span","items":["http.server GET trace=0ab71f6d5f034e78b48c496b22f8a885 span=9771d620b8c69a1d parent=8f8480acc58f40ae status=ok origin=auto.http.cloudflare"]}
+{"type":"span","items":["http.server GET trace=0ab71f6d5f034e78b48c496b22f8a885 span=8f8480acc58f40ae parent=- status=ok origin=auto.http.cloudflare"]}
+{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"trace_id":"b1897bad88a64a4db7a2cc229b37d1a6","span_id":"921ba31870d183ea"}
+{"type":"span","items":["http.server GET trace=b1897bad88a64a4db7a2cc229b37d1a6 span=921ba31870d183ea parent=- status=ok origin=auto.http.cloudflare"]}

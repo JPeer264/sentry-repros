@@ -1,0 +1,83 @@
+/ok -> 200 {"worker":"b298ac25","ok":true}
+/db -> 200 {"worker":"2efdc3c6","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+/tag?id=r0 -> 200 {"worker":"b298ac25","id":"r0"}
+/tag?id=r1 -> 200 {"worker":"2efdc3c6","id":"r1"}
+/tag?id=r2 -> 200 {"worker":"a21ac0f3","id":"r2"}
+/tag?id=r3 -> 200 {"worker":"a21ac0f3","id":"r3"}
+/tag?id=r4 -> 200 {"worker":"4f748641","id":"r4"}
+/tag?id=r5 -> 200 {"worker":"2efdc3c6","id":"r5"}
+/tag?id=r6 -> 200 {"worker":"4f748641","id":"r6"}
+/tag?id=r7 -> 200 {"worker":"a21ac0f3","id":"r7"}
+/tag?id=r8 -> 200 {"worker":"2efdc3c6","id":"r8"}
+/tag?id=r9 -> 200 {"worker":"b97697a1","id":"r9"}
+/boom -> 500 Internal Server Error
+/boom -> 500 Internal Server Error
+/boom -> 500 Internal Server Error
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+/sentinel -> 200 {"worker":"2efdc3c6"}
+/sentinel -> 200 {"worker":"b298ac25"}
+
+counts -> event: 53, span: 55
+span envelope items -> 56
+tagged events=10 matching=10
+
+--- span lines (deduped with count) ---
+   55 http.server GET [origin=auto.http.deno] [src=?] [trace=*]
+    1 db SELECT users [origin=auto.db.mysql] [src=?] [trace=*]
+
+--- events ---
+   20 sentinel:2efdc3c6 | {"worker":"2efdc3c6"}
+   20 sentinel:b298ac25 | {"worker":"b298ac25"}
+    1 serve boom | {"worker":"2efdc3c6"}
+    2 serve boom | {"worker":"b298ac25"}
+    1 tagged:r0 | {"worker":"b298ac25","req":"r0"}
+    1 tagged:r1 | {"worker":"2efdc3c6","req":"r1"}
+    1 tagged:r2 | {"worker":"a21ac0f3","req":"r2"}
+    1 tagged:r3 | {"worker":"a21ac0f3","req":"r3"}
+    1 tagged:r4 | {"worker":"4f748641","req":"r4"}
+    1 tagged:r5 | {"worker":"2efdc3c6","req":"r5"}
+    1 tagged:r6 | {"worker":"4f748641","req":"r6"}
+    1 tagged:r7 | {"worker":"a21ac0f3","req":"r7"}
+    1 tagged:r8 | {"worker":"2efdc3c6","req":"r8"}
+    1 tagged:r9 | {"worker":"b97697a1","req":"r9"}
+
+--- sample raw items ---
+{"type":"span","items":["db SELECT users [origin=auto.db.mysql] [src=?] [trace=2eee917c]","http.server GET [origin=auto.http.deno] [src=?] [trace=2eee917c]"]}
+{"type":"event","message":"tagged:r0","exception":"undefined: tagged:r0","mechanism":"generic","handled":true,"tags":{"worker":"b298ac25","req":"r0"},"trace":"90b8e202","request":"http://127.0.0.1:58223/tag?id=r0"}

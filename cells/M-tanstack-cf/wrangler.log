@@ -1,0 +1,298 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:33519/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:33519/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:33519/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:33519/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:33519/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:33519/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:33519/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:33519/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:33519/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:33519/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:33519
+[wrangler:info] GET /users/42 200 OK (164ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: TanStackCF Route Handler Error[0m
+
+      at GET (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/router-BT7fWcI7.js:1593:17)
+      ... 8 lines matching cause stack trace ...
+      at async sentryMiddlewareHandler (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/start-DlR60VgD.js:69:14) {
+    cause: Error: TanStackCF Route Handler Error
+        at GET (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/router-BT7fWcI7.js:1593:17)
+        at next (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:32168:22)
+        at executeMiddleware (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:32195:26)
+        at handleServerRoutes (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:32133:21)
+        at null.<anonymous> (async file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:32009:35)
+        at null.<anonymous> (async file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:31951:29)
+        at null.<anonymous> (async file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:32153:22)
+        at async next (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:32168:16)
+        at async next (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-DbNcfwYT.js:32172:30)
+        at async sentryMiddlewareHandler (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/start-DlR60VgD.js:69:14),
+    status: 500,
+    statusText: undefined,
+    headers: undefined,
+    data: undefined,
+    body: undefined,
+    unhandled: true
+  }
+
+
+[wrangler:info] GET /users/boom 500 Internal Server Error (39ms)
+[wrangler:info] GET /api/sentinel 200 OK (3ms)
+[wrangler:info] GET /iso/alpha 200 OK (126ms)
+[wrangler:info] GET /iso/bravo 200 OK (126ms)
+[wrangler:info] GET /iso/charlie 200 OK (129ms)
+[wrangler:info] GET /api/sentinel 200 OK (2ms)
+[wrangler:info] GET /users/77 200 OK (7ms)
+[wrangler:info] GET /api/probe-fetch 200 OK (12ms)
+[wrangler:info] GET /api/probe-db 200 OK (25ms)
+[wrangler:info] GET /api/probe-log 200 OK (4ms)
+[wrangler:info] GET /api/sentinel 200 OK (3ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-D0YffwZ5.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-FfBiKkP1.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BtVpgN5P.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-BG6w8Q4y.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-Cwn-Xhm2.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-371O-58W.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[wrangler:info] GET /users/42 200 OK (57ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: TanStackCF Route Handler Error[0m
+
+      at GET (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/router-BtVpgN5P.js:1593:17)
+      ... 8 lines matching cause stack trace ...
+      at async sentryMiddlewareHandler (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/start-BG6w8Q4y.js:69:14) {
+    cause: Error: TanStackCF Route Handler Error
+        at GET (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/router-BtVpgN5P.js:1593:17)
+        at next (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:32168:22)
+        at executeMiddleware (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:32195:26)
+        at handleServerRoutes (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:32133:21)
+        at null.<anonymous> (async file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:32009:35)
+        at null.<anonymous> (async file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:31951:29)
+        at null.<anonymous> (async file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:32153:22)
+        at async next (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:32168:16)
+        at async next (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/worker-entry-371O-58W.js:32172:30)
+        at async sentryMiddlewareHandler (file://$REPRO/cells/M-tanstack-cf/dist/server/assets/start-BG6w8Q4y.js:69:14),
+    status: 500,
+    statusText: undefined,
+    headers: undefined,
+    data: undefined,
+    body: undefined,
+    unhandled: true
+  }
+
+
+[wrangler:info] GET /users/boom 500 Internal Server Error (11ms)
+[wrangler:info] GET /api/probe-fetch 200 OK (6ms)
+[wrangler:info] GET /api/probe-db 200 OK (21ms)
+[wrangler:info] GET /api/sentinel 200 OK (3ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+⎔ Reloading local server...
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+Attaching additional modules:
+┌───────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                          │ Type │ Size        │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/_tanstack-start-manifest_v-W1G_XAlV.js │ esm  │ 1.45 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/index-7bdw3eQk.js                      │ esm  │ 0.29 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/iso._tag-91sF89rJ.js                   │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/router-BT7fWcI7.js                     │ esm  │ 2425.82 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/start-DlR60VgD.js                      │ esm  │ 6.26 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/users._id-CrH-KqyQ.js                  │ esm  │ 0.28 KiB    │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-DbNcfwYT.js               │ esm  │ 1200.57 KiB │
+├───────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (7 modules)                             │      │ 3634.96 KiB │
+└───────────────────────────────────────────────┴──────┴─────────────┘
+⎔ Local server updated and ready
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[wrangler:info] GET /users/42 200 OK (50ms)
+[wrangler:info] GET /api/sentinel 200 OK (7ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_10-31-43_160.log"

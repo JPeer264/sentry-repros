@@ -1,0 +1,18 @@
+{
+  "name": "probe-c05",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": { "SENTRY_TUNNEL": "http://127.0.0.1:41711/" },
+  "queues": {
+    "producers": [{ "binding": "Q", "queue": "probe-q" }],
+    "consumers": [
+      {
+        "queue": "probe-q",
+        "max_batch_size": 10,
+        "max_batch_timeout": 1,
+        "max_retries": 1
+      }
+    ]
+  }
+}

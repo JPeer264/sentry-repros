@@ -1,0 +1,11 @@
+http://127.0.0.1:47561/injected 200 {"bundler":["mysql"],"runtime":null,"standalone":true}
+http://127.0.0.1:47561/db 200 [{"id":1,"name":"ada"},{"id":2,"name":"linus"}]
+http://127.0.0.1:47561/db 200 [{"id":1,"name":"ada"},{"id":2,"name":"linus"}]
+http://127.0.0.1:47561/sentinel 200 ok
+--- sink items ---
+{"type":"event","message":"sentinel","exception":"undefined: sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":false,"trace_id":"fa7455ed311b4519bd2b54197df3f8a3","request":{"url":"http://127.0.0.1:47561/sentinel","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:47561","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"}},"environment":"production"}
+{"type":"span","trace_id":"f67098ab79524e2da83088ea5329d3c4","items":["http.server GET /injected"],"raw":[{"name":"GET /injected","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"c629693a30964d91ae2b7562564806f3","items":["http.server GET /injected"],"raw":[{"name":"GET /injected","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"636fa7905f28454a99e41fb076cda7f7","items":["db SELECT users","http.server GET /db"],"raw":[{"name":"SELECT users","status":"ok","parent_span_id":"846897956ceffea2","is_segment":false,"origin":"auto.db.mysql"},{"name":"GET /db","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"dec93b47243b4d81b4d5c92da947f599","items":["db SELECT users","http.server GET /db"],"raw":[{"name":"SELECT users","status":"ok","parent_span_id":"ad7964e820be38a4","is_segment":false,"origin":"auto.db.mysql"},{"name":"GET /db","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"fa7455ed311b4519bd2b54197df3f8a3","items":["http.server GET /sentinel"],"raw":[{"name":"GET /sentinel","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}

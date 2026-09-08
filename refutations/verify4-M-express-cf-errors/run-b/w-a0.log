@@ -1,0 +1,57 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:39421/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:39421/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:39421/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:39421/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:39421/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:39421/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:39421/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:39421/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:39421/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:39421/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:39421
+[wrangler:info] GET /plain 200 unknown (12ms)
+[wrangler:info] GET /boom 500 Internal Server Error (5ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/src/routes.js:10:11)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/layer.js:152:17)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/route.js:157:13)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/route.js:117:3)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:435:11)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/layer.js:152:17)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:295:15)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:582:12)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:291:5)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:186:3)
+
+
+[wrangler:info] GET /boom-async 500 Internal Server Error (8ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom-async[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/src/routes.js:14:11)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom-next[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/src/routes.js:17:10)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/layer.js:152:17)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/route.js:157:13)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/route.js:117:3)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:435:11)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/lib/layer.js:152:17)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:295:15)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:582:12)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:291:5)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/node_modules/router/index.js:186:3)
+
+
+[wrangler:info] GET /boom-next 500 Internal Server Error (2ms)
+[wrangler:info] GET /sentinel 200 unknown (2ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_20-39-28_647.log"

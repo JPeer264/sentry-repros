@@ -1,0 +1,24 @@
+http://127.0.0.1:47543/injected 200 {"bundler":null,"runtime":null,"standalone":true,"execPath":"$REPRO/probes/B11/node_modules/.b11-bin/app-baseline","cwd":"$REPRO/probes/B11/cwd-empty"}
+http://127.0.0.1:47543/hello/world 200 hello world
+http://127.0.0.1:47543/error 500 err route boom
+http://127.0.0.1:47544/users/1 200 {"id":"1","downstream":"downstream"}
+http://127.0.0.1:47544/boom 500 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Error: express boom<br> &nbsp; &nbsp;at &lt;anonymous&gt; (/$bunfs/root/app-baseline:50111:18)<br> &nbsp; &nbsp;at handle (/$bunfs/root/app-baseline:19834:10)<br> &nbsp; &nbsp;at next (/$bunfs/roo
+http://127.0.0.1:47543/sentinel 200 ok
+--- sink items ---
+{"type":"event","exception":"Error: route boom","mechanism":"auto.http.bun.serve","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":false,"trace_id":"69cd0ef0b76346429246c43b2a8cdffc","request":{"url":"http://127.0.0.1:47543/error","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:47543","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"}},"environment":"production"}
+{"type":"event","exception":"Error: express boom","mechanism":"auto.middleware.express","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":false,"transaction":"GET /boom","trace_id":"24d9407e07b04e65baec994f1792217a","user":{"ip_address":"::ffff:127.0.0.1"},"request":{"url":"http://127.0.0.1:47544/boom","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:47544","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"}},"environment":"production"}
+{"type":"event","message":"sentinel","exception":"undefined: sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":false,"trace_id":"db8a69fb53364660b4b4fdd895de4fc3","request":{"url":"http://127.0.0.1:47543/sentinel","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:47543","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"}},"environment":"production"}
+{"type":"span","trace_id":"d8d525dabacb4e898b182605d3c94ebb","items":["http.server GET /injected"],"raw":[{"name":"GET /injected","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"4f562c1f19e640da8666411abfde27d3","items":["http.server GET /injected"],"raw":[{"name":"GET /injected","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"c9d4efc5d8d240afa8bc0031582cbce7","items":["http.server GET /hello/:name"],"raw":[{"name":"GET /hello/:name","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"69cd0ef0b76346429246c43b2a8cdffc","items":["http.server GET /error"],"raw":[{"name":"GET /error","status":"error","is_segment":true,"origin":"auto.http.bun.serve"}]}
+{"type":"span","trace_id":"0f5e88903e9c438e9b41a68c8f675ac1","items":["http.server GET /downstream","http.client GET 127.0.0.1","http.server GET"],"raw":[{"name":"GET /downstream","status":"ok","parent_span_id":"b283fa9883162b59","is_segment":true,"origin":"auto.http.bun.serve"},{"name":"GET 127.0.0.1","status":"ok","parent_span_id":"8abb5181ffbaca7a","is_segment":false,"origin":"auto.http.fetch"},{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"24d9407e07b04e65baec994f1792217a","items":["http.server GET"],"raw":[{"name":"GET","status":"error","is_segment":true,"origin":"auto.http.server"}]}
+{"type":"span","trace_id":"db8a69fb53364660b4b4fdd895de4fc3","items":["http.server GET /sentinel"],"raw":[{"name":"GET /sentinel","status":"ok","is_segment":true,"origin":"auto.http.bun.serve"}]}

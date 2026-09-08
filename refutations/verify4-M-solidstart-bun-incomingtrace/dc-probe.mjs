@@ -1,0 +1,13 @@
+import dc from 'node:diagnostics_channel';
+import http from 'node:http';
+let hits = [];
+dc.subscribe('http.server.request.start', (msg) => { hits.push('start:' + (msg?.request?.url ?? '?')); });
+dc.subscribe('http.server.response.finish', () => { hits.push('finish'); });
+const server = http.createServer((req, res) => { res.end('ok'); });
+await new Promise(r => server.listen(45871, r));
+const res = await fetch('http://127.0.0.1:45871/probe');
+await res.text();
+await new Promise(r => setTimeout(r, 100));
+console.log(JSON.stringify({ runtime: typeof Bun !== 'undefined' ? 'bun' : (typeof Deno !== 'undefined' ? 'deno' : 'node'), hits, hasTracingChannel: typeof dc.tracingChannel === 'function' }));
+server.close();
+process.exit(0);

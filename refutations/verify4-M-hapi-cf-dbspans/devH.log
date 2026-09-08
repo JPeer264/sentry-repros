@@ -1,0 +1,113 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:53185/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:53185/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:53185/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:53185/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:53185/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:53185/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:53185/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:53185/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:53185/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:53185/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:53185
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:@hapi/hapi] "@hapi/hapi" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:@hapi/hapi] subscribing to channels
+Sentry Logger [log]: Integration installed: Hapi
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /ok
+  ID: 87d4c6a78e1f108c
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /ok
+  ID: 9337e56789d0fb4b
+  parent ID: 87d4c6a78e1f108c
+  root ID: 87d4c6a78e1f108c
+  root op: http.server
+  root description: GET /ok
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /ok" with ID 9337e56789d0fb4b
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /ok" with ID 87d4c6a78e1f108c
+[wrangler:info] GET /ok 200 unknown (24ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db/1
+  ID: a25265f193de382a
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /db/{id}
+  ID: bbbabe8d2b536bfc
+  parent ID: a25265f193de382a
+  root ID: a25265f193de382a
+  root op: http.server
+  root description: GET /db/{id}
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT id, name FROM users
+  ID: ac2f35bacb1a04b5
+  parent ID: bbbabe8d2b536bfc
+  root ID: a25265f193de382a
+  root op: http.server
+  root description: GET /db/{id}
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT id, name FROM users" with ID ac2f35bacb1a04b5
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /db/{id}" with ID bbbabe8d2b536bfc
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db/{id}" with ID a25265f193de382a
+[wrangler:info] GET /db/1 200 unknown (10ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db-inline/2
+  ID: bd9201de4bd35ef1
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /db-inline/{id}
+  ID: b7a4a07a10b1b47f
+  parent ID: bd9201de4bd35ef1
+  root ID: bd9201de4bd35ef1
+  root op: http.server
+  root description: GET /db-inline/{id}
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT name FROM users
+  ID: bacc17374fedee0c
+  parent ID: b7a4a07a10b1b47f
+  root ID: bd9201de4bd35ef1
+  root op: http.server
+  root description: GET /db-inline/{id}
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT name FROM users" with ID bacc17374fedee0c
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /db-inline/{id}" with ID b7a4a07a10b1b47f
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db-inline/{id}" with ID bd9201de4bd35ef1
+[wrangler:info] GET /db-inline/2 200 unknown (5ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 8bda8006c5e529e1
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: router
+  name: GET /sentinel
+  ID: 8376c45a9d2fecea
+  parent ID: 8bda8006c5e529e1
+  root ID: 8bda8006c5e529e1
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "router" span "GET /sentinel" with ID 8376c45a9d2fecea
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 8bda8006c5e529e1
+[wrangler:info] GET /sentinel 200 unknown (4ms)

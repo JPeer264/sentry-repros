@@ -1,0 +1,78 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:42317/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:42317/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:42317/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:42317/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:42317/cdn-cgi/local/explorer/api - OpenAPI schema
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mThe CommonJS "module" variable is treated as a global variable in an ECMAScript module and may not work as expected[0m [commonjs-variable-in-esm]
+
+    dist/worker.js:6412:4:
+[37m      6412 │     [32mmodule[37m.exports = {};
+           ╵     [32m~~~~~~[0m
+
+  This file is considered to be an ECMAScript module because of the "export" keyword here:
+
+    dist/worker.js:68714:0:
+[37m      68714 │ [32mexport[37m {
+            ╵ [32m~~~~~~[0m
+
+
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:42317
+stderr: [31m[Nest] 1  - [39m09/06/2026, 7:27:04 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTypeError: isPromise2 is not a function
+stderr:     at Layer.handleRequest (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47020:13)
+stderr:     at next (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47157:17)
+stderr:     at Route.dispatch (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47131:7)
+stderr:     at handle (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47427:16)
+stderr:     at Layer.handleRequest (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47019:21)
+stderr:     at file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47349:19
+stderr:     at processParams (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47504:16)
+stderr:     at next (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47345:9)
+stderr:     at read (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:42415:9)
+stderr:     at urlencodedParser (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:45252:9)
+stderr: [31m[Nest] 1  - [39m09/06/2026, 7:27:04 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mERR_HTTP_HEADERS_SENT [Error]: Cannot set headers after they are sent to the client
+stderr:     at ServerResponse.setHeader (node-internal:internal_http_outgoing:370:19)
+stderr:     at ServerResponse.header (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:50066:14)
+stderr:     at ServerResponse.send2 [as send] (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:49866:16)
+stderr:     at _ExpressAdapter.reply (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:50503:84)
+stderr:     at _RouterResponseController.apply (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:24337:36)
+stderr:     at file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:24679:63
+stderr:     at async file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:24555:11
+stderr:     at async file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:22882:13 {
+stderr:   code: [32m'ERR_HTTP_HEADERS_SENT'[39m
+stderr: }
+[wrangler:info] GET /hello 500 unknown (24ms)
+stderr: [31m[Nest] 1  - [39m09/06/2026, 7:27:04 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTypeError: isPromise2 is not a function
+stderr:     at Layer.handleRequest (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47020:13)
+stderr:     at next (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47157:17)
+stderr:     at Route.dispatch (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47131:7)
+stderr:     at handle (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47427:16)
+stderr:     at Layer.handleRequest (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47019:21)
+stderr:     at file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47349:19
+stderr:     at param (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47517:18)
+stderr:     at param (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47525:18)
+stderr:     at processParams (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47563:7)
+stderr:     at next (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:47345:9)
+stderr: [31m[Nest] 1  - [39m09/06/2026, 7:27:04 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mERR_HTTP_HEADERS_SENT [Error]: Cannot set headers after they are sent to the client
+stderr:     at ServerResponse.setHeader (node-internal:internal_http_outgoing:370:19)
+stderr:     at ServerResponse.header (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:50066:14)
+stderr:     at ServerResponse.send2 [as send] (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:49866:16)
+stderr:     at ServerResponse.json (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:49918:19)
+stderr:     at _ExpressAdapter.reply (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:50503:62)
+stderr:     at _RouterResponseController.apply (file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:24337:36)
+stderr:     at file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:24679:63
+stderr:     at async file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:24555:11
+stderr:     at async file://$REPRO/cells/M-nestjs-cf/app/.wrangler/tmp/dev-SzzHH0/worker.js:22882:13 {
+stderr:   code: [32m'ERR_HTTP_HEADERS_SENT'[39m
+stderr: }
+[wrangler:info] GET /users/42 500 unknown (5ms)

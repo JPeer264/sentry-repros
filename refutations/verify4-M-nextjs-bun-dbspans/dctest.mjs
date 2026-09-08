@@ -1,0 +1,12 @@
+import dc from 'node:diagnostics_channel';
+console.log('getBuiltinModule?', typeof process.getBuiltinModule);
+console.log('tracingChannel?', typeof dc.tracingChannel);
+const tc = dc.tracingChannel('mysql2:query');
+console.log('has hasSubscribers getter?', 'hasSubscribers' in tc, tc.hasSubscribers);
+tc.subscribe({ start: () => console.log('EVT start'), asyncStart: () => console.log('EVT asyncStart'), asyncEnd: () => console.log('EVT asyncEnd'), end: () => console.log('EVT end'), error: () => console.log('EVT error') });
+console.log('after subscribe hasSubscribers=', tc.hasSubscribers, 'start.hasSubscribers=', tc.start?.hasSubscribers);
+const mysql = (await import('mysql2/promise')).default;
+const pool = mysql.createPool({ host: '127.0.0.1', port: 3307, user: 'root', database: 'app', connectionLimit: 2 });
+const [rows] = await pool.query('SELECT id,name FROM users');
+console.log('rows', rows.length);
+await pool.end();

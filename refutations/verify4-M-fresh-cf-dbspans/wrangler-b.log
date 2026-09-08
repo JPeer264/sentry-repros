@@ -1,0 +1,106 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52121/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52121/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52121/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52121/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52121/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52121/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52121/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52121/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52121/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52121/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:52121
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /wdb
+  ID: b72fa6c5dd51b8f4
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /wdb" with ID b72fa6c5dd51b8f4
+Sentry Logger [log]: Captured error event `The "superCtor.prototype" property must be of type object. Received undefined`
+[wrangler:error] TypeError: The "superCtor.prototype" property must be of type object. Received undefined
+    at Object.inherits (node:util:119:15)
+    at node_modules/readable-stream/lib/_stream_readable.js (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:35143:10)
+    at __require3 (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:23:50)
+    at node_modules/readable-stream/readable.js (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:35926:35)
+    at __require3 (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:23:50)
+    at node_modules/mysql/lib/protocol/sequences/Query.js (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:35946:20)
+    at __require3 (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:23:50)
+    at node_modules/mysql/lib/protocol/sequences/index.js (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:36188:21)
+    at __require3 (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:23:50)
+    at node_modules/mysql/lib/protocol/Protocol.js (file://$REPRO/refutations/verify4-M-fresh-cf-dbspans/app/dist2/worker.mjs:36356:21)
+[wrangler:info] GET /wdb 500 Internal Server Error (62ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq2
+  ID: b27fac05fbd9abb0
+Sentry Logger [log]: Integration skipped because it was already installed: Mysql
+Sentry Logger [log]: Captured error event `The "superCtor.prototype" property must be of type object. Received undefined`
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mSentry Logger [warn]: Event dropped due to being a duplicate of previously captured event.[0m
+
+
+Sentry Logger [log]: Event processor "Dedupe" dropped event
+Sentry Logger [log]: An event processor returned `null`, will not send event.
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq2" with ID b27fac05fbd9abb0
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq
+  ID: a4e54ef64a775f66
+Sentry Logger [log]: [instrumentation:mysql2] "mysql2" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql2] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.pool.connect
+  ID: a07bee4b2538d3d5
+  parent ID: a4e54ef64a775f66
+  root ID: a4e54ef64a775f66
+  root op: http.server
+  root description: GET /dbq
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.connect
+  ID: 8b5df041b58ff427
+  parent ID: a07bee4b2538d3d5
+  root ID: a4e54ef64a775f66
+  root op: http.server
+  root description: GET /dbq
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT id, name FROM users
+  ID: be277be6ed62a2e5
+  parent ID: a4e54ef64a775f66
+  root ID: a4e54ef64a775f66
+  root op: http.server
+  root description: GET /dbq
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.pool.connect" with ID a07bee4b2538d3d5
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.connect" with ID 8b5df041b58ff427
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT id, name FROM users" with ID be277be6ed62a2e5
+[wrangler:info] GET /dbq2 500 Internal Server Error (4ms)
+Sentry Logger [log]: Captured error event `Code generation from strings disallowed for this context`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq" with ID a4e54ef64a775f66
+[wrangler:info] GET /dbq 500 Internal Server Error (19ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: bb532ddaef1225fa
+Sentry Logger [log]: Captured error event `sentinel-null`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID bb532ddaef1225fa
+[wrangler:info] GET /sentinel 200 OK (2ms)

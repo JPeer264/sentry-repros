@@ -1,0 +1,30 @@
+verify4-M-nextjs-deno-dbspans - second pass (refutation run)
+
+S=$SCRATCH
+D=$S/deep/verify4-M-nextjs-deno-dbspans
+
+# deps (node_modules removed after the run)
+cd $D && npm install --no-audit --no-fund next@15.5.4 react@19.1.0 react-dom@19.1.0 mysql2@3 mysql@2 ioredis@5.4.1 \
+  $S/pack/sentry-{nextjs,node,core,opentelemetry,react,browser,browser-utils,server-utils,server-runtime-injection,vercel-edge,bundler-plugins,replay,replay-canvas,feedback}-10.67.0.tgz
+docker run -d --rm --name deep-v4ndb2-redis -p 41341:6379 redis:7-alpine
+PORT=41342 node $S/qs/sink.mjs > $D/sink2.log 2>&1 &
+
+cd $D && SINK_PORT=41342 REDIS_PORT=41341 deno run -A node_modules/next/dist/bin/next build   # rb-build-A3.log
+
+# A. enableRuntimeChannelInjection:false (the previously reported "only workable" wiring)
+SINK_PORT=41342 REDIS_PORT=41341 deno run -A node_modules/next/dist/bin/next start -p 41343   # rb-server-A.log
+#   -> ioredis db.query spans + mysql2 db spans, mysql@2 NONE
+
+# C. runtime injection ON, no shim -> every route 500s (SyntaxError: Unexpected token ':')
+SINK_PORT=41342 REDIS_PORT=41341 RUNTIME_INJECTION=1 deno run -A node_modules/next/dist/bin/next start -p 41344   # rb-server-C-hookon-noshim.log
+
+# F. runtime injection ON + json-safe load hook registered first in instrumentation.js -> ALL db spans
+SINK_PORT=41342 REDIS_PORT=41341 RUNTIME_INJECTION=1 JSON_SHIM=1 deno run -A node_modules/next/dist/bin/next start -p 41347   # rb-server-F-jsonhook.log
+# G. same with LIFECYCLE=stream on port 41348                                                        # rb-server-G-stream.log
+
+curl -s http://127.0.0.1:41342/__items
+
+# Deno registerHooks/JSON minimal repros (no Sentry, no Next)
+deno run -A $D/minhook2/main.cjs                       # MODE=passthrough|resolve-only|load-only|json-format|json-short|json-wrap
+deno run -A $D/minhook2/chain3.cjs                     # json-fix hook registered BEFORE a Sentry-like passthrough hook -> json ok
+deno run -A $D/minhook2/chain.cjs                      # same but gated on format==='commonjs' -> still FAILS (format is undefined when chained)

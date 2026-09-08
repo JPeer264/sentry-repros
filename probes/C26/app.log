@@ -1,0 +1,318 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                                                         Resource                  Mode
+env.PROBE (ProbeWorkflow)                                       Workflow                  local
+env.PLAIN (PlainWorkflow)                                       Workflow                  local
+env.SENTRY_DSN ("https://public@o1.ingest.sentry.io/1")         Environment Variable      local
+env.SENTRY_TUNNEL ("http://127.0.0.1:41726/")                   Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41826/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41826/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41826/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41826/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41826/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41826/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41826/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41826/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41826/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41826/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:41826
+[wrangler:info] GET /trigger 200 OK (14ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":1,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 1
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom 6ebd30dd-7b0a-49cd-abcb-ff8810beab10 Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[wrangler:info] GET /trigger 200 OK (70ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":1,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 1
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom probe-c26-nonuuid-1788771649801 Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[wrangler:info] GET /trigger 200 OK (14ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":1,"config":{"retries":{"limit":1,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 1
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom 655d6d51-4228-4d7d-8568-2443d6d9b64e Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[wrangler:info] GET /status/6ebd30dd-7b0a-49cd-abcb-ff8810beab10 200 OK (7ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":2,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 2
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":2,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 2
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":2,"config":{"retries":{"limit":1,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 2
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom 655d6d51-4228-4d7d-8568-2443d6d9b64e Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom 655d6d51-4228-4d7d-8568-2443d6d9b64e [0m
+
+
+[wrangler:info] GET /status/6ebd30dd-7b0a-49cd-abcb-ff8810beab10 200 OK (6ms)
+[wrangler:info] GET /status/probe-c26-nonuuid-1788771649801 200 OK (6ms)
+[wrangler:info] GET /status/655d6d51-4228-4d7d-8568-2443d6d9b64e 200 OK (6ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: The Workers runtime canceled this request because it detected that your Worker's code had hung and would never generate a response. Refer to: https://developers.cloudflare.com/workers/observability/errors/ [0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: The Workers runtime canceled this request because it detected that your Worker's code had hung and would never generate a response. Refer to: https://developers.cloudflare.com/workers/observability/errors/ [0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: The Workers runtime canceled this request because it detected that your Worker's code had hung and would never generate a response. Refer to: https://developers.cloudflare.com/workers/observability/errors/ [0m
+
+
+[wrangler:info] GET /trigger 200 OK (4ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":1,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 1
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom ff505564-1a82-42ea-b0a3-741d8d65e445 Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[wrangler:info] GET /trigger 200 OK (15ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":1,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 1
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom probe-c26-nonuuid-1788771672031 Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[wrangler:info] GET /trigger 200 OK (13ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":1,"config":{"retries":{"limit":1,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 1
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom 02aaa15f-67bb-421f-bc7a-674e1538ff42 Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[wrangler:info] GET /status/ff505564-1a82-42ea-b0a3-741d8d65e445 200 OK (6ms)
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":2,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 2
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":2,"config":{"retries":{"limit":3,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 2
+step-two ctx: {"step":{"name":"step-two","count":1},"attempt":2,"config":{"retries":{"limit":1,"backoff":"constant","delay":"1 second"},"timeout":"10 minutes"}} attempt# 2
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom 02aaa15f-67bb-421f-bc7a-674e1538ff42 Error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C26/src/index.ts:40:17)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:147:37)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C26/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:61:14)
+      at withSetScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:60:25)
+      at withScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:88:16)
+      at startSpan (file://$REPRO/probes/C26/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:126:28)
+      at null.<anonymous> (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:93:14)
+      at withSetIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/server-utils/src/async-context.ts:92:25)
+      at withIsolationScope (file://$REPRO/probes/C26/node_modules/@sentry/core/src/currentScopes.ts:137:16)
+      at instrumentedCallback (file://$REPRO/probes/C26/node_modules/@sentry/cloudflare/src/workflows.ts:125:14)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: step-two boom 02aaa15f-67bb-421f-bc7a-674e1538ff42 [0m
+
+
+[wrangler:info] GET /status/ff505564-1a82-42ea-b0a3-741d8d65e445 200 OK (11ms)
+[wrangler:info] GET /status/probe-c26-nonuuid-1788771672031 200 OK (8ms)
+[wrangler:info] GET /status/02aaa15f-67bb-421f-bc7a-674e1538ff42 200 OK (9ms)
+[wrangler:info] GET /sentinel 200 OK (1ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: The Workers runtime canceled this request because it detected that your Worker's code had hung and would never generate a response. Refer to: https://developers.cloudflare.com/workers/observability/errors/ [0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: The Workers runtime canceled this request because it detected that your Worker's code had hung and would never generate a response. Refer to: https://developers.cloudflare.com/workers/observability/errors/ [0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: The Workers runtime canceled this request because it detected that your Worker's code had hung and would never generate a response. Refer to: https://developers.cloudflare.com/workers/observability/errors/ [0m
+
+
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_09-00-38_134.log"

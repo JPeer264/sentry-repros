@@ -1,0 +1,9 @@
+=== ctx-stream (mode=ctxmgr lifecycle=stream, vite dev)
+users:200 boom:500 child:200 sentinel:200
+event | sentinel | mech=generic handled=True | tx=GET /api/sentinel
+span | http.server | GET /api/users/:id | src=custom | route=/api/users/:id | seg=True
+span | http.server | GET /api/boom | src=custom | route=/api/boom | seg=True
+span | None | via-tracer | src=None | route=None | seg=False
+span | custom | work | src=None | route=None | seg=False
+span | http.server | GET /api/child | src=custom | route=/api/child | seg=True
+span | http.server | GET /api/sentinel | src=custom | route=/api/sentinel | seg=True

@@ -1,0 +1,44 @@
+/ok -> 200 {"worker":"50a009f1","ok":true}
+/db -> 200 {"worker":"50a009f1","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+/tag?id=r0 -> 200 {"worker":"50a009f1","id":"r0"}
+/tag?id=r1 -> 200 {"worker":"50a009f1","id":"r1"}
+/tag?id=r2 -> 200 {"worker":"50a009f1","id":"r2"}
+/tag?id=r3 -> 200 {"worker":"50a009f1","id":"r3"}
+/tag?id=r4 -> 200 {"worker":"50a009f1","id":"r4"}
+/tag?id=r5 -> 200 {"worker":"50a009f1","id":"r5"}
+/tag?id=r6 -> 200 {"worker":"50a009f1","id":"r6"}
+/tag?id=r7 -> 200 {"worker":"50a009f1","id":"r7"}
+/tag?id=r8 -> 200 {"worker":"50a009f1","id":"r8"}
+/tag?id=r9 -> 200 {"worker":"50a009f1","id":"r9"}
+/boom -> 500 Internal Server Error
+/boom -> 500 Internal Server Error
+/boom -> 500 Internal Server Error
+/sentinel -> 200 {"worker":"50a009f1"}
+/sentinel -> 200 {"worker":"50a009f1"}
+/sentinel -> 200 {"worker":"50a009f1"}
+
+counts -> event: 16, span: 18
+span envelope items -> 19
+tagged events=10 matching=10
+
+--- span lines (deduped with count) ---
+   18 http.server GET [origin=auto.http.deno] [src=?] [trace=*]
+    1 db SELECT users [origin=auto.db.mysql] [src=?] [trace=*]
+
+--- events ---
+    3 sentinel:50a009f1 | {"worker":"50a009f1"}
+    3 serve boom | {"worker":"50a009f1"}
+    1 tagged:r0 | {"worker":"50a009f1","req":"r0"}
+    1 tagged:r1 | {"worker":"50a009f1","req":"r1"}
+    1 tagged:r2 | {"worker":"50a009f1","req":"r2"}
+    1 tagged:r3 | {"worker":"50a009f1","req":"r3"}
+    1 tagged:r4 | {"worker":"50a009f1","req":"r4"}
+    1 tagged:r5 | {"worker":"50a009f1","req":"r5"}
+    1 tagged:r6 | {"worker":"50a009f1","req":"r6"}
+    1 tagged:r7 | {"worker":"50a009f1","req":"r7"}
+    1 tagged:r8 | {"worker":"50a009f1","req":"r8"}
+    1 tagged:r9 | {"worker":"50a009f1","req":"r9"}
+
+--- sample raw items ---
+{"type":"span","items":["db SELECT users [origin=auto.db.mysql] [src=?] [trace=c51aec05]","http.server GET [origin=auto.http.deno] [src=?] [trace=c51aec05]"]}
+{"type":"event","message":"tagged:r0","exception":"undefined: tagged:r0","mechanism":"generic","handled":true,"tags":{"worker":"50a009f1","req":"r0"},"trace":"24af510d","request":"http://127.0.0.1:41551/tag?id=r0"}

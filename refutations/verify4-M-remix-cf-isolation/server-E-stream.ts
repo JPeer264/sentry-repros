@@ -1,0 +1,20 @@
+import { createRequestHandler } from '@remix-run/cloudflare';
+import * as Sentry from '@sentry/cloudflare';
+import { instrumentBuild } from '@sentry/remix/cloudflare';
+// @ts-expect-error build output
+import * as remixBuild from './build/server/index.js';
+
+const handleRequest = createRequestHandler(instrumentBuild(remixBuild), 'production');
+
+export default Sentry.withSentry(
+  () => ({
+    dsn: 'https://public@dsn.ingest.sentry.io/1337',
+    tracesSampleRate: 1.0,
+    tunnel: 'http://127.0.0.1:47213/',
+  }),
+  {
+    async fetch(request: Request, env: unknown, ctx: ExecutionContext): Promise<Response> {
+      return handleRequest(request, { env, ctx });
+    },
+  } satisfies ExportedHandler<unknown>,
+);

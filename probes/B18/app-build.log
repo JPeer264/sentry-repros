@@ -1,0 +1,32 @@
+app listening 42312
+This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason:
+Error: async handler boom
+    at <anonymous> ($REPRO/probes/B18/app.ts:13:24)
+    at emit (node:events:103:22)
+    at <anonymous> ($REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:98:37)
+    at <anonymous> ($REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:236:11)
+    at handleCallbackErrors ($REPRO/probes/B18/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+    at run (node:async_hooks:99:29)
+    at run (node:async_hooks:99:29)
+    at wrapServerEmitRequest ($REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:121:9)
+    at <anonymous> ($REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:97:15)
+    at run (node:async_hooks:99:29)
+4 | 
+5 | createServer((req, res) => {
+6 |   const url = new URL(req.url ?? '/', `http://127.0.0.1:${process.env.PORT}`);
+7 | 
+8 |   if (url.pathname === '/error') {
+9 |     throw new Error('handler boom');
+                  ^
+error: handler boom
+      at $REPRO/probes/B18/app.ts:9:15
+      at emit (node:events:103:22)
+      at $REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:98:37
+      at $REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:236:11
+      at handleCallbackErrors ($REPRO/probes/B18/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at wrapServerEmitRequest ($REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:121:9)
+      at $REPRO/probes/B18/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:97:15
+      at run (node:async_hooks:99:29)
+

@@ -1,0 +1,13 @@
+import dc from 'node:diagnostics_channel';
+const names = ['undici:request:create','undici:request:headers','undici:request:trailers','undici:request:error','http.client.request.created','http.client.request.start','http.client.response.finish'];
+const seen = [];
+for (const n of names) dc.subscribe(n, () => seen.push(n));
+const srv = Deno.serve({ port: 0, hostname: '127.0.0.1' }, () => new Response('ok'));
+const port = srv.addr.port;
+await fetch(`http://127.0.0.1:${port}/x`).then(r => r.text());
+console.log('after global fetch, channels fired:', JSON.stringify(seen));
+seen.length = 0;
+const http = await import('node:http');
+await new Promise((res) => http.get(`http://127.0.0.1:${port}/y`, r => { r.resume(); r.on('end', res); }));
+console.log('after node:http get, channels fired:', JSON.stringify(seen));
+await srv.shutdown();

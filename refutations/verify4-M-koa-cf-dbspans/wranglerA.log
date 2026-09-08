@@ -1,0 +1,263 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52714/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52714/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52714/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52714/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52714/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52714/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52714/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52714/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52714/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52714/cdn-cgi/local/explorer/api - OpenAPI schema
+KOA:APPLICATION: use bound 
+
+KOA:APPLICATION: use -
+
+KOA:APPLICATION: listen
+
+[wrangler:info] Ready on http://localhost:52714
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:mysql2] not injected yet, waiting for the module to load
+Sentry Logger [log]: Integration installed: Mysql2
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: be2c31e9e204dc14
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/42" with ID be2c31e9e204dc14
+[wrangler:info] GET /users/42 200 OK (16ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db2
+  ID: 9f1a79666e3dff16
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.connect
+  ID: 804ab1e6f3fea332
+  parent ID: 9f1a79666e3dff16
+  root ID: 9f1a79666e3dff16
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT id, name FROM users WHERE id = ?
+  ID: b68da44e109a13c5
+  parent ID: 9f1a79666e3dff16
+  root ID: 9f1a79666e3dff16
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.connect" with ID 804ab1e6f3fea332
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT id, name FROM users WHERE id = ?" with ID b68da44e109a13c5
+Sentry Logger [log]: Captured error event `Code generation from strings disallowed for this context`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db2" with ID 9f1a79666e3dff16
+[wrangler:info] GET /db2 500 Internal Server Error (16ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 89343b47b28a497a
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 89343b47b28a497a
+[wrangler:info] GET /sentinel 200 OK (2ms)
+⎔ Reloading local server...
+KOA:APPLICATION: use bound 
+
+KOA:APPLICATION: use -
+
+KOA:APPLICATION: listen
+
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:mysql2] not injected yet, waiting for the module to load
+Sentry Logger [log]: Integration installed: Mysql2
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db2
+  ID: b398d2eb916691e0
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.connect
+  ID: 9ca3d6ef891ea00e
+  parent ID: b398d2eb916691e0
+  root ID: b398d2eb916691e0
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT id, name FROM users WHERE id = ?
+  ID: b91d7f238daf997e
+  parent ID: b398d2eb916691e0
+  root ID: b398d2eb916691e0
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.connect" with ID 9ca3d6ef891ea00e
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT COUNT(*) AS c FROM users
+  ID: 98be872be26689c6
+  parent ID: b398d2eb916691e0
+  root ID: b398d2eb916691e0
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT id, name FROM users WHERE id = ?" with ID b91d7f238daf997e
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT COUNT(*) AS c FROM users" with ID 98be872be26689c6
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db2" with ID b398d2eb916691e0
+[wrangler:info] GET /db2 200 OK (29ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db2
+  ID: bb67fe0a2f8075f8
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.connect
+  ID: 8743d31c29f09a14
+  parent ID: bb67fe0a2f8075f8
+  root ID: bb67fe0a2f8075f8
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT id, name FROM users WHERE id = ?
+  ID: a95fc492488905ac
+  parent ID: bb67fe0a2f8075f8
+  root ID: bb67fe0a2f8075f8
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.connect" with ID 8743d31c29f09a14
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT COUNT(*) AS c FROM users
+  ID: a59c4d1051fd7b8c
+  parent ID: bb67fe0a2f8075f8
+  root ID: bb67fe0a2f8075f8
+  root op: http.server
+  root description: GET /db2
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT id, name FROM users WHERE id = ?" with ID a95fc492488905ac
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT COUNT(*) AS c FROM users" with ID a59c4d1051fd7b8c
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db2" with ID bb67fe0a2f8075f8
+[wrangler:info] GET /db2 200 OK (9ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: a92c5fe457a742e6
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID a92c5fe457a742e6
+[wrangler:info] GET /sentinel 200 OK (4ms)
+⎔ Reloading local server...
+KOA:APPLICATION: use bound 
+
+KOA:APPLICATION: use -
+
+KOA:APPLICATION: listen
+
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db2
+  ID: b8858c38652bc688
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db2" with ID b8858c38652bc688
+[wrangler:info] GET /db2 200 OK (39ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 9246d0c645adbf80
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 9246d0c645adbf80
+[wrangler:info] GET /sentinel 200 OK (5ms)
+⎔ Reloading local server...
+KOA:APPLICATION: use bound 
+
+KOA:APPLICATION: use -
+
+KOA:APPLICATION: listen
+
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:mysql2] not injected yet, waiting for the module to load
+Sentry Logger [log]: Integration installed: Mysql2
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a1d107f9aa2860c8
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.connect
+  ID: bbf5e0e224d3383d
+  parent ID: a1d107f9aa2860c8
+  root ID: a1d107f9aa2860c8
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT users
+  ID: adb779243daa3f2e
+  parent ID: a1d107f9aa2860c8
+  root ID: a1d107f9aa2860c8
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.connect" with ID bbf5e0e224d3383d
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT users
+  ID: ac527e2c07eaeb8f
+  parent ID: a1d107f9aa2860c8
+  root ID: a1d107f9aa2860c8
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT users" with ID adb779243daa3f2e
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT users" with ID ac527e2c07eaeb8f
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID a1d107f9aa2860c8
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace bb5dd22297c64b4ca8b48d15c7770cb9 with 4 spans
+[wrangler:info] GET /db2 200 OK (35ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 93fe5f15661225c4
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID 93fe5f15661225c4
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 37f2f9e9be134cef895616d01deab39c with 1 spans
+[wrangler:info] GET /sentinel 200 OK (5ms)

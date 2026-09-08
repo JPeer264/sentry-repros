@@ -1,0 +1,11 @@
+import { tracingChannel } from 'node:diagnostics_channel';
+import { AsyncLocalStorage } from 'node:async_hooks';
+const als = new AsyncLocalStorage();
+const t = tracingChannel('bs1');
+console.log('before: tc.hasSubscribers=', t.hasSubscribers, 'start.hasSubscribers=', t.start?.hasSubscribers);
+t.start.bindStore(als, d => d);
+console.log('after bindStore: tc.hasSubscribers=', t.hasSubscribers, 'start.hasSubscribers=', t.start?.hasSubscribers);
+t.subscribe({ end() {}, error() {}, asyncEnd() {} });
+console.log('after subscribe(end/error/asyncEnd): tc.hasSubscribers=', t.hasSubscribers, 'start.hasSubscribers=', t.start?.hasSubscribers);
+t.subscribe({ start() {} });
+console.log('after subscribe(start): tc.hasSubscribers=', t.hasSubscribers, 'start.hasSubscribers=', t.start?.hasSubscribers);

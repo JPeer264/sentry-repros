@@ -1,0 +1,45 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52119/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52119/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52119/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52119/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52119/cdn-cgi/local/explorer/api - OpenAPI schema
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mThe CommonJS "module" variable is treated as a global variable in an ECMAScript module and may not work as expected[0m [commonjs-variable-in-esm]
+
+    dist/worker.js:39786:4:
+[37m      39786 │     [32mmodule[37m.exports = {};
+            ╵     [32m~~~~~~[0m
+
+  This file is considered to be an ECMAScript module because of the "export" keyword here:
+
+    dist/worker.js:103709:0:
+[37m      103709 │ [32mexport[37m {
+             ╵ [32m~~~~~~[0m
+
+
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:52119
+stderr: [31m[Nest] 1  - [39m09/06/2026, 8:47:07 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mError: nest-plain-error
+stderr:     at AppController2.boom (file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:118776:15)
+stderr:     at file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:72893:31
+stderr:     at InterceptorsConsumer.transformDeferred (file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:66557:29)
+stderr:     at file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:66544:82
+stderr:     at Observable2._subscribe (file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:64191:31)
+stderr:     at Observable2._trySubscribe (file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:56163:23)
+stderr:     at file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:56157:119
+stderr:     at Object.errorContext (file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:55851:9)
+stderr:     at Observable2.subscribe (file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:56155:24)
+stderr:     at doInnerSub (file://$REPRO/refutations/verify4-M-nestjs-cf-errors/app/.wrangler/tmp/dev-tgSZwL/worker.js:58195:56)
+[wrangler:info] GET /error 500 unknown (80ms)
+[wrangler:info] GET /error-expected 404 unknown (4ms)
+[wrangler:info] GET /sentinel 200 unknown (3ms)

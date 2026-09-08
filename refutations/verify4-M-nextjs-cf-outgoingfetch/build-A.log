@@ -1,0 +1,62 @@
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: $REPRO/refutations/verify4-M-nextjs-cf-outgoingfetch
+Next.js version : 15.5.25
+@opennextjs/cloudflare version: 1.20.6
+@opennextjs/aws version: 4.1.4
+workerd compatibility_date: 2026-05-01
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+
+> verify4-nextjs-cf-outgoingfetch@0.0.0 build
+> next build
+
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · clientTraceMetadata
+
+   Creating an optimized production build ...
+[@sentry/nextjs] It seems like you don't have a global error handler set up. It is recommended that you add a 'global-error.js' file with Sentry instrumentation so that React rendering errors are reported to Sentry. Read more: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#react-render-errors-in-app-router (you can suppress this warning by setting SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING=1 as environment variable)
+ ✓ Compiled successfully in 4.5s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./sentry.server.config.FIXED.ts:3:34
+Type error: Cannot find module '@sentry/cloudflare' or its corresponding type declarations.
+
+[0m [90m 1 |[39m [90m// Variant used for build2 (static) / build3 (stream): http.client span + sentry-trace/baggage.[39m
+ [90m 2 |[39m [36mimport[39m [33m*[39m [36mas[39m [33mSentry[39m [36mfrom[39m [32m'@sentry/nextjs'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m { fetchIntegration } [36mfrom[39m [32m'@sentry/cloudflare'[39m[33m;[39m
+ [90m   |[39m                                  [31m[1m^[22m[39m
+ [90m 4 |[39m [33mSentry[39m[33m.[39minit({
+ [90m 5 |[39m   dsn[33m:[39m [32m'https://public@127.0.0.1/1'[39m[33m,[39m
+ [90m 6 |[39m   tunnel[33m:[39m [32m'http://127.0.0.1:47311/'[39m[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npm run build
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at Object.execSync (node:child_process:1014:15)
+    at buildNextjsApp (file://$REPRO/refutations/verify4-M-nextjs-cf-outgoingfetch/node_modules/@opennextjs/aws/dist/build/buildNextApp.js:15:8)
+    at build (file://$REPRO/refutations/verify4-M-nextjs-cf-outgoingfetch/node_modules/@opennextjs/cloudflare/dist/cli/build/build.js:64:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async buildCommand (file://$REPRO/refutations/verify4-M-nextjs-cf-outgoingfetch/node_modules/@opennextjs/cloudflare/dist/cli/commands/build.js:40:5) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 4816,
+  stdout: null,
+  stderr: null
+}
+
+Node.js v26.5.0

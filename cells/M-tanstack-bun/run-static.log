@@ -1,0 +1,29 @@
+== baseline ping ==
+{"ok":true,"runtime":"bun"}
+== errors: GET /api/error ==
+status=500
+== route names: GET /api/user/123 and GET / ==
+{"id":"123"}
+ssr status=200
+== isolation: three concurrent GET /api/tag ==
+{"tag":"alpha"}{"tag":"gamma"}{"tag":"beta"}
+== incoming trace: GET /api/error with sentry-trace ==
+status=500
+== outgoing fetch: GET /api/fetch ==
+{"downstream":{"recorded":true}}
+recorded: [{"url":"/__recorder?from=tanstack-bun","sentryTrace":null,"baggage":null}]
+== db spans: GET /api/db-mysql ==
+{"err":null,"rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+== logs: GET /api/log ==
+{"logged":true}
+== sentinel ==
+{"sentinel":true}
+== /__items ==
+{"type": "event", "exception": "TanStack Bun API Route Error", "mechanism": "auto.middleware.tanstackstart.request", "handled": false, "sdk": "sentry.javascript.tanstackstart-react", "runtime": "node", "hasContextLine": true, "trace_id": "f9fa423778ee424785e399da66ff34c7", "span_id": "a6104547a5ffaa0d", "environment": "production"}
+{"type": "event", "exception": "isolation-alpha", "mechanism": "generic", "handled": true, "sdk": "sentry.javascript.tanstackstart-react", "runtime": "node", "hasContextLine": true, "trace_id": "f9fa423778ee424785e399da66ff34c7", "span_id": "a21051d9e92ce0f1", "tags": {"probe_tag": "gamma"}, "environment": "production"}
+{"type": "event", "exception": "isolation-beta", "mechanism": "generic", "handled": true, "sdk": "sentry.javascript.tanstackstart-react", "runtime": "node", "hasContextLine": true, "trace_id": "f9fa423778ee424785e399da66ff34c7", "span_id": "a181e8f840361830", "tags": {"probe_tag": "gamma"}, "environment": "production"}
+{"type": "event", "exception": "isolation-gamma", "mechanism": "generic", "handled": true, "sdk": "sentry.javascript.tanstackstart-react", "runtime": "node", "hasContextLine": true, "trace_id": "f9fa423778ee424785e399da66ff34c7", "span_id": "8df07f0207325f8a", "tags": {"probe_tag": "gamma"}, "environment": "production"}
+{"type": "event", "exception": "TanStack Bun API Route Error", "mechanism": "auto.middleware.tanstackstart.request", "handled": false, "sdk": "sentry.javascript.tanstackstart-react", "runtime": "node", "hasContextLine": true, "trace_id": "f9fa423778ee424785e399da66ff34c7", "span_id": "b1caa4a704e8547a", "tags": {"probe_tag": "gamma"}, "environment": "production"}
+{"type": "event", "message": "sentinel", "exception": "sentinel", "mechanism": "generic", "handled": true, "sdk": "sentry.javascript.tanstackstart-react", "runtime": "node", "hasContextLine": true, "trace_id": "f9fa423778ee424785e399da66ff34c7", "span_id": "b8225e102ac753ed", "tags": {"probe_tag": "gamma"}, "environment": "production"}
+{"type": "log", "items": ["info: tanstack-bun-log-probe"]}
+app stopped

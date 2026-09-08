@@ -1,0 +1,1015 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:58164/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:58164/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:58164/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:58164/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:58164/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:58164/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:58164/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:58164/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:58164/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:58164/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:58164
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: b03ad364edf5b83d
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/42" with ID b03ad364edf5b83d
+[wrangler:info] GET /users/42 200 OK (24ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom
+  ID: 86c46396411a943b
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: fresh-cf-route-error[0m
+
+      at GET (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/assets/_fresh-route___boom-BSShtn5p.js:4:11)
+      at null.<anonymous> (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5612:20)
+      at NoopContextManager.with (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1007:15)
+      at ContextAPI.with (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1083:38)
+      at NoopTracer.startActiveSpan (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1418:23)
+      at ProxyTracer.startActiveSpan (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1494:20)
+      at renderRoute (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5595:28)
+      at null.<anonymous> (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5821:20)
+      at async chain (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5452:24)
+      at null.<anonymous> (async file://$REPRO/cells/M-fresh-cf/app/.wrangler/tmp/dev-y07h3v/worker.js:44409:14)
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom" with ID 86c46396411a943b
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: 923935526449cff7
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/42" with ID 923935526449cff7
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /logit
+  ID: b31caad733dd0a4c
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /logit" with ID b31caad733dd0a4c
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: bc6cb0b95feadbbd
+Sentry Logger [log]: Captured error event `sentinel-1`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID bc6cb0b95feadbbd
+[wrangler:info] GET /boom 500 Internal Server Error (12ms)
+[wrangler:info] GET /users/42 200 OK (1ms)
+[wrangler:info] GET /logit 200 OK (2ms)
+[wrangler:info] GET /sentinel 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom
+  ID: aad291b0ea04bb46
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: fresh-cf-route-error[0m
+
+      at GET (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/assets/_fresh-route___boom-BSShtn5p.js:4:11)
+      at null.<anonymous> (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5612:20)
+      at NoopContextManager.with (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1007:15)
+      at ContextAPI.with (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1083:38)
+      at NoopTracer.startActiveSpan (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1418:23)
+      at ProxyTracer.startActiveSpan (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:1494:20)
+      at renderRoute (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5595:28)
+      at null.<anonymous> (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5821:20)
+      at chain (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5452:30)
+      at ctx.next (file://$REPRO/cells/M-fresh-cf/app/_fresh/server/server-entry.js:5450:40)
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom" with ID aad291b0ea04bb46
+[wrangler:info] GET /boom 500 Internal Server Error (3ms)
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BNiYp98s.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom
+  ID: 99b7b1a89222a4cf
+Sentry Logger [log]: Captured error event `fresh-cf-route-error`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom" with ID 99b7b1a89222a4cf
+[wrangler:info] GET /boom 500 Internal Server Error (24ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: bc7becd310e3ed25
+Sentry Logger [log]: Captured error event `sentinel-2`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID bc7becd310e3ed25
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /iso/alpha
+  ID: 9f3494eef2b32d9a
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /iso/bravo
+  ID: 947b2925b8dcbb48
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /iso/charlie
+  ID: a333a3d44de145de
+Sentry Logger [log]: Captured error event `iso-alpha`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /iso/alpha" with ID 9f3494eef2b32d9a
+[wrangler:info] GET /iso/alpha 200 OK (66ms)
+Sentry Logger [log]: Captured error event `iso-bravo`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /iso/bravo" with ID 947b2925b8dcbb48
+[wrangler:info] GET /iso/bravo 200 OK (64ms)
+Sentry Logger [log]: Captured error event `iso-charlie`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /iso/charlie" with ID a333a3d44de145de
+[wrangler:info] GET /iso/charlie 200 OK (64ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 832062f4e857e880
+Sentry Logger [log]: Captured error event `sentinel-3`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 832062f4e857e880
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/7
+  ID: b392396adf203fc6
+  parent ID: 2222222222222222
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/7" with ID b392396adf203fc6
+[wrangler:info] GET /users/7 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /outfetch
+  ID: b5ef295e345ad151
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:22984/__rec
+  ID: acb4010649680a82
+  parent ID: b5ef295e345ad151
+  root ID: b5ef295e345ad151
+  root op: http.server
+  root description: GET /outfetch
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:22984/__rec" with ID acb4010649680a82
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /outfetch" with ID b5ef295e345ad151
+[wrangler:info] GET /outfetch 200 OK (4ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq
+  ID: a21b2fdc67afcfdf
+Sentry Logger [log]: Captured error event `Code generation from strings disallowed for this context`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq" with ID a21b2fdc67afcfdf
+[wrangler:info] GET /dbq 500 Internal Server Error (30ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: b9f725e232e1d4a7
+Sentry Logger [log]: Captured error event `sentinel-4`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID b9f725e232e1d4a7
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /outfetch
+  ID: b1ed3c05ec6e3382
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:20504/ping
+  ID: be78c3b04997a5b7
+  parent ID: b1ed3c05ec6e3382
+  root ID: b1ed3c05ec6e3382
+  root op: http.server
+  root description: GET /outfetch
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:20504/ping" with ID be78c3b04997a5b7
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /outfetch" with ID b1ed3c05ec6e3382
+[wrangler:info] GET /outfetch 200 OK (6ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: b99f5b7767c6e0a9
+Sentry Logger [log]: Captured error event `sentinel-5`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID b99f5b7767c6e0a9
+[wrangler:info] GET /sentinel 200 OK (2ms)
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BNiYp98s.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BNiYp98s.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq2-CUBkqKVB.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq2
+  ID: 98779934eb7cfa3f
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq2" with ID 98779934eb7cfa3f
+[wrangler:info] GET /dbq2 200 OK (36ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 1 error:[0m
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./server/server-entry.js"[0m
+  
+      _fresh/server.js:1:43:
+  [37m      1 │ import server, { registerStaticFile } from [32m"./server/server-entry.js"[37m;
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BATw44Yi.js:17:7:
+[37m      17 │ import [32m"@sentry/cloudflare"[37m;
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq2-DtLdLgVq.js:16:7:
+[37m      16 │ import [32m"@sentry/cloudflare"[37m;
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq2
+  ID: 8540a6c4ed36f6ed
+Sentry Logger [log]: Captured error event `The argument 'path' The argument must be a file URL object, a file URL string, or an absolute path string.. Received 'undefined'`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq2" with ID 8540a6c4ed36f6ed
+[wrangler:info] GET /dbq2 500 Internal Server Error (26ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq
+  ID: bf1deb80517fc6a8
+Sentry Logger [log]: Captured error event `The argument 'path' The argument must be a file URL object, a file URL string, or an absolute path string.. Received 'undefined'`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq" with ID bf1deb80517fc6a8
+[wrangler:info] GET /dbq 500 Internal Server Error (14ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 95de14a037102fc8
+Sentry Logger [log]: Captured error event `sentinel-6`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 95de14a037102fc8
+[wrangler:info] GET /sentinel 200 OK (3ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 1 error:[0m
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./server/server-entry.js"[0m
+  
+      _fresh/server.js:1:43:
+  [37m      1 │ import server, { registerStaticFile } from [32m"./server/server-entry.js"[37m;
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BATw44Yi.js:17:7:
+[37m      17 │ import [32m"@sentry/cloudflare"[37m;
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq2-DtLdLgVq.js:16:7:
+[37m      16 │ import [32m"@sentry/cloudflare"[37m;
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq2
+  ID: a7e2e2a065b231ef
+Sentry Logger [log]: Captured error event `The argument 'path' The argument must be a file URL object, a file URL string, or an absolute path string.. Received 'undefined'`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq2" with ID a7e2e2a065b231ef
+[wrangler:info] GET /dbq2 500 Internal Server Error (31ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 1 error:[0m
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./server/server-entry.js"[0m
+  
+      _fresh/server.js:1:43:
+  [37m      1 │ import server, { registerStaticFile } from [32m"./server/server-entry.js"[37m;
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BNiYp98s.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq2-CUBkqKVB.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: bd556499c5ada3f9
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/:id" with ID bd556499c5ada3f9
+[wrangler:info] GET /users/42 200 OK (13ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /dbq2
+  ID: b5614372fad1269c
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /dbq2" with ID b5614372fad1269c
+[wrangler:info] GET /dbq2 200 OK (14ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 9d0f3058ff8cbd1b
+Sentry Logger [log]: Captured error event `sentinel-7`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 9d0f3058ff8cbd1b
+[wrangler:info] GET /sentinel 200 OK (3ms)
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BNiYp98s.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq2-CUBkqKVB.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___boom-BA4u_7bS.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq-BNiYp98s.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___dbq2-CUBkqKVB.js:3:7:
+[37m      3 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___index-BkUrELAK.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___outfetch-D03FrHw6.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mIgnoring this import because "node_modules/@sentry/cloudflare/build/esm/prod/index.js" was marked as having no side effects[0m [ignored-bare-import]
+
+    _fresh/server/assets/_fresh-route___users_id_-CnaKShBF.js:2:7:
+[37m      2 │ import [32m"@sentry/cloudflare"[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+  "sideEffects" is false in the enclosing "package.json" file:
+
+    node_modules/@sentry/cloudflare/build/esm/prod/package.json:1:37:
+[37m      1 │ {"type":"module","version":"10.67.0",[32m"sideEffects"[37m:false}
+        ╵                                      [32m~~~~~~~~~~~~~[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a517380f1ebe9f1b
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID a517380f1ebe9f1b
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 34ee1af8cc0e4ea4be224794e2fb98b5 with 1 spans
+[wrangler:info] GET /users/42 200 OK (13ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 82a515cfa2d8203d
+Sentry Logger [log]: Captured error event `fresh-cf-route-error`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID 82a515cfa2d8203d
+[wrangler:info] GET /boom 500 Internal Server Error (4ms)
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 23aeca9c03ae43fd933a560d10adcec8 with 1 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 8358f0a0eb524695
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID 8358f0a0eb524695
+[wrangler:info] GET /logit 200 OK (2ms)
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 3ff8c504aaf54b26b8e01d477f0e9702 with 1 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: ba3a8d3adc61c033
+Sentry Logger [log]: Captured error event `sentinel-8`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID ba3a8d3adc61c033
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace e57aefe5dd894e2f9894334bb39db1d4 with 1 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a13e3a71eeee42c5
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET 127.0.0.1
+  ID: abfca77538257c2e
+  parent ID: a13e3a71eeee42c5
+  root ID: a13e3a71eeee42c5
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET 127.0.0.1" with ID abfca77538257c2e
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID a13e3a71eeee42c5
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 722847cc7bee45f7b5f4cfddd66f8d0c with 2 spans
+[wrangler:info] GET /outfetch 200 OK (4ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 8659594169484685
+Sentry Logger [log]: Captured error event `sentinel-9`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID 8659594169484685
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 2e6afa695c644d088e46c9b2f85f77e5 with 1 spans
+[wrangler:info] GET /sentinel 200 OK (4ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_19-29-37_639.log"

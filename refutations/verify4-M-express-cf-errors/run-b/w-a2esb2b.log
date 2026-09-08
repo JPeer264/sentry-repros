@@ -1,0 +1,316 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:39424/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:39424/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:39424/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:39424/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:39424/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:39424/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:39424/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:39424/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:39424/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:39424/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:39424
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:express, router] "router" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:express, router] subscribing to channels
+Sentry Logger [log]: Integration installed: Express
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /plain
+  ID: 8f55adc8098b5eba
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /plain
+  ID: 877919d254f2ddb0
+  parent ID: 8f55adc8098b5eba
+  root ID: 8f55adc8098b5eba
+  root op: http.server
+  root description: GET /plain
+Sentry Logger [log]: Captured error event `isPromise3 is not a function`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/plain" with ID 877919d254f2ddb0
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /plain" with ID 8f55adc8098b5eba
+[wrangler:info] GET /plain 200 unknown (20ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44491:17)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44465:7)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44797:20)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44688:19)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44885:16)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44684:9)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44620:7)
+      at app2.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:45077:19)
+      at Server.app2 (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:47758:14)
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: a830619f55d315c6
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /users/:id
+  ID: b54b283a103ccb37
+  parent ID: a830619f55d315c6
+  root ID: a830619f55d315c6
+  root op: http.server
+  root description: GET /users/:id
+Sentry Logger [log]: Captured error event `isPromise3 is not a function`
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mSentry Logger [warn]: Event dropped due to being a duplicate of previously captured event.[0m
+
+
+Sentry Logger [log]: Event processor "Dedupe" dropped event
+Sentry Logger [log]: An event processor returned `null`, will not send event.
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/users/:id" with ID b54b283a103ccb37
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/:id" with ID a830619f55d315c6
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44491:17)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44465:7)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44797:20)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44688:19)
+      at param (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44898:18)
+      at param (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44906:18)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44942:7)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44684:9)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44620:7)
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom
+  ID: 824137ef128e991b
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /boom
+  ID: a1d71af960e64efa
+  parent ID: 824137ef128e991b
+  root ID: 824137ef128e991b
+  root op: http.server
+  root description: GET /boom
+Sentry Logger [log]: Captured error event `express-cf-boom`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/boom" with ID a1d71af960e64efa
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom" with ID 824137ef128e991b
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:50294:11)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44491:17)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44465:7)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44797:20)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44688:19)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44885:16)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44684:9)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44620:7)
+      at app2.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:45077:19)
+      at Server.app2 (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:47758:14)
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom-async
+  ID: 84cda9ad486345bd
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /boom-async
+  ID: ab5749c001826f9e
+  parent ID: 84cda9ad486345bd
+  root ID: 84cda9ad486345bd
+  root op: http.server
+  root description: GET /boom-async
+Sentry Logger [log]: Captured error event `isPromise3 is not a function`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/boom-async" with ID ab5749c001826f9e
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom-async" with ID 84cda9ad486345bd
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44491:17)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44465:7)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44797:20)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44688:19)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44885:16)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44684:9)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44620:7)
+      at app2.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:45077:19)
+      at Server.app2 (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:47758:14)
+
+
+[wrangler:info] GET /users/42 200 unknown (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /boom-next
+  ID: 8210a40e6c23f89b
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /boom-next
+  ID: ac03d754e446c673
+  parent ID: 8210a40e6c23f89b
+  root ID: 8210a40e6c23f89b
+  root op: http.server
+  root description: GET /boom-next
+Sentry Logger [log]: Captured error event `express-cf-boom-next`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/boom-next" with ID ac03d754e446c673
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom-next" with ID 8210a40e6c23f89b
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom-next[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:50301:10)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44491:17)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44465:7)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44797:20)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44491:17)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44465:7)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44797:20)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44688:19)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44885:16)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44684:9)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44620:7)
+      at app2.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:45077:19)
+      at Server.app2 (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:47758:14)
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 898922cd0e5ac23a
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /sentinel
+  ID: 97da9b9801d03c5f
+  parent ID: 898922cd0e5ac23a
+  root ID: 898922cd0e5ac23a
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: Captured error event `isPromise3 is not a function`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/sentinel" with ID 97da9b9801d03c5f
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 898922cd0e5ac23a
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44491:17)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44465:7)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44797:20)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44316:25)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTypeError: isPromise3 is not a function[0m
+
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44317:17)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44329:30)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44356:18)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44354:37)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44688:19)
+      at processParams (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44885:16)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44684:9)
+      at router.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:44620:7)
+      at app2.handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:45077:19)
+      at Server.app2 (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-esb2/index.js:47758:14)
+
+
+[wrangler:info] GET /boom 500 Internal Server Error (3ms)
+[wrangler:info] GET /boom-async 500 Internal Server Error (3ms)
+[wrangler:info] GET /boom-next 500 Internal Server Error (3ms)
+[wrangler:info] GET /sentinel 200 unknown (3ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_20-42-21_462.log"

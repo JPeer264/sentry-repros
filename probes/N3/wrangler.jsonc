@@ -1,0 +1,18 @@
+{
+  "name": "n3_dev",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "SINK_URL": "http://127.0.0.1:53821/"
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "COUNTER", "class_name": "Counter" }]
+  },
+  "workflows": [{ "name": "my-workflow", "binding": "MY_WORKFLOW", "class_name": "MyWorkflow" }],
+  // Self service binding: `service` is this worker's own name, so the plugin
+  // treats `Api` as a WorkerEntrypoint it can wrap and adds SELF to
+  // rpcTracePropagationBindings.
+  "services": [{ "binding": "SELF", "service": "n3_dev", "entrypoint": "Api" }],
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Counter"] }]
+}

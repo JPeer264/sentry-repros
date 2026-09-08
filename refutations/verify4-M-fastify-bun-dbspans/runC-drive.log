@@ -1,0 +1,95 @@
+/db -> {"rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+/db-execute -> {"rows":[{"id":1,"name":"ada"}]}
+/db-lazy -> {"rows":[{"id":2,"name":"linus"}]}
+[
+ {
+  "type": "transaction",
+  "name": "GET /db",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "0d8c4a0e6d6f40e8b7661b01fbe1e696",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /db",
+   "handler fastify - route-handler",
+   "db SELECT id, name FROM users"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /db-execute",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "75bf89357ac04febbce0f8d59f41cda3",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /db-execute",
+   "handler fastify - route-handler",
+   "db SELECT id, name FROM users WHERE id = ?"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /db-lazy",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "3df4c8c6247746efa6e9f3d728817a28",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /db-lazy",
+   "handler fastify - route-handler",
+   "db mysql2.connect",
+   "db SELECT id, name FROM users WHERE id = ?"
+  ],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "undefined: sentinel",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.bun",
+  "runtime": "bun",
+  "hasContextLine": true,
+  "transaction": "GET /sentinel",
+  "trace_id": "44c06eff47584e72b8bb6b0e14957b41",
+  "user": {
+   "ip_address": "127.0.0.1"
+  },
+  "request": {
+   "url": "http://127.0.0.1:41340/sentinel",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "host": "127.0.0.1:41340",
+    "connection": "keep-alive",
+    "accept": "*/*",
+    "accept-language": "*",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node",
+    "accept-encoding": "gzip, deflate"
+   }
+  },
+  "environment": "production"
+ },
+ {
+  "type": "transaction",
+  "name": "GET /sentinel",
+  "op": "http.server",
+  "source": "route",
+  "status": "ok",
+  "trace_id": "44c06eff47584e72b8bb6b0e14957b41",
+  "sdk": "sentry.javascript.bun",
+  "spans": [
+   "handler GET /sentinel",
+   "handler fastify - route-handler"
+  ],
+  "hasRequestData": false
+ }
+]

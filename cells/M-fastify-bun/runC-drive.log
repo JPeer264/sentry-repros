@@ -1,0 +1,26 @@
+GET /users/42 -> {"id":"42","name":"ok"}
+GET /error -> {"statusCode":500,"error":"Internal Server Error","message":"fastify boom"}
+GET /iso x3 -> {"n":1} {"n":2} {"n":3}
+GET /downstream -> {"downstream":200}
+GET /db -> {"rows":2}
+GET /log -> {"logged":true}
+GET /users/7 (incoming trace) -> {"id":"7","name":"ok"}
+--- SINK ---
+{"type":"transaction","name":"GET /users/:id","op":"http.server","source":"route","status":"ok","trace":"b37c8039ffda4698aaca063ec2bdfc04","spans":["handler GET /users/:id","handler fastify - route-handler"]}
+{"type":"event","exception":"fastify boom","mechanism":"auto.function.fastify","handled":false,"trace":"f936cc4f73454e4194de6f74958cd258","parent":"931f099a21ae7ecd","tx":"GET /error","sdk":"sentry.javascript.bun"}
+{"type":"transaction","name":"GET /error","op":"http.server","source":"route","status":"internal_error","trace":"f936cc4f73454e4194de6f74958cd258","spans":["handler GET /error","handler fastify - route-handler"]}
+{"type":"event","exception":"iso 1","mechanism":"generic","handled":true,"tags":{"reqtag":"1"},"trace":"8931f6b1f4714e7191707d8b12f7cc25","parent":"90becbae4357aa9f","tx":"GET /iso","sdk":"sentry.javascript.bun"}
+{"type":"transaction","name":"GET /iso","op":"http.server","source":"route","status":"ok","trace":"8931f6b1f4714e7191707d8b12f7cc25","tags":{"reqtag":"1"},"spans":["handler GET /iso","handler fastify - route-handler"]}
+{"type":"event","exception":"iso 2","mechanism":"generic","handled":true,"tags":{"reqtag":"2"},"trace":"02425b8ceaf14d158b7626cbbba0eb31","parent":"8b7c8c2dc7444b3c","tx":"GET /iso","sdk":"sentry.javascript.bun"}
+{"type":"transaction","name":"GET /iso","op":"http.server","source":"route","status":"ok","trace":"02425b8ceaf14d158b7626cbbba0eb31","tags":{"reqtag":"2"},"spans":["handler GET /iso","handler fastify - route-handler"]}
+{"type":"event","exception":"iso 3","mechanism":"generic","handled":true,"tags":{"reqtag":"3"},"trace":"233e7a3cf79a422ca3469aa65d164e0f","parent":"851cc28a65b44e10","tx":"GET /iso","sdk":"sentry.javascript.bun"}
+{"type":"transaction","name":"GET /iso","op":"http.server","source":"route","status":"ok","trace":"233e7a3cf79a422ca3469aa65d164e0f","tags":{"reqtag":"3"},"spans":["handler GET /iso","handler fastify - route-handler"]}
+{"type":"transaction","name":"GET /downstream","op":"http.server","source":"route","status":"ok","trace":"188924a7f74246ebba12ee80f9072b54","spans":["handler GET /downstream","handler fastify - route-handler","http.client GET http://127.0.0.1:48312/hit"]}
+{"type":"transaction","name":"GET /db","op":"http.server","source":"route","status":"ok","trace":"756732e8a35842828cb3bdb974d198f6","spans":["handler GET /db","handler fastify - route-handler","db SELECT id, name FROM users"]}
+{"type":"transaction","name":"GET /log","op":"http.server","source":"route","status":"ok","trace":"420826f931ee49fa8536e937814aa902","spans":["handler GET /log","handler fastify - route-handler"]}
+{"type":"transaction","name":"GET /users/:id","op":"http.server","source":"route","status":"ok","trace":"aabbccddeeff00112233445566778899","parent":"1122334455667788","spans":["handler GET /users/:id","handler fastify - route-handler"]}
+{"type":"event","message":"sentinel","exception":"sentinel","mechanism":"generic","handled":true,"trace":"fbabc218f4034adda4e791ddf738ded6","parent":"b2f544f76670bfea","tx":"GET /sentinel","sdk":"sentry.javascript.bun"}
+{"type":"transaction","name":"GET /sentinel","op":"http.server","source":"route","status":"ok","trace":"fbabc218f4034adda4e791ddf738ded6","spans":["handler GET /sentinel","handler fastify - route-handler"]}
+{"type":"log","items":["info: hello from fastify on bun trace=420826f9"]}
+--- RECORDER ---
+[{"url":"/hit","sentryTrace":"188924a7f74246ebba12ee80f9072b54-9ec24340ed37272e-1","baggage":"sentry-environment=production,sentry-public_key=public,sentry-trace_id=188924a7f74246ebba12ee80f9072b54,sentry-org_id=1,sentry-transaction=GET%20%2Fdownstream,sentry-sampled=true,sentry-sample_rand=0.15703015683702393,sentry-sample_rate=1"}]

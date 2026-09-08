@@ -1,0 +1,75 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41238/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41238/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41238/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41238/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41238/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41238/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41238/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41238/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41238/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41238/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:41238
+[wrangler:info] GET /__scheduled 200 OK (9ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: cron boom run 2 Error[0m
+
+      at withMonitor.schedule.type (file://$REPRO/probes/C04/src/index.ts:29:19)
+      at runCallback (file://$REPRO/probes/C04/node_modules/@sentry/core/src/monitor.ts:34:28)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/monitor.ts:75:12)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:86:14)
+      at withIsolationScope (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:85:25)
+      at withIsolationScope (file://$REPRO/probes/C04/node_modules/@sentry/core/src/currentScopes.ts:140:14)
+      at withMonitor (file://$REPRO/probes/C04/node_modules/@sentry/core/src/monitor.ts:63:10)
+      at scheduled (file://$REPRO/probes/C04/src/index.ts:25:20)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentScheduled.ts:81:82)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentScheduled.ts:47:24)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:89:15)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/probes/C04/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C04/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:86:14)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:66:12)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/probes/C04/node_modules/@sentry/core/src/currentScopes.ts:85:18)
+      at startSpan (file://$REPRO/probes/C04/node_modules/@sentry/core/src/tracing/trace.ts:62:10)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentScheduled.ts:33:12)
+      at null.<anonymous> (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:86:14)
+      at withIsolationScope (file://$REPRO/probes/C04/node_modules/@sentry/server-utils/src/async-context.ts:85:25)
+      at withIsolationScope (file://$REPRO/probes/C04/node_modules/@sentry/core/src/currentScopes.ts:140:14)
+      at wrapScheduledHandler (file://$REPRO/probes/C04/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentScheduled.ts:23:10)
+      at apply (file://$REPRO/probes/C04/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentScheduled.ts:81:18)
+      at dispatcher (file://$REPRO/probes/C04/.wrangler/tmp/bundle-lpYznj/middleware-loader.entry.ts:67:20)
+      at scheduled (file://$REPRO/probes/C04/node_modules/wrangler/templates/middleware/middleware-scheduled.ts:8:23)
+      at __facade_invokeChain__ (file://$REPRO/probes/C04/node_modules/wrangler/templates/middleware/common.ts:53:9)
+      at next (file://$REPRO/probes/C04/node_modules/wrangler/templates/middleware/common.ts:50:11)
+      at drainBody (file://$REPRO/probes/C04/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts:5:30)
+      at __facade_invokeChain__ (file://$REPRO/probes/C04/node_modules/wrangler/templates/middleware/common.ts:53:9)
+      at __facade_invoke__ (file://$REPRO/probes/C04/node_modules/wrangler/templates/middleware/common.ts:63:9)
+      at fetch (file://$REPRO/probes/C04/.wrangler/tmp/bundle-lpYznj/middleware-loader.entry.ts:70:11)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: cron boom run 2 [0m
+
+
+[wrangler:info] GET /__scheduled 500 Internal Server Error (5ms)
+[wrangler:info] GET /sentinel 200 OK (5ms)
+[wrangler:info] GET /__scheduled 200 OK (2ms)
+[wrangler:info] GET /__scheduled 200 OK (1ms)
+[wrangler:info] GET /sentinel 200 OK (1ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_08-54-25_169.log"

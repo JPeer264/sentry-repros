@@ -1,0 +1,43 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                             Resource                  Mode
+env.SENTRY_DSN ("(hidden)")         Environment Variable      local
+env.SENTRY_TUNNEL ("(hidden)")      Environment Variable      local
+env.API_PORT ("(hidden)")           Environment Variable      local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:34118/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:34118/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:34118/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:34118/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:34118/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:34118/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:34118/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:34118/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:34118/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:34118/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:34118
+[wrangler:info] GET /user/42 200 OK (18ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: boom from /error[0m
+
+      at null.<anonymous> (file://$REPRO/probes/C15/src/index.ts:24:9)
+      at dispatch (file://$REPRO/probes/C15/node_modules/hono/dist/compose.js:22:23)
+      at null.<anonymous> (file://$REPRO/probes/C15/node_modules/hono/dist/compose.js:22:46)
+      at null.<anonymous> (file://$REPRO/probes/C15/node_modules/@sentry/hono/src/cloudflare/middleware.ts:54:11)
+      at dispatch (file://$REPRO/probes/C15/node_modules/hono/dist/compose.js:22:23)
+      at null.<anonymous> (file://$REPRO/probes/C15/node_modules/hono/dist/compose.js:5:12)
+      at null.<anonymous> (file://$REPRO/probes/C15/node_modules/hono/dist/hono-base.js:308:31)
+      at #dispatch (file://$REPRO/probes/C15/node_modules/hono/dist/hono-base.js:318:5)
+      at Hono2.fetch (file://$REPRO/probes/C15/node_modules/hono/dist/hono-base.js:332:17)
+      at null.<anonymous> (file://$REPRO/probes/C15/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentFetch.ts:41:89)
+
+
+[wrangler:info] GET /error 500 Internal Server Error (11ms)
+[wrangler:info] GET /downstream 200 OK (6ms)
+[wrangler:info] GET /sentinel 200 OK (1ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_08-59-30_049.log"

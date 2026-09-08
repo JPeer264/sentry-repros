@@ -1,0 +1,524 @@
+<title>P0 Issue Drafts</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#F6F5F2;--panel:#EDECE7;--card:#FBFAF8;--ink:#1E2126;--muted:#5F6873;--line:#D6D4CD;--accent:#2E6B8A;--code-bg:#ECEBE6;--p0:#A8382F;--nr:#3F7A4E;--warn:#9A6A12;--serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16191E;--panel:#1D2127;--card:#1A1E24;--ink:#E6E4DE;--muted:#9AA3AE;--line:#2E343C;--accent:#7FB3CF;--code-bg:#1F242B;--p0:#E07B72;--nr:#7FC28F;--warn:#D6A544}}
+:root[data-theme="dark"]{--bg:#16191E;--panel:#1D2127;--card:#1A1E24;--ink:#E6E4DE;--muted:#9AA3AE;--line:#2E343C;--accent:#7FB3CF;--code-bg:#1F242B;--p0:#E07B72;--nr:#7FC28F;--warn:#D6A544}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}a:hover,a:focus-visible{border-bottom-color:var(--accent);outline:none}a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{max-width:78ch;margin:0 auto;padding:40px 24px 96px}
+h1{font-family:var(--serif);font-weight:600;font-size:32px;line-height:1.15;margin:0 0 12px;text-wrap:balance}
+.lede{color:var(--muted);font-size:15px;margin:0 0 22px}
+p{margin:0 0 14px}ul{margin:0 0 14px;padding-left:22px}li{margin:4px 0}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:3px}
+pre{background:var(--code-bg);border:1px solid var(--line);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.5;margin:0 0 12px;border-radius:4px;white-space:pre-wrap;word-break:break-word}
+.chip{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.04em;padding:2px 7px;border-radius:3px;background:var(--panel);color:var(--muted);white-space:nowrap;border:1px solid var(--line)}
+.chip.p0{background:var(--p0);color:#fff;border-color:var(--p0)}.chip.draft{color:var(--warn);border-color:currentColor;background:transparent}
+.alert{border-left:3px solid var(--warn);background:var(--panel);padding:12px 16px;margin:0 0 22px;border-radius:0 4px 4px 0}.alert p:last-child{margin:0}
+.tw{overflow-x:auto;margin:0 0 36px;border:1px solid var(--line);border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}th,td{text-align:left;vertical-align:top;padding:8px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--panel);font-weight:500}tr:last-child td{border-bottom:0}
+h2.sec{font-family:var(--serif);font-weight:600;font-size:22px;margin:40px 0 14px}
+.issue{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 22px 14px;margin:0 0 28px;scroll-margin-top:16px}
+.issue .meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:13px}.issue .repo{font-family:var(--mono);font-size:12px;color:var(--muted)}.issue .iid{font-family:var(--mono);font-size:12px;color:var(--accent)}.issue .n{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.issue h2{font-family:var(--serif);font-weight:600;font-size:22px;line-height:1.25;margin:0 0 14px;text-wrap:balance}
+.ibody{border-top:1px solid var(--line);padding-top:14px;font-size:15px}.ibody hr{border:0;border-top:1px solid var(--line);margin:16px 0}.ibody .foot{color:var(--muted);font-size:13.5px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 10px}.bar .file{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.btn{font:inherit;font-size:13px;padding:4px 12px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);cursor:pointer}.btn:hover{border-color:var(--accent);color:var(--accent)}.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.btn.done{border-color:var(--nr);color:var(--nr)}
+details summary{cursor:pointer;color:var(--accent);font-size:13.5px;margin:0 0 8px}.hidden{display:none}
+@media (max-width:640px){main{padding:24px 16px 64px}.issue{padding:14px 16px 10px}.issue .n,.bar .file{margin-left:0}}
+</style>
+<main>
+<h1>P0 issue drafts for the runtime docs</h1>
+<p class="lede">Thirteen issues for <code>getsentry/sentry-docs</code>, one per P0 item of the runtime docs audit, shown as they would read on GitHub. Nothing has been filed. The order below is the suggested filing order: the four items that mislead every reader of a runtime guide first, then the framework pages that contradict a verified run.</p>
+<div class="alert"><p><strong>Before filing.</strong> Three pairs touch the same docs file and could be filed as one issue each: the two Nuxt presets items (DOC-F11, DOC-F28), the two Astro runtime-alert items (DOC-F13, DOC-F30) and the two Elysia runtime-list items (DOC-F19, DOC-F36).</p></div>
+<div class="tw"><table><thead><tr><th>#</th><th>Title</th><th>Audit item</th><th>Type</th></tr></thead><tbody><tr><td>1</td><td><a href="#i-DOC-B1">Rewrite the Bun guide&#x27;s instrumentation step around @sentry/bun/plugin</a></td><td>DOC-B1</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>2</td><td><a href="#i-DOC-R1">Fix inverted traceLifecycle default in the stream mode includes</a></td><td>DOC-R1</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>3</td><td><a href="#i-DOC-R2">Stop recommending denoCronIntegration() on the Deno crons page</a></td><td>DOC-R2</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>4</td><td><a href="#i-DOC-R20">Rewrite the Bun OpenTelemetry setup includes against develop</a></td><td>DOC-R20</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>5</td><td><a href="#i-DOC-R13">Correct the Agents SDK span attribute and conversation ID claims</a></td><td>DOC-R13</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>6</td><td><a href="#i-DOC-F50">Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options</a></td><td>DOC-F50</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>7</td><td><a href="#i-DOC-F36">Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim</a></td><td>DOC-F36</td><td><span class="chip">new-page</span></td></tr>
+<tr><td>8</td><td><a href="#i-DOC-F19">Document Elysia on Deno: init from @sentry/deno, keep withElysia</a></td><td>DOC-F19</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>9</td><td><a href="#i-DOC-F11">Add a Bun section to the Nuxt Nitro deployment presets page</a></td><td>DOC-F11</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>10</td><td><a href="#i-DOC-F28">Correct the Nuxt Nitro preset page for Deno: keep the node-server preset</a></td><td>DOC-F28</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>11</td><td><a href="#i-DOC-F13">Name Bun in the Astro runtime alert and add a Running on Bun section</a></td><td>DOC-F13</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>12</td><td><a href="#i-DOC-F30">Correct the Astro runtime note: Deno with @deno/astro-adapter works</a></td><td>DOC-F30</td><td><span class="chip">docs-change</span></td></tr>
+<tr><td>13</td><td><a href="#i-DOC-F29">Correct the SvelteKit adapter note: adapter-node runs on Deno</a></td><td>DOC-F29</td><td><span class="chip">docs-change</span></td></tr></tbody></table></div>
+<p>The body files and a <code>create.sh</code> with one <code>gh issue create</code> line per draft are in <code>_reports/issues/P0/</code> of the runtime audit repository. The script was not run.</p>
+
+<article class="issue" id="i-DOC-B1">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-B1</span><span class="n">1 of 13</span></p>
+<h2>Rewrite the Bun guide&#x27;s instrumentation step around @sentry/bun/plugin</h2>
+<div class="ibody"><p>The Bun guide at <code>guides/bun/index.mdx:94</code> and <code>:106</code> tells the user to run <code>bun --preload ./instrument.js app.js</code>, and the alert at <code>:96-100</code> states that Sentry&#x27;s auto-instrumentation does not work with bundled code and that bundling requires manual instrumentation. <code>@sentry/bun/plugin</code> is not named anywhere on the page, and <code>logs</code> is used as an onboarding block at <code>:182</code> but is missing from the options at <code>:20-22</code>.</p>
+<p>What was observed on bun 1.4.0: a bundle built with <code>Bun.build({ plugins: [sentryBunPlugin()] })</code> from <code>@sentry/bun/plugin</code> records library and framework spans, while running the same app unbundled with <code>bun run</code> records none. <code>packages/bun/src/plugin.ts:14</code> states the plugin is build-only. The unbundled diagnostic message is printed only with <code>debug: true</code>.</p>
+<p>What to change:</p>
+<ul><li>Keep the <code>--preload</code> step, described as what guarantees init order.</li><li>Add a &quot;Build with the Sentry plugin&quot; step showing <code>Bun.build({ entrypoints: [...], plugins: [sentryBunPlugin()] })</code> imported from <code>@sentry/bun/plugin</code>.</li><li>Replace the alert at <code>:96-100</code> with a plain statement: library and framework instrumentation requires a build with the plugin; <code>bun run</code> on unbundled source records manual spans plus <code>Bun.serve</code>, <code>node:http</code> and <code>fetch</code> spans.</li><li>Add <code>logs</code> to the onboarding options at <code>:20-22</code>, or remove the block at <code>:182</code>.</li></ul>
+<p>Source: runtime docs audit, item DOC-B1</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-B1; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">01-DOC-B1.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">The Bun guide at `guides/bun/index.mdx:94` and `:106` tells the user to run `bun --preload ./instrument.js app.js`, and the alert at `:96-100` states that Sentry&#x27;s auto-instrumentation does not work with bundled code and that bundling requires manual instrumentation. `@sentry/bun/plugin` is not named anywhere on the page, and `logs` is used as an onboarding block at `:182` but is missing from the options at `:20-22`.
+
+What was observed on bun 1.4.0: a bundle built with `Bun.build({ plugins: [sentryBunPlugin()] })` from `@sentry/bun/plugin` records library and framework spans, while running the same app unbundled with `bun run` records none. `packages/bun/src/plugin.ts:14` states the plugin is build-only. The unbundled diagnostic message is printed only with `debug: true`.
+
+What to change:
+
+- Keep the `--preload` step, described as what guarantees init order.
+- Add a &quot;Build with the Sentry plugin&quot; step showing `Bun.build({ entrypoints: [...], plugins: [sentryBunPlugin()] })` imported from `@sentry/bun/plugin`.
+- Replace the alert at `:96-100` with a plain statement: library and framework instrumentation requires a build with the plugin; `bun run` on unbundled source records manual spans plus `Bun.serve`, `node:http` and `fetch` spans.
+- Add `logs` to the onboarding options at `:20-22`, or remove the block at `:182`.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-B1; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Rewrite the Bun guide&#x27;s instrumentation step around @sentry/bun/plugin</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Rewrite the Bun guide&#x27;s instrumentation step around @sentry/bun/plugin&quot; --body-file 01-DOC-B1.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-R1">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-R1</span><span class="n">2 of 13</span></p>
+<h2>Fix inverted traceLifecycle default in the stream mode includes</h2>
+<div class="ibody"><p>The three stream-mode includes present stream mode as opt-in. <code>platform-includes/performance/enable-stream-mode/javascript.bun.mdx:5</code> (and <code>javascript.deno.mdx:5</code>, <code>javascript.cloudflare.mdx:8</code>) say &quot;Opt in by setting the <code>traceLifecycle</code> option to <code>&#x27;stream&#x27;</code>&quot;, and each closes with &quot;set <code>traceLifecycle</code> to <code>&#x27;static&#x27;</code> (the default)&quot; (<code>javascript.bun.mdx:25</code>, <code>javascript.deno.mdx:24</code>, <code>javascript.cloudflare.mdx:62</code>).</p>
+<p>On develop the default is <code>&#x27;stream&#x27;</code>. <code>packages/core/src/client.ts:242</code> normalizes <code>traceLifecycle: options.traceLifecycle === &#x27;static&#x27; ? &#x27;static&#x27; : &#x27;stream&#x27;</code>, so every value except an explicit <code>&#x27;static&#x27;</code> resolves to stream. No runtime overrides this, and <code>packages/deno/src/integrations/deno-serve.ts:28</code> describes <code>&#x27;stream&#x27;</code> as the default too.</p>
+<p><strong>What to change</strong></p>
+<ul><li>Reframe all three includes as opt-out: <code>&#x27;stream&#x27;</code> is the default, <code>&#x27;static&#x27;</code> is what a user sets.</li><li>Replace the <code>traceLifecycle: &quot;stream&quot;</code> sample lines with <code>&quot;static&quot;</code> examples, or drop them.</li><li>Add the missing comma after <code>tracesSampleRate: 0.2</code> at <code>javascript.cloudflare.mdx:19</code>.</li></ul>
+<p>Source: runtime docs audit, item DOC-R1</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-R1; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">02-DOC-R1.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">The three stream-mode includes present stream mode as opt-in. `platform-includes/performance/enable-stream-mode/javascript.bun.mdx:5` (and `javascript.deno.mdx:5`, `javascript.cloudflare.mdx:8`) say &quot;Opt in by setting the `traceLifecycle` option to `&#x27;stream&#x27;`&quot;, and each closes with &quot;set `traceLifecycle` to `&#x27;static&#x27;` (the default)&quot; (`javascript.bun.mdx:25`, `javascript.deno.mdx:24`, `javascript.cloudflare.mdx:62`).
+
+On develop the default is `&#x27;stream&#x27;`. `packages/core/src/client.ts:242` normalizes `traceLifecycle: options.traceLifecycle === &#x27;static&#x27; ? &#x27;static&#x27; : &#x27;stream&#x27;`, so every value except an explicit `&#x27;static&#x27;` resolves to stream. No runtime overrides this, and `packages/deno/src/integrations/deno-serve.ts:28` describes `&#x27;stream&#x27;` as the default too.
+
+**What to change**
+
+- Reframe all three includes as opt-out: `&#x27;stream&#x27;` is the default, `&#x27;static&#x27;` is what a user sets.
+- Replace the `traceLifecycle: &quot;stream&quot;` sample lines with `&quot;static&quot;` examples, or drop them.
+- Add the missing comma after `tracesSampleRate: 0.2` at `javascript.cloudflare.mdx:19`.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-R1; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Fix inverted traceLifecycle default in the stream mode includes</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Fix inverted traceLifecycle default in the stream mode includes&quot; --body-file 02-DOC-R1.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-R2">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-R2</span><span class="n">3 of 13</span></p>
+<h2>Stop recommending denoCronIntegration() on the Deno crons page</h2>
+<div class="ibody"><p><code>platform-includes/crons/setup/javascript.deno.mdx:1</code> heads its first section &quot;Automatic Check-Ins (Recommended)&quot; and <code>:12</code> tells the reader to pass <code>Sentry.denoCronIntegration()</code> to <code>Sentry.init</code>.</p>
+<p>That call crashes startup on current Deno. <code>packages/deno/src/integrations/deno-cron.ts:23</code> assigns <code>Deno.cron = new Proxy(Deno.cron, ...)</code>, but on Deno 2.9.0 <code>Deno.cron</code> is a getter-only property, so <code>Sentry.init</code> throws <code>TypeError: Cannot set property cron of #&lt;Object&gt; which has only a getter</code>. This reproduced in four separate audit runs. Line 18 returns silently when <code>Deno.cron</code> is missing, so without <code>--unstable-cron</code> the integration is a no-op. It is also not in the default set at <code>packages/deno/src/sdk.ts:31-49</code>, contrary to its JSDoc at <code>deno-cron.ts:64</code>.</p>
+<p><strong>What to change</strong></p>
+<ul><li>Remove the &quot;Recommended&quot; framing and the <code>denoCronIntegration()</code> snippet, or label the integration as broken on Deno 2.9.</li><li>Lead with the <code>Sentry.withMonitor</code> / <code>Sentry.captureCheckIn</code> sections already on the page.</li><li>State that <code>Deno.cron</code> needs <code>--unstable-cron</code>.</li></ul>
+<p>Source: runtime docs audit, item DOC-R2</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-R2; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">03-DOC-R2.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`platform-includes/crons/setup/javascript.deno.mdx:1` heads its first section &quot;Automatic Check-Ins (Recommended)&quot; and `:12` tells the reader to pass `Sentry.denoCronIntegration()` to `Sentry.init`.
+
+That call crashes startup on current Deno. `packages/deno/src/integrations/deno-cron.ts:23` assigns `Deno.cron = new Proxy(Deno.cron, ...)`, but on Deno 2.9.0 `Deno.cron` is a getter-only property, so `Sentry.init` throws `TypeError: Cannot set property cron of #&lt;Object&gt; which has only a getter`. This reproduced in four separate audit runs. Line 18 returns silently when `Deno.cron` is missing, so without `--unstable-cron` the integration is a no-op. It is also not in the default set at `packages/deno/src/sdk.ts:31-49`, contrary to its JSDoc at `deno-cron.ts:64`.
+
+**What to change**
+
+- Remove the &quot;Recommended&quot; framing and the `denoCronIntegration()` snippet, or label the integration as broken on Deno 2.9.
+- Lead with the `Sentry.withMonitor` / `Sentry.captureCheckIn` sections already on the page.
+- State that `Deno.cron` needs `--unstable-cron`.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-R2; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Stop recommending denoCronIntegration() on the Deno crons page</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Stop recommending denoCronIntegration() on the Deno crons page&quot; --body-file 03-DOC-R2.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-R20">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-R20</span><span class="n">4 of 13</span></p>
+<h2>Rewrite the Bun OpenTelemetry setup includes against develop</h2>
+<div class="ibody"><p>Three Bun OpenTelemetry includes are written against a package and APIs that no longer exist. <code>platform-includes/performance/opentelemetry-setup/javascript.bun.mdx:5</code> and <code>:48</code> import <code>SentryContextManager, validateOpenTelemetrySetup</code> from <code>@sentry/node-core</code>; <code>error-monitoring-only/javascript.bun.mdx:3</code> and <code>with-custom-sampler/javascript.bun.mdx:3</code> do the same. <code>javascript.bun.mdx:12</code> and <code>:55</code> pass <code>skipOpenTelemetrySetup: true</code>, and <code>error-monitoring-only/javascript.bun.mdx:30</code> calls <code>provider.addSpanProcessor(...)</code>.</p>
+<p>On develop there is no <code>node-core</code> package under <code>packages/</code>. <code>skipOpenTelemetrySetup</code>, <code>SentryContextManager</code>, <code>validateOpenTelemetrySetup</code> and <code>SentrySpanProcessor</code> appear nowhere in <code>packages/*/src</code>. <code>@sentry/opentelemetry</code> exports only <code>getScopesFromContext</code>, <code>SentryPropagator</code>, <code>SentryTracerProvider</code>, <code>setOpenTelemetryContextAsyncContextStrategy</code> and <code>registerPrepareSpanScope</code> (<code>packages/opentelemetry/src/index.ts:1-9</code>). The Bun option is <code>enableOpenTelemetrySetup</code> (<code>packages/bun/src/types.ts:23</code>), and <code>addSpanProcessor</code> was removed in OpenTelemetry JS 2.x.</p>
+<p><strong>What to change</strong></p>
+<ul><li>Drop every <code>@sentry/node-core</code> import and the removed symbols.</li><li>Replace <code>skipOpenTelemetrySetup: true</code> with <code>enableOpenTelemetrySetup: false</code>.</li><li>Replace <code>provider.addSpanProcessor(...)</code> with the constructor&#x27;s <code>spanProcessors</code> array.</li></ul>
+<p>Source: runtime docs audit, item DOC-R20</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-R20; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">04-DOC-R20.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">Three Bun OpenTelemetry includes are written against a package and APIs that no longer exist. `platform-includes/performance/opentelemetry-setup/javascript.bun.mdx:5` and `:48` import `SentryContextManager, validateOpenTelemetrySetup` from `@sentry/node-core`; `error-monitoring-only/javascript.bun.mdx:3` and `with-custom-sampler/javascript.bun.mdx:3` do the same. `javascript.bun.mdx:12` and `:55` pass `skipOpenTelemetrySetup: true`, and `error-monitoring-only/javascript.bun.mdx:30` calls `provider.addSpanProcessor(...)`.
+
+On develop there is no `node-core` package under `packages/`. `skipOpenTelemetrySetup`, `SentryContextManager`, `validateOpenTelemetrySetup` and `SentrySpanProcessor` appear nowhere in `packages/*/src`. `@sentry/opentelemetry` exports only `getScopesFromContext`, `SentryPropagator`, `SentryTracerProvider`, `setOpenTelemetryContextAsyncContextStrategy` and `registerPrepareSpanScope` (`packages/opentelemetry/src/index.ts:1-9`). The Bun option is `enableOpenTelemetrySetup` (`packages/bun/src/types.ts:23`), and `addSpanProcessor` was removed in OpenTelemetry JS 2.x.
+
+**What to change**
+
+- Drop every `@sentry/node-core` import and the removed symbols.
+- Replace `skipOpenTelemetrySetup: true` with `enableOpenTelemetrySetup: false`.
+- Replace `provider.addSpanProcessor(...)` with the constructor&#x27;s `spanProcessors` array.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-R20; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Rewrite the Bun OpenTelemetry setup includes against develop</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Rewrite the Bun OpenTelemetry setup includes against develop&quot; --body-file 04-DOC-R20.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-R13">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-R13</span><span class="n">5 of 13</span></p>
+<h2>Correct the Agents SDK span attribute and conversation ID claims</h2>
+<div class="ibody"><p><code>docs/platforms/javascript/guides/cloudflare/features/agents-sdk.mdx:10</code> says callable RPC spans carry &quot;the agent class and instance name as attributes&quot;. <code>:39</code> says &quot;The automatic conversation ID defaults to the <strong>agent instance name</strong>&quot;, and <code>:41</code> builds override guidance on that premise, warning about per-user instances and singletons named <code>&quot;default&quot;</code>.</p>
+<p>Neither claim holds on develop. <code>packages/cloudflare/src/instrumentations/agents/types.ts:61-70</code> builds the span attributes from <code>instance._ParentClass?.name</code> alone, setting <code>gen_ai.agent.name</code> to the base agent class; no instance name is attached. The conversation id is a <code>uuid4()</code> minted per instance and persisted to Durable Object storage (<code>types.ts:173</code>, <code>:180</code>), rotated to a fresh <code>uuid4()</code> when <code>message:clear</code> fires (<code>instrumentChatAgentConversation.ts:34-36</code>). <code>types.ts:104</code> says the instance <code>name</code> is deliberately not used.</p>
+<p><strong>What to change</strong></p>
+<ul><li>Fix <code>:10</code> to name only the agent class attribute.</li><li>Rewrite the Conversation IDs section around a generated uuid4 per instance that rotates on chat clear.</li><li>Replace the <code>&quot;default&quot;</code> / per-user override rationale, which rests on the false premise.</li></ul>
+<p>Source: runtime docs audit, item DOC-R13</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-R13; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">05-DOC-R13.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`docs/platforms/javascript/guides/cloudflare/features/agents-sdk.mdx:10` says callable RPC spans carry &quot;the agent class and instance name as attributes&quot;. `:39` says &quot;The automatic conversation ID defaults to the **agent instance name**&quot;, and `:41` builds override guidance on that premise, warning about per-user instances and singletons named `&quot;default&quot;`.
+
+Neither claim holds on develop. `packages/cloudflare/src/instrumentations/agents/types.ts:61-70` builds the span attributes from `instance._ParentClass?.name` alone, setting `gen_ai.agent.name` to the base agent class; no instance name is attached. The conversation id is a `uuid4()` minted per instance and persisted to Durable Object storage (`types.ts:173`, `:180`), rotated to a fresh `uuid4()` when `message:clear` fires (`instrumentChatAgentConversation.ts:34-36`). `types.ts:104` says the instance `name` is deliberately not used.
+
+**What to change**
+
+- Fix `:10` to name only the agent class attribute.
+- Rewrite the Conversation IDs section around a generated uuid4 per instance that rotates on chat clear.
+- Replace the `&quot;default&quot;` / per-user override rationale, which rests on the false premise.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-R13; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Correct the Agents SDK span attribute and conversation ID claims</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Correct the Agents SDK span attribute and conversation ID claims&quot; --body-file 05-DOC-R13.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F50">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-F50</span><span class="n">6 of 13</span></p>
+<h2>Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options</h2>
+<div class="ibody"><p><code>docs/platforms/javascript/guides/cloudflare/frameworks/remix.mdx</code> is 60 lines and does not describe a working Workers setup: <code>:39-49</code> installs only <code>@sentry/remix</code> with no <code>@sentry/cloudflare</code>, and <code>:55-58</code> embeds the shared include. In that include, the Cloudflare branch at <code>platform-includes/getting-started-complete/javascript.remix.mdx:263-313</code> covers Cloudflare Pages only, and the &quot;Capture Server-Side Errors&quot; step at <code>:315-347</code> sits outside any PlatformSection and tells every reader to import from bare <code>@sentry/remix</code> at <code>:333</code>. Separately, <code>guides/cloudflare/features/vite-plugin.mdx:30-47</code> presents <code>_experimental.useDiagnosticsChannelInjection</code> as required.</p>
+<p>Verified on the develop line: Remix v2 (2.17.5) with the Remix Vite plugin on workerd, <code>compatibility_date: &quot;2026-05-01&quot;</code>, <code>compatibility_flags: [&quot;nodejs_compat&quot;]</code>. Install <code>@sentry/remix</code> and <code>@sentry/cloudflare</code>. In <code>app/entry.server.tsx</code>, <code>export const handleError = sentryHandleError</code> imported from <code>@sentry/remix/cloudflare</code>. In the worker entry, <code>Sentry.withSentry()</code> from <code>@sentry/cloudflare</code> around a handler built with <code>createRequestHandler(instrumentBuild(remixBuild))</code>. In <code>vite.config.ts</code>, <code>sentryCloudflareVitePlugin()</code> from <code>@sentry/cloudflare/vite</code> at its defaults alongside the Remix plugin, with <code>ssr: { target: &#x27;webworker&#x27;, noExternal: true }</code>.</p>
+<p>Works today:</p>
+<ul><li>Loader, action and resource-route errors, parameterized route names with <code>http.route</code>, per-request isolation, incoming trace continuation, outgoing <code>fetch</code> spans with propagation headers, <code>db</code> spans from <code>mysql</code>, <code>Sentry.logger</code> logs.</li></ul>
+<p>Known limits:</p>
+<ul><li>Importing from bare <code>@sentry/remix</code> in a <code>webworker</code> SSR build leaves <code>handleError</code> undefined and captures nothing.</li><li>A route with no loader or action stays method-only.</li><li>Without <code>sentryCloudflareVitePlugin()</code> there are no database spans and no warning; <code>mysql2</code> is unusable on workerd.</li></ul>
+<p>What to change:</p>
+<ul><li>Rewrite <code>guides/cloudflare/frameworks/remix.mdx</code>: add <code>@sentry/cloudflare</code> to the install at <code>:39-49</code>, add a Workers entry section, point <code>handleError</code> at <code>@sentry/remix/cloudflare</code>, and add a database-spans section.</li><li>Correct <code>guides/cloudflare/features/vite-plugin.mdx:30-47</code> to the shipped <code>buildTimeInstrumentation</code> and <code>autoInstrumentation</code> options, both defaulting to <code>true</code>.</li></ul>
+<p>Source: runtime docs audit, item DOC-F50, cell M-remix-cf</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F50; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">06-DOC-F50.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`docs/platforms/javascript/guides/cloudflare/frameworks/remix.mdx` is 60 lines and does not describe a working Workers setup: `:39-49` installs only `@sentry/remix` with no `@sentry/cloudflare`, and `:55-58` embeds the shared include. In that include, the Cloudflare branch at `platform-includes/getting-started-complete/javascript.remix.mdx:263-313` covers Cloudflare Pages only, and the &quot;Capture Server-Side Errors&quot; step at `:315-347` sits outside any PlatformSection and tells every reader to import from bare `@sentry/remix` at `:333`. Separately, `guides/cloudflare/features/vite-plugin.mdx:30-47` presents `_experimental.useDiagnosticsChannelInjection` as required.
+
+Verified on the develop line: Remix v2 (2.17.5) with the Remix Vite plugin on workerd, `compatibility_date: &quot;2026-05-01&quot;`, `compatibility_flags: [&quot;nodejs_compat&quot;]`. Install `@sentry/remix` and `@sentry/cloudflare`. In `app/entry.server.tsx`, `export const handleError = sentryHandleError` imported from `@sentry/remix/cloudflare`. In the worker entry, `Sentry.withSentry()` from `@sentry/cloudflare` around a handler built with `createRequestHandler(instrumentBuild(remixBuild))`. In `vite.config.ts`, `sentryCloudflareVitePlugin()` from `@sentry/cloudflare/vite` at its defaults alongside the Remix plugin, with `ssr: { target: &#x27;webworker&#x27;, noExternal: true }`.
+
+Works today:
+
+- Loader, action and resource-route errors, parameterized route names with `http.route`, per-request isolation, incoming trace continuation, outgoing `fetch` spans with propagation headers, `db` spans from `mysql`, `Sentry.logger` logs.
+
+Known limits:
+
+- Importing from bare `@sentry/remix` in a `webworker` SSR build leaves `handleError` undefined and captures nothing.
+- A route with no loader or action stays method-only.
+- Without `sentryCloudflareVitePlugin()` there are no database spans and no warning; `mysql2` is unusable on workerd.
+
+What to change:
+
+- Rewrite `guides/cloudflare/frameworks/remix.mdx`: add `@sentry/cloudflare` to the install at `:39-49`, add a Workers entry section, point `handleError` at `@sentry/remix/cloudflare`, and add a database-spans section.
+- Correct `guides/cloudflare/features/vite-plugin.mdx:30-47` to the shipped `buildTimeInstrumentation` and `autoInstrumentation` options, both defaulting to `true`.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F50; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options&quot; --body-file 06-DOC-F50.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F36">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">new-page</span><span class="iid">DOC-F36</span><span class="n">7 of 13</span></p>
+<h2>Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim</h2>
+<div class="ibody"><p>No page mentions Elysia on Cloudflare Workers. <code>docs/platforms/javascript/guides/elysia/index.mdx:25</code> lists the prerequisites as &quot;Bun or Node.js 18+ (with @elysiajs/node adapter)&quot; and the install snippets at <code>:55-56</code> and <code>:82</code> are Bun and Node only. <code>platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12</code> has a &quot;Runtime Behavior&quot; section covering exactly two runtimes. The Cloudflare framework list at <code>docs/platforms/javascript/guides/cloudflare/index.mdx:16-23</code> has no Elysia entry and <code>guides/cloudflare/frameworks/</code> has no <code>elysia.mdx</code>.</p>
+<p>Verified on the develop line: Elysia 1.4.30 on workerd with <code>compatibility_date: &quot;2026-05-01&quot;</code> and <code>compatibility_flags: [&quot;nodejs_compat&quot;]</code>. Install <code>@sentry/cloudflare @sentry/elysia elysia</code>. Construct the app as <code>withElysia(new Elysia({ aot: false }))</code> before any route is registered, and export <code>Sentry.withSentry((env) =&gt; ({ dsn: env.SENTRY_DSN, tracesSampleRate: 1.0 }), { fetch: request =&gt; app.fetch(request) })</code>. Ahead-of-time compilation must be off: with the default, workerd refuses to start the Worker because Elysia&#x27;s generated handler runs <code>new Function</code> and touches randomness in global scope. For database spans, build with Vite: <code>plugins: [cloudflare(), sentryCloudflareVitePlugin()]</code> from <code>@sentry/cloudflare/vite</code>, then <code>vite build</code> and point wrangler at the emitted config.</p>
+<p>Works today:</p>
+<ul><li>Unhandled errors via Elysia&#x27;s global error hook, parameterized route names, per-request isolation, incoming trace continuation, outgoing <code>fetch</code> spans with headers, <code>Sentry.logger</code> logs, and <code>db</code> spans through the Vite build.</li></ul>
+<p>Known limits:</p>
+<ul><li>A <code>wrangler</code>-bundled Worker emits no database spans.</li><li><code>withElysia</code> must wrap the instance before routes are registered, or only the error path gets the route name.</li><li><code>mysql2</code> on workerd needs <code>disableEval: true</code> in the connection options.</li></ul>
+<p>What to change:</p>
+<ul><li>Add <code>docs/platforms/javascript/guides/cloudflare/frameworks/elysia.mdx</code> with the wiring above and list it at <code>guides/cloudflare/index.mdx:16-23</code>.</li><li>Add a Cloudflare Workers entry to <code>guides/elysia/index.mdx:25</code> and to the Runtime Behavior list at <code>platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12</code>.</li></ul>
+<p>Source: runtime docs audit, item DOC-F36, cell M-elysia-cf</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F36; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">07-DOC-F36.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">No page mentions Elysia on Cloudflare Workers. `docs/platforms/javascript/guides/elysia/index.mdx:25` lists the prerequisites as &quot;Bun or Node.js 18+ (with @elysiajs/node adapter)&quot; and the install snippets at `:55-56` and `:82` are Bun and Node only. `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12` has a &quot;Runtime Behavior&quot; section covering exactly two runtimes. The Cloudflare framework list at `docs/platforms/javascript/guides/cloudflare/index.mdx:16-23` has no Elysia entry and `guides/cloudflare/frameworks/` has no `elysia.mdx`.
+
+Verified on the develop line: Elysia 1.4.30 on workerd with `compatibility_date: &quot;2026-05-01&quot;` and `compatibility_flags: [&quot;nodejs_compat&quot;]`. Install `@sentry/cloudflare @sentry/elysia elysia`. Construct the app as `withElysia(new Elysia({ aot: false }))` before any route is registered, and export `Sentry.withSentry((env) =&gt; ({ dsn: env.SENTRY_DSN, tracesSampleRate: 1.0 }), { fetch: request =&gt; app.fetch(request) })`. Ahead-of-time compilation must be off: with the default, workerd refuses to start the Worker because Elysia&#x27;s generated handler runs `new Function` and touches randomness in global scope. For database spans, build with Vite: `plugins: [cloudflare(), sentryCloudflareVitePlugin()]` from `@sentry/cloudflare/vite`, then `vite build` and point wrangler at the emitted config.
+
+Works today:
+
+- Unhandled errors via Elysia&#x27;s global error hook, parameterized route names, per-request isolation, incoming trace continuation, outgoing `fetch` spans with headers, `Sentry.logger` logs, and `db` spans through the Vite build.
+
+Known limits:
+
+- A `wrangler`-bundled Worker emits no database spans.
+- `withElysia` must wrap the instance before routes are registered, or only the error path gets the route name.
+- `mysql2` on workerd needs `disableEval: true` in the connection options.
+
+What to change:
+
+- Add `docs/platforms/javascript/guides/cloudflare/frameworks/elysia.mdx` with the wiring above and list it at `guides/cloudflare/index.mdx:16-23`.
+- Add a Cloudflare Workers entry to `guides/elysia/index.mdx:25` and to the Runtime Behavior list at `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12`.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F36; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim&quot; --body-file 07-DOC-F36.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F19">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-F19</span><span class="n">8 of 13</span></p>
+<h2>Document Elysia on Deno: init from @sentry/deno, keep withElysia</h2>
+<div class="ibody"><p><code>docs/platforms/javascript/guides/elysia/index.mdx:25</code> lists prerequisites as Bun or Node 18+ with the node adapter, and the install and configure snippets at <code>:52-70</code> and <code>:78-120</code> have only Bun and Node tabs, with <code>Sentry.init</code> imported from <code>@sentry/elysia</code>. <code>platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12</code> enumerates exactly two runtimes and <code>:6</code> claims parameterized route names unconditionally. A grep for <code>deno</code> over the Elysia guide returns nothing.</p>
+<p>Verified on Elysia 1.4.30 and Deno 2.9.0: install the packages with npm into a real <code>node_modules</code>, set <code>{&quot;nodeModulesDir&quot;: &quot;manual&quot;}</code> in <code>deno.json</code>, then call <code>Sentry.init()</code> from <code>@sentry/deno</code> before <code>Deno.serve</code> and import only <code>withElysia</code> (and <code>fetchIntegration</code>) from <code>@sentry/elysia</code>. Mount with <code>Deno.serve({ port }, withElysia(new Elysia()).get(...).fetch)</code>. Add <code>import &quot;@sentry/deno/import&quot;;</code> as the first line for database spans, and pass <code>integrations: [fetchIntegration()]</code> for outgoing requests.</p>
+<p>Works today:</p>
+<ul><li>Route errors, mechanism <code>auto.http.elysia.on_error</code>.</li><li><code>GET /users/:id</code> with op <code>http.server</code> and source <code>route</code>.</li><li>Per-request isolation and incoming trace continuation.</li><li>Outgoing <code>http.client</code> spans plus <code>sentry-trace</code>/<code>baggage</code>, with <code>fetchIntegration()</code>.</li><li>Database spans for <code>mysql</code>, and logs.</li></ul>
+<p>Known limits:</p>
+<ul><li><code>@sentry/elysia</code>&#x27;s own <code>init()</code> delegates to <code>@sentry/bun</code> and does not instrument <code>Deno.serve</code>: with it there is no <code>http.server</code> span, every request shares one process-wide trace, and incoming trace headers are ignored.</li><li>Events report <code>sdk.name</code> as <code>sentry.javascript.deno</code>.</li><li><code>mysql2</code> cannot be imported while the Deno import hook is active: Deno compiles <code>require(&#x27;*.json&#x27;)</code> as JavaScript and the import throws <code>SyntaxError: Unexpected token &#x27;:&#x27;</code>.</li></ul>
+<p>What to change:</p>
+<ul><li><code>guides/elysia/index.mdx:25</code> and the snippets at <code>:52-70</code>, <code>:78-120</code>: add Deno tabs with the split init described above.</li><li><code>platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:6,9-12</code>: add a Deno bullet and qualify the route-name claim.</li></ul>
+<p>Source: runtime docs audit, item DOC-F19, cell M-elysia-deno</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F19; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">08-DOC-F19.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`docs/platforms/javascript/guides/elysia/index.mdx:25` lists prerequisites as Bun or Node 18+ with the node adapter, and the install and configure snippets at `:52-70` and `:78-120` have only Bun and Node tabs, with `Sentry.init` imported from `@sentry/elysia`. `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12` enumerates exactly two runtimes and `:6` claims parameterized route names unconditionally. A grep for `deno` over the Elysia guide returns nothing.
+
+Verified on Elysia 1.4.30 and Deno 2.9.0: install the packages with npm into a real `node_modules`, set `{&quot;nodeModulesDir&quot;: &quot;manual&quot;}` in `deno.json`, then call `Sentry.init()` from `@sentry/deno` before `Deno.serve` and import only `withElysia` (and `fetchIntegration`) from `@sentry/elysia`. Mount with `Deno.serve({ port }, withElysia(new Elysia()).get(...).fetch)`. Add `import &quot;@sentry/deno/import&quot;;` as the first line for database spans, and pass `integrations: [fetchIntegration()]` for outgoing requests.
+
+Works today:
+
+- Route errors, mechanism `auto.http.elysia.on_error`.
+- `GET /users/:id` with op `http.server` and source `route`.
+- Per-request isolation and incoming trace continuation.
+- Outgoing `http.client` spans plus `sentry-trace`/`baggage`, with `fetchIntegration()`.
+- Database spans for `mysql`, and logs.
+
+Known limits:
+
+- `@sentry/elysia`&#x27;s own `init()` delegates to `@sentry/bun` and does not instrument `Deno.serve`: with it there is no `http.server` span, every request shares one process-wide trace, and incoming trace headers are ignored.
+- Events report `sdk.name` as `sentry.javascript.deno`.
+- `mysql2` cannot be imported while the Deno import hook is active: Deno compiles `require(&#x27;*.json&#x27;)` as JavaScript and the import throws `SyntaxError: Unexpected token &#x27;:&#x27;`.
+
+What to change:
+
+- `guides/elysia/index.mdx:25` and the snippets at `:52-70`, `:78-120`: add Deno tabs with the split init described above.
+- `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:6,9-12`: add a Deno bullet and qualify the route-name claim.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F19; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Document Elysia on Deno: init from @sentry/deno, keep withElysia</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Document Elysia on Deno: init from @sentry/deno, keep withElysia&quot; --body-file 08-DOC-F19.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F11">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-F11</span><span class="n">9 of 13</span></p>
+<h2>Add a Bun section to the Nuxt Nitro deployment presets page</h2>
+<div class="ibody"><p><code>docs/platforms/javascript/guides/nuxt/features/nitro-deployment-presets.mdx:7</code> says the presets &quot;work out of the box&quot; and <code>nitro-deployment-presets.mdx:9-11</code> carves out only Cloudflare Pages, while the documented start command at <code>guides/nuxt/index.mdx:68</code> is <code>node --import ./.output/server/sentry.server.config.mjs .output/server/index.mjs</code>. Nothing under <code>guides/nuxt/</code> mentions Bun.</p>
+<p>Verified on Nuxt 4.5.2 (Nitro 2.13.4) with <code>@sentry/nuxt</code> 10.67.0 on Bun 1.4.0, <code>NITRO_PRESET=bun</code>, run as <code>bun .output/server/index.mjs</code>: set <code>sentry: { autoInjectServerSentry: &#x27;top-level-import&#x27; }</code> in <code>nuxt.config.ts</code> because Bun ignores <code>NODE_OPTIONS</code> and has no <code>--import</code> flag, install <code>@sentry/bun</code> alongside <code>@sentry/nuxt</code>, and pass <code>integrations: [bunServerIntegration(), fetchIntegration()]</code> from <code>@sentry/bun</code> to the existing <code>Sentry.init</code> in <code>sentry.server.config.ts</code>.</p>
+<p>Works today:</p>
+<ul><li>Unhandled server-route errors via the Nitro error hook, with or without the extra integrations</li><li><code>http.server</code> spans named <code>GET /users/:id</code> with source <code>route</code> and <code>http.route</code></li><li>Per-request isolation and a fresh trace per request</li><li>Incoming <code>sentry-trace</code>/<code>baggage</code> continuation</li><li>Outgoing <code>fetch</code> spans with propagation headers</li><li><code>Sentry.logger</code> log envelopes</li></ul>
+<p>Known limits:</p>
+<ul><li>Without <code>bunServerIntegration()</code> there is no request span at all, every event shares one process-wide trace, names are not route-based and incoming trace headers are ignored.</li><li>Database spans need <code>nitro: { externals: { external: [&#x27;mysql2&#x27;, &#x27;mysql2/promise&#x27;] } }</code> in <code>nuxt.config.ts</code>, otherwise every query fails with <code>genFunc$1 is not a function</code> regardless of Sentry.</li><li>Unparameterized routes stay method-only with source <code>url</code>.</li></ul>
+<p>What to change:</p>
+<ul><li><code>guides/nuxt/features/nitro-deployment-presets.mdx</code>: add a Bun section next to the Cloudflare Pages one covering <code>autoInjectServerSentry: &#x27;top-level-import&#x27;</code>, the two <code>@sentry/bun</code> integrations and the Nitro externals.</li><li><code>guides/nuxt/index.mdx:68</code>: add the Bun start command <code>bun .output/server/index.mjs</code> beside the Node one.</li></ul>
+<p>Source: runtime docs audit, item DOC-F11, cell M-nuxt-bun</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F11; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">09-DOC-F11.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`docs/platforms/javascript/guides/nuxt/features/nitro-deployment-presets.mdx:7` says the presets &quot;work out of the box&quot; and `nitro-deployment-presets.mdx:9-11` carves out only Cloudflare Pages, while the documented start command at `guides/nuxt/index.mdx:68` is `node --import ./.output/server/sentry.server.config.mjs .output/server/index.mjs`. Nothing under `guides/nuxt/` mentions Bun.
+
+Verified on Nuxt 4.5.2 (Nitro 2.13.4) with `@sentry/nuxt` 10.67.0 on Bun 1.4.0, `NITRO_PRESET=bun`, run as `bun .output/server/index.mjs`: set `sentry: { autoInjectServerSentry: &#x27;top-level-import&#x27; }` in `nuxt.config.ts` because Bun ignores `NODE_OPTIONS` and has no `--import` flag, install `@sentry/bun` alongside `@sentry/nuxt`, and pass `integrations: [bunServerIntegration(), fetchIntegration()]` from `@sentry/bun` to the existing `Sentry.init` in `sentry.server.config.ts`.
+
+Works today:
+
+- Unhandled server-route errors via the Nitro error hook, with or without the extra integrations
+- `http.server` spans named `GET /users/:id` with source `route` and `http.route`
+- Per-request isolation and a fresh trace per request
+- Incoming `sentry-trace`/`baggage` continuation
+- Outgoing `fetch` spans with propagation headers
+- `Sentry.logger` log envelopes
+
+Known limits:
+
+- Without `bunServerIntegration()` there is no request span at all, every event shares one process-wide trace, names are not route-based and incoming trace headers are ignored.
+- Database spans need `nitro: { externals: { external: [&#x27;mysql2&#x27;, &#x27;mysql2/promise&#x27;] } }` in `nuxt.config.ts`, otherwise every query fails with `genFunc$1 is not a function` regardless of Sentry.
+- Unparameterized routes stay method-only with source `url`.
+
+What to change:
+
+- `guides/nuxt/features/nitro-deployment-presets.mdx`: add a Bun section next to the Cloudflare Pages one covering `autoInjectServerSentry: &#x27;top-level-import&#x27;`, the two `@sentry/bun` integrations and the Nitro externals.
+- `guides/nuxt/index.mdx:68`: add the Bun start command `bun .output/server/index.mjs` beside the Node one.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F11; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Add a Bun section to the Nuxt Nitro deployment presets page</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Add a Bun section to the Nuxt Nitro deployment presets page&quot; --body-file 09-DOC-F11.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F28">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-F28</span><span class="n">10 of 13</span></p>
+<h2>Correct the Nuxt Nitro preset page for Deno: keep the node-server preset</h2>
+<div class="ibody"><p><code>docs/platforms/javascript/guides/nuxt/features/nitro-deployment-presets.mdx:7</code> claims that the SDK supports different Nitro deployment presets, &quot;most of which work out of the box&quot;, and the 11-line file then documents only Cloudflare Pages at <code>:9-11</code>. The Nuxt guide has no Deno mention anywhere, so a reader picking the <code>deno_server</code> preset gets no warning.</p>
+<p>Verified on Nuxt 4 with <code>@sentry/nuxt</code> 10.67.0 and Deno 2.9.0: do not set a Nitro preset. Build the default <code>node-server</code> output with <code>npx nuxt build</code>, keep <code>sentry: { autoInjectServerSentry: &#x27;top-level-import&#x27; }</code> in <code>nuxt.config.ts</code> and a root <code>sentry.server.config.ts</code> that calls <code>Sentry.init()</code>, then run the output under Deno with <code>cd .output/server &amp;&amp; PORT=&lt;port&gt; deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --allow-ffi --unstable-byonm ./index.mjs</code>. Nitro&#x27;s node-server entry uses <code>node:http</code>, which the SDK instruments on Deno. For outgoing requests, add <code>winterCGFetchIntegration()</code> from <code>@sentry/vercel-edge</code> to <code>Sentry.init</code>.</p>
+<p>Works today:</p>
+<ul><li>Errors from nitro route handlers, with request data and source context.</li><li>Parameterized <code>GET /api/users/:id</code> with source <code>route</code>.</li><li>Per-request isolation and incoming trace continuation.</li><li><code>http.client</code> spans and <code>sentry-trace</code>/<code>baggage</code> on <code>fetch</code> and nitro&#x27;s <code>$fetch</code>, with the integration above.</li><li>Logs.</li></ul>
+<p>Known limits:</p>
+<ul><li>With <code>nitro: { preset: &#x27;deno_server&#x27; }</code> there is no request instrumentation at all: no <code>http.server</code> spans, <code>getActiveSpan()</code> is undefined in handlers, every request shares one isolation scope and one trace id so tags and users leak, and incoming trace headers are ignored.</li><li>Outgoing <code>fetch</code> is not instrumented on Deno without the integration above.</li></ul>
+<p>What to change:</p>
+<ul><li><code>guides/nuxt/features/nitro-deployment-presets.mdx:7</code>: qualify the &quot;work out of the box&quot; claim; add a Deno section next to Cloudflare Pages at <code>:9</code> with the run command and the <code>deno_server</code> warning.</li><li>Cross-link a Deno framework page for Nuxt.</li></ul>
+<p>Source: runtime docs audit, item DOC-F28, cell M-nuxt-deno</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F28; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">10-DOC-F28.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`docs/platforms/javascript/guides/nuxt/features/nitro-deployment-presets.mdx:7` claims that the SDK supports different Nitro deployment presets, &quot;most of which work out of the box&quot;, and the 11-line file then documents only Cloudflare Pages at `:9-11`. The Nuxt guide has no Deno mention anywhere, so a reader picking the `deno_server` preset gets no warning.
+
+Verified on Nuxt 4 with `@sentry/nuxt` 10.67.0 and Deno 2.9.0: do not set a Nitro preset. Build the default `node-server` output with `npx nuxt build`, keep `sentry: { autoInjectServerSentry: &#x27;top-level-import&#x27; }` in `nuxt.config.ts` and a root `sentry.server.config.ts` that calls `Sentry.init()`, then run the output under Deno with `cd .output/server &amp;&amp; PORT=&lt;port&gt; deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --allow-ffi --unstable-byonm ./index.mjs`. Nitro&#x27;s node-server entry uses `node:http`, which the SDK instruments on Deno. For outgoing requests, add `winterCGFetchIntegration()` from `@sentry/vercel-edge` to `Sentry.init`.
+
+Works today:
+
+- Errors from nitro route handlers, with request data and source context.
+- Parameterized `GET /api/users/:id` with source `route`.
+- Per-request isolation and incoming trace continuation.
+- `http.client` spans and `sentry-trace`/`baggage` on `fetch` and nitro&#x27;s `$fetch`, with the integration above.
+- Logs.
+
+Known limits:
+
+- With `nitro: { preset: &#x27;deno_server&#x27; }` there is no request instrumentation at all: no `http.server` spans, `getActiveSpan()` is undefined in handlers, every request shares one isolation scope and one trace id so tags and users leak, and incoming trace headers are ignored.
+- Outgoing `fetch` is not instrumented on Deno without the integration above.
+
+What to change:
+
+- `guides/nuxt/features/nitro-deployment-presets.mdx:7`: qualify the &quot;work out of the box&quot; claim; add a Deno section next to Cloudflare Pages at `:9` with the run command and the `deno_server` warning.
+- Cross-link a Deno framework page for Nuxt.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F28; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Correct the Nuxt Nitro preset page for Deno: keep the node-server preset</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Correct the Nuxt Nitro preset page for Deno: keep the node-server preset&quot; --body-file 10-DOC-F28.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F13">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-F13</span><span class="n">11 of 13</span></p>
+<h2>Name Bun in the Astro runtime alert and add a Running on Bun section</h2>
+<div class="ibody"><p>The runtime alert at <code>docs/platforms/javascript/guides/astro/index.mdx:21-28</code> says the SDK &quot;currently only works on Node runtimes, such as Node adapter or Vercel with Lambda functions&quot; and that other non-Node runtimes are not supported, which reads as excluding Bun. Nothing under <code>guides/astro/</code> mentions Bun, and nothing under <code>guides/bun/</code> mentions Astro.</p>
+<p>Verified on Astro 7.3.1 with the <code>@astrojs/node</code> standalone adapter and <code>@sentry/astro</code> 10.67.0 on Bun 1.4.0: the <code>sentry()</code> integration in <code>astro.config.mjs</code>, a root <code>sentry.server.config.mjs</code> guarded with <code>Sentry.isInitialized()</code>, <code>astro build</code>, then <code>bun --preload ./sentry.server.config.mjs dist/server/entry.mjs</code>. The preload is required, because the integration injects the init only into <code>.astro</code> page chunks. Install <code>@sentry/bun</code> and add its <code>fetchIntegration()</code> to the server init, guarded on <code>typeof globalThis.Bun !== &#x27;undefined&#x27;</code> so Node deployments of the same build do not double-count.</p>
+<p>Works today:</p>
+<ul><li>Unhandled page and endpoint errors via the Astro request middleware</li><li>Route names <code>GET /users/[id]</code> with source <code>route</code> and <code>http.route</code></li><li>Per-request isolation across concurrent requests</li><li>Incoming <code>sentry-trace</code>/<code>baggage</code> continuation</li><li>Outgoing <code>fetch</code> spans and propagation headers, with <code>fetchIntegration()</code> added</li><li><code>Sentry.logger</code> log envelopes</li></ul>
+<p>Known limits:</p>
+<ul><li>Database spans are not recorded on Bun in this setup.</li></ul>
+<p>What to change:</p>
+<ul><li><code>guides/astro/index.mdx:21-28</code>: amend the alert to name Bun as working on the Node adapter output.</li><li>Add a &quot;Running on Bun&quot; section to that page with the <code>bun --preload ... dist/server/entry.mjs</code> start command, the runtime-gated <code>fetchIntegration()</code>, and the capability list.</li></ul>
+<p>Source: runtime docs audit, item DOC-F13, cell M-astro-bun</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F13; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">11-DOC-F13.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">The runtime alert at `docs/platforms/javascript/guides/astro/index.mdx:21-28` says the SDK &quot;currently only works on Node runtimes, such as Node adapter or Vercel with Lambda functions&quot; and that other non-Node runtimes are not supported, which reads as excluding Bun. Nothing under `guides/astro/` mentions Bun, and nothing under `guides/bun/` mentions Astro.
+
+Verified on Astro 7.3.1 with the `@astrojs/node` standalone adapter and `@sentry/astro` 10.67.0 on Bun 1.4.0: the `sentry()` integration in `astro.config.mjs`, a root `sentry.server.config.mjs` guarded with `Sentry.isInitialized()`, `astro build`, then `bun --preload ./sentry.server.config.mjs dist/server/entry.mjs`. The preload is required, because the integration injects the init only into `.astro` page chunks. Install `@sentry/bun` and add its `fetchIntegration()` to the server init, guarded on `typeof globalThis.Bun !== &#x27;undefined&#x27;` so Node deployments of the same build do not double-count.
+
+Works today:
+
+- Unhandled page and endpoint errors via the Astro request middleware
+- Route names `GET /users/[id]` with source `route` and `http.route`
+- Per-request isolation across concurrent requests
+- Incoming `sentry-trace`/`baggage` continuation
+- Outgoing `fetch` spans and propagation headers, with `fetchIntegration()` added
+- `Sentry.logger` log envelopes
+
+Known limits:
+
+- Database spans are not recorded on Bun in this setup.
+
+What to change:
+
+- `guides/astro/index.mdx:21-28`: amend the alert to name Bun as working on the Node adapter output.
+- Add a &quot;Running on Bun&quot; section to that page with the `bun --preload ... dist/server/entry.mjs` start command, the runtime-gated `fetchIntegration()`, and the capability list.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F13; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Name Bun in the Astro runtime alert and add a Running on Bun section</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Name Bun in the Astro runtime alert and add a Running on Bun section&quot; --body-file 11-DOC-F13.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F30">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-F30</span><span class="n">12 of 13</span></p>
+<h2>Correct the Astro runtime note: Deno with @deno/astro-adapter works</h2>
+<div class="ibody"><p><code>docs/platforms/javascript/guides/astro/index.mdx:22-31</code> carries an Alert titled &quot;What runtime do you use?&quot; saying the SDK only works on Node runtimes such as the Node adapter or Vercel with Lambda functions, pointing Cloudflare users elsewhere, and calling other non-Node runtimes not supported. That reads as excluding Deno. <code>grep -rni deno docs/platforms/javascript/guides/astro/</code> returns zero hits, and <code>guides/deno/</code> never mentions Astro.</p>
+<p>Verified on Astro 7.3.1 in SSR mode (<code>output: &#x27;server&#x27;</code>) with <code>@deno/astro-adapter</code> 0.6.0 and <code>@sentry/astro</code> 10.67.0 on Deno 2.9.0: install the packages with <code>npm install</code> into a real <code>node_modules</code> rather than <code>deno add</code>, set <code>deno.json</code> to <code>{&quot;nodeModulesDir&quot;: &quot;manual&quot;}</code>, add the <code>sentry()</code> integration in <code>astro.config.mjs</code>, keep a root <code>sentry.server.config.js</code> that calls <code>Sentry.init()</code>, add a <code>src/middleware.ts</code> whose first line imports that config, build normally and run the built <code>dist/server/entry.mjs</code> with Deno.</p>
+<p>Works today:</p>
+<ul><li>Route errors, mechanism <code>auto.middleware.astro</code>, with request URL and source context.</li><li><code>GET /users/[id]</code> with source <code>route</code>, in both trace lifecycles.</li><li>Per-request isolation across concurrent requests.</li><li>Incoming <code>sentry-trace</code>/<code>baggage</code> continuation.</li><li>Database spans for <code>mysql2</code>, injected by the Vite plugin <code>@sentry/astro</code> adds during <code>astro build</code>.</li><li>Logs.</li></ul>
+<p>Known limits:</p>
+<ul><li>Outgoing <code>fetch()</code> is not instrumented on Deno: no <code>http.client</code> span and no <code>sentry-trace</code>/<code>baggage</code> headers, so the downstream service starts a new trace. Adding <code>fetchIntegration</code> from <code>@sentry/cloudflare</code> in <code>sentry.server.config.js</code>, or using <code>node:http</code>/<code>node:https</code>, restores both.</li></ul>
+<p>What to change:</p>
+<ul><li><code>guides/astro/index.mdx:22-31</code>: amend the Alert to name Deno as a supported runtime and link out.</li><li>Add a Deno framework page for Astro with the <code>@deno/astro-adapter</code> setup, the middleware import and the <code>fetchIntegration</code> snippet.</li></ul>
+<p>Source: runtime docs audit, item DOC-F30, cell M-astro-deno</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F30; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">12-DOC-F30.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`docs/platforms/javascript/guides/astro/index.mdx:22-31` carries an Alert titled &quot;What runtime do you use?&quot; saying the SDK only works on Node runtimes such as the Node adapter or Vercel with Lambda functions, pointing Cloudflare users elsewhere, and calling other non-Node runtimes not supported. That reads as excluding Deno. `grep -rni deno docs/platforms/javascript/guides/astro/` returns zero hits, and `guides/deno/` never mentions Astro.
+
+Verified on Astro 7.3.1 in SSR mode (`output: &#x27;server&#x27;`) with `@deno/astro-adapter` 0.6.0 and `@sentry/astro` 10.67.0 on Deno 2.9.0: install the packages with `npm install` into a real `node_modules` rather than `deno add`, set `deno.json` to `{&quot;nodeModulesDir&quot;: &quot;manual&quot;}`, add the `sentry()` integration in `astro.config.mjs`, keep a root `sentry.server.config.js` that calls `Sentry.init()`, add a `src/middleware.ts` whose first line imports that config, build normally and run the built `dist/server/entry.mjs` with Deno.
+
+Works today:
+
+- Route errors, mechanism `auto.middleware.astro`, with request URL and source context.
+- `GET /users/[id]` with source `route`, in both trace lifecycles.
+- Per-request isolation across concurrent requests.
+- Incoming `sentry-trace`/`baggage` continuation.
+- Database spans for `mysql2`, injected by the Vite plugin `@sentry/astro` adds during `astro build`.
+- Logs.
+
+Known limits:
+
+- Outgoing `fetch()` is not instrumented on Deno: no `http.client` span and no `sentry-trace`/`baggage` headers, so the downstream service starts a new trace. Adding `fetchIntegration` from `@sentry/cloudflare` in `sentry.server.config.js`, or using `node:http`/`node:https`, restores both.
+
+What to change:
+
+- `guides/astro/index.mdx:22-31`: amend the Alert to name Deno as a supported runtime and link out.
+- Add a Deno framework page for Astro with the `@deno/astro-adapter` setup, the middleware import and the `fetchIntegration` snippet.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F30; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Correct the Astro runtime note: Deno with @deno/astro-adapter works</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Correct the Astro runtime note: Deno with @deno/astro-adapter works&quot; --body-file 12-DOC-F30.md</pre>
+</article>
+
+<article class="issue" id="i-DOC-F29">
+<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">docs-change</span><span class="iid">DOC-F29</span><span class="n">13 of 13</span></p>
+<h2>Correct the SvelteKit adapter note: adapter-node runs on Deno</h2>
+<div class="ibody"><p><code>docs/platforms/javascript/guides/sveltekit/manual-setup__v10.7.0.mdx:21-35</code> holds the &quot;Notes on SvelteKit adapter compatibility&quot; section, whose &quot;Currently not supported&quot; bullet at <code>:30-31</code> says non-Node server runtimes are not yet supported, while <code>:28</code> lists adapter-node as fully supported. That reads as excluding Deno, and the current <code>manual-setup.mdx</code> has no adapter-and-runtime section at all. <code>grep -rni deno</code> over the SvelteKit guide returns nothing.</p>
+<p>Verified on SvelteKit with adapter-node and <code>@sentry/sveltekit</code> 10.67.0 on Deno 2.9.0: build with <code>vite build</code> under Node, using <code>sentrySvelteKit()</code> imported from <code>@sentry/sveltekit/vite</code>, then start the adapter output with <code>HOST=&lt;host&gt; PORT=&lt;port&gt; deno run --allow-net --allow-env --allow-read --allow-sys --allow-ffi build/index.js</code>. For outgoing requests, register <code>fetchIntegration</code> from <code>@sentry/cloudflare</code>, already installed as a dependency of <code>@sentry/sveltekit</code>, in <code>src/hooks.server.js</code>, gated on Deno so Node builds are not double-instrumented.</p>
+<p>Works today:</p>
+<ul><li>Errors from <code>+server.js</code> handlers, mechanism <code>auto.function.sveltekit.handle_error</code>.</li><li><code>GET /users/[id]</code> with source <code>route</code>.</li><li>Per-request isolation and incoming trace continuation.</li><li><code>http.client</code> spans plus <code>sentry-trace</code>/<code>baggage</code>, with <code>fetchIntegration()</code>.</li><li>Database spans for the <code>mysql</code> driver, with no extra flags.</li><li>Logs.</li></ul>
+<p>Known limits:</p>
+<ul><li>Without <code>fetchIntegration()</code>, neither a global <code>fetch()</code> nor SvelteKit&#x27;s <code>event.fetch</code> produces an <code>http.client</code> span or carries trace headers on Deno.</li><li><code>mysql2</code> cannot be loaded once the SDK is initialized: Deno compiles <code>require(&#x27;*.json&#x27;)</code> as JavaScript while a module hook is registered (denoland/deno#36240), and the route fails with <code>SyntaxError: Unexpected token &#x27;:&#x27;</code>.</li></ul>
+<p>What to change:</p>
+<ul><li>Fix <code>manual-setup__v10.7.0.mdx:21-35</code> to name Deno with adapter-node as supported.</li><li>Restore an adapter-and-runtime section in <code>manual-setup.mdx</code> and add a Deno framework page with the run command and the <code>fetchIntegration</code> snippet.</li></ul>
+<p>Source: runtime docs audit, item DOC-F29, cell M-sveltekit-deno</p></div><hr><p class="foot"><em>From the runtime docs audit of September 2026, item DOC-F29; the audit page is <code>_reports/docs-audit.html</code> in the runtime audit repository. Behavior verified on <code>getsentry/sentry-javascript</code> develop at <code>6f2da7483d</code> (package 10.67.0) against docs at <code>046ce5942</code>; citations re-checked on 2026-09-07 against docs <code>b568ebbd3</code> and develop <code>d6426ad581</code>.</em></p></div>
+<div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">13-DOC-F29.md</span></div>
+<details><summary>Markdown source</summary><pre class="src" data-role="body">`docs/platforms/javascript/guides/sveltekit/manual-setup__v10.7.0.mdx:21-35` holds the &quot;Notes on SvelteKit adapter compatibility&quot; section, whose &quot;Currently not supported&quot; bullet at `:30-31` says non-Node server runtimes are not yet supported, while `:28` lists adapter-node as fully supported. That reads as excluding Deno, and the current `manual-setup.mdx` has no adapter-and-runtime section at all. `grep -rni deno` over the SvelteKit guide returns nothing.
+
+Verified on SvelteKit with adapter-node and `@sentry/sveltekit` 10.67.0 on Deno 2.9.0: build with `vite build` under Node, using `sentrySvelteKit()` imported from `@sentry/sveltekit/vite`, then start the adapter output with `HOST=&lt;host&gt; PORT=&lt;port&gt; deno run --allow-net --allow-env --allow-read --allow-sys --allow-ffi build/index.js`. For outgoing requests, register `fetchIntegration` from `@sentry/cloudflare`, already installed as a dependency of `@sentry/sveltekit`, in `src/hooks.server.js`, gated on Deno so Node builds are not double-instrumented.
+
+Works today:
+
+- Errors from `+server.js` handlers, mechanism `auto.function.sveltekit.handle_error`.
+- `GET /users/[id]` with source `route`.
+- Per-request isolation and incoming trace continuation.
+- `http.client` spans plus `sentry-trace`/`baggage`, with `fetchIntegration()`.
+- Database spans for the `mysql` driver, with no extra flags.
+- Logs.
+
+Known limits:
+
+- Without `fetchIntegration()`, neither a global `fetch()` nor SvelteKit&#x27;s `event.fetch` produces an `http.client` span or carries trace headers on Deno.
+- `mysql2` cannot be loaded once the SDK is initialized: Deno compiles `require(&#x27;*.json&#x27;)` as JavaScript while a module hook is registered (denoland/deno#36240), and the route fails with `SyntaxError: Unexpected token &#x27;:&#x27;`.
+
+What to change:
+
+- Fix `manual-setup__v10.7.0.mdx:21-35` to name Deno with adapter-node as supported.
+- Restore an adapter-and-runtime section in `manual-setup.mdx` and add a Deno framework page with the run command and the `fetchIntegration` snippet.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-F29; the audit page is `_reports/docs-audit.html` in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-07 against docs `b568ebbd3` and develop `d6426ad581`._
+</pre></details>
+<pre class="hidden" data-role="title">Correct the SvelteKit adapter note: adapter-node runs on Deno</pre><pre class="hidden" data-role="gh">gh issue create -R getsentry/sentry-docs --title &quot;Correct the SvelteKit adapter note: adapter-node runs on Deno&quot; --body-file 13-DOC-F29.md</pre>
+</article>
+</main>
+<script>
+document.addEventListener('click', function (ev) {
+  var b = ev.target.closest('button[data-copy]'); if (!b) return;
+  var art = b.closest('.issue'); var src = art.querySelector('[data-role="' + b.getAttribute('data-copy') + '"]');
+  var text = src ? src.textContent : '';
+  var done = function () { var old = b.textContent; b.textContent = 'Copied'; b.classList.add('done'); setTimeout(function () { b.textContent = old; b.classList.remove('done'); }, 1500); };
+  var fallback = function () { var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.left = '-9999px'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch (e) { b.textContent = 'Copy failed'; } document.body.removeChild(ta); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+});
+</script>

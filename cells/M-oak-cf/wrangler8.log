@@ -1,0 +1,231 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Using redirected Wrangler configuration.
+ - Configuration being used: "dist/m_oak_cf/wrangler.json"
+ - Original user's configuration: "wrangler.jsonc"
+ - Deploy configuration file: ".wrangler/deploy/config.json"
+Your Worker has access to the following bindings:
+Binding                              Resource                  Mode
+env.SENTRY_LIFECYCLE ("stream")      Environment Variable      local
+
+Attaching additional modules:
+┌─────────────────────────────────────┬──────┬─────────────┐
+│ Name                                │ Type │ Size        │
+├─────────────────────────────────────┼──────┼─────────────┤
+│ assets/http_server_bun-COBq1MJg.js  │ esm  │ 3.53 KiB    │
+├─────────────────────────────────────┼──────┼─────────────┤
+│ assets/http_server_node-Bs_PNh3e.js │ esm  │ 3.78 KiB    │
+├─────────────────────────────────────┼──────┼─────────────┤
+│ assets/worker-entry-CqxbwScD.js     │ esm  │ 4311.64 KiB │
+├─────────────────────────────────────┼──────┼─────────────┤
+│ Total (3 modules)                   │      │ 4318.95 KiB │
+└─────────────────────────────────────┴──────┴─────────────┘
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:41537/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:41537/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:41537/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:41537/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:41537/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:41537
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:mysql2] "mysql2" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql2] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql2
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 82ffa5f3033edf66
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT users
+  ID: bed79e628af0806a
+  parent ID: 82ffa5f3033edf66
+  root ID: 82ffa5f3033edf66
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT users" with ID bed79e628af0806a
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db1" with ID 82ffa5f3033edf66
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 1bc626d432f04a529ea11c42a6ab82fe with 2 spans
+[wrangler:info] GET /db1 200 OK (36ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mSentry Logger [error]: Encountered error running transport request: [Error: Network connection lost.] { remote: true, retryable: true }[0m
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 816537585b523ddf
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 816537585b523ddf
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 226b320f9d3543c28f3e722dd0c87f75 with 1 spans
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mSentry Logger [error]: Encountered error running transport request: [Error: Network connection lost.] { remote: true, retryable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mSentry Logger [error]: Encountered error running transport request: [Error: Network connection lost.] { remote: true, retryable: true }[0m
+
+
+[wrangler:info] GET /sentinel 200 OK (6ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 9408b8775a62407d
+Sentry Logger [log]: Captured error event `sentinel`
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mSentry Logger [warn]: Event dropped due to being a duplicate of previously captured event.[0m
+
+
+Sentry Logger [log]: Event processor "Dedupe" dropped event
+Sentry Logger [log]: An event processor returned `null`, will not send event.
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 9408b8775a62407d
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 190aac03bfd444eb9edcc7aed021a7e1 with 1 spans
+[wrangler:info] GET /sentinel 200 OK (4ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mSentry Logger [error]: Encountered error running transport request: [Error: Network connection lost.] { remote: true, retryable: true }[0m
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: bd884c2cc72f0df2
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT users
+  ID: 8c91d802f24032cd
+  parent ID: bd884c2cc72f0df2
+  root ID: bd884c2cc72f0df2
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT users" with ID 8c91d802f24032cd
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db1" with ID bd884c2cc72f0df2
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 3d371dbe0d6440e6959edc11d1634e97 with 2 spans
+[wrangler:info] GET /db1 200 OK (10006ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: be58fcfc39142959
+Sentry Logger [log]: Captured error event `sentinel`
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mSentry Logger [warn]: Event dropped due to being a duplicate of previously captured event.[0m
+
+
+Sentry Logger [log]: Event processor "Dedupe" dropped event
+Sentry Logger [log]: An event processor returned `null`, will not send event.
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID be58fcfc39142959
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace b003a6527fdc42abb535c5cc3f0561f0 with 1 spans
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: aed62272ec61b9fe
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.pool.connect
+  ID: 971157c80dc4eb9e
+  parent ID: aed62272ec61b9fe
+  root ID: aed62272ec61b9fe
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: mysql2.connect
+  ID: a0f38cd971388f0a
+  parent ID: 971157c80dc4eb9e
+  root ID: aed62272ec61b9fe
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT users
+  ID: 807e09f8ad4c6321
+  parent ID: aed62272ec61b9fe
+  root ID: aed62272ec61b9fe
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.pool.connect" with ID 971157c80dc4eb9e
+Sentry Logger [log]: [Tracing] Finishing "db" span "mysql2.connect" with ID a0f38cd971388f0a
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT users" with ID 807e09f8ad4c6321
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: EvalError - Code generation from strings disallowed for this context[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: { url: 'http://127.0.0.1:41537/db', method: 'GET', hasBody: false }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:95249:29)
+      at dispatch (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:19030:13)
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:20068:18)
+      at dispatch (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:19030:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:19032:12)
+      at dispatch (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:20072:28)
+      at dispatch (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:19030:13)
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:95264:9)
+      at dispatch (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:19030:13)
+      at composedMiddleware (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:19032:12)
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID aed62272ec61b9fe
+Sentry Logger [log]: Captured error event `Code generation from strings disallowed for this context`
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace cf2510c9cca846f1909aa77d51bb98f5 with 4 spans
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught EvalError: Code generation from strings disallowed for this context Error[0m
+
+      at line.toFunction (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:79646:23)
+      at compile2 (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:79831:21)
+      at getParser (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:33159:14)
+      at getTextParser (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:79834:24)
+      at readField (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:80194:34)
+      at execute (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:78196:24)
+      at handlePacket (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:82467:36)
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:82146:14)
+      at executeStart (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:75357:18)
+      at null.<anonymous> (file://$REPRO/cells/M-oak-cf/dist/m_oak_cf/assets/worker-entry-CqxbwScD.js:82153:27)
+      at emit (node-internal:events:311:32)
+      at addChunk (node-internal:streams_readable:580:12)
+      at readableAddChunkPushByteMode (node-internal:streams_readable:525:3)
+      at Readable.push (node-internal:streams_readable:398:7)
+      at startRead (node-internal:internal_net:1011:25)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught EvalError: Code generation from strings disallowed for this context [0m
+
+
+[wrangler:info] GET /db 500 Internal Server Error (14ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 880545f6ec8e3092
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 880545f6ec8e3092
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 4354a8c578da4bd49537020ebde698c4 with 1 spans
+[wrangler:info] GET /sentinel 200 OK (2ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_19-32-45_622.log"

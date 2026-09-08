@@ -1,0 +1,39 @@
+[instrument] evaluated#1 pid=57721 clientBeforeInit=false clientAfterInit=true sameClientAsBefore=false
+[app] PORT=51812 GEN=1 pid=57721 appEvals=1 sameBunServe=true sameSentryNs=true uncaughtListeners=1 rejectionListeners=1
+20 |     port: PORT,
+21 |     hostname: '127.0.0.1',
+22 |     routes: {
+23 |       '/hello/:name': (req: any) => new Response(`hello ${req.params.name} gen${gen}`),
+24 |       '/error': () => {
+25 |         throw new Error(`route boom gen${gen}`);
+                       ^
+error: route boom gen1
+      at /error ($REPRO/probes/B12/server.ts:25:19)
+      at $REPRO/probes/B12/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at handleCallbackErrors ($REPRO/probes/B12/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at unknown:1:1
+GET - /error failed
+[app] PORT=51812 GEN=2 pid=57721 appEvals=2 sameBunServe=true sameSentryNs=false uncaughtListeners=1 rejectionListeners=1
+20 |     port: PORT,
+21 |     hostname: '127.0.0.1',
+22 |     routes: {
+23 |       '/hello/:name': (req: any) => new Response(`hello ${req.params.name} gen${gen}`),
+24 |       '/error': () => {
+25 |         throw new Error(`route boom gen${gen}`);
+                       ^
+error: route boom gen2
+      at /error ($REPRO/probes/B12/server.ts:25:19)
+      at $REPRO/probes/B12/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at handleCallbackErrors ($REPRO/probes/B12/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at unknown:1:1
+GET - /error failed

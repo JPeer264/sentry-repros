@@ -1,0 +1,61 @@
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: $REPRO/cells/M-nextjs-cf
+Next.js version : 15.5.25
+@opennextjs/cloudflare version: 1.20.6
+@opennextjs/aws version: 4.1.4
+workerd compatibility_date: 2026-05-01
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+
+> m-nextjs-cf@0.0.0 build
+> next build
+
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · clientTraceMetadata
+
+   Creating an optimized production build ...
+[@sentry/nextjs] It seems like you don't have a global error handler set up. It is recommended that you add a 'global-error.js' file with Sentry instrumentation so that React rendering errors are reported to Sentry. Read more: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#react-render-errors-in-app-router (you can suppress this warning by setting SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING=1 as environment variable)
+ ✓ Compiled successfully in 3.5s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/db2/route.ts:1:19
+Type error: Could not find a declaration file for module 'mysql'. '$REPRO/cells/M-nextjs-cf/node_modules/mysql/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/mysql` if it exists or add a new declaration (.d.ts) file containing `declare module 'mysql';`
+
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m mysql [36mfrom[39m [32m'mysql'[39m[33m;[39m
+ [90m   |[39m                   [31m[1m^[22m[39m
+ [90m 2 |[39m
+ [90m 3 |[39m [36mconst[39m pool [33m=[39m mysql[33m.[39mcreatePool({ host[33m:[39m [32m'127.0.0.1'[39m[33m,[39m port[33m:[39m [35m3307[39m[33m,[39m user[33m:[39m [32m'root'[39m[33m,[39m database[33m:[39m [32m'app'[39m[33m,[39m connectionLimit[33m:[39m [35m2[39m })[33m;[39m
+ [90m 4 |[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npm run build
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at Object.execSync (node:child_process:1014:15)
+    at buildNextjsApp (file://$REPRO/cells/M-nextjs-cf/node_modules/@opennextjs/aws/dist/build/buildNextApp.js:15:8)
+    at build (file://$REPRO/cells/M-nextjs-cf/node_modules/@opennextjs/cloudflare/dist/cli/build/build.js:64:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async buildCommand (file://$REPRO/cells/M-nextjs-cf/node_modules/@opennextjs/cloudflare/dist/cli/commands/build.js:40:5) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 62474,
+  stdout: null,
+  stderr: null
+}
+
+Node.js v26.5.0

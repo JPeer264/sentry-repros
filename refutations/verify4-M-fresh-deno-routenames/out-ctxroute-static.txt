@@ -1,0 +1,7 @@
+=== ctxroute-static (mode=ctxmgr-route lifecycle=static, vite dev)
+users:200 boom:500 child:200 sentinel:200
+transaction | GET /api/users/:id | op=http.server | src=route | route=/api/users/:id | segsrc=route  spans= []
+transaction | GET /api/boom | op=http.server | src=route | route=/api/boom | segsrc=route  spans= []
+transaction | GET /api/child | op=http.server | src=route | route=/api/child | segsrc=route  spans= ['custom work', 'via-tracer']
+transaction | GET /api/sentinel | op=http.server | src=route | route=/api/sentinel | segsrc=route  spans= []
+event | sentinel | mech=generic handled=True | tx=GET /api/sentinel

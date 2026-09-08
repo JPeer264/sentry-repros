@@ -1,0 +1,36 @@
+== requests ==
+ok1 -> 200
+ok2 -> 200
+error -> 200
+sentinel -> 000
+== waiting for sentinel ==
+== sink after sentinel ==
+[{"type":"sessions","attrs":{"release":"1.0.0","environment":"production"},"aggregates":[{"started":"2026-09-07T08:54:00.000Z","exited":2,"errored":0,"crashed":0}]},{"type":"session","status":"crashed","errors":1,"init":true,"release":"1.0.0","sid":"11922351632b4e55acfd7d5b6ecd4431"},{"type":"event","exception":"nodehttp boom","mechanism":"auto.node.onuncaughtexception","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"59c924e1fa8b4c1abec37fa97fa2447f","release":"1.0.0","environment":"production"}]
+== sink at t+65s ==
+[{"type":"sessions","attrs":{"release":"1.0.0","environment":"production"},"aggregates":[{"started":"2026-09-07T08:54:00.000Z","exited":2,"errored":0,"crashed":0}]},{"type":"session","status":"crashed","errors":1,"init":true,"release":"1.0.0","sid":"11922351632b4e55acfd7d5b6ecd4431"},{"type":"event","exception":"nodehttp boom","mechanism":"auto.node.onuncaughtexception","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"59c924e1fa8b4c1abec37fa97fa2447f","release":"1.0.0","environment":"production"}]
+== stop ==
+stop -> 000
+app exit code 1
+== sink after app exit ==
+[{"type":"sessions","attrs":{"release":"1.0.0","environment":"production"},"aggregates":[{"started":"2026-09-07T08:54:00.000Z","exited":2,"errored":0,"crashed":0}]},{"type":"session","status":"crashed","errors":1,"init":true,"release":"1.0.0","sid":"11922351632b4e55acfd7d5b6ecd4431"},{"type":"event","exception":"nodehttp boom","mechanism":"auto.node.onuncaughtexception","handled":false,"sdk":"sentry.javascript.bun","runtime":"bun","hasContextLine":true,"trace_id":"59c924e1fa8b4c1abec37fa97fa2447f","release":"1.0.0","environment":"production"}]
+== app log ==
+nodehttp listening on 41328
+3 | import { createServer } from 'node:http';
+4 | 
+5 | const server = createServer((req, res) => {
+6 |   const url = req.url || '/';
+7 |   if (url === '/error') {
+8 |     throw new Error('nodehttp boom');
+                  ^
+error: nodehttp boom
+      at $REPRO/probes/B05/app-nodehttp.ts:8:15
+      at emit (node:events:103:22)
+      at $REPRO/probes/B05/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:98:37
+      at wrapServerEmitRequest ($REPRO/probes/B05/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:125:9)
+      at $REPRO/probes/B05/node_modules/@sentry/core/build/esm/integrations/http/server-subscription.js:97:15
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at unknown:1:1
+      at onNodeHTTPRequest (node:_http_server:531:22)
+

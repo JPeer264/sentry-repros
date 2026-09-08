@@ -1,0 +1,20 @@
+[probe] mode=ctxmgr lifecycle=static
+[probe] setGlobalContextManager -> true
+deno serve: Listening on http://0.0.0.0:51479/
+GET http://127.0.0.1:51479/
+Shared value hello
+GET http://127.0.0.1:51479/api/users/42
+GET http://127.0.0.1:51479/api/boom
+Error: fresh-deno-boom
+    at GET (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/assets/_fresh-route___api_boom-SKrYLCwi.mjs:16:11)
+    at file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:5628:20
+    at Object.with (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:41674:48)
+    at ContextAPI.with (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:1097:42)
+    at NoopTracer.startActiveSpan (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:1432:27)
+    at ProxyTracer.startActiveSpan (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:1508:20)
+    at renderRoute (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:5611:28)
+    at file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:5837:20
+    at async chain (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:5468:24)
+    at async segmentMiddleware (file://$REPRO/refutations/verify4-M-fresh-deno-routenames/app/_fresh/server/server-entry.mjs:5575:16)
+GET http://127.0.0.1:51479/api/child
+GET http://127.0.0.1:51479/api/sentinel

@@ -1,0 +1,269 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                              Resource                  Mode
+env.SENTRY_LIFECYCLE ("static")      Environment Variable      local
+
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52414/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52414/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52414/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52414/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52414/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52414/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52414/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52414/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52414/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52414/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:52414
+[wrangler:info] GET /db 404 Not Found (13ms)
+[wrangler:info] GET /sentinel 200 OK (6ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mValueExpected[0m
+
+    $REPRO/refutations/verify4-M-oak-cf-routenames/wrangler.jsonc:1:0:
+[37m      1 │ [32m[37m
+        ╵ [32m^[0m
+
+
+Your Worker has access to the following bindings:
+Binding                              Resource                  Mode
+env.SENTRY_LIFECYCLE ("static")      Environment Variable      local
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[wrangler:info] GET / 200 OK (9ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[wrangler:info] DELETE /__items 404 Not Found (9ms)
+[wrangler:info] GET /users/42 200 OK (3ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:52414/error/7?mode=off',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+      at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:43:11)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+
+
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+    at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:43:11)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+[wrangler:info] GET /error/7 500 Internal Server Error (60ms)
+[wrangler:info] GET /users/42 200 OK (2ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:52414/error/7?mode=after',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+      at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:47:11)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+
+
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+    at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:47:11)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+[wrangler:info] GET /error/7 500 Internal Server Error (41ms)
+[wrangler:info] GET /users/42 200 OK (1ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:52414/error/7?mode=fixed',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+      at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:58:11)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+
+
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+    at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:58:11)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+[wrangler:info] GET /error/7 500 Internal Server Error (40ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mValueExpected[0m
+
+    $REPRO/refutations/verify4-M-oak-cf-routenames/wrangler.jsonc:1:0:
+[37m      1 │ [32m[37m
+        ╵ [32m^[0m
+
+
+[wrangler:info] GET / 200 OK (4ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mValueExpected[0m
+
+    $REPRO/refutations/verify4-M-oak-cf-routenames/wrangler.jsonc:1:0:
+[37m      1 │ [32m[37m
+        ╵ [32m^[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:52414/error/7?mode=fixed',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+      at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:58:11)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+
+
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+    at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:58:11)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+[wrangler:info] GET /error/7 500 Internal Server Error (48ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[uncaught application error]: Error - oak-route-boom[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+  request: {
+    url: 'http://127.0.0.1:52414/error/7?mode=fixed',
+    method: 'GET',
+    hasBody: false
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mresponse: { status: 500, type: 'text', hasBody: true, writable: true }[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1m[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+      at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:61:11)
+      at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+      at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+
+
+[wrangler:error] Error: oak-route-boom
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:17:9)
+    at next (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1327:20)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/router.ts:1333:22)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at null.<anonymous> (file://$REPRO/refutations/verify4-M-oak-cf-routenames/src/index.ts:61:11)
+    at dispatch (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:90:13)
+    at composedMiddleware (file://$REPRO/refutations/verify4-M-oak-cf-routenames/node_modules/@oak/oak/middleware.ts:93:12)
+[wrangler:info] GET /error/7 500 Internal Server Error (46ms)
+[wrangler:info] GET /users/42 200 OK (2ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_20-52-02_207.log"

@@ -1,0 +1,1 @@
+import{n as e,o as t}from"./web-BenwGn1i.js";var n=t(`<h1>solidstart deno probe`);function r(){return e(n)}export{r as default};

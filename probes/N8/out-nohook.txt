@@ -1,0 +1,44 @@
+/ok -> 200 {"worker":"950f4fe9","ok":true}
+/db -> 200 {"worker":"950f4fe9","rows":[{"id":1,"name":"ada"},{"id":2,"name":"linus"}]}
+/tag?id=r0 -> 200 {"worker":"950f4fe9","id":"r0"}
+/tag?id=r1 -> 200 {"worker":"950f4fe9","id":"r1"}
+/tag?id=r2 -> 200 {"worker":"950f4fe9","id":"r2"}
+/tag?id=r3 -> 200 {"worker":"950f4fe9","id":"r3"}
+/tag?id=r4 -> 200 {"worker":"950f4fe9","id":"r4"}
+/tag?id=r5 -> 200 {"worker":"950f4fe9","id":"r5"}
+/tag?id=r6 -> 200 {"worker":"950f4fe9","id":"r6"}
+/tag?id=r7 -> 200 {"worker":"950f4fe9","id":"r7"}
+/tag?id=r8 -> 200 {"worker":"950f4fe9","id":"r8"}
+/tag?id=r9 -> 200 {"worker":"950f4fe9","id":"r9"}
+/boom -> 500 Internal Server Error
+/boom -> 500 Internal Server Error
+/boom -> 500 Internal Server Error
+/sentinel -> 200 {"worker":"950f4fe9"}
+/sentinel -> 200 {"worker":"950f4fe9"}
+/sentinel -> 200 {"worker":"950f4fe9"}
+/sentinel -> 200 {"worker":"950f4fe9"}
+
+counts -> event: 17, span: 19
+span envelope items -> 19
+tagged events=10 matching=10
+
+--- span lines (deduped with count) ---
+   19 http.server GET [origin=auto.http.deno] [src=?] [trace=*]
+
+--- events ---
+    4 sentinel:950f4fe9 | {"worker":"950f4fe9"}
+    3 serve boom | {"worker":"950f4fe9"}
+    1 tagged:r0 | {"worker":"950f4fe9","req":"r0"}
+    1 tagged:r1 | {"worker":"950f4fe9","req":"r1"}
+    1 tagged:r2 | {"worker":"950f4fe9","req":"r2"}
+    1 tagged:r3 | {"worker":"950f4fe9","req":"r3"}
+    1 tagged:r4 | {"worker":"950f4fe9","req":"r4"}
+    1 tagged:r5 | {"worker":"950f4fe9","req":"r5"}
+    1 tagged:r6 | {"worker":"950f4fe9","req":"r6"}
+    1 tagged:r7 | {"worker":"950f4fe9","req":"r7"}
+    1 tagged:r8 | {"worker":"950f4fe9","req":"r8"}
+    1 tagged:r9 | {"worker":"950f4fe9","req":"r9"}
+
+--- sample raw items ---
+undefined
+{"type":"event","message":"tagged:r0","exception":"undefined: tagged:r0","mechanism":"generic","handled":true,"tags":{"worker":"950f4fe9","req":"r0"},"trace":"dccc524a","request":"http://127.0.0.1:58223/tag?id=r0"}

@@ -1,0 +1,22 @@
+   ▲ Next.js 15.5.4
+   - Experiments (use with caution):
+     · clientTraceMetadata
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 1191ms
+   Linting and checking validity of types ...
+Failed to compile.
+
+./sentry-channel-keepalive.ts:19:20
+Type error: Conversion of type '<StoreType = unknown, ContextType extends object = StoreType extends object ? StoreType : object>(nameOrChannels: string | TracingChannelCollection<StoreType, ContextType>) => TracingChannel<...>' to type '(n: string) => Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'TracingChannel<any, any>' is not comparable to type 'Record<string, unknown>'.
+    Index signature for type 'string' is missing in type 'TracingChannel<any, any>'.
+
+[0m [90m 17 |[39m
+ [90m 18 |[39m (dc [36mas[39m [33mRecord[39m[33m<[39m[33mstring[39m[33m,[39m unknown[33m>[39m)[33m.[39mtracingChannel [33m=[39m (name[33m:[39m string) [33m=>[39m {
+[31m[1m>[22m[39m[90m 19 |[39m   [36mconst[39m channel [33m=[39m (originalTracingChannel [36mas[39m (n[33m:[39m string) [33m=>[39m [33mRecord[39m[33m<[39m[33mstring[39m[33m,[39m unknown[33m>[39m)(name)[33m;[39m
+ [90m    |[39m                    [31m[1m^[22m[39m
+ [90m 20 |[39m   keepAlive[33m.[39mpush(channel[33m,[39m channel[33m.[39mstart[33m,[39m channel[33m.[39mend[33m,[39m channel[33m.[39masyncStart[33m,[39m channel[33m.[39masyncEnd[33m,[39m channel[33m.[39merror)[33m;[39m
+ [90m 21 |[39m   [36mreturn[39m channel[33m;[39m
+ [90m 22 |[39m }[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

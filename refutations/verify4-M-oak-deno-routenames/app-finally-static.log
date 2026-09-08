@@ -1,0 +1,35 @@
+mount=serve ready 41334
+[app.finally] /users/7 span=true matched=["/users/:id"]
+[app.finally] /ok span=true matched=["/ok"]
+[app.finally] /error/42 span=true matched=["/error/:id"]
+[uncaught application error]: Error - oak route boom
+
+request: {
+  url: "http://127.0.0.1:41334/error/42",
+  method: "GET",
+  hasBody: false
+}
+response: { status: 500, type: "text", hasBody: true, writable: true }
+
+    at file://$REPRO/refutations/verify4-M-oak-deno-routenames/main.ts:31:40
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at https://jsr.io/@oak/oak/17.2.0/router.ts:1327:20
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at composedMiddleware (https://jsr.io/@oak/oak/17.2.0/middleware.ts:93:12)
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/router.ts:1333:22)
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at file://$REPRO/refutations/verify4-M-oak-deno-routenames/main.ts:45:56
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at file://$REPRO/refutations/verify4-M-oak-deno-routenames/main.ts:38:15
+Error: oak route boom
+    at file://$REPRO/refutations/verify4-M-oak-deno-routenames/main.ts:31:40
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at https://jsr.io/@oak/oak/17.2.0/router.ts:1327:20
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at composedMiddleware (https://jsr.io/@oak/oak/17.2.0/middleware.ts:93:12)
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/router.ts:1333:22)
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at file://$REPRO/refutations/verify4-M-oak-deno-routenames/main.ts:45:56
+    at dispatch (https://jsr.io/@oak/oak/17.2.0/middleware.ts:90:13)
+    at file://$REPRO/refutations/verify4-M-oak-deno-routenames/main.ts:38:15
+[app.finally] /sentinel span=true matched=["/sentinel"]

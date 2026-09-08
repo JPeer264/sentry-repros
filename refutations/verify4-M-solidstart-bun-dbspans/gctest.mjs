@@ -1,0 +1,12 @@
+import dc from 'node:diagnostics_channel';
+const gc = globalThis.Bun ? () => Bun.gc(true) : (globalThis.gc || (() => {}));
+let a = 0, b = 0;
+dc.tracingChannel('probe:unpinned').start.subscribe(() => { a++; });
+const pinned = dc.tracingChannel('probe:pinned');
+pinned.start.subscribe(() => { b++; });
+gc(); gc();
+await new Promise(r => setTimeout(r, 50));
+gc(); gc();
+dc.tracingChannel('probe:unpinned').traceSync(() => {}, {});
+dc.tracingChannel('probe:pinned').traceSync(() => {}, {});
+console.log(JSON.stringify({ runtime: globalThis.Bun ? 'bun' : 'node', unpinnedHits: a, pinnedHits: b }));

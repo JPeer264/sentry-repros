@@ -1,0 +1,14 @@
+import * as dcNs from 'node:diagnostics_channel';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const dcReq = require('node:diagnostics_channel');
+const dcBuiltin = 'getBuiltinModule' in process ? process.getBuiltinModule('node:diagnostics_channel') : undefined;
+console.log('has getBuiltinModule:', 'getBuiltinModule' in process);
+console.log('tracingChannel fn:', typeof dcNs.tracingChannel, typeof dcReq.tracingChannel, typeof dcBuiltin?.tracingChannel);
+const a = dcNs.tracingChannel('t:x');
+const b = dcBuiltin ? dcBuiltin.tracingChannel('t:x') : undefined;
+console.log('same channel obj (ns vs builtin):', a === b, 'start same:', a.start === b?.start);
+let got = 0;
+a.start.subscribe(() => { got++; });
+b?.traceSync(() => {}, {});
+console.log('publish via builtin, received on ns:', got);

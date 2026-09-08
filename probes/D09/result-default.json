@@ -1,0 +1,69 @@
+[
+ {
+  "type": "event",
+  "exception": "route boom",
+  "mechanism": "auto.http.deno",
+  "handled": false,
+  "request": {
+   "method": "POST",
+   "url": "http://127.0.0.1:45751/throw",
+   "data": "{\"user\":\"alice\",\"password\":\"hunter2\",\"n\":1}",
+   "dataLen": 43,
+   "hasHeaders": true
+  }
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "sentinel",
+  "mechanism": "generic",
+  "handled": true,
+  "request": {
+   "method": "GET",
+   "url": "http://127.0.0.1:45751/sentinel",
+   "hasHeaders": true
+  }
+ },
+ {
+  "type": "span",
+  "spans": [
+   {
+    "name": "http.server GET",
+    "bodyAttrs": {}
+   }
+  ]
+ },
+ {
+  "type": "span",
+  "spans": [
+   {
+    "name": "http.server POST",
+    "bodyAttrs": {
+     "http.request.body.size": 43,
+     "http.request.body.data": "{\"user\":\"alice\",\"password\":\"hunter2\",\"n\":1}"
+    }
+   }
+  ]
+ },
+ {
+  "type": "span",
+  "spans": [
+   {
+    "name": "http.server POST",
+    "bodyAttrs": {
+     "http.request.body.size": 43,
+     "http.request.body.data": "{\"user\":\"alice\",\"password\":\"hunter2\",\"n\":1}"
+    }
+   }
+  ]
+ },
+ {
+  "type": "span",
+  "spans": [
+   {
+    "name": "http.server GET",
+    "bodyAttrs": {}
+   }
+  ]
+ }
+]

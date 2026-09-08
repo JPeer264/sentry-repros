@@ -1,0 +1,27 @@
+[0m[32mTask[0m [0m[36mdev[0m vite '--port' '41540'
+
+  VITE v7.3.6  ready in 342 ms
+
+  ➜  Local:   http://127.0.0.1:41540/
+  ➜  Network: use --host to expose
+GET http://127.0.0.1:41540/api/scopes
+GET http://127.0.0.1:41540/api/user?u=bob
+GET http://127.0.0.1:41540/api/msg
+GET http://127.0.0.1:41540/api/dyn?t=DEVLEAK
+10:19:03 PM [vite] (ssr) warning: 
+$REPRO/refutations/verify4-M-fresh-deno-isolation/app/routes/api/dyn.ts
+5  |      const t = new URL(ctx.req.url).searchParams.get("t") ?? "none";
+6  |      Sentry.setTag("probe", t);
+7  |      await import(`data:text/javascript,export const x=${Math.random()};`);
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+8  |      return new Response(`dyn:${t}`);
+9  |    }
+The above dynamic import cannot be analyzed by Vite.
+See https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#limitations for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+
+  Plugin: vite:import-analysis
+  File: $REPRO/refutations/verify4-M-fresh-deno-isolation/app/routes/api/dyn.ts
+GET http://127.0.0.1:41540/api/msg
+GET http://127.0.0.1:41540/api/msg
+GET http://127.0.0.1:41540/api/sentinel?n=9
+10:19:45 PM [vite] (ssr) hmr update /@id/fresh:server_entry

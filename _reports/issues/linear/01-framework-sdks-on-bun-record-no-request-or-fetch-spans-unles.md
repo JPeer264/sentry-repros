@@ -1,0 +1,13 @@
+# Framework SDKs on Bun record no request or fetch spans unless the Bun integrations are added by hand
+
+Milestone: Bun + Framework gaps
+Labels: JavaScript, Bun, Bug
+Priority: High
+
+`@sentry/nextjs`, `@sentry/nuxt`, `@sentry/sveltekit`, `@sentry/astro`, `@sentry/react-router`, `@sentry/tanstackstart-react`, `@sentry/solidstart` and `@sentry/remix` initialize the Node SDK. On Bun 1.4.0, Bun never publishes `http.server.request.start` and Node's undici fetch channels never fire, so with the documented wiring route names, per-request isolation, incoming trace continuation and outgoing fetch spans are all absent. Errors and logs still arrive, so nothing looks broken.
+
+Verified fix in every cell: install `@sentry/bun` next to the framework SDK and add `bunServerIntegration()` or `bunHttpServerIntegration()` (whichever server the framework uses) plus `fetchIntegration()` to the server init, gated on `typeof Bun !== "undefined"`. The repo's own e2e app `nextjs-16-bun` does this in `sentry.server.config.ts`.
+
+**Work item.** Detect Bun in the framework server inits and add the two integrations there, so the documented wiring works unchanged. Until then, one shared docs snippet (DOC-B3 in the audit).
+
+**Evidence.** Cell records M-nextjs-bun, M-nuxt-bun, M-sveltekit-bun, M-astro-bun, M-reactrouter-bun, M-tanstack-bun, M-solidstart-bun, M-remix-bun in `_reports/deep-probe-report.html`; reproductions `cells/M-nextjs-bun/`, `cells/M-nuxt-bun/`, `cells/M-sveltekit-bun/`, `cells/M-astro-bun/`, `cells/M-reactrouter-bun/`, `cells/M-tanstack-bun/`, `cells/M-solidstart-bun/`, `cells/M-remix-bun/`, each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).

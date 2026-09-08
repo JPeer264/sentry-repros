@@ -1,0 +1,76 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                                          Resource                  Mode
+env.COUNTER (Counter)                            Durable Object            local
+env.MY_WORKFLOW (MyWorkflow)                     Workflow                  local
+env.SELF (n3_dev#Api)                            Worker                    local [connected]
+env.SINK_URL ("http://127.0.0.1:53821/")         Environment Variable      local
+
+
+Service bindings, Durable Object bindings, and Tail consumers connect to other Wrangler or Vite dev processes running locally, with their connection status indicated by [connected] or [not connected]. For more details, refer to https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/#local-development
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:44332/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:44332/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:44332/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:44332/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:44332/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:44332/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:44332/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:44332/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:44332/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:44332/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:44332
+[wrangler:info] GET /db 200 OK (47ms)
+[wrangler:info] GET /do 200 OK (13ms)
+[wrangler:info] GET /rpc 200 OK (2ms)
+[wrangler:info] GET /injected 200 OK (2ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: route boom Error[0m
+
+      at fetch (file://$REPRO/probes/N3/dist/n3_dev/index.js:19829:39)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:9657:19)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:8833:18)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3277:84)
+      at handleCallbackErrors.status.status (file://$REPRO/probes/N3/dist/n3_dev/index.js:3525:67)
+      at handleCallbackErrors (file://$REPRO/probes/N3/dist/n3_dev/index.js:2830:24)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3525:40)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3523:11)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3315:10)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:6876:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:6872:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:1389:13)
+      at withActiveSpan (file://$REPRO/probes/N3/dist/n3_dev/index.js:3313:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3518:10)
+      at runCallback (file://$REPRO/probes/N3/dist/n3_dev/index.js:3525:33)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3277:11)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3502:20)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3268:48)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:6876:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:6872:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:1386:26)
+      at startSpanManual (file://$REPRO/probes/N3/dist/n3_dev/index.js:3267:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:8827:11)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3315:10)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:6876:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:6872:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:1389:13)
+      at withActiveSpan (file://$REPRO/probes/N3/dist/n3_dev/index.js:3313:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:3307:10)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:6876:11)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:6872:23)
+      at withScope (file://$REPRO/probes/N3/dist/n3_dev/index.js:1389:13)
+      at continueTrace (file://$REPRO/probes/N3/dist/n3_dev/index.js:3304:9)
+      at null.<anonymous> (file://$REPRO/probes/N3/dist/n3_dev/index.js:8823:10)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: route boom [0m
+
+
+[wrangler:info] GET /error 500 Internal Server Error (7ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-07_09-33-14_330.log"

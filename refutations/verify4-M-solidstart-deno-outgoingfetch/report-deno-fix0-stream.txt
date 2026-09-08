@@ -1,0 +1,21 @@
+### app boot (rb-deno-fix0-stream)
+[probe] sentry init fetchfix=0 lifecycle=stream
+➜ Listening on: http://127.0.0.1:52143/
+### GET /api/fetchout
+{"recorded":true}
+### GET /api/fetchout-http
+{"http":true}
+### GET /api/sentinel
+{"sentinel":true}
+### sink items (rb-deno-fix0-stream)
+{"type":"event","message":"sentinel","exception":"undefined: sentinel","mechanism":"generic","handled":true,"sdk":"sentry.javascript.solidstart","runtime":"node","hasContextLine":true,"transaction":"GET /api/sentinel","trace_id":"d58fb87737f14b5983c8391748472925","user":{"ip_address":"127.0.0.1"},"request":{"url":"http://127.0.0.1:52143/api/sentinel","method":"GET","hasData":false,"headers":{"host":"127.0.0.1:52143","user-agent":"curl/8.7.1","accept":"*/*"}},"environment":"production"}
+{"type":"span","trace_id":"64d086043f1f4828a89841a82421fe23","items":["middleware GET /api/fetchout","db mysql2.connect","http.server GET","http.server GET","http.server GET"],"raw":[{"name":"GET /api/fetchout","status":"ok","parent_span_id":"90711b5974890b7a","is_segment":false,"origin":"auto.http.nitro.h3"},{"name":"mysql2.connect","status":"ok","parent_span_id":"b10d4c39bea6af06","is_segment":false,"origin":"auto.db.mysql2.diagnostic_channel"},{"name":"GET","status":"ok","parent_span_id":"90711b5974890b7a","is_segment":false,"origin":"auto.http.nitro.h3"},{"name":"GET","status":"ok","parent_span_id":"aea96de68b987f7d","is_segment":false,"origin":"auto.http.nitro.srvx"},{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.http_server"}]}
+{"type":"span","trace_id":"83d1a13f8e374989abf85fa2680bedfb","items":["middleware GET /api/fetchout-http","http.client GET 127.0.0.1","http.server GET","http.server GET","http.server GET"],"raw":[{"name":"GET /api/fetchout-http","status":"ok","parent_span_id":"9b7fbfc03a06b279","is_segment":false,"origin":"auto.http.nitro.h3"},{"name":"GET 127.0.0.1","status":"ok","parent_span_id":"9f97778bad8121d2","is_segment":false,"origin":"auto.http.client"},{"name":"GET","status":"ok","parent_span_id":"9b7fbfc03a06b279","is_segment":false,"origin":"auto.http.nitro.h3"},{"name":"GET","status":"ok","parent_span_id":"b56f353b7195939f","is_segment":false,"origin":"auto.http.nitro.srvx"},{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.http_server"}]}
+{"type":"span","trace_id":"d58fb87737f14b5983c8391748472925","items":["middleware GET /api/sentinel","http.server GET","http.server GET","http.server GET"],"raw":[{"name":"GET /api/sentinel","status":"ok","parent_span_id":"b4a07b360b93efaf","is_segment":false,"origin":"auto.http.nitro.h3"},{"name":"GET","status":"ok","parent_span_id":"b4a07b360b93efaf","is_segment":false,"origin":"auto.http.nitro.h3"},{"name":"GET","status":"ok","parent_span_id":"93a81de9201c827a","is_segment":false,"origin":"auto.http.nitro.srvx"},{"name":"GET","status":"ok","is_segment":true,"origin":"auto.http.http_server"}]}
+### recorder hits (rb-deno-fix0-stream)
+{"url":"/recorder"}
+{"url":"/recorder-http","sentryTrace":"83d1a13f8e374989abf85fa2680bedfb-899b111d04c73fa3-1","baggage":"yes"}
+$REPRO/refutations/verify4-M-solidstart-deno-outgoingfetch/run-b.sh: line 52: 80089 Terminated: 15          PORT=$SINK node $REPRO/_toolbox/sink.mjs > "$TAG-sink.log" 2>&1
+$REPRO/refutations/verify4-M-solidstart-deno-outgoingfetch/run-b.sh: line 52: 80090 Terminated: 15          REC_PORT=$REC node recorder-b.mjs > "$TAG-rec.log" 2>&1
+$REPRO/refutations/verify4-M-solidstart-deno-outgoingfetch/run-b.sh: line 52: 80185 Killed: 9               deno run -A .output/server/index.mjs > "$TAG-app.log" 2>&1
+### done rb-deno-fix0-stream

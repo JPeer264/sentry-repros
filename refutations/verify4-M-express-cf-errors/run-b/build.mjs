@@ -1,0 +1,19 @@
+import * as esbuild from 'esbuild';
+import { sentryOrchestrionPlugin } from '@sentry/server-utils/orchestrion/esbuild';
+
+const entry = process.argv[2] ?? './src/a2.js';
+const out = process.argv[3] ?? './dist-esb/index.js';
+
+const result = await esbuild.build({
+  entryPoints: [entry],
+  outfile: out,
+  bundle: true,
+  format: 'esm',
+  platform: 'node',
+  target: 'esnext',
+  conditions: ['workerd', 'worker', 'browser', 'import', 'module'],
+  external: ['cloudflare:*'],
+  logLevel: 'info',
+  plugins: [sentryOrchestrionPlugin()],
+});
+console.log('warnings', result.warnings.length);

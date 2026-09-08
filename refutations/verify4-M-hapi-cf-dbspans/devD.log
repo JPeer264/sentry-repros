@@ -1,0 +1,40 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:53181/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:53181/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:53181/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:53181/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:53181/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:53181/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:53181/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:53181/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:53181/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:53181/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mservice core:user:v4-hapi-cf-db-esb4: Uncaught Error: unsupported require: url[0m
+
+    at null.<anonymous> (worker.js:59:19) in globalThis.require
+    at null.<anonymous> (worker.js:6:54)
+    at null.<anonymous> (worker.js:33977:15) in node_modules/@hapi/validate/lib/types/string.js
+    at null.<anonymous> (worker.js:84:52) in __require2
+    at null.<anonymous> (worker.js:34650:17) in node_modules/@hapi/validate/lib/index.js
+    at null.<anonymous> (worker.js:84:52) in __require2
+    at null.<anonymous> (worker.js:34975:20) in node_modules/@hapi/shot/lib/index.js
+    at null.<anonymous> (worker.js:84:52) in __require2
+    at null.<anonymous> (worker.js:54114:16) in node_modules/@hapi/hapi/lib/server.js
+    at null.<anonymous> (worker.js:84:52) in __require2
+
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe Workers runtime failed to start. There was likely a problem with the workerd binary or your configuration.[0m
+
+  Runtime stderr:
+  {"timestamp":"1788727685197","level":"error","source":"src/workerd/server/json-logger.c++:127","message":"service core:user:v4-hapi-cf-db-esb4: Uncaught Error: unsupported require: url\n  at worker.js:59:19 in globalThis.require\n  at worker.js:6:54\n  at worker.js:33977:15 in node_modules/@hapi/validate/lib/types/string.js\n  at worker.js:84:52 in __require2\n  at worker.js:34650:17 in node_modules/@hapi/validate/lib/index.js\n  at worker.js:84:52 in __require2\n  at worker.js:34975:20 in node_modules/@hapi/shot/lib/index.js\n  at worker.js:84:52 in __require2\n  at worker.js:54114:16 in node_modules/@hapi/hapi/lib/server.js\n  at worker.js:84:52 in __require2","context_depth":0}
+
+
+[32mIf you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose[0m
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_20-48-04_836.log"

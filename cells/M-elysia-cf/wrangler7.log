@@ -1,0 +1,237 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                             Resource                  Mode
+env.TRACE_LIFECYCLE ("static")      Environment Variable      local
+
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:52741/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:52741/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:52741/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:52741/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:52741/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:52741/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:52741/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:52741/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:52741/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:52741/cdn-cgi/local/explorer/api - OpenAPI schema
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:52741
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/42
+  ID: 8156c2b67b03ef69
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/42" with ID 8156c2b67b03ef69
+[wrangler:info] GET /users/42 200 OK (16ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /error
+  ID: 92c3616410824cc7
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error" with ID 92c3616410824cc7
+[wrangler:info] GET /error 500 Internal Server Error (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /fetch
+  ID: bdaecffe1af92d21
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET http://127.0.0.1:52742/recorded
+  ID: 9efe14e7d1a36daa
+  parent ID: bdaecffe1af92d21
+  root ID: bdaecffe1af92d21
+  root op: http.server
+  root description: GET /fetch
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET http://127.0.0.1:52742/recorded" with ID 9efe14e7d1a36daa
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /fetch" with ID bdaecffe1af92d21
+[wrangler:info] GET /fetch 200 OK (7ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /log
+  ID: a9388f2bbe02132f
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /log" with ID a9388f2bbe02132f
+[wrangler:info] GET /log 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 8f479d09fb8e4e65
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 8f479d09fb8e4e65
+[wrangler:info] GET /sentinel 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db
+  ID: ab6462d7a2193abe
+[wrangler:info] GET /db 500 Internal Server Error (18ms)
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db" with ID ab6462d7a2193abe
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db
+  ID: 9a8bce5e9e6bf303
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db" with ID 9a8bce5e9e6bf303
+[wrangler:info] GET /db 200 OK (24ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db
+  ID: aad99d0821a52f8d
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db" with ID aad99d0821a52f8d
+[wrangler:info] GET /db 500 Internal Server Error (5ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /users/7
+  ID: aa5235d60674d6af
+  parent ID: bbbbbbbbbbbbbbbb
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /users/7" with ID aa5235d60674d6af
+[wrangler:info] GET /users/7 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /iso/alpha
+  ID: a9d61001d090f84c
+Sentry Logger [log]: Captured error event `iso-alpha`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /iso/alpha" with ID a9d61001d090f84c
+[wrangler:info] GET /iso/alpha 200 OK (3ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /iso/beta
+  ID: a13b605f8d8e433f
+Sentry Logger [log]: Captured error event `iso-beta`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /iso/beta" with ID a13b605f8d8e433f
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /iso/gamma
+  ID: bd73c6fb574488e9
+Sentry Logger [log]: Captured error event `iso-gamma`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /iso/gamma" with ID bd73c6fb574488e9
+[wrangler:info] GET /iso/beta 200 OK (6ms)
+[wrangler:info] GET /iso/gamma 200 OK (6ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: b17b9a0b6e11b6d2
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID b17b9a0b6e11b6d2
+[wrangler:info] GET /sentinel 200 OK (2ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /error
+  ID: 920249fe33f4e772
+Sentry Logger [log]: Captured error event `elysia-cf-boom`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /error" with ID 920249fe33f4e772
+[wrangler:info] GET /error 500 Internal Server Error (22ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db
+  ID: 8c2c4bc7e66489ac
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db" with ID 8c2c4bc7e66489ac
+[wrangler:info] GET /db 200 OK (10ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: 8662487c71317eb8
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID 8662487c71317eb8
+[wrangler:info] GET /sentinel 200 OK (2ms)
+Your Worker has access to the following bindings:
+Binding                             Resource                  Mode
+env.TRACE_LIFECYCLE ("stream")      Environment Variable      local
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a492875a8c0f51e1
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID a492875a8c0f51e1
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 22a7d09dcf2a4b869ebb68fb7a9b7bb5 with 1 spans
+[wrangler:info] GET /users/42 200 OK (19ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: bab540133596a0ef
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET 127.0.0.1
+  ID: 9bd59ce4a4fc7637
+  parent ID: bab540133596a0ef
+  root ID: bab540133596a0ef
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET 127.0.0.1" with ID 9bd59ce4a4fc7637
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID bab540133596a0ef
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 14b9094bb11c42c78b386118854f6bd8 with 2 spans
+[wrangler:info] GET /fetch 200 OK (6ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 84812c056a979266
+Sentry Logger [log]: Captured error event `elysia-cf-boom`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID 84812c056a979266
+[wrangler:info] GET /error 500 Internal Server Error (4ms)
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 2d26f7a323e542ba9b1ff4b484482a62 with 1 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b0741f1a88820af1
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID b0741f1a88820af1
+[wrangler:info] GET /sentinel 200 OK (3ms)
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace da22232f8ef3476c821aa2cb2a75585b with 1 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b4c8d544a66b8ec2
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID b4c8d544a66b8ec2
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 39bb62243803450cb0401d836ac516ea with 1 spans
+[wrangler:info] GET /users/9 200 OK (2ms)

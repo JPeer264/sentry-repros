@@ -1,0 +1,138 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:39429/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:39429/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:39429/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:39429/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:39429/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:39429/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:39429/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:39429/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:39429/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:39429/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:39429
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: [instrumentation:express, router] "router" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:express, router] subscribing to channels
+Sentry Logger [log]: Integration installed: Express
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b51b2cf64a244690
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /boom
+  ID: 9cd69f08868017f1
+  parent ID: b51b2cf64a244690
+  root ID: b51b2cf64a244690
+  root op: http.server
+  root description: GET /boom
+Sentry Logger [log]: Captured error event `express-cf-boom`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/boom" with ID 9cd69f08868017f1
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom" with ID b51b2cf64a244690
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 3a0b9d96a08c4ee99a3df3cf103aee22 with 2 spans
+[wrangler:info] GET /boom 500 Internal Server Error (26ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:61732:11)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58142:23)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58155:28)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58182:16)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58180:35)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58323:16)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58297:5)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58628:18)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58142:23)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58155:28)
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: 96aed40a53c92eb4
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /boom-async
+  ID: 90b435ed5e4cae2d
+  parent ID: 96aed40a53c92eb4
+  root ID: 96aed40a53c92eb4
+  root op: http.server
+  root description: GET /boom-async
+Sentry Logger [log]: Captured error event `express-cf-boom-async`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/boom-async" with ID 90b435ed5e4cae2d
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom-async" with ID 96aed40a53c92eb4
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 5e268f9ed79940648ef7c6e3b741a288 with 2 spans
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom-async[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:61736:11)
+
+
+[wrangler:info] GET /boom-async 500 Internal Server Error (9ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: ae22e8a969913d79
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /boom-next
+  ID: b5f529c81264fbe9
+  parent ID: ae22e8a969913d79
+  root ID: ae22e8a969913d79
+  root op: http.server
+  root description: GET /boom-next
+Sentry Logger [log]: Captured error event `express-cf-boom-next`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/boom-next" with ID b5f529c81264fbe9
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /boom-next" with ID ae22e8a969913d79
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 9e1632ddb77c4d6389adcb26ee548fc8 with 2 spans
+[wrangler:info] GET /boom-next 500 Internal Server Error (2ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mError: express-cf-boom-next[0m
+
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:61739:10)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58142:23)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58155:28)
+      at null.<anonymous> (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58182:16)
+      at Layer.handleRequest (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58180:35)
+      at next (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58323:16)
+      at Route.dispatch (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58297:5)
+      at handle (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58628:18)
+      at Layer.__apm$wrapped (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58142:23)
+      at __apm$traced (file://$REPRO/refutations/verify4-M-express-cf-errors/run-b/dist-vite3/v4b_express_vite3/index.js:58155:28)
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: bd44aed8c7e05480
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: handler
+  name: /sentinel
+  ID: 8df406e1473e0359
+  parent ID: bd44aed8c7e05480
+  root ID: bd44aed8c7e05480
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "handler" span "/sentinel" with ID 8df406e1473e0359
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID bd44aed8c7e05480
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 7a7aaa8e13b549fe947e47c2d7723ff6 with 2 spans
+[wrangler:info] GET /sentinel 200 unknown (4ms)
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_20-45-59_880.log"

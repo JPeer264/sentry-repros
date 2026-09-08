@@ -1,0 +1,45 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding                                                                     Resource                     Mode
+env.CF_VERSION_METADATA                                                     Worker Version Metadata      local
+env.SENTRY_DSN ("https://public@o1.ingest.sentry.io/1")                     Environment Variable         local
+env.SENTRY_ENVIRONMENT ("qa")                                               Environment Variable         local
+env.SENTRY_RELEASE ("r1")                                                   Environment Variable         local
+env.SENTRY_TRACES_SAMPLE_RATE ("1")                                         Environment Variable         local
+env.SINK_URL ("(hidden)")                                                   Environment Variable         local
+
+⎔ Starting local server...
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:45312/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:45312/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:45312/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:45312/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:45312/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:45312/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:45312/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:45312/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:45312/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:45312/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:45312
+ENV {"SINK_URL":"http://127.0.0.1:45311/","SENTRY_DSN":"https://public@o1.ingest.sentry.io/1","SENTRY_ENVIRONMENT":"qa","SENTRY_RELEASE":"r1","SENTRY_TRACES_SAMPLE_RATE":"1","CF_VERSION_METADATA":{"id":"8f5db349-fc8f-4bfd-993c-e2a257b5838f","tag":"","timestamp":"2026-09-07T08:58:38.308Z"}}
+[wrangler:info] GET /env 200 OK (8ms)
+OPTS {"dsn":"https://public@o1.ingest.sentry.io/1","environment":"qa","release":"r1","tracesSampleRate":1,"tunnel":"http://127.0.0.1:45311/"}
+[wrangler:info] GET /opts 200 OK (3ms)
+[wrangler:info] GET /hello 200 OK (1ms)
+[wrangler:error] Error: route boom
+    at Object.fetch (file://$REPRO/probes/C11/src/index.ts:47:15)
+    at null.<anonymous> (file://$REPRO/probes/C11/node_modules/@sentry/cloudflare/src/instrumentations/worker/instrumentFetch.ts:41:89)
+    at null.<anonymous> (file://$REPRO/probes/C11/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:162:25)
+    at null.<anonymous> (file://$REPRO/probes/C11/node_modules/@sentry/core/src/tracing/trace.ts:139:60)
+    at handleCallbackErrors.status.status [as status] (file://$REPRO/probes/C11/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+    at handleCallbackErrors (file://$REPRO/probes/C11/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+    at callback (file://$REPRO/probes/C11/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+    at null.<anonymous> (file://$REPRO/probes/C11/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+    at null.<anonymous> (file://$REPRO/probes/C11/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+    at null.<anonymous> (file://$REPRO/probes/C11/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+[wrangler:info] GET /error 500 Internal Server Error (41ms)
+[wrangler:info] GET /sentinel 200 OK (2ms)

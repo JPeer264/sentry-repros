@@ -1,0 +1,45 @@
+derived routes: /users/:id /ok /error /db /sentinel
+mode=derived ready 42317
+[uncaught application error]: Error - oak bun boom
+
+request: {
+  url: "http://127.0.0.1:42317/error",
+  method: "GET",
+  hasBody: false,
+}
+response: {
+  status: 500,
+  type: "text",
+  hasBody: true,
+  writable: true,
+}
+
+    at <anonymous> ($REPRO/refutations/verify4-M-oak-bun-routenames/app.ts:15:40)
+    at dispatch ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/middleware.js:36:13)
+    at dispatch ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/middleware.js:36:13)
+    at dispatch ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/middleware.js:36:13)
+    at <anonymous> ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/application.js:324:31)
+    at <anonymous> ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43)
+    at handleCallbackErrors ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+    at run (node:async_hooks:99:29)
+    at run (node:async_hooks:99:29)
+    at run (node:async_hooks:99:29)
+10 | 
+11 | const router = new Router();
+12 | 
+13 | router.get("/users/:id", ctx => { ctx.response.body = { id: ctx.params.id }; });
+14 | router.get("/ok", ctx => { ctx.response.body = "ok"; });
+15 | router.get("/error", () => { throw new Error("oak bun boom"); });
+                                            ^
+error: oak bun boom
+      at $REPRO/refutations/verify4-M-oak-bun-routenames/app.ts:15:40
+      at dispatch ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/middleware.js:36:13)
+      at dispatch ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/middleware.js:36:13)
+      at dispatch ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/middleware.js:36:13)
+      at $REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@oak/oak/application.js:324:31
+      at $REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@sentry/bun/build/esm/integrations/bunserver.js:139:43
+      at handleCallbackErrors ($REPRO/refutations/verify4-M-oak-bun-routenames/node_modules/@sentry/core/build/esm/utils/handleCallbackErrors.js:9:26)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+      at run (node:async_hooks:99:29)
+GET - /error failed

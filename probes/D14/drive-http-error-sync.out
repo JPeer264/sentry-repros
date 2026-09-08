@@ -1,0 +1,87 @@
+RESPONSES
+{
+ "/error-sync": "400 ",
+ "/hello/world": "200 hello world",
+ "/sentinel": "200 sentinel"
+}
+sentinelEventArrived=true
+
+LINES
+transaction: GET /error-sync | source url status ok code 200 | trace 21902fb8760f427bbfdf095aa60ab9e8 id 8d07c901ec0a3e86 parent undefined | spans []
+transaction: GET /hello/world | source url status ok code 200 | trace 473ea025e29144de99b055f4e862b371 id aa40b11f0a321e62 parent undefined | spans []
+transaction: GET /sentinel | source url status ok code 200 | trace ca0a181ef77d4884ab456067d5f86f22 id aaf54422d4da9220 parent undefined | spans []
+event: sentinel | mech generic handled true | txn GET /sentinel | trace ca0a181ef77d4884ab456067d5f86f22 span aaf54422d4da9220 | tags undefined user undefined | req http://127.0.0.1:41429/sentinel
+
+SINK
+[
+ {
+  "type": "transaction",
+  "name": "GET /error-sync",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "21902fb8760f427bbfdf095aa60ab9e8",
+  "span_id": "8d07c901ec0a3e86",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /hello/world",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "473ea025e29144de99b055f4e862b371",
+  "span_id": "aa40b11f0a321e62",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "transaction",
+  "name": "GET /sentinel",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "code": 200,
+  "trace_id": "ca0a181ef77d4884ab456067d5f86f22",
+  "span_id": "aaf54422d4da9220",
+  "sdk": "sentry.javascript.deno",
+  "spans": [],
+  "hasRequestData": false
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "undefined: sentinel",
+  "mechanism": "generic",
+  "handled": true,
+  "sdk": "sentry.javascript.deno",
+  "runtime": "deno",
+  "hasContextLine": true,
+  "transaction": "GET /sentinel",
+  "trace_id": "ca0a181ef77d4884ab456067d5f86f22",
+  "span_id": "aaf54422d4da9220",
+  "user": {
+   "ip_address": "127.0.0.1"
+  },
+  "request": {
+   "url": "http://127.0.0.1:41429/sentinel",
+   "method": "GET",
+   "hasData": false,
+   "headers": {
+    "host": "127.0.0.1:41429",
+    "connection": "keep-alive",
+    "accept": "*/*",
+    "accept-language": "*",
+    "sec-fetch-mode": "cors",
+    "user-agent": "node",
+    "accept-encoding": "gzip, deflate"
+   }
+  },
+  "environment": "production"
+ }
+]

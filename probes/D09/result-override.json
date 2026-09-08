@@ -1,0 +1,74 @@
+[
+ {
+  "type": "transaction",
+  "name": "POST /ok",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "request": {
+   "method": "POST",
+   "url": "http://127.0.0.1:49799/ok",
+   "data": "{\"user\":\"alice\",\"password\":\"hunter2\",\"n\":1}",
+   "dataLen": 43,
+   "hasHeaders": true
+  },
+  "traceData": {
+   "http.request.body.size": 43
+  }
+ },
+ {
+  "type": "transaction",
+  "name": "POST /throw",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "request": {
+   "method": "POST",
+   "url": "http://127.0.0.1:49799/throw",
+   "data": "{\"user\":\"alice\",\"password\":\"hunter2\",\"n\":1}",
+   "dataLen": 43,
+   "hasHeaders": true
+  },
+  "traceData": {
+   "http.request.body.size": 43
+  }
+ },
+ {
+  "type": "event",
+  "exception": "route boom",
+  "mechanism": "auto.http.deno",
+  "handled": false,
+  "request": {
+   "method": "POST",
+   "url": "http://127.0.0.1:49799/throw",
+   "data": "{\"user\":\"alice\",\"password\":\"hunter2\",\"n\":1}",
+   "dataLen": 43,
+   "hasHeaders": true
+  }
+ },
+ {
+  "type": "transaction",
+  "name": "GET /sentinel",
+  "op": "http.server",
+  "source": "url",
+  "status": "ok",
+  "request": {
+   "method": "GET",
+   "url": "http://127.0.0.1:49799/sentinel",
+   "hasHeaders": true
+  },
+  "traceData": {}
+ },
+ {
+  "type": "event",
+  "message": "sentinel",
+  "exception": "sentinel",
+  "mechanism": "generic",
+  "handled": true,
+  "request": {
+   "method": "GET",
+   "url": "http://127.0.0.1:49799/sentinel",
+   "hasHeaders": true
+  }
+ }
+]

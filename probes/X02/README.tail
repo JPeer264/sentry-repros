@@ -1,0 +1,20 @@
+```
+
+Differences from the record, none of which change the verdict:
+
+- The original probe files were lost, so the apps were rewritten from the record's description. Two
+  details had to be re-derived: a `tracingChannel(name)` publishes on `tracing:<name>:start`, so
+  `startSubscribed` looks up `tracing:orchestrion:mysql:query:start`, and the no-SDK subscriber must
+  not keep a variable pointing at the channel, otherwise it survives GC and the lazy case fires
+  events. `loadedBefore` / `loadedAfter` are the `mysql` entries of the CommonJS require cache, which
+  is empty in a Bun bundle in both cases, as in the record.
+- The system Bun is 1.4.2 here, not the record's 1.4.0; the `bun140` tag in the file names is kept
+  for continuity with the record. Results are identical.
+- The record's `$S/bun1314/bun-darwin-aarch64/bun` no longer exists; Bun 1.3.14 came from
+  `npm install bun@1.3.14` into a scratch directory instead. Same version, same results.
+- The sink here reports `"runtime":"bun"` rather than the record's
+  `"runtime":{"name":"bun","version":"1.4.0"}`, and adds a `client_report` item; that is the sink's
+  compact mapping, not app behavior.
+- The record's `lazy` SINK also carried a `GET /sentinel` transaction; whether that transaction lands
+  before or after the driver stops polling for the sentinel event is a flush-ordering race and does
+  not affect the `GET /db` span list, which is the finding.

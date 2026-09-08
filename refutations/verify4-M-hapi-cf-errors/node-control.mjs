@@ -1,0 +1,13 @@
+import Hapi from '@hapi/hapi';
+const marks = [];
+const server = Hapi.server({ port: 52415, host: '127.0.0.1' });
+server.route({ method: 'GET', path: '/error/{id}', handler: r => { throw new Error(`boom-${r.params.id}`); } });
+server.events.on({ name: 'request', channels: ['error'] }, (req, ev) => marks.push(`ERROR-CHANNEL:${ev.error && ev.error.message}:tags=${(ev.tags||[]).join(',')}`));
+server.events.on({ name: 'request', channels: ['internal'] }, (req, ev) => marks.push(`internal:${(ev.tags||[]).join(',')}`));
+server.events.on('response', req => marks.push(`response-event writableEnded=${req.raw.res.writableEnded} finalResponseStatus=${req.response && (req.response.output ? req.response.output.statusCode : req.response.statusCode)}`));
+await server.start();
+const res = await fetch('http://127.0.0.1:52415/error/7');
+await new Promise(r => setTimeout(r, 300));
+console.log('status', res.status);
+console.log(marks.join('\n'));
+await server.stop();

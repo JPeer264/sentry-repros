@@ -1,0 +1,403 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+
+<title>Runtime Quick Starts</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#F6F5F2;--panel:#EDECE7;--ink:#1E2126;--muted:#5F6873;--line:#D6D4CD;--accent:#2E6B8A;--code-bg:#ECEBE6;--p0:#A8382F;--p1:#9A6A12;--p2:#556270;--chip-bg:#E4E2DB;--v11:#5B4A8A;--nr:#3F7A4E;--warn:#9A6A12;--info:#2E6B8A;--serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16191E;--panel:#1D2127;--ink:#E6E4DE;--muted:#9AA3AE;--line:#2E343C;--accent:#7FB3CF;--code-bg:#1F242B;--p0:#E07B72;--p1:#D6A544;--p2:#9AA5B1;--chip-bg:#262B33;--v11:#B4A3E0;--nr:#7FC28F;--warn:#D6A544;--info:#7FB3CF}}
+:root[data-theme="dark"]{--bg:#16191E;--panel:#1D2127;--ink:#E6E4DE;--muted:#9AA3AE;--line:#2E343C;--accent:#7FB3CF;--code-bg:#1F242B;--p0:#E07B72;--p1:#D6A544;--p2:#9AA5B1;--chip-bg:#262B33;--v11:#B4A3E0;--nr:#7FC28F;--warn:#D6A544;--info:#7FB3CF}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent)} a:hover,a:focus-visible{border-bottom-color:var(--accent);outline:none} a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a.pl{border-bottom-style:dotted}
+.wrap{display:grid;grid-template-columns:280px minmax(0,1fr);gap:48px;max-width:1240px;margin:0 auto;padding:40px 32px 96px}
+nav{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow-y:auto;font-size:13px;padding-right:8px}
+nav .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+nav ul{list-style:none;margin:0;padding:0} nav li.l2{margin-top:14px;font-weight:600} nav li.l3{padding-left:12px;margin-top:4px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis} nav li.l1{margin-top:22px;font-family:var(--serif);font-size:15px;font-weight:600}
+nav a{border:0;color:inherit} nav li.l3 a:hover{color:var(--accent)}
+main{max-width:72ch;min-width:0}
+h1{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.15;margin:0 0 20px;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;margin:56px 0 16px;padding-top:24px;border-top:1px solid var(--line);text-wrap:balance}
+h3{font-family:var(--serif);font-weight:500;font-size:19px;line-height:1.3;margin:40px 0 12px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;text-wrap:balance}
+h3 .iid{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);letter-spacing:.02em} h3 .chips{display:inline-flex;gap:6px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.04em;padding:2px 7px;border-radius:3px;background:var(--chip-bg);color:var(--muted);white-space:nowrap}
+.chip.p0{background:var(--p0);color:#fff} .chip.p1{background:var(--p1);color:#fff} .chip.p2{background:var(--p2);color:#fff} .chip.v11{color:var(--v11);border:1px solid currentColor;background:transparent} .chip.nr{color:var(--nr);border:1px solid currentColor;background:transparent}
+p{margin:0 0 14px} ul{margin:0 0 14px;padding-left:22px} li{margin:4px 0}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:3px}
+pre{position:relative;background:var(--code-bg);border:1px solid var(--line);padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.5;margin:0 0 16px;border-radius:4px}
+pre code{background:none;padding:0;font-size:inherit} pre .fn{position:absolute;top:0;right:0;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--muted);background:var(--panel);padding:2px 8px;border-left:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0 4px 0 4px}
+blockquote{margin:0 0 14px;padding:8px 16px;border-left:3px solid var(--accent);color:var(--muted);font-style:italic}
+.alert{border-left:3px solid var(--info);background:var(--panel);padding:12px 16px;margin:0 0 18px;border-radius:0 4px 4px 0} .alert.warning{border-left-color:var(--warn)} .alert p:last-child{margin-bottom:0}
+.tw{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums} th,td{text-align:left;vertical-align:top;padding:8px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--panel);font-weight:500} tr:last-child td{border-bottom:0}
+em.tag{font-style:normal;font-family:var(--mono);font-size:.85em;color:var(--accent)} hr{border:0;height:0;margin:0} strong{font-weight:600}
+.guide{margin-top:72px;padding-top:32px;border-top:2px solid var(--ink)} .guide:first-of-type{margin-top:0;padding-top:0;border-top:0}
+.guide h1{font-size:30px} .guide h2{border-top:0;padding-top:0;margin-top:40px}
+.lede{color:var(--muted);font-size:15px;margin:-8px 0 24px}
+@media (max-width:960px){.wrap{grid-template-columns:1fr;gap:24px;padding:24px 18px 64px} nav{position:static;max-height:none;border-bottom:1px solid var(--line);padding-bottom:16px} nav li.l3{white-space:normal}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+.alert-title{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+h4{font-family:var(--serif);font-weight:500;font-size:16px;margin:28px 0 8px}
+nav li.l1{margin-top:22px;font-family:var(--serif);font-size:15px;font-weight:600} nav li.l2{margin-top:12px;font-weight:600} nav li.l3{padding-left:12px;margin-top:4px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+<div class="wrap"><nav><p class="eyebrow">Contents</p><ul><li class="l1"><a href="#bun">Bun</a></li><li class="l3"><a href="#bun-s1-install">1. Install</a></li><li class="l3"><a href="#bun-s2-configure">2. Configure</a></li><li class="l3"><a href="#bun-s3-instrument-your-libraries">3. Instrument your libraries</a></li><li class="l3"><a href="#bun-s4-verify">4. Verify</a></li><li class="l3"><a href="#bun-s5-add-readable-stack-traces-with-source-maps">5. Add readable stack traces with source maps</a></li><li class="l3"><a href="#bun-s6-frameworks">6. Frameworks on Bun</a></li><li class="l3"><a href="#bun-snext-steps">Next steps</a></li><li class="l1"><a href="#deno">Deno</a></li><li class="l3"><a href="#deno-s1-install">1. Install</a></li><li class="l3"><a href="#deno-s2-configure">2. Configure</a></li><li class="l3"><a href="#deno-s3-instrument-your-libraries">3. Instrument your libraries</a></li><li class="l3"><a href="#deno-s4-verify">4. Verify</a></li><li class="l3"><a href="#deno-s5-source-maps">5. Source maps</a></li><li class="l3"><a href="#deno-s6-frameworks">6. Frameworks on Deno</a></li><li class="l3"><a href="#deno-snext-steps">Next steps</a></li><li class="l1"><a href="#cloudflare">Cloudflare</a></li><li class="l3"><a href="#cloudflare-s1-install">1. Install</a></li><li class="l3"><a href="#cloudflare-s2-configure">2. Configure</a></li><li class="l3"><a href="#cloudflare-s3-instrument-bundled-libraries-with-vite-recommended">3. Instrument bundled libraries with Vite (recommended)</a></li><li class="l3"><a href="#cloudflare-s4-verify">4. Verify</a></li><li class="l3"><a href="#cloudflare-s5-add-readable-stack-traces-with-source-maps">5. Add readable stack traces with source maps</a></li><li class="l3"><a href="#cloudflare-s6-frameworks">6. Frameworks on Cloudflare</a></li><li class="l3"><a href="#cloudflare-node-frameworks">Node HTTP frameworks on Workers</a></li><li class="l3"><a href="#cloudflare-snext-steps">Next steps</a></li><li class="l1"><a href="#verify">How the quick starts were verified</a></li><li class="l3"><a href="#verify-sbun-bun-1-4-0-and-bun-1-3-14-where-noted">Bun (bun 1.4.0, and bun 1.3.14 where noted)</a></li><li class="l3"><a href="#verify-sdeno-deno-2-9-0-hook-also-checked-on-2-8-3">Deno (deno 2.9.0, hook also checked on 2.8.3)</a></li><li class="l3"><a href="#verify-scloudflare-wrangler-4-56-0-to-4-128-0-workerd-local">Cloudflare (wrangler 4.56.0 to 4.128.0, workerd local)</a></li><li class="l3"><a href="#verify-sfindings-that-came-out-of-the-quick-start-runs">Findings that came out of the quick-start runs</a></li></ul></nav><main><h1>Runtime Quick Starts</h1><p class="lede">Proposed quick start pages for the Bun, Deno and Cloudflare guides. Each step was run as written against the develop build, and against the published 10.73.0 where the tables say so, and the deep probe report fed back the caveats. The last section maps every claim to its run.</p>
+<section class="guide" id="bun"><h1>Bun</h1><div class="alert info"><p>Works with Bun 1.3.14 or later. Runtime spans (errors, <code>Bun.serve</code> requests, <code>fetch</code>, logs) work on every supported Bun version. Library spans (databases, AI SDKs, Express, Koa, Hapi) need a bundle built with the Sentry plugin, see step 3. Fastify and <code>mysql2</code> 3.20 or later publish their own events and need no build step. Import database drivers and create clients at module scope: a driver whose module first loads inside a request records no spans on every Bun version. See <a href="./features/runtime/">Bun runtime notes</a>.</p></div>
+<div class="alert warning"><p class="alert-title">Before SDK 11.0</p><p>On SDK 10.x, outgoing <code>fetch</code> and <code>node:http</code> servers (Express, Koa, Hapi, Fastify, <code>next start</code>) are not instrumented on Bun: no <code>fetch</code> spans or trace headers, and no request isolation on <code>node:http</code>. The plugin build (step 3) adds database and AI spans only. See <a href="./features/sdk-10/">Bun on SDK 10.x</a> for the two workarounds.</p></div>
+<h2 id="bun-s1-install">1. Install</h2>
+<pre><span class="fn">bash</span><code>bun add @sentry/bun</code></pre>
+<h2 id="bun-s2-configure">2. Configure</h2>
+<p>Create <code>instrument.ts</code> and preload it. Everything the SDK wraps (<code>Bun.serve</code>, <code>fetch</code>, <code>node:http</code>, uncaught errors) is patched when <code>init()</code> runs, so it has to run before the rest of your app loads, and a preloaded module was evaluated once per process in our runs, also under <code>bun --hot</code>.</p>
+<pre><span class="fn">instrument.ts</span><code>import * as Sentry from &quot;@sentry/bun&quot;;
+
+Sentry.init({
+  dsn: &quot;___PUBLIC_DSN___&quot;,
+
+  // Capture 100% of transactions. Lower this in production.
+  tracesSampleRate: 1.0,
+
+  // User data and headers are sent by default; Bun.serve never sends request bodies.
+  // To keep user data out: dataCollection: { userInfo: false },
+});</code></pre>
+<pre><span class="fn">app.ts</span><code>import * as Sentry from &quot;@sentry/bun&quot;;
+
+Bun.serve({
+  port: 3000,
+  routes: {
+    &quot;/users/:id&quot;: (req) =&gt; Response.json({ id: req.params.id }),
+  },
+});</code></pre>
+<pre><span class="fn">bash</span><code>bun --preload ./instrument.ts app.ts</code></pre>
+<p>Or add <code>preload = ["./instrument.ts"]</code> to <code>bunfig.toml</code> and run <code>bun app.ts</code>. An <code>import "./instrument";</code> as the first line of the entry file also works for <code>bun app.ts</code> and <code>bun --watch</code>, but not for <code>bun --hot</code>, which re-evaluates the entry on every reload and then records one extra request span per reload.</p>
+<p>This is enough for:</p>
+<ul><li>Uncaught errors, unhandled rejections and errors thrown from <code>Bun.serve</code> routes.</li><li>An <code>http.server</code> span per request; a streamed response ends it when the handler returns, not when the stream closes. Routes declared in <code>Bun.serve({ routes })</code> are named by their pattern (<code>GET /users/:id</code>); a plain <code>fetch</code> handler is named by method only.</li><li><code>http.client</code> spans with <code>sentry-trace</code> and <code>baggage</code> headers on outgoing <code>fetch</code> and <code>node:http</code> requests.</li><li>Logs from <code>Sentry.logger.*</code> and console breadcrumbs.</li></ul>
+<h2 id="bun-s3-instrument-your-libraries">3. Instrument your libraries</h2>
+<p>Database drivers, AI SDKs and the Express, Koa and Hapi integrations record spans through <code>node:diagnostics_channel</code> events that the Sentry bundler plugin injects into those packages at build time. <code>bun run</code> on unbundled source cannot inject them, so those integrations stay silent there. Bundle your app with <code>@sentry/bun/plugin</code>:</p>
+<pre><span class="fn">build.ts</span><code>import { sentryBunPlugin } from &quot;@sentry/bun/plugin&quot;;
+
+await Bun.build({
+  entrypoints: [&quot;./app.ts&quot;],
+  outdir: &quot;./dist&quot;,
+  target: &quot;bun&quot;,
+  // Keep the SDK external and let the plugin bundle every instrumented package.
+  external: [&quot;@sentry/*&quot;],
+  // Readable stack traces locally, and the input for source map upload.
+  sourcemap: &quot;external&quot;,
+  plugins: [sentryBunPlugin()],
+});</code></pre>
+<pre><span class="fn">bash</span><code>bun run build.ts
+bun --preload ./instrument.ts dist/app.js</code></pre>
+<p>Instrumented packages listed in <code>external</code> are bundled anyway, because a package that is resolved from <code>node_modules</code> at runtime never passes through the plugin. Run the bundle with <code>bun --preload ./instrument.ts dist/app.js</code>, or bundle <code>instrument.ts</code> in by importing it from the entry.</p>
+<div class="alert warning"><p>Single-file executables are bundles too, so the plugin applies, but only through the JavaScript API: <code>Bun.build({ compile: { outfile: "./app" }, plugins: [sentryBunPlugin()] })</code>. Drop the <code>external</code> line for a compiled build, because an executable cannot resolve external packages at runtime. <code>bun build --compile</code> on the command line cannot take plugins. Development with <code>bun --watch app.ts</code> records runtime spans only.</p></div>
+<h2 id="bun-s4-verify">4. Verify</h2>
+<p>Add a route that throws and a manual span, then request them:</p>
+<pre><span class="fn">app.ts</span><code>Bun.serve({
+  routes: {
+    &quot;/debug-sentry&quot;: () =&gt; {
+      throw new Error(&quot;My first Sentry error!&quot;);
+    },
+    &quot;/debug-span&quot;: async () =&gt; {
+      await Sentry.startSpan({ op: &quot;test&quot;, name: &quot;My First Test Span&quot; }, async () =&gt; {
+        await Bun.sleep(100);
+      });
+      Sentry.logger.info(&quot;Span recorded&quot;, { route: &quot;/debug-span&quot; });
+      return new Response(&quot;ok&quot;);
+    },
+  },
+});</code></pre>
+<p>In Sentry you should see one issue, two <code>http.server</code> traces (<code>GET /debug-sentry</code> with an error, <code>GET /debug-span</code> with a child span) and one log line. The client is cached per isolate, so hitting <code>/debug-sentry</code> a second time sends no second issue until a different event goes out; that is the dedupe integration, not a lost event. Pass <code>enableDedupe: false</code> in the options to turn it off.</p>
+<h2 id="bun-s5-add-readable-stack-traces-with-source-maps">5. Add readable stack traces with source maps</h2>
+<p>Bundled stack traces point into <code>dist/app.js</code>. Inject debug IDs and upload the maps from the <code>sourcemap: "external"</code> build above:</p>
+<pre><span class="fn">bash</span><code>npx @sentry/cli sourcemaps inject ./dist
+npx @sentry/cli sourcemaps upload --org ___ORG_SLUG___ --project ___PROJECT_SLUG___ ./dist</code></pre>
+<p>The Sentry wizard has no Bun bundler preset; the CLI commands above are the supported path. See <a class="pl" href="#" title="/sourcemaps/">Source Maps</a>.</p>
+<h2 id="bun-s6-frameworks">6. Frameworks on Bun</h2>
+<p>Every framework SDK we tested runs on Bun with the develop line, but they are Node SDKs: Bun never publishes Node's request channel and Node's fetch instrumentation never fires. Install <code>@sentry/bun</code> next to your framework SDK and add its two integrations to the <em>server</em> init. That change restores request spans, per-request isolation, incoming trace continuation and outgoing fetch spans for the framework SDKs. The table below lists what each framework needs on top.</p>
+<pre><span class="fn">sentry.server.config.ts (Nuxt, Next.js, Astro) or instrument.server.ts (SvelteKit, React Router, TanStack Start)</span><code>import * as Sentry from &quot;@sentry/nuxt&quot;; // or @sentry/nextjs, @sentry/sveltekit, @sentry/astro, ...
+import { bunServerIntegration, bunHttpServerIntegration, fetchIntegration } from &quot;@sentry/bun&quot;;
+
+const onBun = typeof Bun !== &quot;undefined&quot;;
+
+Sentry.init({
+  dsn: &quot;___PUBLIC_DSN___&quot;,
+  tracesSampleRate: 1.0,
+  // Only on Bun, so the same file works under Node without duplicate spans.
+  integrations: onBun
+    ? [fetchIntegration(), bunServerIntegration(), bunHttpServerIntegration()]
+    : [],
+});</code></pre>
+<p><code>bunServerIntegration</code> covers servers built on <code>Bun.serve</code> (Nitro's <code>bun</code> preset, Astro standalone), <code>bunHttpServerIntegration</code> covers <code>node:http</code> servers (Express custom servers, <code>next start</code>, Nitro's <code>node-server</code> preset). Adding both is safe.</p>
+<p>Database spans need one more line, because Bun drops <code>diagnostics_channel</code> subscriptions that nothing else references before the driver loads. Pin the channels for the drivers you use right after <code>Sentry.init()</code>:</p>
+<pre><span class="fn">same file, after Sentry.init()</span><code>import * as dc from &quot;node:diagnostics_channel&quot;;
+
+globalThis.__sentryPinnedChannels ??= [
+  &quot;mysql2:query&quot;, &quot;mysql2:execute&quot;, &quot;mysql2:connect&quot;, &quot;mysql2:pool:connect&quot;,
+  &quot;orchestrion:mysql2:query&quot;, &quot;orchestrion:mysql:query&quot;,
+].map((name) =&gt; dc.tracingChannel(name));</code></pre>
+<div class="tw"><table><thead><tr><th>Framework</th><th>Run it as</th><th>What to add on Bun</th></tr></thead><tbody>
+<tr><td>Hono, Elysia</td><td><code>bun app.ts</code></td><td>Nothing. When bundling Hono, keep <code>hono</code> external together with <code>@sentry/*</code>, or drop <code>external</code> entirely; splitting the two crashes the middleware.</td></tr>
+<tr><td>Express, Koa, Hapi, Fastify</td><td><code>Bun.build</code> + plugin, then <code>bun dist/app.js</code></td><td>Nothing beyond the plugin build from step 3.</td></tr>
+<tr><td>NestJS</td><td><code>Bun.build</code> + plugin</td><td>Init from <code>@sentry/bun</code> and add <code>nestIntegration()</code> from <code>@sentry/nestjs</code>; list Nest's optional peers (<code>@nestjs/microservices</code>, <code>@nestjs/websockets</code>, ...) as <code>external</code>.</td></tr>
+<tr><td>Next.js</td><td><code>bun --bun next start</code></td><td>The integrations above and the channel pin. Do not name the project directory <code>app</code>.</td></tr>
+<tr><td>Nuxt</td><td><code>NITRO_PRESET=bun</code>, <code>bun .output/server/index.mjs</code></td><td>The integrations above; add <code>nitro.externals.external: ["mysql2"]</code> or Nitro's bundle breaks the driver.</td></tr>
+<tr><td>SvelteKit, Astro</td><td>adapter-node build, <code>bun build/index.js</code> / <code>bun --preload</code></td><td>The integrations above and the channel pin.</td></tr>
+<tr><td>React Router</td><td><code>bun server.js</code></td><td>The integrations above, the documented <code>instrumentations</code> export, and a <code>renderToReadableStream</code> entry (Bun has no <code>renderToPipeableStream</code>).</td></tr>
+<tr><td>TanStack Start</td><td><code>bun .output/server/index.mjs</code></td><td>The integrations above and the channel pin; keep <code>sentryTanstackStart()</code> as the first Vite plugin.</td></tr>
+<tr><td>Remix</td><td><code>Bun.build</code> + plugin on the server entry</td><td>Remove <code>"sideEffects": false</code> from package.json; wrap the Express handler call yourself.</td></tr>
+<tr><td>Oak</td><td><code>Bun.serve({ fetch: req =&gt; app.fetch(req) })</code></td><td>Install through the JSR npm bridge. Pass a <code>routes</code> map built from the router, or spans are named <code>GET</code> only.</td></tr>
+<tr><td>Fresh</td><td>build with Deno, run <code>_fresh/server.js</code> on Bun</td><td>Capture from <code>routes/_error.tsx</code>, because Fresh swallows route errors. Rename the root span from <code>ctx.route</code> in a middleware.</td></tr>
+<tr><td>SolidStart</td><td><code>bun .output/server/index.mjs</code></td><td>The integrations above and the channel pin. Route names stay URL-based and API route errors need an h3 middleware, on Node too.</td></tr>
+</tbody></table></div>
+<p>Each row is backed by a verified cell record in the <a href="https://claude.ai/code/artifact/f3c054e5-c6e3-4dea-8bc7-d744d35587af#scell-records">deep probe report</a>, with the exact commands and sink output.</p>
+<h2 id="bun-snext-steps">Next steps</h2>
+<ul><li><a class="pl" href="#" title="/frameworks/">Frameworks on Bun</a>: Hono, Elysia, Express, Koa, Hapi, Fastify and Next.js, and what each needs.</li><li><a class="pl" href="#" title="/configuration/integrations/">Integrations</a>: which ones run on <code>bun run</code> and which need the plugin build.</li><li><a class="pl" href="#" title="/configuration/integrations/bunserver/"><code>Bun.serve</code> options</a>: request bodies, ignored routes, streaming responses.</li><li><a class="pl" href="#" title="/configuration/options/">Options</a>, <a class="pl" href="#" title="/logs/">Logs</a>, <a class="pl" href="#" title="/tracing/">Tracing</a>.</li></ul></section>
+<section class="guide" id="deno"><h1>Deno</h1><div class="alert info"><p>Works with Deno 2.8.3 or later. The SDK is in beta.</p></div>
+<h2 id="deno-s1-install">1. Install</h2>
+<pre><span class="fn">bash</span><code>deno add npm:@sentry/deno</code></pre>
+<p>Add <code>nodeModulesDir</code> to <code>deno.json</code>. The library instrumentation in step 3 rewrites packages while they load, and it only sees packages that live in a local <code>node_modules</code> directory, not in Deno's global npm cache.</p>
+<pre><span class="fn">deno.json</span><code>{
+  &quot;nodeModulesDir&quot;: &quot;auto&quot;,
+  &quot;imports&quot;: {
+    &quot;@sentry/deno&quot;: &quot;npm:@sentry/deno&quot;
+  }
+}</code></pre>
+<h2 id="deno-s2-configure">2. Configure</h2>
+<p>Initialize the SDK at the top of your entry file. The first import registers the library instrumentation hook (step 3); it has to be the first import of the program, before any package you want instrumented has loaded.</p>
+<pre><span class="fn">main.ts</span><code>import &quot;@sentry/deno/import&quot;;
+import * as Sentry from &quot;@sentry/deno&quot;;
+
+Sentry.init({
+  dsn: &quot;___PUBLIC_DSN___&quot;,
+
+  // Capture 100% of transactions. Lower this in production.
+  tracesSampleRate: 1.0,
+
+  // User data, headers and HTTP bodies are sent by default. To keep them out:
+  // dataCollection: { userInfo: false, httpBodies: [] },
+});
+
+Deno.serve({ port: 3000 }, (req) =&gt; new Response(&quot;Hello&quot;));</code></pre>
+<p>Run it with the permissions the SDK uses:</p>
+<pre><span class="fn">bash</span><code>deno run --allow-net --allow-env --allow-read=. --allow-sys=hostname,osRelease main.ts</code></pre>
+<div class="tw"><table><thead><tr><th>Flag</th><th>What it unlocks</th></tr></thead><tbody><tr><td><code>--allow-net</code></td><td>Sending events. Narrow it to your ingest host: <code>--allow-net=___ORG_INGEST_DOMAIN___</code>, plus whatever your app needs.</td></tr><tr><td><code>--allow-env</code></td><td>Required by the first-line <code>@sentry/deno/import</code> hook, which exits with <code>NotCapable: Requires env access</code> without it. Also <code>SENTRY_DSN</code>, <code>SENTRY_RELEASE</code> and the other <code>SENTRY_*</code> variables. A scoped <code>--allow-env=...</code> is not enough for the hook.</td></tr><tr><td><code>--allow-read=.</code></td><td>Source lines in stack traces and <code>app://</code> paths instead of absolute file paths. Read access is checked per file for context lines and on the working directory for path normalization, so <code>--allow-read=./src</code> leaves your entry file bare and every filename absolute.</td></tr><tr><td><code>--allow-sys=hostname,osRelease</code></td><td><code>server_name</code> and the OS version on events.</td></tr></tbody></table></div>
+<p>Without a flag the SDK skips that feature silently, with no warning and no permission prompt.</p>
+<p>The same applies to <code>deno serve</code>: <code>export default { fetch }</code> is instrumented like <code>Deno.serve</code>, and <code>deno serve --parallel</code> starts one SDK per worker without duplicating anything.</p>
+<p>This is enough for:</p>
+<ul><li>Uncaught errors, unhandled rejections and errors thrown from <code>Deno.serve</code> handlers.</li><li>An <code>http.server</code> span per <code>Deno.serve</code> request, named by HTTP method. <code>Deno.serve</code> has no router, so route names come from a framework; see <a class="pl" href="#" title="/frameworks/">Frameworks on Deno</a>.</li><li>Server and client spans for <code>node:http</code>, with <code>sentry-trace</code> and <code>baggage</code> headers on outgoing <code>node:http</code> requests. A synchronous throw inside a <code>node:http</code> listener is swallowed by Deno and never reaches Sentry; catch and report it yourself.</li><li>Logs from <code>Sentry.logger.*</code>, plus console and <code>fetch</code> breadcrumbs.</li></ul>
+<div class="alert warning"><p>Outgoing <code>fetch()</code> calls record a breadcrumb only. They do not get a span and do not carry trace headers yet, so a trace ends at the first <code>fetch</code> to another service. Track progress in <a href="https://github.com/getsentry/sentry-javascript/issues/23891">sentry-javascript#23891</a>.</p></div>
+<h2 id="deno-s3-instrument-your-libraries">3. Instrument your libraries</h2>
+<p>The <code>import "@sentry/deno/import"</code> line from step 2 installs a module hook that injects <code>node:diagnostics_channel</code> events into database drivers, AI SDKs and web frameworks as they load. With it in place, <code>mysql</code>, <code>pg</code>, <code>postgres</code>, <code>mongodb</code>, <code>ioredis</code>, <code>openai</code>, <code>@anthropic-ai/sdk</code>, the Vercel AI SDK and the rest of the <a class="pl" href="#" title="/configuration/integrations/">integration list</a> record spans without further setup. Fastify and mysql2 (3.20 or later) publish their own events and work without the hook. Hono is a plain fetch handler and needs no hook either.</p>
+<div class="alert warning"><p>Two Deno limits apply to the hook. First, a Deno bug makes every <code>require()</code> of a JSON file fail once a module hook is registered (<a href="https://github.com/denoland/deno/issues/36240">denoland/deno#36240</a>), so Express, Hapi, Fastify and mysql2 crash on import. Register this second hook right after the Sentry import until the fix ships:</p>
+<pre><span class="fn">main.ts</span><code>import &quot;@sentry/deno/import&quot;;
+import { registerHooks } from &quot;node:module&quot;;
+registerHooks({
+  load(url, context, next) {
+    const result = next(url, context);
+    if (result &amp;&amp; result.format == null &amp;&amp; url.endsWith(&quot;.json&quot;)) result.format = &quot;json&quot;;
+    return result;
+  },
+});</code></pre>
+<p>Second, the hook transforms CommonJS builds only. A package that loads its ES module build (the OpenAI SDK, for example) is not instrumented; point the import map at the package's CommonJS entry (<code>"openai": "npm:openai/index.js"</code>) or run with <code>--conditions=require</code>.</p></div>
+<p>If you forget the import, the SDK still installs the integrations and records nothing for those libraries, without a warning.</p>
+<h2 id="deno-s4-verify">4. Verify</h2>
+<pre><span class="fn">main.ts</span><code>Deno.serve({ port: 3000 }, async (req) =&gt; {
+  const { pathname } = new URL(req.url);
+  if (pathname === &quot;/debug-sentry&quot;) {
+    throw new Error(&quot;My first Sentry error!&quot;);
+  }
+  if (pathname === &quot;/debug-span&quot;) {
+    await Sentry.startSpan({ op: &quot;test&quot;, name: &quot;My First Test Span&quot; }, async () =&gt; {
+      await new Promise((resolve) =&gt; setTimeout(resolve, 100));
+    });
+    Sentry.logger.info(&quot;Span recorded&quot;, { route: pathname });
+  }
+  return new Response(&quot;ok&quot;);
+});</code></pre>
+<p>In Sentry you should see one issue, two <code>GET</code> traces (one with an error, one with a child span) and one log line.</p>
+<h2 id="deno-s5-source-maps">5. Source maps</h2>
+<p>Deno runs your TypeScript directly, so stack traces point at your source files and no upload is needed for a plain <code>deno run</code>. If you bundle for deployment (<code>deno bundle</code>, esbuild), upload the maps with <code>npx @sentry/cli sourcemaps inject</code> and <code>upload</code>. See <a class="pl" href="#" title="/sourcemaps/">Source Maps</a>.</p>
+<h2 id="deno-s6-frameworks">6. Frameworks on Deno</h2>
+<p>Hono, Oak, Fresh, Express, Fastify, Koa, Hapi, NestJS, Next.js, Nuxt, SvelteKit, Astro, React Router and TanStack Start all run on Deno with the develop line, and errors, route names, isolation and incoming traces work for most of them with the wiring from steps 1 to 3. Two things apply to all of them.</p>
+<p><strong>Outgoing <code>fetch()</code> is not traced on Deno.</strong> The Deno SDK instruments <code>node:http</code> only, so a global <code>fetch()</code> gets no span and no <code>sentry-trace</code> header and the trace stops at the first downstream service. Until the SDK ships a fetch integration, register one from <code>@sentry/core</code> primitives:</p>
+<pre><span class="fn">instrument.ts</span><code>import &quot;@sentry/deno/import&quot;;
+import * as Sentry from &quot;@sentry/deno&quot;;
+import { addFetchInstrumentationHandler, defineIntegration, getClient, instrumentFetchRequest, isSentryRequestUrl } from &quot;@sentry/core&quot;;
+
+const spans = {};
+const denoFetchIntegration = defineIntegration(() =&gt; ({
+  name: &quot;DenoFetch&quot;,
+  setupOnce() {
+    addFetchInstrumentationHandler((handlerData) =&gt; {
+      const client = getClient();
+      if (!client || isSentryRequestUrl(handlerData.fetchData.url, client)) return;
+      instrumentFetchRequest(handlerData, () =&gt; true, () =&gt; true, spans, { spanOrigin: &quot;auto.http.fetch&quot; });
+    });
+  },
+}));
+
+Sentry.init({
+  dsn: &quot;___PUBLIC_DSN___&quot;,
+  tracesSampleRate: 1.0,
+  integrations: [denoFetchIntegration()],
+});</code></pre>
+<p><strong>The import hook and CommonJS JSON.</strong> Registering any load hook on Deno 2.9 breaks <code>require("*.json")</code> inside CommonJS packages (Hapi, Koa's dependencies, NestJS). Add a JSON hook next to the Sentry import, or skip the hook and bundle with esbuild and <code>sentryOrchestrionPlugin()</code> from <code>@sentry/server-utils/orchestrion/esbuild</code>:</p>
+<pre><span class="fn">instrument.ts, before the framework import</span><code>import * as Module from &quot;node:module&quot;;
+
+Module.registerHooks({
+  load(url, context, nextLoad) {
+    const result = nextLoad(url, context);
+    return url.endsWith(&quot;.json&quot;) ? { ...result, format: &quot;json&quot;, shortCircuit: true } : result;
+  },
+});</code></pre>
+<div class="tw"><table><thead><tr><th>Framework</th><th>Run it as</th><th>What to add on Deno</th></tr></thead><tbody>
+<tr><td>Hono, Express, Fastify, Astro</td><td><code>deno run -A</code> with the hook import first</td><td>The fetch integration only.</td></tr>
+<tr><td>Koa, Hapi, NestJS</td><td>same</td><td>The fetch integration and the JSON hook. Koa: register the hook after the Koa import for driver spans.</td></tr>
+<tr><td>Oak</td><td><code>Deno.serve(app.fetch)</code></td><td>Never <code>app.listen()</code>, because errors are lost outside the request context; name spans from a router middleware.</td></tr>
+<tr><td>Fresh</td><td><code>deno task start</code></td><td>Route names from a middleware reading <code>ctx.route</code>; <code>captureConsoleIntegration({ levels: ["error"] })</code> for route errors; <code>ssr.external: ["mysql"]</code>. Isolation leaks across requests (Deno AsyncLocalStorage bug), no fix.</td></tr>
+<tr><td>Next.js</td><td><code>deno run -A npm:next start</code></td><td><code>enableRuntimeChannelInjection: false</code> in the server init or every request fails; use <code>winterCGFetchIntegration</code> from <code>@sentry/vercel-edge</code> for fetch.</td></tr>
+<tr><td>Nuxt</td><td>default <code>node-server</code> preset, <code>deno run -A .output/server/index.mjs</code></td><td>Do not use the <code>deno_server</code> preset, because it loses route names, incoming traces and isolation.</td></tr>
+<tr><td>SvelteKit</td><td>adapter-node build under <code>deno run</code></td><td>Fetch integration; <code>createRequire(import.meta.url)("mysql2/package.json")</code> before <code>Sentry.init</code> for driver spans.</td></tr>
+<tr><td>Elysia</td><td><code>Deno.serve(app.fetch)</code></td><td>Initialize from <code>@sentry/deno</code>, not <code>@sentry/elysia</code>, and keep <code>withElysia</code>. The documented init loses isolation and trace continuation on Deno.</td></tr>
+<tr><td>Remix</td><td>node build, <code>deno run -A</code></td><td>Call <code>installGlobals()</code> from <code>@remix-run/node</code> for outgoing fetch; bundle the server with the orchestrion esbuild plugin for db spans.</td></tr>
+<tr><td>SolidStart</td><td>node-server build, <code>deno run -A</code></td><td>Least supported: errors, route names, isolation and fetch all need app-side fixes. Wrap scope changes in <code>withIsolationScope</code>.</td></tr>
+<tr><td>React Router, TanStack Start</td><td>build with the Sentry Vite plugin</td><td>Use the build-time plugin (<code>sentryReactRouter</code>, <code>noExternals</code> for TanStack) instead of the require hook.</td></tr>
+</tbody></table></div>
+<p>Each row is backed by a verified cell record in the <a href="https://claude.ai/code/artifact/f3c054e5-c6e3-4dea-8bc7-d744d35587af#scell-records">deep probe report</a>.</p>
+<h2 id="deno-snext-steps">Next steps</h2>
+<ul><li><a class="pl" href="#" title="/frameworks/">Frameworks on Deno</a>: Hono and Fastify work as is; Oak works when mounted on <code>Deno.serve</code> through <code>app.fetch</code>; Express, Koa and Hapi need the JSON hook above.</li><li><a class="pl" href="#" title="/configuration/integrations/">Integrations</a>: what is on by default and what the hook adds.</li><li><a class="pl" href="#" title="/configuration/integrations/denocron/"><code>Deno.cron</code> check-ins</a>: on Deno 2.9.0 the integration fails at init, see the limits in the report before you enable it.</li><li><a class="pl" href="#" title="/configuration/options/">Options</a>, <a class="pl" href="#" title="/logs/">Logs</a>, <a class="pl" href="#" title="/tracing/">Tracing</a>.</li></ul></section>
+<section class="guide" id="cloudflare"><h1>Cloudflare</h1><p>Using a framework? Astro, Hono, Hydrogen, Next.js, Nuxt, React Router, Remix, SvelteKit and TanStack Start each have their own page under <a class="pl" href="#" title="/frameworks/">Frameworks on Cloudflare</a>. This page covers a plain Worker. For Cloudflare Pages, see <a class="pl" href="#" title="/pages/">Cloudflare Pages</a>.</p>
+<h2 id="cloudflare-s1-install">1. Install</h2>
+<pre><span class="fn">bash</span><code>npm install @sentry/cloudflare</code></pre>
+<h2 id="cloudflare-s2-configure">2. Configure</h2>
+<p>The SDK needs Node.js APIs from the Workers runtime. Enable <code>nodejs_compat</code> with a <code>compatibility_date</code> of <code>2024-09-23</code> or later (<code>withSentry</code> needs it; the request wrapper from <code>@sentry/cloudflare/request</code> boots with <code>nodejs_als</code> alone, but on develop pass it <code>traceLifecycle: "static"</code>, because that entry has no async context strategy under the streaming default):</p>
+<pre><span class="fn">wrangler.jsonc</span><code>{
+  &quot;name&quot;: &quot;my-worker&quot;,
+  &quot;main&quot;: &quot;src/index.ts&quot;,
+  &quot;compatibility_date&quot;: &quot;2024-09-23&quot;,
+  &quot;compatibility_flags&quot;: [&quot;nodejs_compat&quot;]
+}</code></pre>
+<p>Wrap the Worker's exported handler with <code>withSentry</code>. The options callback receives <code>env</code>, so secrets and per-environment settings can come from bindings.</p>
+<pre><span class="fn">src/index.ts</span><code>import * as Sentry from &quot;@sentry/cloudflare&quot;;
+
+export default Sentry.withSentry(
+  (env) =&gt; ({
+    dsn: &quot;___PUBLIC_DSN___&quot;,
+
+    // Capture 100% of transactions. Lower this in production.
+    tracesSampleRate: 1.0,
+
+    // Send user data and HTTP bodies with events. Remove to keep the defaults.
+    dataCollection: {},
+  }),
+  {
+    async fetch(request, env, ctx) {
+      return new Response(&quot;Hello&quot;);
+    },
+  } satisfies ExportedHandler&lt;Env&gt;,
+);</code></pre>
+<pre><span class="fn">bash</span><code>npx wrangler dev</code></pre>
+<p>This is enough for:</p>
+<ul><li>Errors thrown from <code>fetch</code>, <code>scheduled</code> and <code>queue</code> handlers. The <code>email</code> and <code>tail</code> handlers are wrapped too, but were not exercised in this audit.</li><li>An <code>http.server</code> span per request, named by HTTP method. Route names come from a framework; see <a class="pl" href="#" title="/frameworks/hono/">Hono on Cloudflare</a>.</li><li><code>http.client</code> spans with <code>sentry-trace</code> and <code>baggage</code> headers on outgoing <code>fetch</code>. Calls through service bindings and Durable Object stubs carry the headers but get no span of their own.</li><li>Spans for D1 queries, R2 operations and Queue producers on the <code>env</code> the handler receives, without wrapping anything. Workers AI calls are instrumented in code but were not exercised in this audit.</li><li>Logs from <code>Sentry.logger.*</code> and console breadcrumbs.</li></ul>
+<p>Durable Objects, Workflows and Agents are classes, not handlers, and need their own wrapper. A wrapped Durable Object also records a span per <code>webSocketMessage</code>, per <code>webSocketClose</code> and per <code>alarm</code>, next to its storage spans: <a class="pl" href="#" title="/features/durableobject/">Durable Objects</a>, <a class="pl" href="#" title="/features/workflows/">Workflows</a>, <a class="pl" href="#" title="/features/agents-sdk/">Agents SDK</a>.</p>
+<p>Not included: KV operations produce no spans, and there are no automatic release health sessions on Workers. For sessions, add <code>@sentry/core</code> as a direct dependency and call its <code>startSession()</code> and <code>endSession()</code> inside the handler; <code>@sentry/cloudflare</code> does not re-export them.</p>
+<div class="alert warning"><p>Work you hand to <code>ctx.waitUntil()</code> runs after the handler returned, and an error thrown there is not captured. Attach the capture yourself:</p>
+<pre><span class="fn">typescript</span><code>ctx.waitUntil(work().catch((e) =&gt; Sentry.captureException(e)));</code></pre>
+<p>Do not <code>await Sentry.flush()</code> inside that task on SDK 10.x; the end-of-request flush already waits for every <code>waitUntil</code> promise.</p></div>
+<div class="alert info"><p class="alert-title">Before SDK 11.0</p><p>On SDK 10.x, <code>dataCollection: { httpBodies: [] }</code> does not switch off incoming request bodies on Workers; pass <code>integrations: [Sentry.httpServerIntegration({ maxRequestBodySize: "none" })]</code> instead. Also on 10.x, all <code>scheduled</code> and <code>queue</code> runs of one isolate share a trace id.</p></div>
+<h2 id="cloudflare-s3-instrument-bundled-libraries-with-vite-recommended">3. Instrument bundled libraries with Vite (recommended)</h2>
+<p>Database drivers and AI SDKs are bundled into the Worker, so the runtime cannot patch them. Build with Vite and the Sentry plugin, which injects <code>node:diagnostics_channel</code> events into those packages at build time and wraps your Worker entry for you:</p>
+<pre><span class="fn">vite.config.ts</span><code>import { cloudflare } from &quot;@cloudflare/vite-plugin&quot;;
+import { sentryCloudflareVitePlugin } from &quot;@sentry/cloudflare/vite&quot;;
+import { defineConfig } from &quot;vite&quot;;
+
+export default defineConfig({
+  plugins: [cloudflare(), sentryCloudflareVitePlugin()],
+});</code></pre>
+<pre><span class="fn">bash</span><code>vite build
+npx wrangler deploy --config dist/my-worker/wrangler.json</code></pre>
+<p><code>vite dev</code> is instrumented the same way. The plugin also wraps the default export and any Durable Object, Workflow, Agent or <code>WorkerEntrypoint</code> class listed in the wrangler config, and adds those bindings to <code>rpcTracePropagationBindings</code>, so with the plugin in place you can leave <code>withSentry</code> out of your code. Keep step 2 for builds that do not go through Vite. Options and the list of instrumented packages: <a class="pl" href="#" title="/features/vite-plugin/">Vite plugin</a>.</p>
+<div class="alert info"><p>On SDK versions before 11.0 the plugin is a no-op unless you pass <code>sentryCloudflareVitePlugin({ _experimental: { useDiagnosticsChannelInjection: true } })</code>, and it never wraps your entry, so keep <code>withSentry</code>.</p></div>
+<h2 id="cloudflare-s4-verify">4. Verify</h2>
+<pre><span class="fn">src/index.ts</span><code>async fetch(request, env, ctx) {
+  const { pathname } = new URL(request.url);
+  if (pathname === &quot;/debug-sentry&quot;) {
+    throw new Error(&quot;My first Sentry error!&quot;);
+  }
+  if (pathname === &quot;/debug-span&quot;) {
+    await Sentry.startSpan({ op: &quot;test&quot;, name: &quot;My First Test Span&quot; }, async () =&gt; {
+      await fetch(&quot;https://example.com&quot;);
+    });
+    Sentry.logger.info(&quot;Span recorded&quot;, { route: pathname });
+  }
+  return new Response(&quot;ok&quot;);
+},</code></pre>
+<p>In Sentry you should see one issue, two <code>GET</code> traces (one with an error, one with a child span and an <code>http.client</code> span) and one log line. Spans measure wall time between I/O; CPU-only work shows as <code>0ms</code> on Workers.</p>
+<h2 id="cloudflare-s5-add-readable-stack-traces-with-source-maps">5. Add readable stack traces with source maps</h2>
+<pre><span class="fn">wrangler.jsonc</span><code>{
+  &quot;upload_source_maps&quot;: true
+}</code></pre>
+<pre><span class="fn">bash</span><code>npx @sentry/wizard@latest -i sourcemaps</code></pre>
+<p>See <a class="pl" href="#" title="/sourcemaps/uploading/wrangler/">Wrangler source maps</a>.</p>
+<h2 id="cloudflare-s6-frameworks">6. Frameworks on Cloudflare</h2>
+<p>Hono, Astro, React Router, TanStack Start, Nuxt, Next.js (OpenNext), SvelteKit, Remix and SolidStart all run on Workers with the develop line, and each has a first-party wiring. What the guides miss today:</p>
+<div class="tw"><table><thead><tr><th>Framework</th><th>Wiring</th><th>What to add or know</th></tr></thead><tbody>
+<tr><td>Hono, Astro, React Router, TanStack Start</td><td><code>withSentry</code> / the framework's Cloudflare entry</td><td>Nothing extra is needed.</td></tr>
+<tr><td>Next.js (OpenNext)</td><td><code>@sentry/nextjs</code> server config</td><td>Install <code>@sentry/cloudflare</code> explicitly and add its <code>fetchIntegration()</code>, or outgoing fetch is untraced; <code>mysql2</code> needs <code>disableEval: true</code> in its <code>createConnection</code> or <code>createPool</code> options.</td></tr>
+<tr><td>Nuxt</td><td><code>sentryCloudflareNitroPlugin</code></td><td>Route names stay URL-based on the stream lifecycle; a second Nitro plugin renaming the root span from <code>event.context.matchedRoute</code> fixes it (SDK fix is one line).</td></tr>
+<tr><td>SvelteKit</td><td><code>initCloudflareSentryHandle</code> + <code>sentryHandle</code></td><td>Route names are broken; insert a <code>handle</code> between the two that renames the root span from <code>event.route.id</code>. On npm or Yarn installs add <code>ssr.noExternal: [/^@sentry\//]</code> for driver spans.</td></tr>
+<tr><td>Remix</td><td><code>@sentry/remix/cloudflare</code> + <code>withSentry</code></td><td>Use <code>withSentry</code> as the Worker entry, not <code>wrapRequestHandler</code>, or per-request isolation is lost.</td></tr>
+<tr><td>SolidStart</td><td><code>cloudflare-module</code> preset + <code>@sentry/cloudflare</code></td><td>A Nitro plugin forwarding the <code>error</code> hook to <code>captureException</code>; route names need a middleware built from vinxi's route manifest.</td></tr>
+</tbody></table></div>
+<h3 id="cloudflare-node-frameworks">Node HTTP frameworks on Workers</h3>
+<p>Express, Koa, Hapi and NestJS run on Workers behind Cloudflare's Node HTTP server support. Set both compatibility flags and serve through <code>httpServerHandler</code>.</p>
+<pre><span class="fn">wrangler.jsonc</span><code>{
+  "compatibility_date": "2026-05-01",
+  "compatibility_flags": ["nodejs_compat", "enable_nodejs_http_server_modules"]
+}</code></pre>
+<pre><span class="fn">src/index.ts</span><code>import { httpServerHandler } from "cloudflare:node";
+import * as Sentry from "@sentry/cloudflare";
+
+export default Sentry.withSentry(
+  (env) =&gt; ({ dsn: "___PUBLIC_DSN___", tracesSampleRate: 1.0 }),
+  httpServerHandler({ port: 8080 }),
+);</code></pre>
+<p>Route names, framework spans and database spans need the channels injected at build time. Build with Vite and <code>sentryCloudflareVitePlugin()</code>, or with <code>sentryOrchestrionPlugin()</code> from <code>@sentry/server-utils/orchestrion/esbuild</code>. A Worker bundled by wrangler alone produces none of them and logs no warning.</p>
+<div class="tw"><table><thead><tr><th>Framework</th><th>What to add</th></tr></thead><tbody>
+<tr><td>Express</td><td>Build with the Vite plugin: it injects the Express channels, so route errors, route names and handler spans arrive with no extra call. On a wrangler-only build none of the three exist.</td></tr>
+<tr><td>Koa</td><td>Construct the app, register middleware and listen inside the fetch handler, not at module scope: instrumented middleware registration starts a span, and workerd forbids that at startup. The Vite plugin registers the error listener for you.</td></tr>
+<tr><td>Hapi</td><td>An <code>onRequest</code> extension that drops workerd's premature <code>close</code> event, or hapi turns every response into a 499 and its error event never fires.</td></tr>
+<tr><td>NestJS</td><td>The documented Node wiring: <code>SentryModule.forRoot()</code> and <code>SentryGlobalFilter</code> as <code>APP_FILTER</code>. With <code>mysql2</code> pass <code>disableEval: true</code> to <code>createPool</code>.</td></tr>
+<tr><td>Fastify</td><td>Does not run on Workers. Module-scope construction is rejected, and lazy construction hits a second restriction.</td></tr>
+</tbody></table></div>
+<p>Oak, Fresh and Elysia also run on Workers. Elysia needs <code>new Elysia({ aot: false })</code>. Oak and Fresh need a middleware to name the root span. Full records in the <a href="https://claude.ai/code/artifact/f3c054e5-c6e3-4dea-8bc7-d744d35587af#scell-records">deep probe report</a>.</p>
+<pre><span class="fn">src/hooks.server.ts (SvelteKit route names)</span><code>import { getActiveSpan, getRootSpan, initCloudflareSentryHandle, sentryHandle } from &quot;@sentry/sveltekit&quot;;
+import { sequence } from &quot;@sveltejs/kit/hooks&quot;;
+
+const nameRootSpanByRoute = ({ event, resolve }) =&gt; {
+  const routeId = event.route?.id;
+  const activeSpan = getActiveSpan();
+  if (routeId &amp;&amp; activeSpan &amp;&amp; !event.isSubRequest) {
+    const rootSpan = getRootSpan(activeSpan);
+    rootSpan.updateName(`${event.request.method} ${routeId}`);
+    rootSpan.setAttributes({ &quot;sentry.segment.name.source&quot;: &quot;route&quot;, &quot;http.route&quot;: routeId });
+  }
+  return resolve(event);
+};
+
+export const handle = sequence(initCloudflareSentryHandle({ dsn: &quot;___PUBLIC_DSN___&quot;, tracesSampleRate: 1.0 }), nameRootSpanByRoute, sentryHandle());</code></pre>
+<p>Each row is backed by a verified cell record in the <a href="https://claude.ai/code/artifact/f3c054e5-c6e3-4dea-8bc7-d744d35587af#scell-records">deep probe report</a>.</p>
+<h2 id="cloudflare-snext-steps">Next steps</h2>
+<ul><li><a class="pl" href="#" title="/frameworks/">Frameworks on Cloudflare</a>.</li><li><a class="pl" href="#" title="/features/">Cloudflare features</a>: which bindings produce spans, Durable Objects, Workflows, Workers AI, Agents, RPC trace propagation.</li><li><a class="pl" href="#" title="/features/vite-plugin/">Vite plugin</a> options.</li><li><a class="pl" href="#" title="/configuration/options/">Options</a> including <code>cacheClient</code>, <code>rpcTracePropagationBindings</code> and <code>traceLifecycle</code>, <a class="pl" href="#" title="/logs/">Logs</a>, <a class="pl" href="#" title="/tracing/">Tracing</a>.</li></ul></section>
+<section class="guide" id="verify"><h1 id="verify-show-the-quick-starts-were-verified">How the quick starts were verified</h1>
+<p>Each guide was built as a fresh app in <code>../qs/&lt;runtime&gt;/</code> and run exactly as written, through a local envelope sink (<code>../qs/sink.mjs</code>, used as <code>tunnel</code>). <code>../qs/run-all.sh</code> and <code>../qs/run-subset.sh &lt;name&gt;...</code> re-run everything; outputs are in <code>../qs/results/</code>. Every claim in a guide maps to a row below. "develop" is <code>getsentry/sentry-javascript</code> at <code>6f2da7483d</code> (v11 line, built in <code>~/dev/sentry-worktrees/audit-runtime-docs</code>); "10.73.0" is the npm release installed into <code>../qs/qs10/&lt;runtime&gt;/</code>. Database rows used a MariaDB 11 container on port 3307 and the <code>mysql@2</code> driver.</p>
+<h2 id="verify-sbun-bun-1-4-0-and-bun-1-3-14-where-noted">Bun (bun 1.4.0, and bun 1.3.14 where noted)</h2>
+<div class="tw"><table><thead><tr><th>Guide claim</th><th>Result file</th><th>develop</th><th>10.73.0</th></tr></thead><tbody><tr><td><code>import "./instrument"</code> first line, <code>bun app.ts</code></td><td><code>bun-dev</code>, <code>v10-bun-dev</code></td><td>errors (<code>auto.http.bun.serve</code>), <code>Bun.serve</code> route names, <code>fetch</code> and <code>node:http</code> client spans with headers, logs</td><td>same (static lifecycle: <code>transaction</code> envelopes)</td></tr><tr><td><code>bun --preload ./instrument.ts app.ts</code></td><td><code>INIT-bun-preload</code> (audit probes)</td><td>identical to the import form</td><td>not run</td></tr><tr><td><code>Bun.build</code> + <code>sentryBunPlugin</code> gives Express spans and Express error capture</td><td><code>bun-build</code></td><td>yes (<code>middleware</code>, <code>handler</code>, <code>auto.http.express</code>)</td><td><strong>no</strong>: the 10.x Bun SDK swaps in channel integrations for database drivers only; Express stays OTel-based and silent on Bun</td></tr><tr><td>plugin build gives database spans</td><td><code>app-modconn</code> (connection at module scope) vs <code>app-noend</code> (per request)</td><td>module-scope connection: <code>db SELECT</code>; per-request connection: <strong>no span</strong> on bun 1.4.0 and 1.3.14</td><td>not proven: the per-request app shape was used; see K11</td></tr><tr><td>channel events for a lazily loaded driver</td><td><code>../qs/chan/scenario-lazy.mjs</code></td><td>bun 1.3.14: <code>start,end,asyncStart,asyncEnd</code>; <strong>bun 1.4.0: none</strong></td><td>same runtime behavior</td></tr><tr><td><code>bun run</code> unbundled records no library spans and warns only with <code>debug: true</code></td><td><code>bun-dev</code>, audit <code>INIT-bun.json</code></td><td>confirmed</td><td>confirmed</td></tr><tr><td><code>sourcemap: "external"</code> + <code>sentry-cli sourcemaps inject</code></td><td><code>../qs/bun/dist</code></td><td>debug IDs injected offline; context lines present in bundled traces with the map next to the file</td><td>same</td></tr><tr><td><code>Sentry.logger.info</code> needs no option</td><td><code>bun-dev</code></td><td><code>log</code> envelope</td><td><code>log</code> envelope</td></tr></tbody></table></div>
+<h2 id="verify-sdeno-deno-2-9-0-hook-also-checked-on-2-8-3">Deno (deno 2.9.0, hook also checked on 2.8.3)</h2>
+<div class="tw"><table><thead><tr><th>Guide claim</th><th>Result file</th><th>develop</th><th>10.73.0</th></tr></thead><tbody><tr><td><code>deno add npm:@sentry/deno</code> + <code>nodeModulesDir: "auto"</code> + first-line <code>import "@sentry/deno/import"</code></td><td><code>deno-hook</code>, <code>v10-deno-hook</code></td><td>errors (<code>auto.http.deno</code>), method-named <code>Deno.serve</code> spans, <code>db SELECT</code> span, logs</td><td>same (static lifecycle)</td></tr><tr><td>without <code>nodeModulesDir</code> (npm cache only) the hook injects nothing</td><td><code>../qs/qs10/deno-cache</code></td><td>not run</td><td><code>GET /db</code> with no <code>db</code> span</td></tr><tr><td>without the first-line import: no library spans, no warning</td><td><code>deno-nohook</code>, audit <code>INIT-deno.json</code></td><td>confirmed</td><td>confirmed</td></tr><tr><td><code>--allow-net --allow-env</code> only: works, no source lines, no <code>server_name</code></td><td><code>deno-hook-minperms</code>, audit <code>D-PERMS.txt</code></td><td>confirmed</td><td>not run</td></tr><tr><td>outgoing <code>fetch</code> has no span and no headers; <code>node:http</code> has both</td><td>audit <code>PROP-deno.json</code></td><td>confirmed</td><td>not run</td></tr><tr><td>Express, Hapi, Fastify crash under the hook (JSON <code>require</code>), Koa crashes on a second loader path</td><td>audit <code>FW-deno-hook.txt</code>, <code>D-JSON.txt</code></td><td>confirmed on 2.9.0 and 2.8.3</td><td>same runtime behavior</td></tr><tr><td>Fastify and Hono work without the hook</td><td>audit <code>FW-deno-nohook.txt</code></td><td>confirmed</td><td>not run</td></tr><tr><td><code>--import=@sentry/deno/import</code> (bare specifier) does not resolve</td><td>audit <code>D-HOOK.txt</code></td><td>confirmed</td><td>not run</td></tr></tbody></table></div>
+<h2 id="verify-scloudflare-wrangler-4-56-0-to-4-128-0-workerd-local">Cloudflare (wrangler 4.56.0 to 4.128.0, workerd local)</h2>
+<div class="tw"><table><thead><tr><th>Guide claim</th><th>Result file</th><th>develop</th><th>10.73.0</th></tr></thead><tbody><tr><td><code>withSentry</code> + <code>nodejs_compat</code> + <code>compatibility_date</code> 2024-09-23 or later</td><td><code>cf-wrangler</code>, <code>v10-cf-wrangler</code>, audit <code>CF-RUN.txt</code></td><td>errors (<code>auto.http.cloudflare</code>), method-named spans, <code>http.client</code> with headers, logs</td><td>same</td></tr><tr><td><code>nodejs_als</code> alone still boots; no flag fails with <code>No such module "node:async_hooks"</code></td><td>audit <code>CF-RUN.txt</code></td><td>confirmed</td><td>not run</td></tr><tr><td>Vite plugin injects and records <code>db</code> spans</td><td><code>cf-vite11pack</code> (SDK from <code>npm pack</code> of develop, npm-installed Vite)</td><td><code>injected: {integrations: ["mysql"], bundler: ["mysql"]}</code>, <code>db SELECT</code></td><td><code>v10-cf-vite</code>: same, <strong>only with</strong> <code>_experimental.useDiagnosticsChannelInjection: true</code></td></tr><tr><td>plugin is a no-op without the flag on 10.x</td><td>first <code>v10-cf-vite</code> run</td><td>not applicable</td><td><code>injected: []</code>, no <code>db</code> span</td></tr><tr><td><code>Sentry.logger.info</code> needs no option</td><td><code>cf-wrangler</code></td><td><code>log</code> envelope</td><td><code>log</code> envelope</td></tr><tr><td>a compatibility date newer than the local workerd fails to start</td><td><code>cf-wrangler</code> first run</td><td><code>This Worker requires compatibility date "2026-08-01", but the newest date supported by this server binary is "2026-05-03"</code></td><td>same</td></tr></tbody></table></div>
+<h2 id="verify-sfindings-that-came-out-of-the-quick-start-runs">Findings that came out of the quick-start runs</h2>
+<ul><li><strong>K11 (Bun, code).</strong> In a plugin build, a driver whose instrumented module first loads inside a request (mysql's <code>lib/Connection.js</code> loads on <code>createConnection</code>) never gets spans, on every later request too; a connection created at module scope does. Same on develop and 10.73.0, bun 1.4.0 and 1.3.14. On bun 1.4.0 the injected channel itself stops firing in that case (<code>../qs/chan/scenario-lazy.mjs</code>), on 1.3.14 it fires and only the SDK span is missing. Repro: <code>../qs/bun/app-noend.ts</code> versus <code>app-modconn.ts</code>. The e2e app <code>bun-mysql</code> creates its connection at module scope, so CI cannot see this.</li><li><strong>K12 (Deno, docs and code).</strong> <code>@sentry/deno/import</code> only transforms packages under a local <code>node_modules</code>; with Deno's default npm cache layout nothing is injected and nothing warns. The guide sets <code>nodeModulesDir: "auto"</code>; the SDK should warn when the hook registered and no <code>node_modules</code> path was ever seen.</li><li>The 10.x Bun plugin build instruments database drivers but not Express, Koa, Hapi or Fastify; the guide's step 3 wording ("Express, Koa, Hapi and Fastify integrations") is true on develop only. The 10.x page needs the shorter list.</li></ul></section>
+</main></div>
+
+</body></html>

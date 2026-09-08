@@ -1,0 +1,13 @@
+import * as dc from 'node:diagnostics_channel';
+import dcDefault from 'diagnostics_channel';
+const a = dc.tracingChannel('orchestrion:mysql2:query');
+const b = dc.tracingChannel('orchestrion:mysql2:query');
+console.log('same tc object?', a === b);
+console.log('same start channel?', a.start === b.start);
+a.subscribe({ start(){} });
+console.log('a.start.hasSubscribers', a.start.hasSubscribers);
+console.log('b.start.hasSubscribers', b.start.hasSubscribers);
+const c = dcDefault.tracingChannel('orchestrion:mysql2:query');
+console.log('bare-specifier c.start.hasSubscribers', c.start.hasSubscribers);
+const ch1 = dc.channel('x:y'); const ch2 = dc.channel('x:y');
+console.log('channel dedupe?', ch1 === ch2);

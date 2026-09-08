@@ -1,0 +1,169 @@
+
+ ⛅️ wrangler 4.129.0
+────────────────────
+Your Worker has access to the following bindings:
+Binding            Resource      Mode
+env.ASSETS         Assets        local
+
+⎔ Starting local server...
+[wrangler:info] ✨ Parsed 2 valid header rules.
+Wrangler detected this dev session is running in an AI agent.
+The Local Explorer API is available at http://localhost:47312/cdn-cgi/local/explorer/api
+Useful routes:
+  GET http://localhost:47312/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+  GET http://localhost:47312/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+  GET http://localhost:47312/cdn-cgi/local/explorer/api/d1/database - D1 databases
+  GET http://localhost:47312/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+  GET http://localhost:47312/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+  GET http://localhost:47312/cdn-cgi/local/explorer/api/workflows - Workflows
+  POST http://localhost:47312/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+    curl -X POST http://localhost:47312/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+  GET http://localhost:47312/cdn-cgi/local/explorer/api - OpenAPI schema
+[wrangler:info] Ready on http://localhost:47312
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: Integration installed: RewriteFrames
+Sentry Logger [log]: Integration installed: SvelteKitSpansEnhancement
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /db-mysql
+  ID: a90ebe10e71644a9
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.server
+  name: GET /db-mysql
+  ID: beb8136a1c5a9fa1
+  parent ID: a90ebe10e71644a9
+  root ID: a90ebe10e71644a9
+  root op: http.server
+  root description: GET /db-mysql
+Sentry Logger [log]: [instrumentation:mysql] "mysql" already injected, subscribing now
+Sentry Logger [log]: [instrumentation:mysql] subscribing to channels
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: db
+  name: SELECT * FROM users
+  ID: 83dce2a036534d19
+  parent ID: beb8136a1c5a9fa1
+  root ID: a90ebe10e71644a9
+  root op: http.server
+  root description: GET /db-mysql
+Sentry Logger [log]: [Tracing] Finishing "db" span "SELECT * FROM users" with ID 83dce2a036534d19
+Sentry Logger [log]: [Tracing] Finishing "http.server" span "GET /db-mysql" with ID beb8136a1c5a9fa1
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /db-mysql" with ID a90ebe10e71644a9
+[wrangler:info] GET /db-mysql 200 OK (56ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET /sentinel
+  ID: a211a5eb49cf38b4
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.server
+  name: GET /sentinel
+  ID: 958c4a9da5e493c9
+  parent ID: a211a5eb49cf38b4
+  root ID: a211a5eb49cf38b4
+  root op: http.server
+  root description: GET /sentinel
+Sentry Logger [log]: Captured error event `sentinel-1`
+Sentry Logger [log]: [Tracing] Finishing "http.server" span "GET /sentinel" with ID 958c4a9da5e493c9
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET /sentinel" with ID a211a5eb49cf38b4
+[wrangler:info] GET /sentinel 200 OK (6ms)
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 11 errors:[0m
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/nodes/0.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:15:23:
+  [37m      15 │       __memo(() => import([32m'../output/server/nodes/0.js'[37m)),
+           ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/nodes/1.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:16:23:
+  [37m      16 │       __memo(() => import([32m'../output/server/nodes/1.js'[37m)),
+           ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/nodes/2.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:17:23:
+  [37m      17 │       __memo(() => import([32m'../output/server/nodes/2.js'[37m))
+           ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/entries/endpoints/boom/_server.ts.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:35:34:
+  [37m      35 │ ...=> import([32m'../output/server/entries/endpoints/boom/_server.ts.j[37m...
+           ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/entries/endpoints/db-mysql/_server.ts.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:42:34:
+  [37m      42 │ ...=> import([32m'../output/server/entries/endpoints/db-mysql/_server.[37m...
+           ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/entries/endpoints/logtest/_server.ts.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:49:34:
+  [37m      49 │ ...=> import([32m'../output/server/entries/endpoints/logtest/_server.t[37m...
+           ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/entries/endpoints/outfetch/_server.ts.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:56:34:
+  [37m      56 │ ...=> import([32m'../output/server/entries/endpoints/outfetch/_server.[37m...
+           ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/entries/endpoints/sentinel/_server.ts.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:63:34:
+  [37m      63 │ ...=> import([32m'../output/server/entries/endpoints/sentinel/_server.[37m...
+           ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/entries/endpoints/tagged/_server.ts.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:70:34:
+  [37m      70 │ ...=> import([32m'../output/server/entries/endpoints/tagged/_server.ts[37m...
+           ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/entries/endpoints/users/_id_/_server.ts.js"[0m
+  
+      .svelte-kit/cloudflare-tmp/manifest.js:77:34:
+  [37m      77 │ ...=> import([32m'../output/server/entries/endpoints/users/_id_/_serve[37m...
+           ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../output/server/index.js"[0m
+  
+      .svelte-kit/cloudflare/_worker.js:2:23:
+  [37m      2 │ import { Server } from [32m"../output/server/index.js"[37m;
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+  
+
+
+⎔ Reloading local server...
+[wrangler:info] ✨ Parsed 2 valid header rules.
+⎔ Local server updated and ready
+⎔ Reloading local server...
+[wrangler:info] ✨ Parsed 2 valid header rules.
+⎔ Local server updated and ready
+⎔ Reloading local server...
+[wrangler:info] ✨ Parsed 2 valid header rules.
+⎔ Local server updated and ready
+🪵  Logs were written to "~/Library/Preferences/.wrangler/logs/wrangler-2026-09-06_17-41-26_498.log"
