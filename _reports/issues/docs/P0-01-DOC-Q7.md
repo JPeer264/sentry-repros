@@ -1,3 +1,5 @@
+**Filed.** Must item of Linear [SDK-1503](https://linear.app/getsentry/issue/SDK-1503), "Browser (Getting started / Manual setup)".
+
 `platform-includes/getting-started-verify/javascript.mdx:53-68` tells the reader to update the button handler so that it starts a span around a simulated longer operation, and shows `function triggerError() { await Sentry.startSpan(...) }`. The function is not `async`.
 
 Observed with the snippet copied verbatim into a page: Chrome reports `Uncaught SyntaxError: await is only valid in async functions and the top level bodies of modules`, discards the whole script block, and the "Break the World" button next to it throws `ReferenceError`. With `async function triggerError()` the same page produces the span (`test Example Frontend Span`) inside the pageload span envelope.

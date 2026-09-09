@@ -25,11 +25,11 @@ ASSIGN={'DOC-Q85':'Node','DOC-Q25':'Node','DOC-Q26':'Node','DOC-Q5':'Node','DOC-
 ORDER=['All runtime guides','Node','Express','Fastify','Koa','Hapi','Connect','Hono','NestJS','Elysia','Bun','Deno','Cloudflare','Browser','React','Vue','Angular','Svelte','Solid','Ember',
        'Next.js','Nuxt','SvelteKit','Remix','Astro','TanStack Start','SolidStart','React Router','Nitro','AWS Lambda','Google Cloud Functions','Azure Functions','Effect','Mastra']
 # Existing tickets that take the place of a new sub-issue.
-EXISTING={'Cloudflare':('SDK-1426','Adjust docs for Cloudflare, assigned, milestone stable, body still tbd: fill it with the list below instead of creating a new sub-issue')}
+EXISTING={'Cloudflare':('SDK-1426','the existing Cloudflare docs ticket, renamed and filled with the must items on 2026-09-09 instead of a new sub-issue')}
 # Created in Linear on 2026-09-09 with the must items only; sub-issues without a must item were not created.
 CREATED={'All runtime guides':'SDK-1495','Node':'SDK-1494','Fastify':'SDK-1496','Koa':'SDK-1497','Connect':'SDK-1498','NestJS':'SDK-1499','Elysia':'SDK-1500','Bun':'SDK-1501','Deno':'SDK-1502',
  'Browser':'SDK-1503','React':'SDK-1504','Vue':'SDK-1505','Angular':'SDK-1506','Svelte':'SDK-1507','Solid':'SDK-1508','Ember':'SDK-1509','Next.js':'SDK-1493','Nuxt':'SDK-1510','SvelteKit':'SDK-1511',
- 'Remix':'SDK-1512','Astro':'SDK-1513','TanStack Start':'SDK-1514','SolidStart':'SDK-1515','React Router':'SDK-1516','Nitro':'SDK-1517','AWS Lambda':'SDK-1518','Google Cloud Functions':'SDK-1519','Effect':'SDK-1520'}
+ 'Remix':'SDK-1512','Astro':'SDK-1513','TanStack Start':'SDK-1514','SolidStart':'SDK-1515','React Router':'SDK-1516','Nitro':'SDK-1517','AWS Lambda':'SDK-1518','Google Cloud Functions':'SDK-1519','Effect':'SDK-1520','Cloudflare':'SDK-1426'}
 LINEAR='https://linear.app/getsentry/issue/'
 GUIDE={'All runtime guides':'the Node, Bun, Deno and Cloudflare','Node':'the Node','Browser':'the browser and WebAssembly','Cloudflare':'the Cloudflare Workers and Pages','Elysia':'the Elysia'}
 
@@ -146,7 +146,7 @@ def md2html(md):
 nav=''.join('<li><a href="#s-%d">%s</a><span class="cnt">%d/%d</span></li>' % (p['n'],H.escape(p['title']),len(p['must']),len(p['should'])) for p in plan)
 cards=[]
 for p in plan:
-    ex=('<p class="existing"><strong>Use the existing ticket %s.</strong> %s.</p>' % (p['existing'][0], H.escape(p['existing'][1]))) if p['existing'] else ''
+    ex=('<p class="existing"><strong>Existing ticket %s.</strong> %s.</p>' % (p['existing'][0], H.escape(p['existing'][1]))) if p['existing'] else ''
     st=('<a class="chip status" href="%s%s">Created %s, must items</a>' % (LINEAR,p['created'],p['created'])) if p['created'] else ('<span class="chip status">SDK-1426, update pending</span>' if p['existing'] else '<span class="chip status">Not created, no must item</span>')
     cards.append('''<article class="ticket" id="s-%(n)d">
 <p class="props">%(st)s<span class="chip %(pc)s">Priority: %(prio)s</span><span class="chip ms">stable</span><span class="chip">Task</span><span class="chip">Type: Documentation</span><span class="chip">parent %(parent)s</span><span class="n">#%(n)d of %(total)d · %(m)d must · %(s)d should</span></p>

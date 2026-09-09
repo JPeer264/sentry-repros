@@ -2,6 +2,9 @@
 import json, os, re
 OUT=os.path.dirname(os.path.abspath(__file__)); GIST=os.path.join(OUT,'gist')
 items=json.load(open(os.path.join(OUT,'_items.json')))
+plan=json.load(open(os.path.join(OUT,'..','setup','plan.json')))
+FILED={iid:(p['created'],p['linear_title']) for p in plan if p.get('created') for iid in p['must']}
+LINEAR='https://linear.app/getsentry/issue/'
 by={i['id']:i for i in items}
 for n,i in enumerate(items,1): i['n']=n
 def slug(h): return re.sub(r'[^a-z0-9_\-]','',h.lower().replace(' ','-'))
@@ -219,14 +222,15 @@ PLAN=[
 ]
 TIER={'must':'Must land with v11','should':'Should land with v11','later':'After the release'}
 out=['# v11 docs minimum: getting started and manual setup','',
- 'The docs changes a new user hits on the way from install to the first event, on Node, Bun, Deno, Cloudflare Workers and in the browser, plus the framework pages that contradict a verified run. Every line links to its draft in [P0](#file-p0-md), [P1](#file-p1-md) or [P2](#file-p2-md). Tiers: **must** blocks or misleads the first setup on develop; **should** is wrong or incomplete for something most users do next; **later** is hygiene. Items owned by a Linear ticket are marked; they still belong in the release, only filed elsewhere. Four findings (DOC-Q29, DOC-Q38, DOC-Q62, DOC-Q86) are covered by SDK-1482, SDK-1461 and SDK-1483 and are not listed.','']
+ 'The docs changes a new user hits on the way from install to the first event, on Node, Bun, Deno, Cloudflare Workers and in the browser, plus the framework pages that contradict a verified run. Every line links to its draft in [P0](#file-p0-md), [P1](#file-p1-md) or [P2](#file-p2-md). Tiers: **must** blocks or misleads the first setup on develop; **should** is wrong or incomplete for something most users do next; **later** is hygiene. A ticked line is filed: it is a must item of a Linear sub-issue under SDK-1429, linked at the end of the line. Items owned by another Linear ticket are marked; they still belong in the release, only filed elsewhere. Four findings (DOC-Q29, DOC-Q38, DOC-Q62, DOC-Q86) are covered by SDK-1482, SDK-1461 and SDK-1483 and are not listed.','']
 counts={'must':0,'should':0,'later':0}
 for group, rows in PLAN:
     out+=['## %s' % group,'']
     for tier,iid,why in rows:
         i=by[iid]; counts[tier]+=1
         own=(' · '+OWNER[iid]) if iid in OWNER else ''
-        out.append('- [ ] **%s** · %s · %s%s. %s: %s' % (TIER[tier], i['prio'], iid, own, why[0].upper()+why[1:], link(i)))
+        filed=(' · filed as [%s](%s%s)' % (FILED[iid][0], LINEAR, FILED[iid][0])) if iid in FILED else ''
+        out.append('- [%s] **%s** · %s · %s%s. %s: %s%s' % ('x' if iid in FILED else ' ', TIER[tier], i['prio'], iid, own, why[0].upper()+why[1:], link(i), filed))
     out.append('')
 out+=['## Not in this list','','The 34 framework pages that do not exist yet (DOC-F3 to DOC-F10, DOC-F12, DOC-F14 to DOC-F17, DOC-F20 to DOC-F27, DOC-F31 to DOC-F34, DOC-F37 to DOC-F43, DOC-F48, DOC-F51), the generated integrations tables and the runtime matrix (X3, DOC-R6), the feature pages (D1, bindings, Durable Objects, Workflows, Agents SDK), and the remaining completeness items. They improve coverage after the release and do not block a first setup.','',
  'Counts: %d must, %d should, %d later.' % (counts['must'],counts['should'],counts['later']),'']

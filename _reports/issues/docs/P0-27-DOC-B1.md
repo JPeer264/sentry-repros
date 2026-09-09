@@ -1,3 +1,5 @@
+**Filed.** Must item of Linear [SDK-1501](https://linear.app/getsentry/issue/SDK-1501), "Bun (Getting started / Manual setup)".
+
 The Bun guide at `guides/bun/index.mdx:88` and `:100` tells the user to run `bun --preload ./instrument.js app.js`, and the alert at `:90-94` states that Sentry's auto-instrumentation does not work with bundled code and that bundling requires manual instrumentation. `@sentry/bun/plugin` is not named anywhere on the page, and `logs` is used as an onboarding block at `:182` but is missing from the options at `:20-22`.
 
 What was observed on bun 1.4.0: a bundle built with `Bun.build({ plugins: [sentryBunPlugin()] })` from `@sentry/bun/plugin` records library and framework spans, while running the same app unbundled with `bun run` records none. `packages/bun/src/plugin.ts:14` states the plugin is build-only. The unbundled diagnostic message is printed only with `debug: true`.

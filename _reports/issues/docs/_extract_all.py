@@ -63,8 +63,11 @@ for pos,i in enumerate(items): i['pos']=pos
 def key(i): return (['P0','P1','P2'].index(i['prio']), P0_ORDER.index(i['id']) if i['id'] in P0_ORDER else 99, i['pos'])
 items.sort(key=key)
 FOOT='\n\n---\n\n_From the runtime docs audit of September 2026, item %s, see the [docs audit](%s) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-08 against docs `aebda0ee4` and develop `03aaf42455`, after a second verification pass over every item._\n'
+plan=json.load(open(os.path.join(OUT,'..','setup','plan.json')))
+FILED={iid:(p['created'],p['linear_title']) for p in plan if p.get('created') for iid in p['must']}
 def notes(i):
     n=[]
+    if i['id'] in FILED: n.append('**Filed.** Must item of Linear [%s](https://linear.app/getsentry/issue/%s), "%s".' % (FILED[i['id']][0], FILED[i['id']][0], FILED[i['id']][1]))
     if i['id'] in OWNED: n.append('**Note.** '+OWNED[i['id']]+'.')
     if i['id'] in NOTES: n.append('**Note.** '+NOTES[i['id']]+'.')
     if i['id'] in PAIRS: n.append('**Note.** Touches the same docs file as %s; the two can be filed as one issue.' % PAIRS[i['id']])

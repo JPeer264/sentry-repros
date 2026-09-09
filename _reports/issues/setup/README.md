@@ -16,7 +16,7 @@
 | 10 | Elysia (Getting started / Manual setup) | SDK-1500 | High | DOC-F36, DOC-F19 | DOC-Q64, DOC-Q65, DOC-F2 | – | `10-elysia.md` |
 | 11 | Bun (Getting started / Manual setup) | SDK-1501 | High | DOC-B1 | DOC-B2, DOC-Q4, DOC-B4 | – | `11-bun.md` |
 | 12 | Deno (Getting started / Manual setup) | SDK-1502 | High | DOC-D1, DOC-D3, DOC-R2 | DOC-D2, DOC-D6 | – | `12-deno.md` |
-| 13 | Cloudflare (Getting started / Manual setup) | SDK-1426, pending | High | DOC-Q83, DOC-C1, DOC-C5, DOC-C4 | DOC-Q2, DOC-R14, DOC-C8, DOC-Q6, DOC-C3 | SDK-1426 | `13-cloudflare.md` |
+| 13 | Cloudflare (Getting started / Manual setup) | SDK-1426 | High | DOC-Q83, DOC-C1, DOC-C5, DOC-C4 | DOC-Q2, DOC-R14, DOC-C8, DOC-Q6, DOC-C3 | SDK-1426 | `13-cloudflare.md` |
 | 14 | Browser (Getting started / Manual setup) | SDK-1503 | High | DOC-Q7 | DOC-Q8, DOC-Q9, DOC-Q63 | – | `14-browser.md` |
 | 15 | React (Getting started / Manual setup) | SDK-1504 | High | DOC-Q12 | DOC-Q13, DOC-Q14, DOC-Q15 | – | `15-react.md` |
 | 16 | Vue (Getting started / Manual setup) | SDK-1505 | High | DOC-Q19, DOC-Q20 | DOC-Q21 | – | `16-vue.md` |

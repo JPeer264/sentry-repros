@@ -1,3 +1,5 @@
+**Filed.** Must item of Linear [SDK-1426](https://linear.app/getsentry/issue/SDK-1426), "Cloudflare (Getting started / Manual setup)".
+
 **Note.** v11-gated; file as a sub-issue of Linear SDK-1296.
 
 `guides/cloudflare/features/vite-plugin.mdx:150-166` documents `_experimental` (`:150-154`), `_experimental.autoInstrumentation` (default `false`, `:156-160`) and `_experimental.useDiagnosticsChannelInjection` (default `false`, `:162-166`), with the claim at `:164` that "When disabled or omitted, the plugin is a no-op". `guides/cloudflare/index.mdx:77-92` passes `useDiagnosticsChannelInjection: true`. The page carries an experimental Alert at `:8-11` and names only `mysql` as an instrumented package (`:15`, `:59`).

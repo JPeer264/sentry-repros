@@ -1,3 +1,5 @@
+**Filed.** Must item of Linear [SDK-1502](https://linear.app/getsentry/issue/SDK-1502), "Deno (Getting started / Manual setup)".
+
 `platform-includes/crons/setup/javascript.deno.mdx:1` heads its first section "Automatic Check-Ins (Recommended)" and `:12` tells the reader to pass `Sentry.denoCronIntegration()` to `Sentry.init`.
 
 That call crashes startup on Deno 2.9.0 and later. `packages/deno/src/integrations/deno-cron.ts:23` assigns `Deno.cron = new Proxy(Deno.cron, ...)` inside `setupOnce`, i.e. inside `Sentry.init`. On Deno 2.8.3 `Deno.cron` is a writable data property and the integration works: a cron firing at the minute boundary produced one `in_progress` and one `ok` check-in. From Deno 2.9.0 `Deno.cron` is a getter-only accessor, so the assignment throws `TypeError: Cannot set property cron of #<Object> which has only a getter` and the process exits 1 before any user code runs.

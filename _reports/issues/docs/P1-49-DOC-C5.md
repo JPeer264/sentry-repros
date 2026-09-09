@@ -1,3 +1,5 @@
+**Filed.** Must item of Linear [SDK-1426](https://linear.app/getsentry/issue/SDK-1426), "Cloudflare (Getting started / Manual setup)".
+
 **Note.** v11-gated; file as a sub-issue of Linear SDK-1296.
 
 **Note.** the honoIntegration page removal is also in Linear SDK-1482.

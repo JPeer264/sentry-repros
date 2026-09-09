@@ -1,3 +1,5 @@
+**Filed.** Must item of Linear [SDK-1426](https://linear.app/getsentry/issue/SDK-1426), "Cloudflare (Getting started / Manual setup)".
+
 **Note.** v11-gated; file as a sub-issue of Linear SDK-1296.
 
 Five places document the `@sentry/cloudflare/nodejs_compat` entrypoint: the alert at `guides/cloudflare/index.mdx:63`, the whole of `guides/cloudflare/features/nodejs-compat.mdx` (50 lines, the entrypoint at `:6` and `:10`), `guides/cloudflare/configuration/integrations/prisma.mdx:8`, `platform-includes/configuration/integrations/javascript.cloudflare.mdx:19`, and the two-entrypoint table in `common/agent-tracing/vercelai.mdx:66-71`, inside the Cloudflare section at `:60-73`.

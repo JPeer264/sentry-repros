@@ -1,6 +1,9 @@
 import os
 import json, html as H
 items=json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'_items.json')))
+plan=json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','setup','plan.json')))
+FILED={iid:p['created'] for p in plan if p.get('created') for iid in p['must']}
+LINEAR='https://linear.app/getsentry/issue/'
 AUDIT='https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html'
 FOOT=("\n\n---\n\n_From the runtime docs audit of September 2026, item {id}, see the [docs audit]({link}) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-08 against docs `aebda0ee4` and develop `03aaf42455`, after a second verification pass over every item._\n")
 import re
@@ -18,13 +21,13 @@ for n,i in enumerate(items,1):
     rows.append('<tr><td>%d</td><td><a href="#i-%s">%s</a></td><td>%s</td><td><span class="chip">%s</span></td></tr>' % (n,i['id'],H.escape(i['title']),i['id'],i['type']))
     cards.append('''
 <article class="issue" id="i-%(id)s">
-<p class="meta"><span class="chip draft">Draft</span><span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">%(type)s</span><span class="iid">%(id)s</span><span class="n">%(n)d of 14</span></p>
+<p class="meta">%(status)s<span class="repo">getsentry/sentry-docs</span><span class="chip p0">P0</span><span class="chip">%(type)s</span><span class="iid">%(id)s</span><span class="n">%(n)d of %(total)d</span></p>
 <h2>%(title)s</h2>
 <div class="ibody">%(body)s%(foot)s</div>
 <div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy body</button><button type="button" class="btn" data-copy="gh">Copy gh command</button><span class="file">%(file)s</span></div>
 <details><summary>Markdown source</summary><pre class="src" data-role="body">%(md)s</pre></details>
 <pre class="hidden" data-role="title">%(title)s</pre><pre class="hidden" data-role="gh">%(gh)s</pre>
-</article>''' % dict(id=i['id'],type=i['type'],n=n,title=H.escape(i['title']),body=strip_source(i['body_html']),foot=foot_html(i),file=i['file'],md=H.escape(body_md(i)),gh=H.escape(gh)))
+</article>''' % dict(status=('<a class="chip filed" href="%s%s">Filed %s</a>' % (LINEAR,FILED[i['id']],FILED[i['id']])) if i['id'] in FILED else '<span class="chip draft">Draft</span>',total=len(items),id=i['id'],type=i['type'],n=n,title=H.escape(i['title']),body=strip_source(i['body_html']),foot=foot_html(i),file=i['file'],md=H.escape(body_md(i)),gh=H.escape(gh)))
 
 page='''<title>P0 Issue Drafts</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -41,7 +44,7 @@ p{margin:0 0 14px}ul{margin:0 0 14px;padding-left:22px}li{margin:4px 0}
 code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:3px}
 pre{background:var(--code-bg);border:1px solid var(--line);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.5;margin:0 0 12px;border-radius:4px;white-space:pre-wrap;word-break:break-word}
 .chip{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.04em;padding:2px 7px;border-radius:3px;background:var(--panel);color:var(--muted);white-space:nowrap;border:1px solid var(--line)}
-.chip.p0{background:var(--p0);color:#fff;border-color:var(--p0)}.chip.draft{color:var(--warn);border-color:currentColor;background:transparent}
+.chip.p0{background:var(--p0);color:#fff;border-color:var(--p0)}.chip.draft{color:var(--warn);border-color:currentColor;background:transparent}.chip.filed{color:var(--nr);border-color:currentColor;background:transparent}a.chip.filed{border-bottom:1px solid currentColor}
 .alert{border-left:3px solid var(--warn);background:var(--panel);padding:12px 16px;margin:0 0 22px;border-radius:0 4px 4px 0}.alert p:last-child{margin:0}
 .tw{overflow-x:auto;margin:0 0 36px;border:1px solid var(--line);border-radius:4px}
 table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}th,td{text-align:left;vertical-align:top;padding:8px 12px;border-bottom:1px solid var(--line)}
