@@ -183,3 +183,7 @@ add that tarball too.
 
 - `_toolbox/pack/`: 31 packages from develop at `6f2da7483d` (2026-09-04), the pin of the probes, the cells, the refutations and the four first getting-started paths.
 - `_toolbox/pack-develop-03aaf424/`: 43 packages from develop at `03aaf42455` (2026-09-08), used by every getting-started path run from 2026-09-08 22:00 on, including the browser, browser-framework, meta-framework and serverless paths. Both sets carry the version 10.67.0, so never mix the two directories in one install, and name the set in the README of every reproduction.
+
+### Angular tarball
+
+The first `sentry-angular-10.67.0.tgz` in `pack-develop-03aaf424/` was packed from the package root (21 source files, no build output) because `@sentry/angular` builds with ng-packagr into `build/`, where the publishable package.json lives. Re-packed on 2026-09-09 from `packages/angular/build` of the `03aaf42455` worktree; the Angular quick start keeps its own copy in `quickstarts/angular/vendor/` because it ran before the fix.

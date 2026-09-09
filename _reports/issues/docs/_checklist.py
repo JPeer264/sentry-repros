@@ -33,7 +33,14 @@ PLAN=[
    ('should','DOC-Q15','the Profiler span ops are named wrong'),
    ('later','DOC-Q16','the routing snippet uses the deprecated V7 API'),
    ('later','DOC-Q17','the verify step says transactions and its test span ends before the error'),
-   ('later','DOC-Q18','sessions need a release, on the Vue guide too'),
+   ('later','DOC-Q18','sessions need a release, on the Vue and Angular guides too'),
+ ]),
+ ('Angular', [
+   ('must','DOC-Q32','three snippets do not compile under the tsconfig ng new generates'),
+   ('should','DOC-Q33','no working registration for a subclassed SentryErrorHandler'),
+   ('should','DOC-Q34','the component tracking span ops are named wrong'),
+   ('later','DOC-Q35','transactions wording and a 0 ms verify span'),
+   ('later','DOC-Q36','deprecated bootstrap call, missing logs option, stray line'),
  ]),
  ('Vue', [
    ('must','DOC-Q19','the Vue Router page\'s only full example is Vue 2 code that fails on Vue 3'),

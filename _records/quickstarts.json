@@ -179,5 +179,30 @@
    "express 5": "works",
    "express 5 without the handler": "works"
   }
+ },
+ {
+  "id": "QS-angular",
+  "path": "quickstarts/angular",
+  "runtime": "Chrome 152 headless, develop 03aaf42455; Angular 22.1.5, CLI 22.1.7 application builder, TypeScript 6.0.3, zoneless by default",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The manual-setup page's main.ts and app.config.ts work once inject(Sentry.TraceService) is written: 15 integrations, auto.function.angular.error_handler events with contexts.angular, route-named pageload and navigation segments, logs, propagation. Defects: three snippets do not compile (the app.config TraceService import, the custom error handler's missing override, the component tracking examples' missing imports and input); the subclassed error handler registered with useClass never bootstraps; the component tracking page names ui.angular.init and ui.angular.[method] ops that are now ui.mount and function; transactions wording and a 0 ms verify span; platformBrowserDynamic deprecated; no logs onboarding option; no sessions without a release. The toolbox Angular tarball was unusable and was replaced.",
+  "sdk": {
+   "name": "sentry.javascript.angular",
+   "version": "10.67.0",
+   "integrations": 15
+  },
+  "variants": {
+   "base (manual-setup main.ts + app.config, Angular 19+ tab)": "partial",
+   "app.config snippet verbatim": "broken (TraceService not imported)",
+   "APP_INITIALIZER tab": "works",
+   "NgModule with zone.js and the bootstrap span": "works",
+   "custom error handler verbatim": "broken (missing override)",
+   "custom error handler registered with useClass": "broken (NG0201)",
+   "createErrorHandler options": "works",
+   "component tracking with imports added": "partial (op names)",
+   "component tracking verbatim": "broken (missing imports)",
+   "wizard install and verify": "not run"
+  }
  }
 ]
