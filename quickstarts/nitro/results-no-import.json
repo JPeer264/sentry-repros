@@ -1,0 +1,238 @@
+{
+  "id": "QS-nitro",
+  "variant": "no-import",
+  "command": "node .output/server/index.mjs",
+  "nitro_version": "3.0.260415-beta",
+  "h3_version": "2.0.1-rc.31",
+  "srvx_version": "0.11.22",
+  "sdk": {},
+  "steps": [
+    {
+      "route": "/api/users/42",
+      "http_code": "200",
+      "seconds": "0.001938",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/debug-sentry",
+      "http_code": "500",
+      "seconds": "0.001926",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/error-404",
+      "http_code": "404",
+      "seconds": "0.001412",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/error-503",
+      "http_code": "503",
+      "seconds": "0.001567",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/debug-log",
+      "http_code": "200",
+      "seconds": "0.001603",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/process-payment",
+      "http_code": "200",
+      "seconds": "0.001641",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/outgoing",
+      "http_code": "200",
+      "seconds": "0.009207",
+      "curl_exit": 0,
+      "server_timing": [],
+      "body": "{\"used\":\"fetch\",\"res\":{\"ok\":true}}"
+    },
+    {
+      "route": "/debug-sentry-tracing",
+      "http_code": "500",
+      "seconds": "0.102071",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/sentinel",
+      "http_code": "200",
+      "seconds": "0.001381",
+      "curl_exit": 0,
+      "server_timing": []
+    }
+  ],
+  "console": {
+    "line_count": 32,
+    "notable": [
+      "Error: My first Sentry error!",
+      "  cause: Error: My first Sentry error!",
+      "Error: My first Sentry error!",
+      "  cause: Error: My first Sentry error!"
+    ],
+    "integrations": [],
+    "integration_count": 0,
+    "full": [
+      "➜ Listening on: http://localhost:4736/ (all interfaces)",
+      "Error: My first Sentry error!",
+      "    at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry.mjs:5:8",
+      "    ... 2 lines matching cause stack trace ...",
+      "    at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50) {",
+      "  cause: Error: My first Sentry error!",
+      "      at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry.mjs:5:8",
+      "      at file://$REPRO/quickstarts/nitro/.output/server/_libs/h3.mjs:69:19",
+      "      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+      "      at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50),",
+      "  status: 500,",
+      "  statusText: undefined,",
+      "  headers: undefined,",
+      "  data: undefined,",
+      "  body: undefined,",
+      "  unhandled: true",
+      "}",
+      "Error: My first Sentry error!",
+      "    at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:11:9",
+      "    at async file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:6:2",
+      "    at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50) {",
+      "  cause: Error: My first Sentry error!",
+      "      at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:11:9",
+      "      at async file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:6:2",
+      "      at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50),",
+      "  status: 500,",
+      "  statusText: undefined,",
+      "  headers: undefined,",
+      "  data: undefined,",
+      "  body: undefined,",
+      "  unhandled: true",
+      "}"
+    ]
+  },
+  "build": {
+    "line_count": 40,
+    "full": [
+      "[nitro] ✔ Generated public .output/public",
+      "[nitro] ℹ Building server (builder: rolldown, preset: node-server, compatibility date: 2026-09-09)",
+      "ℹ Generated .output/nitro.json",
+      "[nitro] ✔ Server built in 230ms",
+      "  ├─ .output/server/_id_.mjs (236 B) (186 B gzip)",
+      "  ├─ .output/server/_libs/@sentry/nitro.mjs (37.1 kB) (9.57 kB gzip)",
+      "  ├─ .output/server/_libs/@sentry/nitro.mjs.map (150 kB) (34.7 kB gzip)",
+      "  ├─ .output/server/_libs/h3.mjs (8.08 kB) (2.4 kB gzip)",
+      "  ├─ .output/server/_libs/h3.mjs.map (103 kB) (25.3 kB gzip)",
+      "  ├─ .output/server/_libs/hookable.mjs (1.17 kB) (514 B gzip)",
+      "  ├─ .output/server/_libs/hookable.mjs.map (10 kB) (2.75 kB gzip)",
+      "  ├─ .output/server/_libs/sentry__core.mjs (106 kB) (25.3 kB gzip)",
+      "  ├─ .output/server/_libs/sentry__core.mjs.map (257 kB) (59 kB gzip)",
+      "  ├─ .output/server/_libs/sentry__node.mjs (1.09 kB) (450 B gzip)",
+      "  ├─ .output/server/_libs/sentry__node.mjs.map (2.37 kB) (951 B gzip)",
+      "  ├─ .output/server/_libs/srvx.mjs (33 kB) (8.86 kB gzip)",
+      "  ├─ .output/server/_libs/srvx.mjs.map (73.8 kB) (17.6 kB gzip)",
+      "  ├─ .output/server/_libs/ufo.mjs (2.22 kB) (726 B gzip)",
+      "  ├─ .output/server/_libs/ufo.mjs.map (22.8 kB) (6.16 kB gzip)",
+      "  ├─ .output/server/_routes/debug_log.mjs (310 B) (218 B gzip)",
+      "  ├─ .output/server/_routes/debug_log.mjs.map (487 B) (345 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry_tracing.mjs (491 B) (303 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry_tracing.mjs.map (940 B) (556 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry.mjs (248 B) (187 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry.mjs.map (411 B) (311 B gzip)",
+      "  ├─ .output/server/_routes/error_404.mjs (323 B) (224 B gzip)",
+      "  ├─ .output/server/_routes/error_404.mjs.map (487 B) (356 B gzip)",
+      "  ├─ .output/server/_routes/error_503.mjs (323 B) (224 B gzip)",
+      "  ├─ .output/server/_routes/error_503.mjs.map (434 B) (314 B gzip)",
+      "  ├─ .output/server/_routes/outgoing.mjs (444 B) (301 B gzip)",
+      "  ├─ .output/server/_routes/outgoing.mjs.map (970 B) (580 B gzip)",
+      "  ├─ .output/server/_routes/process_payment.mjs (331 B) (209 B gzip)",
+      "  ├─ .output/server/_routes/process_payment.mjs.map (597 B) (398 B gzip)",
+      "  ├─ .output/server/_routes/sentinel.mjs (308 B) (197 B gzip)",
+      "  ├─ .output/server/_routes/sentinel.mjs.map (489 B) (327 B gzip)",
+      "  └─ .output/server/index.mjs (10.5 kB) (3.33 kB gzip)",
+      "Σ Total size: 827 kB (203 kB gzip)",
+      "[@sentry/nitro] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "[@sentry/nitro] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "[nitro] ✔ You can preview this build using npx nitro preview"
+    ]
+  },
+  "eventsRaw": [],
+  "envelopes": {
+    "counts": {
+      "event": 0,
+      "span": 0,
+      "transaction": 0,
+      "log": 0
+    },
+    "items": []
+  },
+  "spansRaw": [],
+  "verdict": {
+    "status": "partial",
+    "checks": {
+      "app_started": true,
+      "app_alive_at_end": true,
+      "error_event_debug_sentry": [],
+      "error_event_tracing_route": [],
+      "error_404_captured": [],
+      "error_503_captured": [],
+      "other_error_events": [],
+      "duplicate_error_events": [],
+      "sentinel_event": [],
+      "transaction_envelopes": 0,
+      "span_envelopes": 0,
+      "segments": [],
+      "route_named_segment_for_users": false,
+      "users_request_span_tree": [],
+      "outgoing_body": "{\"used\":\"fetch\",\"res\":{\"ok\":true}}",
+      "users_segment_attributes": null,
+      "child_spans": [],
+      "child_ops": [],
+      "child_origins": [],
+      "middleware_spans": [],
+      "middleware_nitro_spans": [],
+      "http_client_spans": [],
+      "manual_test_span": [],
+      "process_payment_span": [],
+      "server_timing_header": [],
+      "outgoing_request_headers": [
+        {
+          "url": "/recorder",
+          "sentry-trace": null,
+          "baggage": null,
+          "traceparent": null
+        }
+      ],
+      "log_batches": 0,
+      "log_bodies": [],
+      "other_item_types": [],
+      "require_banner": [],
+      "deprecation_output": [],
+      "nitro_default_error_log": 4,
+      "build_notable": [
+        "  ├─ .output/server/_libs/@sentry/nitro.mjs (37.1 kB) (9.57 kB gzip)",
+        "  ├─ .output/server/_libs/@sentry/nitro.mjs.map (150 kB) (34.7 kB gzip)",
+        "  ├─ .output/server/_libs/sentry__core.mjs (106 kB) (25.3 kB gzip)",
+        "  ├─ .output/server/_libs/sentry__core.mjs.map (257 kB) (59 kB gzip)",
+        "  ├─ .output/server/_libs/sentry__node.mjs (1.09 kB) (450 B gzip)",
+        "  ├─ .output/server/_libs/sentry__node.mjs.map (2.37 kB) (951 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry_tracing.mjs (491 B) (303 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry_tracing.mjs.map (940 B) (556 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry.mjs (248 B) (187 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry.mjs.map (411 B) (311 B gzip)",
+        "  ├─ .output/server/_routes/error_404.mjs (323 B) (224 B gzip)",
+        "  ├─ .output/server/_routes/error_404.mjs.map (487 B) (356 B gzip)",
+        "  ├─ .output/server/_routes/error_503.mjs (323 B) (224 B gzip)",
+        "  ├─ .output/server/_routes/error_503.mjs.map (434 B) (314 B gzip)",
+        "[@sentry/nitro] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+        "[@sentry/nitro] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/"
+      ]
+    }
+  }
+}

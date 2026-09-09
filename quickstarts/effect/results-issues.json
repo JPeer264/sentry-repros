@@ -1,0 +1,216 @@
+{
+  "id": "QS-effect",
+  "variant": "issues",
+  "command": "node verify-issues.ts",
+  "effect_version": "3.22.2",
+  "effect_platform_node_version": "0.108.2",
+  "sdk": {
+    "name": "sentry.javascript.effect",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "sdk_packages": [],
+  "console": {
+    "line_count": 20,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 77222, thread: main.",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "[09:02:08.937] ERROR (#1):",
+      "  Error: Sentry Test Error"
+    ],
+    "integrations": [
+      "SpanStreaming"
+    ],
+    "integration_count": 1,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 77222, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: function",
+      "  name: sentinel",
+      "  ID: a0648afa5314f05e",
+      "Sentry Logger [log]: [Tracing] Finishing \"function\" root span \"sentinel\" with ID a0648afa5314f05e",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 47df685771c84fc09ffe02a62d1b9c34 with 1 spans",
+      "[09:02:08.937] ERROR (#1):",
+      "  Error: Sentry Test Error",
+      "      at file://$REPRO/quickstarts/effect/verify-issues.ts:7:22"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 1,
+      "span": 1,
+      "transaction": 0,
+      "log": 0,
+      "trace_metric": 0
+    },
+    "items": [
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.effect",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": false,
+        "trace_id": "47df685771c84fc09ffe02a62d1b9c34",
+        "environment": "production"
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "47df685771c84fc09ffe02a62d1b9c34",
+        "items": [
+          "function sentinel"
+        ],
+        "sdk": "sentry.javascript.effect",
+        "raw": [
+          {
+            "name": "sentinel",
+            "segment_name": "sentinel",
+            "op": "function",
+            "status": "ok",
+            "is_segment": true,
+            "origin": "auto.function.effect"
+          }
+        ]
+      }
+    ]
+  },
+  "spansRaw": [
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "sentinel",
+          "span_id": "a0648afa5314f05e",
+          "trace_id": "47df685771c84fc09ffe02a62d1b9c34",
+          "start_timestamp": 1788937328.930767,
+          "end_timestamp": 1788937328.931513,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.function.effect",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "function",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "custom",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "sentinel",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a0648afa5314f05e",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.effect",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "SpanStreaming"
+              ],
+              "type": "array"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "verdict": {
+    "status": "partial",
+    "checks": {
+      "app_exit_code": 1,
+      "error_event_sentry_test_error": [],
+      "any_error_event": [
+        {
+          "exception": "undefined: sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "level": "info",
+          "trace_id": "47df685771c84fc09ffe02a62d1b9c34",
+          "message": "sentinel"
+        }
+      ],
+      "message_events": [],
+      "sentinel_event": [
+        {
+          "exception": "undefined: sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "level": "info",
+          "trace_id": "47df685771c84fc09ffe02a62d1b9c34",
+          "message": "sentinel"
+        }
+      ],
+      "sentinel_span": [
+        {
+          "op": "function",
+          "origin": "auto.function.effect",
+          "is_segment": true,
+          "status": "ok"
+        }
+      ],
+      "test_transaction_span": [],
+      "all_spans": [
+        {
+          "name": "sentinel",
+          "op": "function",
+          "origin": "auto.function.effect",
+          "status": "ok",
+          "is_segment": true,
+          "segment_name": "sentinel"
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 1,
+      "log_batches": 0,
+      "log_items": [],
+      "metric_items": [],
+      "other_item_types": [],
+      "deprecation_output": [],
+      "cause_printed_to_console": 1
+    }
+  }
+}

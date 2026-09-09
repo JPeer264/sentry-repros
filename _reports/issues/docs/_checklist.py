@@ -64,6 +64,10 @@ PLAN=[
  ('Browser WebAssembly', [
    ('should','DOC-Q63','debug IDs need a build_id section and a streaming loader the guide never mentions'),
  ]),
+ ('Mastra', [
+   ('should','DOC-Q67','the built-in mastraIntegration is undocumented and combining it with the exporter duplicates every span'),
+   ('later','DOC-Q68','wrong attribute names, unnamed defaults and the trace shape on the Mastra pages'),
+ ]),
  ('Elysia', [
    ('should','DOC-Q64','the verify route is added after listen() and is never served'),
    ('should','DOC-Q65','unmatched routes and status() throws are captured by default, the guide says otherwise'),

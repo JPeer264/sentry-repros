@@ -1,0 +1,432 @@
+{
+  "id": "QS-nitro",
+  "variant": "no-error-handler",
+  "command": "NODE_OPTIONS=\"--import ./instrument-no-error-handler.mjs\" node .output/server/index.mjs",
+  "nitro_version": "3.0.260415-beta",
+  "h3_version": "2.0.1-rc.31",
+  "srvx_version": "0.11.22",
+  "sdk": {
+    "name": "sentry.javascript.nitro",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "steps": [
+    {
+      "route": "/api/users/42",
+      "http_code": "200",
+      "seconds": "0.002298",
+      "curl_exit": 0,
+      "server_timing": [
+        "server-timing: sentry-trace;desc=\"aa0be949f0544b28994cd3becb39c96d-aa2c7befe35f35f6\", baggage;desc=\"sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=aa0be949f0544b28994cd3becb39c96d,sentry-org_id=0\""
+      ]
+    },
+    {
+      "route": "/debug-sentry",
+      "http_code": "500",
+      "seconds": "0.001874",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/error-404",
+      "http_code": "404",
+      "seconds": "0.001718",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/error-503",
+      "http_code": "503",
+      "seconds": "0.001690",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/debug-log",
+      "http_code": "200",
+      "seconds": "0.002493",
+      "curl_exit": 0,
+      "server_timing": [
+        "server-timing: sentry-trace;desc=\"6daa96e741a04123a9f78a39e899156a-b770c2c41bca7a4f\", baggage;desc=\"sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=6daa96e741a04123a9f78a39e899156a,sentry-org_id=0\""
+      ]
+    },
+    {
+      "route": "/process-payment",
+      "http_code": "200",
+      "seconds": "0.001747",
+      "curl_exit": 0,
+      "server_timing": [
+        "server-timing: sentry-trace;desc=\"cfb8ea1d0303428bb76035bbf25e2070-bb7619a76a3e81ee\", baggage;desc=\"sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=cfb8ea1d0303428bb76035bbf25e2070,sentry-org_id=0\""
+      ]
+    },
+    {
+      "route": "/outgoing",
+      "http_code": "200",
+      "seconds": "0.010173",
+      "curl_exit": 0,
+      "server_timing": [
+        "server-timing: sentry-trace;desc=\"071929a83da148cc965530605af7b6b1-8dd4ec2e8a76d8cb\", baggage;desc=\"sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=071929a83da148cc965530605af7b6b1,sentry-org_id=0\""
+      ],
+      "body": "{\"used\":\"fetch\",\"res\":{\"ok\":true}}"
+    },
+    {
+      "route": "/debug-sentry-tracing",
+      "http_code": "500",
+      "seconds": "0.103295",
+      "curl_exit": 0,
+      "server_timing": []
+    },
+    {
+      "route": "/sentinel",
+      "http_code": "200",
+      "seconds": "0.003783",
+      "curl_exit": 0,
+      "server_timing": [
+        "server-timing: sentry-trace;desc=\"7f784c5810b84c6d98c7379746d42b96-8e6e1887c5c360b0\", baggage;desc=\"sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=7f784c5810b84c6d98c7379746d42b96,sentry-org_id=0\""
+      ]
+    }
+  ],
+  "console": {
+    "line_count": 97,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 99035, thread: main.",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Error: My first Sentry error!",
+      "  cause: Error: My first Sentry error!",
+      "Error: My first Sentry error!",
+      "  cause: Error: My first Sentry error!",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release"
+    ],
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "LinkedErrors",
+      "RequestData",
+      "NodeSystemError",
+      "ConversationId",
+      "Console",
+      "Http",
+      "NodeFetch",
+      "OnUncaughtException",
+      "OnUnhandledRejection",
+      "ContextLines",
+      "LocalVariablesAsync",
+      "Context",
+      "ChildProcess",
+      "WorkerThreads",
+      "ProcessSession",
+      "Modules",
+      "Express",
+      "Fastify",
+      "Hapi",
+      "Koa",
+      "SpanStreaming"
+    ],
+    "integration_count": 23,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 99035, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "➜ Listening on: http://localhost:4736/ (all interfaces)",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Error: My first Sentry error!",
+      "    at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry.mjs:5:8",
+      "    ... 2 lines matching cause stack trace ...",
+      "    at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50) {",
+      "  cause: Error: My first Sentry error!",
+      "      at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry.mjs:5:8",
+      "      at file://$REPRO/quickstarts/nitro/.output/server/_libs/h3.mjs:69:19",
+      "      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+      "      at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50),",
+      "  status: 500,",
+      "  statusText: undefined,",
+      "  headers: undefined,",
+      "  data: undefined,",
+      "  body: undefined,",
+      "  unhandled: true",
+      "}",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Error: My first Sentry error!",
+      "    at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:11:9",
+      "    at async file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:6:2",
+      "    at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50) {",
+      "  cause: Error: My first Sentry error!",
+      "      at file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:11:9",
+      "      at async file://$REPRO/quickstarts/nitro/.output/server/_routes/debug_sentry_tracing.mjs:6:2",
+      "      at async fetchChannel.tracePromise.request.request (file://$REPRO/quickstarts/nitro/.output/server/_libs/srvx.mjs:965:50),",
+      "  status: 500,",
+      "  statusText: undefined,",
+      "  headers: undefined,",
+      "  data: undefined,",
+      "  body: undefined,",
+      "  unhandled: true",
+      "}",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release"
+    ]
+  },
+  "build": {
+    "line_count": 40,
+    "full": [
+      "[nitro] ✔ Generated public .output/public",
+      "[nitro] ℹ Building server (builder: rolldown, preset: node-server, compatibility date: 2026-09-09)",
+      "ℹ Generated .output/nitro.json",
+      "[nitro] ✔ Server built in 230ms",
+      "  ├─ .output/server/_id_.mjs (236 B) (186 B gzip)",
+      "  ├─ .output/server/_libs/@sentry/nitro.mjs (37.1 kB) (9.57 kB gzip)",
+      "  ├─ .output/server/_libs/@sentry/nitro.mjs.map (150 kB) (34.7 kB gzip)",
+      "  ├─ .output/server/_libs/h3.mjs (8.08 kB) (2.4 kB gzip)",
+      "  ├─ .output/server/_libs/h3.mjs.map (103 kB) (25.3 kB gzip)",
+      "  ├─ .output/server/_libs/hookable.mjs (1.17 kB) (514 B gzip)",
+      "  ├─ .output/server/_libs/hookable.mjs.map (10 kB) (2.75 kB gzip)",
+      "  ├─ .output/server/_libs/sentry__core.mjs (106 kB) (25.3 kB gzip)",
+      "  ├─ .output/server/_libs/sentry__core.mjs.map (257 kB) (59 kB gzip)",
+      "  ├─ .output/server/_libs/sentry__node.mjs (1.09 kB) (450 B gzip)",
+      "  ├─ .output/server/_libs/sentry__node.mjs.map (2.37 kB) (951 B gzip)",
+      "  ├─ .output/server/_libs/srvx.mjs (33 kB) (8.86 kB gzip)",
+      "  ├─ .output/server/_libs/srvx.mjs.map (73.8 kB) (17.6 kB gzip)",
+      "  ├─ .output/server/_libs/ufo.mjs (2.22 kB) (726 B gzip)",
+      "  ├─ .output/server/_libs/ufo.mjs.map (22.8 kB) (6.16 kB gzip)",
+      "  ├─ .output/server/_routes/debug_log.mjs (310 B) (218 B gzip)",
+      "  ├─ .output/server/_routes/debug_log.mjs.map (487 B) (345 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry_tracing.mjs (491 B) (303 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry_tracing.mjs.map (940 B) (556 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry.mjs (248 B) (187 B gzip)",
+      "  ├─ .output/server/_routes/debug_sentry.mjs.map (411 B) (311 B gzip)",
+      "  ├─ .output/server/_routes/error_404.mjs (323 B) (224 B gzip)",
+      "  ├─ .output/server/_routes/error_404.mjs.map (487 B) (356 B gzip)",
+      "  ├─ .output/server/_routes/error_503.mjs (323 B) (224 B gzip)",
+      "  ├─ .output/server/_routes/error_503.mjs.map (434 B) (314 B gzip)",
+      "  ├─ .output/server/_routes/outgoing.mjs (444 B) (301 B gzip)",
+      "  ├─ .output/server/_routes/outgoing.mjs.map (970 B) (580 B gzip)",
+      "  ├─ .output/server/_routes/process_payment.mjs (331 B) (209 B gzip)",
+      "  ├─ .output/server/_routes/process_payment.mjs.map (597 B) (398 B gzip)",
+      "  ├─ .output/server/_routes/sentinel.mjs (308 B) (197 B gzip)",
+      "  ├─ .output/server/_routes/sentinel.mjs.map (489 B) (327 B gzip)",
+      "  └─ .output/server/index.mjs (10.5 kB) (3.33 kB gzip)",
+      "Σ Total size: 827 kB (203 kB gzip)",
+      "[@sentry/nitro] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "[@sentry/nitro] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "[nitro] ✔ You can preview this build using npx nitro preview"
+    ]
+  },
+  "eventsRaw": [
+    {
+      "transaction": "GET /sentinel",
+      "message": "sentinel",
+      "level": "info",
+      "exception_values": [
+        {
+          "value": "sentinel",
+          "mechanism": {
+            "type": "generic",
+            "handled": true,
+            "synthetic": true
+          },
+          "frames": 4
+        }
+      ],
+      "request": {
+        "url": "http://127.0.0.1:4736/sentinel",
+        "method": "GET",
+        "headers": [
+          "host",
+          "user-agent",
+          "accept"
+        ]
+      }
+    }
+  ],
+  "envelopes": {
+    "counts": {
+      "event": 1,
+      "span": 0,
+      "transaction": 0,
+      "log": 1
+    },
+    "items": [
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.nitro",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /sentinel",
+        "trace_id": "7f784c5810b84c6d98c7379746d42b96",
+        "user": {
+          "ip_address": "::ffff:127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4736/sentinel",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4736",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "log",
+        "items": [
+          "info: User example action completed"
+        ]
+      }
+    ]
+  },
+  "spansRaw": [],
+  "verdict": {
+    "status": "partial",
+    "checks": {
+      "app_started": true,
+      "app_alive_at_end": true,
+      "error_event_debug_sentry": [],
+      "error_event_tracing_route": [],
+      "error_404_captured": [],
+      "error_503_captured": [],
+      "other_error_events": [
+        {
+          "exception": "undefined: sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "transaction": "GET /sentinel",
+          "request": "http://127.0.0.1:4736/sentinel",
+          "hasRequestData": false,
+          "trace_id": "7f784c5810b84c6d98c7379746d42b96"
+        }
+      ],
+      "duplicate_error_events": [],
+      "sentinel_event": [
+        {
+          "mechanism": "generic",
+          "handled": true,
+          "transaction": "GET /sentinel",
+          "request": "http://127.0.0.1:4736/sentinel"
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 0,
+      "segments": [],
+      "route_named_segment_for_users": false,
+      "users_request_span_tree": [],
+      "outgoing_body": "{\"used\":\"fetch\",\"res\":{\"ok\":true}}",
+      "users_segment_attributes": null,
+      "child_spans": [],
+      "child_ops": [],
+      "child_origins": [],
+      "middleware_spans": [],
+      "middleware_nitro_spans": [],
+      "http_client_spans": [],
+      "manual_test_span": [],
+      "process_payment_span": [],
+      "server_timing_header": [
+        "server-timing: sentry-trace;desc=\"aa0be949f0544b28994cd3becb39c96d-aa2c7befe35f35f6\", baggage;desc=\"sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=aa0be949f0544b28994cd3becb39c96d,sentry-org_id=0\""
+      ],
+      "outgoing_request_headers": [
+        {
+          "url": "/recorder",
+          "sentry-trace": "071929a83da148cc965530605af7b6b1-8dd4ec2e8a76d8cb",
+          "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=071929a83da148cc965530605af7b6b1,sentry-org_id=0",
+          "traceparent": null
+        }
+      ],
+      "log_batches": 1,
+      "log_bodies": [
+        "info: User example action completed"
+      ],
+      "other_item_types": [],
+      "require_banner": [],
+      "deprecation_output": [],
+      "nitro_default_error_log": 4,
+      "build_notable": [
+        "  ├─ .output/server/_libs/@sentry/nitro.mjs (37.1 kB) (9.57 kB gzip)",
+        "  ├─ .output/server/_libs/@sentry/nitro.mjs.map (150 kB) (34.7 kB gzip)",
+        "  ├─ .output/server/_libs/sentry__core.mjs (106 kB) (25.3 kB gzip)",
+        "  ├─ .output/server/_libs/sentry__core.mjs.map (257 kB) (59 kB gzip)",
+        "  ├─ .output/server/_libs/sentry__node.mjs (1.09 kB) (450 B gzip)",
+        "  ├─ .output/server/_libs/sentry__node.mjs.map (2.37 kB) (951 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry_tracing.mjs (491 B) (303 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry_tracing.mjs.map (940 B) (556 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry.mjs (248 B) (187 B gzip)",
+        "  ├─ .output/server/_routes/debug_sentry.mjs.map (411 B) (311 B gzip)",
+        "  ├─ .output/server/_routes/error_404.mjs (323 B) (224 B gzip)",
+        "  ├─ .output/server/_routes/error_404.mjs.map (487 B) (356 B gzip)",
+        "  ├─ .output/server/_routes/error_503.mjs (323 B) (224 B gzip)",
+        "  ├─ .output/server/_routes/error_503.mjs.map (434 B) (314 B gzip)",
+        "[@sentry/nitro] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+        "[@sentry/nitro] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/"
+      ]
+    }
+  }
+}

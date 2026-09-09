@@ -1,0 +1,32 @@
+Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()
+Sentry Logger [log]: Initializing Sentry: process: 3712, thread: main.
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: SDK initialized from ESM
+Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]
+Sentry Logger [log]: [Sentry] Bundler plugin did not run
+node:internal/process/promises:324
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+Error: Sentry Test Error
+    at file://$REPRO/quickstarts/effect/verify-runpromise.ts:7:22 {
+  name: '(FiberFailure) Error',
+  Symbol(effect/Runtime/FiberFailure): Symbol(effect/Runtime/FiberFailure),
+  Symbol(effect/Runtime/FiberFailure/Cause): {
+    _tag: 'Fail',
+    error: Error: Sentry Test Error
+        at file://$REPRO/quickstarts/effect/verify-runpromise.ts:7:22
+        at Generator.next (<anonymous>)
+        at file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:122:67
+        at effect_internal_function (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/Utils.js:333:12)
+        at Object.Iterator (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:122:21)
+        at FiberRuntime.Iterator (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:1108:46)
+        at file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:1151:31
+        at Object.context (file://$REPRO/quickstarts/effect/node_modules/@sentry/effect/build/esm/tracer.js:149:16)
+        at FiberRuntime.runLoop (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:1142:34)
+        at FiberRuntime.evaluateEffect (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:746:27)
+  }
+}
+
+Node.js v26.5.0

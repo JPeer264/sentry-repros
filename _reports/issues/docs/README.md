@@ -1,6 +1,6 @@
 # Docs issue drafts, P0 to P2
 
-156 drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit. P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.
+158 drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit. P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.
 
 | # | Prio | Item | Type | Title | File |
 | --- | --- | --- | --- | --- | --- |
@@ -125,38 +125,40 @@
 | 119 | P1 | DOC-Q63 | docs-change | Say on the WebAssembly guide what the integration needs: a build_id section, a URL-keeping loader and uploaded debug files | `P1-119-DOC-Q63.md` |
 | 120 | P1 | DOC-Q64 | docs-change | Chain the Elysia verify route before .listen() on the guide | `P1-120-DOC-Q64.md` |
 | 121 | P1 | DOC-Q65 | docs-change | Correct the default error filter description on the Elysia guide | `P1-121-DOC-Q65.md` |
-| 122 | P2 | DOC-B4 | docs-change | Fix Bun guide hygiene: version floor, Hono install command, v7 wording | `P2-122-DOC-B4.md` |
-| 123 | P2 | DOC-D5 | docs-change | Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones | `P2-123-DOC-D5.md` |
-| 124 | P2 | DOC-D6 | docs-change | Show deno add and an import map in the Deno guide's install step | `P2-124-DOC-D6.md` |
-| 125 | P2 | DOC-C3 | docs-change | Add the four missing Cloudflare SdkOption entries and drop the deprecated enableRpcTracePropagation block | `P2-125-DOC-C3.md` |
-| 126 | P2 | DOC-C6 | docs-change | Add a bindings table to the Cloudflare features/index.mdx | `P2-126-DOC-C6.md` |
-| 127 | P2 | DOC-C8 | docs-change | Fix snippet errors across the Cloudflare includes and framework pages | `P2-127-DOC-C8.md` |
-| 128 | P2 | X1 | docs-change | Fix "Tracing is enabled by default" in the Bun, Deno and Cloudflare enable-tracing includes | `P2-128-X1.md` |
-| 129 | P2 | DOC-F47 | docs-change | Confirm tested versions and database spans on the Astro on Cloudflare page | `P2-129-DOC-F47.md` |
-| 130 | P2 | DOC-R7 | docs-change | Add Deno and Cloudflare to the OpenTelemetry overview and API pages | `P2-130-DOC-R7.md` |
-| 131 | P2 | DOC-R8 | docs-change | Fix removed integration names in the Bun and Deno v7 migration tables | `P2-131-DOC-R8.md` |
-| 132 | P2 | DOC-R16 | docs-change | Document the Durable Object WebSocket and alarm instrumentation | `P2-132-DOC-R16.md` |
-| 133 | P2 | DOC-R17 | docs-change | Add deno serve to the Deno guide run commands | `P2-133-DOC-R17.md` |
-| 134 | P2 | DOC-R19 | docs-change | Note that the root Pages middleware also spans static asset requests | `P2-134-DOC-R19.md` |
-| 135 | P2 | DOC-Q4 | docs-change | Explain the channel-injection warnings on the Bun guide | `P2-135-DOC-Q4.md` |
-| 136 | P2 | DOC-Q5 | docs-change | Update the Node getting-started page for --require and for first-line ESM imports | `P2-136-DOC-Q5.md` |
-| 137 | P2 | DOC-Q6 | docs-change | Say on the Cloudflare guide that readable stack traces need the source maps step | `P2-137-DOC-Q6.md` |
-| 138 | P2 | DOC-Q10 | docs-change | Say on the browser config page that the sample tracePropagationTargets matches localhost only | `P2-138-DOC-Q10.md` |
-| 139 | P2 | DOC-Q11 | docs-change | Tell browser readers to wait before triggering the verify error if they expect a replay | `P2-139-DOC-Q11.md` |
-| 140 | P2 | DOC-Q16 | docs-change | Move the React guide routing snippet to the version-agnostic React Router API | `P2-140-DOC-Q16.md` |
-| 141 | P2 | DOC-Q17 | docs-change | Rewrite the React verify step for the stream lifecycle and fix the test span | `P2-141-DOC-Q17.md` |
-| 142 | P2 | DOC-Q18 | docs-change | Say on the React, Vue, Angular, Svelte, Solid and WebAssembly guides that release health sessions need a release | `P2-142-DOC-Q18.md` |
-| 143 | P2 | DOC-Q22 | docs-change | Rewrite the Vue guide and its feature pages for the stream lifecycle | `P2-143-DOC-Q22.md` |
-| 144 | P2 | DOC-Q23 | docs-change | Fix the late-initialization and multiple-apps snippets on the Vue pages | `P2-144-DOC-Q23.md` |
-| 145 | P2 | DOC-Q24 | docs-change | Say on the Vue guide that the component context of the verify error appears in production builds | `P2-145-DOC-Q24.md` |
-| 146 | P2 | DOC-Q29 | docs-change | Drop the deprecated setup*ErrorHandler calls from the Express, Fastify, Koa and Hapi getting-started snippets | `P2-146-DOC-Q29.md` |
-| 147 | P2 | DOC-Q30 | new-page | Add an expressIntegration page to the integrations directory | `P2-147-DOC-Q30.md` |
-| 148 | P2 | DOC-Q31 | docs-change | Fix the empty capture-errors include and the orphaned includes on the Express guide | `P2-148-DOC-Q31.md` |
-| 149 | P2 | DOC-Q35 | docs-change | Rewrite the Angular manual-setup verify and tracing text for the stream lifecycle | `P2-149-DOC-Q35.md` |
-| 150 | P2 | DOC-Q36 | docs-change | Fix the Angular pages' deprecated bootstrap call, the missing logs onboarding option and the stray export | `P2-150-DOC-Q36.md` |
-| 151 | P2 | DOC-Q40 | docs-change | Rewrite the Fastify integration page around the diagnostics-channel instrumentation and its options | `P2-151-DOC-Q40.md` |
-| 152 | P2 | DOC-Q43 | docs-change | Rewrite the Svelte verify and tracing text for the stream lifecycle and fix the compilerOptions placeholder | `P2-152-DOC-Q43.md` |
-| 153 | P2 | DOC-Q51 | docs-change | Fix the TanStack Router snippet fence and the transactions wording on the Solid pages | `P2-153-DOC-Q51.md` |
-| 154 | P2 | DOC-Q56 | docs-change | Add the missing details to the Hono guide: catch-all naming, middleware options, error filter semantics and the node-server dependency | `P2-154-DOC-Q56.md` |
-| 155 | P2 | DOC-Q61 | docs-change | Say what SentryModule does on the NestJS guide, fix the transactions wording and describe the span sets | `P2-155-DOC-Q61.md` |
-| 156 | P2 | DOC-Q66 | docs-change | Rewrite the Elysia instrumentation include for v11 and add the Node run details | `P2-156-DOC-Q66.md` |
+| 122 | P1 | DOC-Q67 | docs-change | Document the built-in mastraIntegration route on the Mastra pages and say the exporter must not be combined with it | `P1-122-DOC-Q67.md` |
+| 123 | P2 | DOC-B4 | docs-change | Fix Bun guide hygiene: version floor, Hono install command, v7 wording | `P2-123-DOC-B4.md` |
+| 124 | P2 | DOC-D5 | docs-change | Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones | `P2-124-DOC-D5.md` |
+| 125 | P2 | DOC-D6 | docs-change | Show deno add and an import map in the Deno guide's install step | `P2-125-DOC-D6.md` |
+| 126 | P2 | DOC-C3 | docs-change | Add the four missing Cloudflare SdkOption entries and drop the deprecated enableRpcTracePropagation block | `P2-126-DOC-C3.md` |
+| 127 | P2 | DOC-C6 | docs-change | Add a bindings table to the Cloudflare features/index.mdx | `P2-127-DOC-C6.md` |
+| 128 | P2 | DOC-C8 | docs-change | Fix snippet errors across the Cloudflare includes and framework pages | `P2-128-DOC-C8.md` |
+| 129 | P2 | X1 | docs-change | Fix "Tracing is enabled by default" in the Bun, Deno and Cloudflare enable-tracing includes | `P2-129-X1.md` |
+| 130 | P2 | DOC-F47 | docs-change | Confirm tested versions and database spans on the Astro on Cloudflare page | `P2-130-DOC-F47.md` |
+| 131 | P2 | DOC-R7 | docs-change | Add Deno and Cloudflare to the OpenTelemetry overview and API pages | `P2-131-DOC-R7.md` |
+| 132 | P2 | DOC-R8 | docs-change | Fix removed integration names in the Bun and Deno v7 migration tables | `P2-132-DOC-R8.md` |
+| 133 | P2 | DOC-R16 | docs-change | Document the Durable Object WebSocket and alarm instrumentation | `P2-133-DOC-R16.md` |
+| 134 | P2 | DOC-R17 | docs-change | Add deno serve to the Deno guide run commands | `P2-134-DOC-R17.md` |
+| 135 | P2 | DOC-R19 | docs-change | Note that the root Pages middleware also spans static asset requests | `P2-135-DOC-R19.md` |
+| 136 | P2 | DOC-Q4 | docs-change | Explain the channel-injection warnings on the Bun guide | `P2-136-DOC-Q4.md` |
+| 137 | P2 | DOC-Q5 | docs-change | Update the Node getting-started page for --require and for first-line ESM imports | `P2-137-DOC-Q5.md` |
+| 138 | P2 | DOC-Q6 | docs-change | Say on the Cloudflare guide that readable stack traces need the source maps step | `P2-138-DOC-Q6.md` |
+| 139 | P2 | DOC-Q10 | docs-change | Say on the browser config page that the sample tracePropagationTargets matches localhost only | `P2-139-DOC-Q10.md` |
+| 140 | P2 | DOC-Q11 | docs-change | Tell browser readers to wait before triggering the verify error if they expect a replay | `P2-140-DOC-Q11.md` |
+| 141 | P2 | DOC-Q16 | docs-change | Move the React guide routing snippet to the version-agnostic React Router API | `P2-141-DOC-Q16.md` |
+| 142 | P2 | DOC-Q17 | docs-change | Rewrite the React verify step for the stream lifecycle and fix the test span | `P2-142-DOC-Q17.md` |
+| 143 | P2 | DOC-Q18 | docs-change | Say on the React, Vue, Angular, Svelte, Solid and WebAssembly guides that release health sessions need a release | `P2-143-DOC-Q18.md` |
+| 144 | P2 | DOC-Q22 | docs-change | Rewrite the Vue guide and its feature pages for the stream lifecycle | `P2-144-DOC-Q22.md` |
+| 145 | P2 | DOC-Q23 | docs-change | Fix the late-initialization and multiple-apps snippets on the Vue pages | `P2-145-DOC-Q23.md` |
+| 146 | P2 | DOC-Q24 | docs-change | Say on the Vue guide that the component context of the verify error appears in production builds | `P2-146-DOC-Q24.md` |
+| 147 | P2 | DOC-Q29 | docs-change | Drop the deprecated setup*ErrorHandler calls from the Express, Fastify, Koa and Hapi getting-started snippets | `P2-147-DOC-Q29.md` |
+| 148 | P2 | DOC-Q30 | new-page | Add an expressIntegration page to the integrations directory | `P2-148-DOC-Q30.md` |
+| 149 | P2 | DOC-Q31 | docs-change | Fix the empty capture-errors include and the orphaned includes on the Express guide | `P2-149-DOC-Q31.md` |
+| 150 | P2 | DOC-Q35 | docs-change | Rewrite the Angular manual-setup verify and tracing text for the stream lifecycle | `P2-150-DOC-Q35.md` |
+| 151 | P2 | DOC-Q36 | docs-change | Fix the Angular pages' deprecated bootstrap call, the missing logs onboarding option and the stray export | `P2-151-DOC-Q36.md` |
+| 152 | P2 | DOC-Q40 | docs-change | Rewrite the Fastify integration page around the diagnostics-channel instrumentation and its options | `P2-152-DOC-Q40.md` |
+| 153 | P2 | DOC-Q43 | docs-change | Rewrite the Svelte verify and tracing text for the stream lifecycle and fix the compilerOptions placeholder | `P2-153-DOC-Q43.md` |
+| 154 | P2 | DOC-Q51 | docs-change | Fix the TanStack Router snippet fence and the transactions wording on the Solid pages | `P2-154-DOC-Q51.md` |
+| 155 | P2 | DOC-Q56 | docs-change | Add the missing details to the Hono guide: catch-all naming, middleware options, error filter semantics and the node-server dependency | `P2-155-DOC-Q56.md` |
+| 156 | P2 | DOC-Q61 | docs-change | Say what SentryModule does on the NestJS guide, fix the transactions wording and describe the span sets | `P2-156-DOC-Q61.md` |
+| 157 | P2 | DOC-Q66 | docs-change | Rewrite the Elysia instrumentation include for v11 and add the Node run details | `P2-157-DOC-Q66.md` |
+| 158 | P2 | DOC-Q68 | docs-change | Correct the attribute list, the defaults and the trace shape on the Mastra pages | `P2-158-DOC-Q68.md` |

@@ -456,5 +456,26 @@
    "--import (extra)": "works",
    "CommonJS (extra)": "works"
   }
+ },
+ {
+  "id": "QS-mastra",
+  "path": "quickstarts/mastra",
+  "runtime": "Node 26.5.0, develop 03aaf42455; @mastra/core with @mastra/sentry 1.2.16, local mock model endpoint",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "Both documented exporter shapes deliver gen_ai.invoke_agent, gen_ai.chat and gen_ai.execute_tool spans with token usage and tool errors as events; so does the SDK's built-in mastraIntegration under --import, which the pages never mention, and combining both duplicates every span. Defects: the attribute list on the agent-tracing page does not match what the exporter emits; unnamed defaults (environment production, release ''); the model's HTTP calls arrive as separate http.client segments; the built-in route doubles tool spans.",
+  "sdk": {
+   "name": "sentry.javascript.node",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "guide exporter": "works",
+   "exporter with SENTRY_DSN only": "works",
+   "exporter with explicit options": "works",
+   "throwing tool": "works",
+   "built-in mastraIntegration, no exporter": "works (tool spans doubled)",
+   "exporter plus Sentry.init": "partial (duplicate spans, double init)"
+  }
  }
 ]

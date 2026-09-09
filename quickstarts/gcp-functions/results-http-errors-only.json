@@ -1,0 +1,424 @@
+{
+  "id": "QS-gcp-functions",
+  "variant": "http-errors-only",
+  "snippet": "getting-started-config/javascript.gcp-functions.mdx:1-37 (Http tab, error-monitoring option only)",
+  "command": "node node_modules/@google-cloud/functions-framework/build/src/main.js --target=helloHttp --signature-type=http --source=./function-http-errors-only.js --port=4744",
+  "functions_framework_version": "4.0.0",
+  "sdk_package_version": "10.67.0",
+  "sdk": {
+    "name": "sentry.javascript.google-cloud-serverless",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "steps": [
+    {
+      "route": "GET /",
+      "http_code": "500",
+      "seconds": "0.016978",
+      "curl_exit": 0,
+      "body": "oh, hello there!"
+    },
+    {
+      "route": "GET /some/path?x=1",
+      "http_code": "500",
+      "seconds": "0.003637",
+      "curl_exit": 0,
+      "body": "oh, hello there!"
+    },
+    {
+      "route": "sentinel (SIGUSR2)",
+      "http_code": "-",
+      "seconds": "0",
+      "curl_exit": 0,
+      "body": ""
+    }
+  ],
+  "console": {
+    "line_count": 90,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 92051, thread: main.",
+      "Sentry Logger [log]: SDK initialized from CommonJS",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Serving function...",
+      "Function: helloHttp",
+      "Signature type: http",
+      "URL: http://localhost:4744/",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at $REPRO/quickstarts/gcp-functions/function-http-errors-only.js:10:9",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at $REPRO/quickstarts/gcp-functions/function-http-errors-only.js:10:9",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release"
+    ],
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "LinkedErrors",
+      "RequestData",
+      "NodeSystemError",
+      "ConversationId",
+      "Console",
+      "Http",
+      "NodeFetch",
+      "OnUncaughtException",
+      "OnUnhandledRejection",
+      "ContextLines",
+      "LocalVariablesAsync",
+      "Context",
+      "ChildProcess",
+      "WorkerThreads",
+      "ProcessSession",
+      "Modules",
+      "Express",
+      "Fastify",
+      "Hapi",
+      "Koa",
+      "GcpContext",
+      "GoogleCloudHttp",
+      "GoogleCloudGrpc",
+      "SpanStreaming"
+    ],
+    "integration_count": 26,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 92051, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: Integration installed: GcpContext",
+      "Sentry Logger [log]: Integration installed: GoogleCloudHttp",
+      "Sentry Logger [log]: Integration installed: GoogleCloudGrpc",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from CommonJS",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Serving function...",
+      "Function: helloHttp",
+      "Signature type: http",
+      "URL: http://localhost:4744/",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at $REPRO/quickstarts/gcp-functions/function-http-errors-only.js:10:9",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:60:19",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:59:23",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:74:60",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:388:32",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:384:14",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:123:12",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Sending request session aggregate due to client flush",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at $REPRO/quickstarts/gcp-functions/function-http-errors-only.js:10:9",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:60:19",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:59:23",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:74:60",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:388:32",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:384:14",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:123:12",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Sending request session aggregate due to client flush",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Sending request session aggregate due to client flush",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "[repro] sentinel flushed ok=true"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 3,
+      "span": 0,
+      "transaction": 0,
+      "log": 1
+    },
+    "items": [
+      {
+        "type": "event",
+        "exception": "Error: oh, hello there!",
+        "mechanism": "auto.function.serverless.gcp_http",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /",
+        "trace_id": "20a6fc9f61464d41b88672ca0ad71b87",
+        "user": {
+          "ip_address": "::ffff:127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4744/",
+          "method": "GET",
+          "hasData": true,
+          "headers": {
+            "host": "127.0.0.1:4744",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production",
+        "context_keys": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "cloud_resource": {}
+      },
+      {
+        "type": "event",
+        "exception": "Error: oh, hello there!",
+        "mechanism": "auto.function.serverless.gcp_http",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /some/path",
+        "trace_id": "12345678901234567890123456789012",
+        "user": {
+          "ip_address": "::ffff:127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4744/some/path?x=1",
+          "method": "GET",
+          "hasData": true,
+          "headers": {
+            "host": "127.0.0.1:4744",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*",
+            "sentry-trace": "12345678901234567890123456789012-1234567890123456-1",
+            "baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true"
+          }
+        },
+        "environment": "production",
+        "context_keys": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "cloud_resource": {}
+      },
+      {
+        "type": "log",
+        "items": [
+          "info: User example action completed"
+        ]
+      },
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "trace_id": "d55ae6663fdd4600b7c793bf8e6e2aca",
+        "environment": "production",
+        "context_keys": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "cloud_resource": {}
+      }
+    ]
+  },
+  "spansRaw": [],
+  "verdict": {
+    "status": "works",
+    "expected": {
+      "kind": "error",
+      "spans": false
+    },
+    "checks": {
+      "function_loaded": true,
+      "function_alive_at_end": true,
+      "load_errors": [],
+      "error_events": [
+        {
+          "exception": "Error: oh, hello there!",
+          "mechanism": "auto.function.serverless.gcp_http",
+          "handled": false,
+          "level": "error",
+          "transaction": "GET /",
+          "request": {
+            "url": "http://127.0.0.1:4744/",
+            "method": "GET",
+            "hasData": true,
+            "headers": {
+              "host": "127.0.0.1:4744",
+              "user-agent": "curl/8.7.1",
+              "accept": "*/*"
+            }
+          },
+          "user": {
+            "ip_address": "::ffff:127.0.0.1"
+          },
+          "context_keys": [
+            "trace",
+            "runtime",
+            "app",
+            "os",
+            "device",
+            "culture",
+            "cloud_resource"
+          ],
+          "cloud_resource": {},
+          "trace_id": "20a6fc9f61464d41b88672ca0ad71b87"
+        },
+        {
+          "exception": "Error: oh, hello there!",
+          "mechanism": "auto.function.serverless.gcp_http",
+          "handled": false,
+          "level": "error",
+          "transaction": "GET /some/path",
+          "request": {
+            "url": "http://127.0.0.1:4744/some/path?x=1",
+            "method": "GET",
+            "hasData": true,
+            "headers": {
+              "host": "127.0.0.1:4744",
+              "user-agent": "curl/8.7.1",
+              "accept": "*/*",
+              "sentry-trace": "12345678901234567890123456789012-1234567890123456-1",
+              "baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true"
+            }
+          },
+          "user": {
+            "ip_address": "::ffff:127.0.0.1"
+          },
+          "context_keys": [
+            "trace",
+            "runtime",
+            "app",
+            "os",
+            "device",
+            "culture",
+            "cloud_resource"
+          ],
+          "cloud_resource": {},
+          "trace_id": "12345678901234567890123456789012"
+        }
+      ],
+      "duplicate_error_events": [],
+      "sentinel_event": [
+        {
+          "exception": "undefined: sentinel",
+          "message": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "level": "info",
+          "context_keys": [
+            "trace",
+            "runtime",
+            "app",
+            "os",
+            "device",
+            "culture",
+            "cloud_resource"
+          ],
+          "cloud_resource": {},
+          "trace_id": "d55ae6663fdd4600b7c793bf8e6e2aca"
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 0,
+      "segments": [],
+      "function_segments": [],
+      "sentinel_segment": 0,
+      "child_spans": [],
+      "manual_test_span": [],
+      "log_batches": 1,
+      "log_bodies": [
+        "info: User example action completed"
+      ],
+      "other_item_types": [],
+      "deprecation_output": [],
+      "domain_warning": []
+    }
+  }
+}

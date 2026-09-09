@@ -1,0 +1,322 @@
+{
+  "id": "QS-effect",
+  "variant": "launch",
+  "command": "node main.ts",
+  "effect_version": "3.22.2",
+  "effect_platform_node_version": "0.108.2",
+  "sdk": {
+    "name": "sentry.javascript.effect",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "sdk_packages": [],
+  "console": {
+    "line_count": 30,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 3804, thread: main.",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "[09:36:38.155] ERROR (#1):",
+      "  Error: Sentry Test Error"
+    ],
+    "integrations": [
+      "SpanStreaming"
+    ],
+    "integration_count": 1,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 3804, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: function",
+      "  name: My First Test Transaction",
+      "  ID: a80830ef753205c7",
+      "Sentry Logger [log]: [Tracing] Finishing \"function\" root span \"My First Test Transaction\" with ID a80830ef753205c7",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: function",
+      "  name: sentinel",
+      "  ID: 80c3e36c7b9b4361",
+      "  parent ID: a80830ef753205c7",
+      "  root ID: a80830ef753205c7",
+      "  root op: function",
+      "  root description: My First Test Transaction",
+      "Sentry Logger [log]: [Tracing] Finishing \"function\" span \"sentinel\" with ID 80c3e36c7b9b4361",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 574d68afb41947f588cee85e42f2417f with 2 spans",
+      "[09:36:38.155] ERROR (#1):",
+      "  Error: Sentry Test Error",
+      "      at file://$REPRO/quickstarts/effect/Http.js:11:24",
+      "      at My First Test Transaction (file://$REPRO/quickstarts/effect/Http.js:13:12)"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 1,
+      "span": 1,
+      "transaction": 0,
+      "log": 0,
+      "trace_metric": 0
+    },
+    "items": [
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.effect",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": false,
+        "trace_id": "574d68afb41947f588cee85e42f2417f",
+        "environment": "production"
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "574d68afb41947f588cee85e42f2417f",
+        "items": [
+          "function My First Test Transaction",
+          "function sentinel"
+        ],
+        "sdk": "sentry.javascript.effect",
+        "raw": [
+          {
+            "name": "My First Test Transaction",
+            "segment_name": "My First Test Transaction",
+            "op": "function",
+            "status": "error",
+            "is_segment": true,
+            "origin": "auto.function.effect"
+          },
+          {
+            "name": "sentinel",
+            "segment_name": "My First Test Transaction",
+            "op": "function",
+            "status": "ok",
+            "parent_span_id": "a80830ef753205c7",
+            "is_segment": false,
+            "origin": "auto.function.effect"
+          }
+        ]
+      }
+    ]
+  },
+  "spansRaw": [
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "My First Test Transaction",
+          "span_id": "a80830ef753205c7",
+          "trace_id": "574d68afb41947f588cee85e42f2417f",
+          "start_timestamp": 1788939398.0405273,
+          "end_timestamp": 1788939398.1430688,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "Error: Sentry Test Error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.function.effect",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "function",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "custom",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "op": {
+              "value": "test",
+              "type": "string"
+            },
+            "code.stacktrace": {
+              "value": "at file://$REPRO/quickstarts/effect/Http.js:13:12",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "My First Test Transaction",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a80830ef753205c7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.effect",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "SpanStreaming"
+              ],
+              "type": "array"
+            }
+          }
+        },
+        {
+          "name": "sentinel",
+          "span_id": "80c3e36c7b9b4361",
+          "trace_id": "574d68afb41947f588cee85e42f2417f",
+          "parent_span_id": "a80830ef753205c7",
+          "start_timestamp": 1788939398.1485493,
+          "end_timestamp": 1788939398.1488137,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.function.effect",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "function",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "My First Test Transaction",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a80830ef753205c7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.effect",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "verdict": {
+    "status": "partial",
+    "checks": {
+      "app_exit_code": 1,
+      "error_event_sentry_test_error": [],
+      "any_error_event": [],
+      "message_events": [],
+      "sentinel_event": [
+        {
+          "exception": "undefined: sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "level": "info",
+          "trace_id": "574d68afb41947f588cee85e42f2417f",
+          "message": "sentinel"
+        }
+      ],
+      "sentinel_span": [
+        {
+          "op": "function",
+          "origin": "auto.function.effect",
+          "is_segment": false,
+          "status": "ok"
+        }
+      ],
+      "test_transaction_span": [
+        {
+          "name": "My First Test Transaction",
+          "op": "function",
+          "origin": "auto.function.effect",
+          "status": "error",
+          "is_segment": true,
+          "span_id": "a80830ef753205c7",
+          "trace_id": "574d68afb41947f588cee85e42f2417f",
+          "segment_name": "My First Test Transaction",
+          "custom_op_attribute": "test",
+          "attribute_keys": [
+            "sentry.status.message",
+            "sentry.origin",
+            "sentry.op",
+            "sentry.segment.name.source",
+            "sentry.sample_rate",
+            "op",
+            "code.stacktrace",
+            "sentry.trace_lifecycle",
+            "sentry.segment.name",
+            "sentry.segment.id",
+            "sentry.sdk.name",
+            "sentry.sdk.version",
+            "sentry.environment",
+            "sentry.sdk.integrations"
+          ],
+          "start": 1788939398.0405273,
+          "end": 1788939398.1430688
+        }
+      ],
+      "all_spans": [
+        {
+          "name": "My First Test Transaction",
+          "op": "function",
+          "origin": "auto.function.effect",
+          "status": "error",
+          "is_segment": true,
+          "segment_name": "My First Test Transaction"
+        },
+        {
+          "name": "sentinel",
+          "op": "function",
+          "origin": "auto.function.effect",
+          "status": "ok",
+          "is_segment": false,
+          "parent_span_id": "a80830ef753205c7",
+          "segment_name": "My First Test Transaction"
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 1,
+      "log_batches": 0,
+      "log_items": [],
+      "metric_items": [],
+      "other_item_types": [],
+      "deprecation_output": [],
+      "cause_printed_to_console": 1
+    }
+  }
+}

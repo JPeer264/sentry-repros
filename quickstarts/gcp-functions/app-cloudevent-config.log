@@ -1,0 +1,88 @@
+Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()
+Sentry Logger [log]: Initializing Sentry: process: 93967, thread: main.
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: NodeSystemError
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: Integration installed: Http
+Sentry Logger [log]: Integration installed: NodeFetch
+Sentry Logger [log]: Integration installed: OnUncaughtException
+Sentry Logger [log]: Integration installed: OnUnhandledRejection
+Sentry Logger [log]: Integration installed: ContextLines
+Sentry Logger [log]: Integration installed: LocalVariablesAsync
+Sentry Logger [log]: Integration installed: Context
+Sentry Logger [log]: Integration installed: ChildProcess
+Sentry Logger [log]: Integration installed: WorkerThreads
+Sentry Logger [log]: Integration installed: ProcessSession
+Sentry Logger [log]: Integration installed: Modules
+Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load
+Sentry Logger [log]: Integration installed: Express
+Sentry Logger [log]: Integration installed: Fastify
+Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load
+Sentry Logger [log]: Integration installed: Hapi
+Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load
+Sentry Logger [log]: Integration installed: Koa
+Sentry Logger [log]: Integration installed: GcpContext
+Sentry Logger [log]: Integration installed: GoogleCloudHttp
+Sentry Logger [log]: Integration installed: GoogleCloudGrpc
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: SDK initialized from CommonJS
+Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]
+Sentry Logger [log]: [Sentry] Bundler plugin did not run
+Serving function...
+Function: helloEvents
+Signature type: cloudevent
+URL: http://localhost:4744/
+Sentry Logger [log]: Http.Server Handling incoming request
+Sentry Logger [log]: Http.Server Patching request.on
+Sentry Logger [log]: Http.ServerSpans Skipping span creation for incoming request /robots.txt
+Sentry Logger [log]: Recorded request session with status: ok
+Sentry Logger [log]: Opened new request session aggregate.
+Sentry Logger [log]: Http.Server Handling incoming request
+Sentry Logger [log]: Http.Server Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: POST
+  ID: 806befe7329986a3
+Sentry Logger [log]: Http.Server Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: function.gcp
+  name: Serverless function execution
+  ID: 89fa34dbf6c98c3e
+  parent ID: 806befe7329986a3
+  root ID: 806befe7329986a3
+  root op: http.server
+  root description: POST
+Sentry Logger [log]: Captured error event `oh, hello there!`
+Error: oh, hello there!
+    at $REPRO/quickstarts/gcp-functions/function-cloudevent.js:18:11
+    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/cloud_events.js:56:19
+    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)
+    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/cloud_events.js:55:23
+    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:74:60
+    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)
+    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)
+    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:388:32
+    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:384:14
+    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:123:12
+Sentry Logger [log]: Recorded request session with status: errored
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "POST" with ID 806befe7329986a3
+Sentry Logger [warn]: Discarded session because of missing or non-string release
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: test
+  name: sentinel
+  ID: a9b9b6dc28f60152
+Sentry Logger [log]: [Tracing] Finishing "test" root span "sentinel" with ID a9b9b6dc28f60152
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: No outcomes to send
+Sentry Logger [log]: Flushing span tree map with 2 traces
+Sentry Logger [log]: Sending span envelope for trace 8125b5feaace4c39b81de2dbd4246836 with 1 spans
+Sentry Logger [log]: Sending span envelope for trace 70076f3a3a5a4442ae2ffceb8fa62d24 with 1 spans
+Sentry Logger [log]: Sending request session aggregate due to client flush
+Sentry Logger [warn]: Discarded session because of missing or non-string release
+[repro] sentinel flushed ok=true

@@ -1,0 +1,2196 @@
+{
+  "id": "QS-gcp-functions",
+  "variant": "http-config",
+  "snippet": "getting-started-config/javascript.gcp-functions.mdx:1-37 (Http tab, performance option)",
+  "command": "node node_modules/@google-cloud/functions-framework/build/src/main.js --target=helloHttp --signature-type=http --source=./function-http.js --port=4744",
+  "functions_framework_version": "4.0.0",
+  "sdk_package_version": "10.67.0",
+  "sdk": {
+    "name": "sentry.javascript.google-cloud-serverless",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "steps": [
+    {
+      "route": "GET /",
+      "http_code": "500",
+      "seconds": "0.018440",
+      "curl_exit": 0,
+      "body": "oh, hello there!"
+    },
+    {
+      "route": "GET /some/path?x=1",
+      "http_code": "500",
+      "seconds": "0.005022",
+      "curl_exit": 0,
+      "body": "oh, hello there!"
+    },
+    {
+      "route": "sentinel (SIGUSR2)",
+      "http_code": "-",
+      "seconds": "0",
+      "curl_exit": 0,
+      "body": ""
+    }
+  ],
+  "console": {
+    "line_count": 126,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 91782, thread: main.",
+      "Sentry Logger [log]: SDK initialized from CommonJS",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Serving function...",
+      "Function: helloHttp",
+      "Signature type: http",
+      "URL: http://localhost:4744/",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release"
+    ],
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "LinkedErrors",
+      "RequestData",
+      "NodeSystemError",
+      "ConversationId",
+      "Console",
+      "Http",
+      "NodeFetch",
+      "OnUncaughtException",
+      "OnUnhandledRejection",
+      "ContextLines",
+      "LocalVariablesAsync",
+      "Context",
+      "ChildProcess",
+      "WorkerThreads",
+      "ProcessSession",
+      "Modules",
+      "Express",
+      "Fastify",
+      "Hapi",
+      "Koa",
+      "GcpContext",
+      "GoogleCloudHttp",
+      "GoogleCloudGrpc",
+      "SpanStreaming"
+    ],
+    "integration_count": 26,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 91782, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: Integration installed: GcpContext",
+      "Sentry Logger [log]: Integration installed: GoogleCloudHttp",
+      "Sentry Logger [log]: Integration installed: GoogleCloudGrpc",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from CommonJS",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Serving function...",
+      "Function: helloHttp",
+      "Signature type: http",
+      "URL: http://localhost:4744/",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Http.ServerSpans Skipping span creation for incoming request /robots.txt",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: a560d0e4bed4af69",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: function.gcp",
+      "  name: Serverless function execution",
+      "  ID: ac7d6abc7631144b",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at $REPRO/quickstarts/gcp-functions/function-http.js:17:9",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:60:19",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:59:23",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:74:60",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:388:32",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:384:14",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:123:12",
+      "Sentry Logger [log]: [Tracing] Finishing \"function.gcp\" root span \"Serverless function execution\" with ID ac7d6abc7631144b",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace a07d618d9dd243daadd29e9d9a937058 with 1 spans",
+      "Sentry Logger [log]: Sending request session aggregate due to client flush",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID a560d0e4bed4af69",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: 98ecf9f043e50ad8",
+      "  parent ID: 1234567890123456",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: function.gcp",
+      "  name: Serverless function execution",
+      "  ID: 992888daf67868bd",
+      "  parent ID: 1234567890123456",
+      "Sentry Logger [log]: Captured error event `oh, hello there!`",
+      "Error: oh, hello there!",
+      "    at $REPRO/quickstarts/gcp-functions/function-http.js:17:9",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:60:19",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/google-cloud-serverless/build/cjs/gcpfunction/http.js:59:23",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:74:60",
+      "    at handleCallbackErrors.handleCallbackErrors.status.status ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:389:13)",
+      "    at Module.handleCallbackErrors ($REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/utils/handleCallbackErrors.js:11:26)",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:388:32",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:384:14",
+      "    at $REPRO/quickstarts/gcp-functions/node_modules/@sentry/core/build/cjs/tracing/trace.js:123:12",
+      "Sentry Logger [log]: [Tracing] Finishing \"function.gcp\" root span \"Serverless function execution\" with ID 992888daf67868bd",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Flushing span tree map with 2 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 1144cf627bbc4544b11c343964b0a7fa with 1 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 12345678901234567890123456789012 with 1 spans",
+      "Sentry Logger [log]: Sending request session aggregate due to client flush",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Recorded request session with status: errored",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID 98ecf9f043e50ad8",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: test",
+      "  name: sentinel",
+      "  ID: 975eaec192e2b316",
+      "Sentry Logger [log]: [Tracing] Finishing \"test\" root span \"sentinel\" with ID 975eaec192e2b316",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Flushing span tree map with 2 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 12345678901234567890123456789012 with 1 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 6993413d9653448685be26058d378fed with 1 spans",
+      "Sentry Logger [log]: Sending request session aggregate due to client flush",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "[repro] sentinel flushed ok=true"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 3,
+      "span": 5,
+      "transaction": 0,
+      "log": 1
+    },
+    "items": [
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "a07d618d9dd243daadd29e9d9a937058",
+        "items": [
+          "function.gcp Serverless function execution"
+        ],
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "raw": [
+          {
+            "name": "Serverless function execution",
+            "segment_name": "Serverless function execution",
+            "status_code": 500,
+            "op": "function.gcp",
+            "status": "error",
+            "is_segment": true,
+            "origin": "auto.function.serverless.gcp_http",
+            "url": "http://127.0.0.1:4744/",
+            "attrs": {
+              "sentry.status.message": "internal_error",
+              "sentry.origin": "auto.function.serverless.gcp_http",
+              "sentry.op": "function.gcp",
+              "sentry.segment.name.source": "component",
+              "sentry.sample_rate": 1,
+              "faas.trigger": "http",
+              "http.request.method": "GET",
+              "url.path": "/",
+              "http.response.status_code": 500,
+              "sentry.trace_lifecycle": "stream",
+              "sentry.segment.name": "Serverless function execution",
+              "sentry.segment.id": "ac7d6abc7631144b",
+              "sentry.sdk.name": "sentry.javascript.google-cloud-serverless",
+              "sentry.sdk.version": "10.67.0",
+              "sentry.environment": "production",
+              "sentry.sdk.integrations": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "url.full": "http://127.0.0.1:4744/",
+              "http.request.header.host": "127.0.0.1:4744",
+              "http.request.header.user_agent": "curl/8.7.1",
+              "http.request.header.accept": "*/*",
+              "user.ip_address": "::ffff:127.0.0.1",
+              "process.runtime.engine.name": "v8",
+              "process.runtime.engine.version": "14.6.202.34-node.24",
+              "app.start_time": "2026-09-09T07:34:01.593Z",
+              "device.archs": [
+                "arm64"
+              ],
+              "device.boot_time": "2026-09-07T11:23:00.858Z",
+              "device.memory_size": 68719476736,
+              "device.processor_count": 16,
+              "device.cpu_description": "Apple M4 Max",
+              "device.processor_frequency": 2400,
+              "culture.locale": "en-US",
+              "culture.timezone": "Europe/Vienna",
+              "os.name": "macOS",
+              "os.version": "15.7.7",
+              "os.kernel_version": "24.6.0",
+              "os.build": "24G720",
+              "app.memory": 114311168,
+              "app.free_memory": 16654139392,
+              "device.free_memory": 305922048
+            }
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "exception": "Error: oh, hello there!",
+        "mechanism": "auto.function.serverless.gcp_http",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /",
+        "trace_id": "a07d618d9dd243daadd29e9d9a937058",
+        "user": {
+          "ip_address": "::ffff:127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4744/",
+          "method": "GET",
+          "hasData": true,
+          "headers": {
+            "host": "127.0.0.1:4744",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production",
+        "context_keys": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "cloud_resource": {}
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "1144cf627bbc4544b11c343964b0a7fa",
+        "items": [
+          "http.server GET"
+        ],
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "raw": [
+          {
+            "name": "GET",
+            "segment_name": "GET",
+            "status_code": 500,
+            "op": "http.server",
+            "status": "error",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4744/",
+            "attrs": {
+              "sentry.status.message": "internal_error",
+              "sentry.origin": "auto.http.http_server",
+              "sentry.op": "http.server",
+              "sentry.segment.name.source": "url",
+              "sentry.sample_rate": 1,
+              "sentry.kind": "server",
+              "url.full": "http://127.0.0.1:4744/",
+              "url.path": "/",
+              "http.request.method": "GET",
+              "user_agent.original": "curl/8.7.1",
+              "url.scheme": "http",
+              "server.address": "127.0.0.1",
+              "network.protocol.name": "http",
+              "network.protocol.version": "1.1",
+              "network.transport": "tcp",
+              "http.request.header.host": "127.0.0.1:4744",
+              "http.request.header.user_agent": "curl/8.7.1",
+              "http.request.header.accept": "*/*",
+              "http.response.status_code": 500,
+              "http.response.status_text": "INTERNAL SERVER ERROR",
+              "client.address": "::ffff:127.0.0.1",
+              "server.port": 4744,
+              "network.local.address": "::ffff:127.0.0.1",
+              "network.local.port": 4744,
+              "client.port": 53657,
+              "network.peer.address": "::ffff:127.0.0.1",
+              "network.peer.port": 53657,
+              "sentry.trace_lifecycle": "stream",
+              "sentry.segment.name": "GET",
+              "sentry.segment.id": "a560d0e4bed4af69",
+              "sentry.sdk.name": "sentry.javascript.google-cloud-serverless",
+              "sentry.sdk.version": "10.67.0",
+              "sentry.environment": "production",
+              "sentry.sdk.integrations": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "user.ip_address": "::ffff:127.0.0.1",
+              "process.runtime.engine.name": "v8",
+              "process.runtime.engine.version": "14.6.202.34-node.24",
+              "app.start_time": "2026-09-09T07:34:01.593Z",
+              "device.archs": [
+                "arm64"
+              ],
+              "device.boot_time": "2026-09-07T11:23:00.858Z",
+              "device.memory_size": 68719476736,
+              "device.processor_count": 16,
+              "device.cpu_description": "Apple M4 Max",
+              "device.processor_frequency": 2400,
+              "culture.locale": "en-US",
+              "culture.timezone": "Europe/Vienna",
+              "os.name": "macOS",
+              "os.version": "15.7.7",
+              "os.kernel_version": "24.6.0",
+              "os.build": "24G720",
+              "app.memory": 115523584,
+              "app.free_memory": 16646946816,
+              "device.free_memory": 295845888
+            }
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "12345678901234567890123456789012",
+        "items": [
+          "function.gcp Serverless function execution"
+        ],
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "raw": [
+          {
+            "name": "Serverless function execution",
+            "segment_name": "Serverless function execution",
+            "status_code": 500,
+            "op": "function.gcp",
+            "status": "error",
+            "parent_span_id": "1234567890123456",
+            "is_segment": true,
+            "origin": "auto.function.serverless.gcp_http",
+            "url": "http://127.0.0.1:4744/some/path?x=1",
+            "attrs": {
+              "sentry.status.message": "internal_error",
+              "sentry.origin": "auto.function.serverless.gcp_http",
+              "sentry.op": "function.gcp",
+              "sentry.segment.name.source": "component",
+              "faas.trigger": "http",
+              "http.request.method": "GET",
+              "url.path": "/some/path",
+              "http.response.status_code": 500,
+              "sentry.trace_lifecycle": "stream",
+              "sentry.segment.name": "Serverless function execution",
+              "sentry.segment.id": "992888daf67868bd",
+              "sentry.sdk.name": "sentry.javascript.google-cloud-serverless",
+              "sentry.sdk.version": "10.67.0",
+              "sentry.environment": "production",
+              "sentry.sdk.integrations": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "url.full": "http://127.0.0.1:4744/some/path?x=1",
+              "url.query": "x=1",
+              "http.request.header.host": "127.0.0.1:4744",
+              "http.request.header.user_agent": "curl/8.7.1",
+              "http.request.header.accept": "*/*",
+              "http.request.header.sentry_trace": "12345678901234567890123456789012-1234567890123456-1",
+              "http.request.header.baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true",
+              "user.ip_address": "::ffff:127.0.0.1",
+              "process.runtime.engine.name": "v8",
+              "process.runtime.engine.version": "14.6.202.34-node.24",
+              "app.start_time": "2026-09-09T07:34:01.593Z",
+              "device.archs": [
+                "arm64"
+              ],
+              "device.boot_time": "2026-09-07T11:23:00.858Z",
+              "device.memory_size": 68719476736,
+              "device.processor_count": 16,
+              "device.cpu_description": "Apple M4 Max",
+              "device.processor_frequency": 2400,
+              "culture.locale": "en-US",
+              "culture.timezone": "Europe/Vienna",
+              "os.name": "macOS",
+              "os.version": "15.7.7",
+              "os.kernel_version": "24.6.0",
+              "os.build": "24G720",
+              "app.memory": 115687424,
+              "app.free_memory": 16660004864,
+              "device.free_memory": 306741248
+            }
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "exception": "Error: oh, hello there!",
+        "mechanism": "auto.function.serverless.gcp_http",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /some/path",
+        "trace_id": "12345678901234567890123456789012",
+        "user": {
+          "ip_address": "::ffff:127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4744/some/path?x=1",
+          "method": "GET",
+          "hasData": true,
+          "headers": {
+            "host": "127.0.0.1:4744",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*",
+            "sentry-trace": "12345678901234567890123456789012-1234567890123456-1",
+            "baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true"
+          }
+        },
+        "environment": "production",
+        "context_keys": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "cloud_resource": {}
+      },
+      {
+        "type": "log",
+        "items": [
+          "info: User example action completed"
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "12345678901234567890123456789012",
+        "items": [
+          "http.server GET"
+        ],
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "raw": [
+          {
+            "name": "GET",
+            "segment_name": "GET",
+            "status_code": 500,
+            "op": "http.server",
+            "status": "error",
+            "parent_span_id": "1234567890123456",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4744/some/path?x=1",
+            "attrs": {
+              "sentry.status.message": "internal_error",
+              "sentry.origin": "auto.http.http_server",
+              "sentry.op": "http.server",
+              "sentry.segment.name.source": "url",
+              "sentry.kind": "server",
+              "url.full": "http://127.0.0.1:4744/some/path?x=1",
+              "url.path": "/some/path",
+              "url.query": "x=1",
+              "http.request.method": "GET",
+              "user_agent.original": "curl/8.7.1",
+              "url.scheme": "http",
+              "server.address": "127.0.0.1",
+              "network.protocol.name": "http",
+              "network.protocol.version": "1.1",
+              "network.transport": "tcp",
+              "http.request.header.host": "127.0.0.1:4744",
+              "http.request.header.user_agent": "curl/8.7.1",
+              "http.request.header.accept": "*/*",
+              "http.request.header.sentry_trace": "12345678901234567890123456789012-1234567890123456-1",
+              "http.request.header.baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true",
+              "http.response.status_code": 500,
+              "http.response.status_text": "INTERNAL SERVER ERROR",
+              "client.address": "::ffff:127.0.0.1",
+              "server.port": 4744,
+              "network.local.address": "::ffff:127.0.0.1",
+              "network.local.port": 4744,
+              "client.port": 53662,
+              "network.peer.address": "::ffff:127.0.0.1",
+              "network.peer.port": 53662,
+              "sentry.trace_lifecycle": "stream",
+              "sentry.segment.name": "GET",
+              "sentry.segment.id": "98ecf9f043e50ad8",
+              "sentry.sdk.name": "sentry.javascript.google-cloud-serverless",
+              "sentry.sdk.version": "10.67.0",
+              "sentry.environment": "production",
+              "sentry.sdk.integrations": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "user.ip_address": "::ffff:127.0.0.1",
+              "process.runtime.engine.name": "v8",
+              "process.runtime.engine.version": "14.6.202.34-node.24",
+              "app.start_time": "2026-09-09T07:34:01.593Z",
+              "device.archs": [
+                "arm64"
+              ],
+              "device.boot_time": "2026-09-07T11:23:00.858Z",
+              "device.memory_size": 68719476736,
+              "device.processor_count": 16,
+              "device.cpu_description": "Apple M4 Max",
+              "device.processor_frequency": 2400,
+              "culture.locale": "en-US",
+              "culture.timezone": "Europe/Vienna",
+              "os.name": "macOS",
+              "os.version": "15.7.7",
+              "os.kernel_version": "24.6.0",
+              "os.build": "24G720",
+              "app.memory": 117587968,
+              "app.free_memory": 16660004864,
+              "device.free_memory": 306741248
+            }
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "6993413d9653448685be26058d378fed",
+        "items": [
+          "test sentinel"
+        ],
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "raw": [
+          {
+            "name": "sentinel",
+            "segment_name": "sentinel",
+            "op": "test",
+            "status": "ok",
+            "is_segment": true,
+            "origin": "manual",
+            "attrs": {
+              "sentry.origin": "manual",
+              "sentry.op": "test",
+              "sentry.segment.name.source": "custom",
+              "sentry.sample_rate": 1,
+              "sentry.trace_lifecycle": "stream",
+              "sentry.segment.name": "sentinel",
+              "sentry.segment.id": "975eaec192e2b316",
+              "sentry.sdk.name": "sentry.javascript.google-cloud-serverless",
+              "sentry.sdk.version": "10.67.0",
+              "sentry.environment": "production",
+              "sentry.sdk.integrations": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "process.runtime.engine.name": "v8",
+              "process.runtime.engine.version": "14.6.202.34-node.24",
+              "app.start_time": "2026-09-09T07:34:01.593Z",
+              "device.archs": [
+                "arm64"
+              ],
+              "device.boot_time": "2026-09-07T11:23:00.858Z",
+              "device.memory_size": 68719476736,
+              "device.processor_count": 16,
+              "device.cpu_description": "Apple M4 Max",
+              "device.processor_frequency": 2400,
+              "culture.locale": "en-US",
+              "culture.timezone": "Europe/Vienna",
+              "os.name": "macOS",
+              "os.version": "15.7.7",
+              "os.kernel_version": "24.6.0",
+              "os.build": "24G720",
+              "app.memory": 117653504,
+              "app.free_memory": 16660004864,
+              "device.free_memory": 306741248
+            }
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.google-cloud-serverless",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "trace_id": "6993413d9653448685be26058d378fed",
+        "environment": "production",
+        "context_keys": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "cloud_resource": {}
+      }
+    ]
+  },
+  "spansRaw": [
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "Serverless function execution",
+          "span_id": "ac7d6abc7631144b",
+          "trace_id": "a07d618d9dd243daadd29e9d9a937058",
+          "start_timestamp": 1788939241.9598086,
+          "end_timestamp": 1788939241.962295,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "internal_error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.function.serverless.gcp_http",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "function.gcp",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "component",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "faas.trigger": {
+              "value": "http",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 500,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "Serverless function execution",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "ac7d6abc7631144b",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.google-cloud-serverless",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4744/",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4744",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "user.ip_address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T07:34:01.593Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.858Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 114311168,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 16654139392,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 305922048,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "a560d0e4bed4af69",
+          "trace_id": "1144cf627bbc4544b11c343964b0a7fa",
+          "start_timestamp": 1788939241.9586647,
+          "end_timestamp": 1788939241.9757633,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "internal_error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4744/",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4744",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 500,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "INTERNAL SERVER ERROR",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4744,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4744,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 53657,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 53657,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a560d0e4bed4af69",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.google-cloud-serverless",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T07:34:01.593Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.858Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 115523584,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 16646946816,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 295845888,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "Serverless function execution",
+          "span_id": "992888daf67868bd",
+          "trace_id": "12345678901234567890123456789012",
+          "parent_span_id": "1234567890123456",
+          "start_timestamp": 1788939241.9934213,
+          "end_timestamp": 1788939241.9940028,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "internal_error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.function.serverless.gcp_http",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "function.gcp",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "component",
+              "type": "string"
+            },
+            "faas.trigger": {
+              "value": "http",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/some/path",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 500,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "Serverless function execution",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "992888daf67868bd",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.google-cloud-serverless",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4744/some/path?x=1",
+              "type": "string"
+            },
+            "url.query": {
+              "value": "x=1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4744",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.sentry_trace": {
+              "value": "12345678901234567890123456789012-1234567890123456-1",
+              "type": "string"
+            },
+            "http.request.header.baggage": {
+              "value": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true",
+              "type": "string"
+            },
+            "user.ip_address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T07:34:01.593Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.858Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 115687424,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 16660004864,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 306741248,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "98ecf9f043e50ad8",
+          "trace_id": "12345678901234567890123456789012",
+          "parent_span_id": "1234567890123456",
+          "start_timestamp": 1788939241.9924428,
+          "end_timestamp": 1788939241.9963965,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "internal_error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4744/some/path?x=1",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/some/path",
+              "type": "string"
+            },
+            "url.query": {
+              "value": "x=1",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4744",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.sentry_trace": {
+              "value": "12345678901234567890123456789012-1234567890123456-1",
+              "type": "string"
+            },
+            "http.request.header.baggage": {
+              "value": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 500,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "INTERNAL SERVER ERROR",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4744,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4744,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 53662,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 53662,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "98ecf9f043e50ad8",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.google-cloud-serverless",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "::ffff:127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T07:34:01.593Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.858Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 117587968,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 16660004864,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 306741248,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "sentinel",
+          "span_id": "975eaec192e2b316",
+          "trace_id": "6993413d9653448685be26058d378fed",
+          "start_timestamp": 1788939242.006638,
+          "end_timestamp": 1788939242.0067115,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "manual",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "test",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "custom",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "sentinel",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "975eaec192e2b316",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.google-cloud-serverless",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "GcpContext",
+                "GoogleCloudHttp",
+                "GoogleCloudGrpc",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T07:34:01.593Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.858Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 117653504,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 16660004864,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 306741248,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "verdict": {
+    "status": "works",
+    "expected": {
+      "kind": "error",
+      "spans": true
+    },
+    "checks": {
+      "function_loaded": true,
+      "function_alive_at_end": true,
+      "load_errors": [],
+      "error_events": [
+        {
+          "exception": "Error: oh, hello there!",
+          "mechanism": "auto.function.serverless.gcp_http",
+          "handled": false,
+          "level": "error",
+          "transaction": "GET /",
+          "request": {
+            "url": "http://127.0.0.1:4744/",
+            "method": "GET",
+            "hasData": true,
+            "headers": {
+              "host": "127.0.0.1:4744",
+              "user-agent": "curl/8.7.1",
+              "accept": "*/*"
+            }
+          },
+          "user": {
+            "ip_address": "::ffff:127.0.0.1"
+          },
+          "context_keys": [
+            "trace",
+            "runtime",
+            "app",
+            "os",
+            "device",
+            "culture",
+            "cloud_resource"
+          ],
+          "cloud_resource": {},
+          "trace_id": "a07d618d9dd243daadd29e9d9a937058"
+        },
+        {
+          "exception": "Error: oh, hello there!",
+          "mechanism": "auto.function.serverless.gcp_http",
+          "handled": false,
+          "level": "error",
+          "transaction": "GET /some/path",
+          "request": {
+            "url": "http://127.0.0.1:4744/some/path?x=1",
+            "method": "GET",
+            "hasData": true,
+            "headers": {
+              "host": "127.0.0.1:4744",
+              "user-agent": "curl/8.7.1",
+              "accept": "*/*",
+              "sentry-trace": "12345678901234567890123456789012-1234567890123456-1",
+              "baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true"
+            }
+          },
+          "user": {
+            "ip_address": "::ffff:127.0.0.1"
+          },
+          "context_keys": [
+            "trace",
+            "runtime",
+            "app",
+            "os",
+            "device",
+            "culture",
+            "cloud_resource"
+          ],
+          "cloud_resource": {},
+          "trace_id": "12345678901234567890123456789012"
+        }
+      ],
+      "duplicate_error_events": [],
+      "sentinel_event": [
+        {
+          "exception": "undefined: sentinel",
+          "message": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "level": "info",
+          "context_keys": [
+            "trace",
+            "runtime",
+            "app",
+            "os",
+            "device",
+            "culture",
+            "cloud_resource"
+          ],
+          "cloud_resource": {},
+          "trace_id": "6993413d9653448685be26058d378fed"
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 5,
+      "segments": [
+        {
+          "name": "Serverless function execution",
+          "op": "function.gcp",
+          "origin": "auto.function.serverless.gcp_http",
+          "status": "error",
+          "status_code": 500,
+          "segment_name_source": "component",
+          "trace_lifecycle": "stream",
+          "faas": {
+            "faas.trigger": "http"
+          },
+          "cloud": {},
+          "gcp": {},
+          "http": {
+            "http.request.method": "GET",
+            "url.path": "/",
+            "http.response.status_code": 500,
+            "url.full": "http://127.0.0.1:4744/",
+            "http.request.header.host": "127.0.0.1:4744",
+            "http.request.header.user_agent": "curl/8.7.1",
+            "http.request.header.accept": "*/*"
+          }
+        },
+        {
+          "name": "GET",
+          "op": "http.server",
+          "origin": "auto.http.http_server",
+          "status": "error",
+          "status_code": 500,
+          "segment_name_source": "url",
+          "trace_lifecycle": "stream",
+          "faas": {},
+          "cloud": {},
+          "gcp": {},
+          "http": {
+            "url.full": "http://127.0.0.1:4744/",
+            "url.path": "/",
+            "http.request.method": "GET",
+            "url.scheme": "http",
+            "server.address": "127.0.0.1",
+            "http.request.header.host": "127.0.0.1:4744",
+            "http.request.header.user_agent": "curl/8.7.1",
+            "http.request.header.accept": "*/*",
+            "http.response.status_code": 500,
+            "http.response.status_text": "INTERNAL SERVER ERROR",
+            "server.port": 4744
+          }
+        },
+        {
+          "name": "Serverless function execution",
+          "op": "function.gcp",
+          "origin": "auto.function.serverless.gcp_http",
+          "status": "error",
+          "status_code": 500,
+          "segment_name_source": "component",
+          "trace_lifecycle": "stream",
+          "faas": {
+            "faas.trigger": "http"
+          },
+          "cloud": {},
+          "gcp": {},
+          "http": {
+            "http.request.method": "GET",
+            "url.path": "/some/path",
+            "http.response.status_code": 500,
+            "url.full": "http://127.0.0.1:4744/some/path?x=1",
+            "url.query": "x=1",
+            "http.request.header.host": "127.0.0.1:4744",
+            "http.request.header.user_agent": "curl/8.7.1",
+            "http.request.header.accept": "*/*",
+            "http.request.header.sentry_trace": "12345678901234567890123456789012-1234567890123456-1",
+            "http.request.header.baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true"
+          }
+        },
+        {
+          "name": "GET",
+          "op": "http.server",
+          "origin": "auto.http.http_server",
+          "status": "error",
+          "status_code": 500,
+          "segment_name_source": "url",
+          "trace_lifecycle": "stream",
+          "faas": {},
+          "cloud": {},
+          "gcp": {},
+          "http": {
+            "url.full": "http://127.0.0.1:4744/some/path?x=1",
+            "url.path": "/some/path",
+            "url.query": "x=1",
+            "http.request.method": "GET",
+            "url.scheme": "http",
+            "server.address": "127.0.0.1",
+            "http.request.header.host": "127.0.0.1:4744",
+            "http.request.header.user_agent": "curl/8.7.1",
+            "http.request.header.accept": "*/*",
+            "http.request.header.sentry_trace": "12345678901234567890123456789012-1234567890123456-1",
+            "http.request.header.baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true",
+            "http.response.status_code": 500,
+            "http.response.status_text": "INTERNAL SERVER ERROR",
+            "server.port": 4744
+          }
+        },
+        {
+          "name": "sentinel",
+          "op": "test",
+          "origin": "manual",
+          "status": "ok",
+          "segment_name_source": "custom",
+          "trace_lifecycle": "stream",
+          "faas": {},
+          "cloud": {},
+          "gcp": {},
+          "http": {}
+        }
+      ],
+      "function_segments": [
+        {
+          "name": "Serverless function execution",
+          "op": "function.gcp",
+          "origin": "auto.function.serverless.gcp_http",
+          "status": "error",
+          "status_code": 500,
+          "segment_name_source": "component",
+          "trace_lifecycle": "stream",
+          "faas": {
+            "faas.trigger": "http"
+          },
+          "cloud": {},
+          "gcp": {},
+          "http": {
+            "http.request.method": "GET",
+            "url.path": "/",
+            "http.response.status_code": 500,
+            "url.full": "http://127.0.0.1:4744/",
+            "http.request.header.host": "127.0.0.1:4744",
+            "http.request.header.user_agent": "curl/8.7.1",
+            "http.request.header.accept": "*/*"
+          }
+        },
+        {
+          "name": "Serverless function execution",
+          "op": "function.gcp",
+          "origin": "auto.function.serverless.gcp_http",
+          "status": "error",
+          "status_code": 500,
+          "segment_name_source": "component",
+          "trace_lifecycle": "stream",
+          "faas": {
+            "faas.trigger": "http"
+          },
+          "cloud": {},
+          "gcp": {},
+          "http": {
+            "http.request.method": "GET",
+            "url.path": "/some/path",
+            "http.response.status_code": 500,
+            "url.full": "http://127.0.0.1:4744/some/path?x=1",
+            "url.query": "x=1",
+            "http.request.header.host": "127.0.0.1:4744",
+            "http.request.header.user_agent": "curl/8.7.1",
+            "http.request.header.accept": "*/*",
+            "http.request.header.sentry_trace": "12345678901234567890123456789012-1234567890123456-1",
+            "http.request.header.baggage": "sentry-trace_id=12345678901234567890123456789012,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true"
+          }
+        }
+      ],
+      "sentinel_segment": 1,
+      "child_spans": [],
+      "manual_test_span": [],
+      "log_batches": 1,
+      "log_bodies": [
+        "info: User example action completed"
+      ],
+      "other_item_types": [],
+      "deprecation_output": [],
+      "domain_warning": []
+    }
+  }
+}

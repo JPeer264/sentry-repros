@@ -1,0 +1,493 @@
+{
+  "id": "QS-aws-lambda",
+  "variant": "manual-esm",
+  "status": "works",
+  "command": "LAMBDA_TASK_ROOT=$REPRO/quickstarts/aws-lambda AWS_LAMBDA_FUNCTION_NAME=qs-aws-lambda AWS_LAMBDA_FUNCTION_VERSION='$LATEST' AWS_LAMBDA_FUNCTION_MEMORY_SIZE=128 AWS_REGION=us-east-1 AWS_DEFAULT_REGION=us-east-1 AWS_EXECUTION_ENV=AWS_Lambda_nodejs22.x AWS_LAMBDA_LOG_GROUP_NAME=/aws/lambda/qs-aws-lambda AWS_LAMBDA_LOG_STREAM_NAME='2026/09/09/[$LATEST]0123456789abcdef' AWS_LAMBDA_INITIALIZATION_TYPE=on-demand _HANDLER=handler-esm-plain.handler NODE_OPTIONS=\"--import ./instrument.mjs\" timeout 60 node invoke.mjs",
+  "sdk": {
+    "name": "sentry.javascript.aws-serverless",
+    "version": "10.67.0"
+  },
+  "integrations": [
+    "EventFilters",
+    "FunctionToString",
+    "LinkedErrors",
+    "RequestData",
+    "NodeSystemError",
+    "ConversationId",
+    "Console",
+    "Http",
+    "NodeFetch",
+    "OnUncaughtException",
+    "OnUnhandledRejection",
+    "ContextLines",
+    "LocalVariablesAsync",
+    "Context",
+    "ChildProcess",
+    "WorkerThreads",
+    "ProcessSession",
+    "Modules",
+    "Express",
+    "Fastify",
+    "Hapi",
+    "Koa",
+    "Aws",
+    "AwsLambda",
+    "SpanStreaming"
+  ],
+  "integration_source": "debug output",
+  "runner_options_line": "tracesSampleRate=1 traceLifecycle=stream enableLogs=undefined",
+  "steps": [
+    {
+      "step": "preload",
+      "note": "=$REPRO/quickstarts/aws-lambda _HANDLER=$REPRO/quickstarts/aws-lambda/node_modules/@sentry/aws-serverless/build/npm/run-lambda-handler.handler SENTRY_ORIGINAL_HANDLER=handler-esm-plain.handler"
+    },
+    {
+      "step": "load handler",
+      "note": "$REPRO/quickstarts/aws-lambda/node_modules/@sentry/aws-serverless/build/npm/run-lambda-handler.mjs via import"
+    },
+    {
+      "step": "invoke",
+      "note": "{\"ok\":false,\"error\":\"Error: This is a test error\"}"
+    },
+    {
+      "step": "sentinel",
+      "note": "arrived"
+    }
+  ],
+  "console": {
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 95467, thread: main.",
+      "Sentry Logger [log]: Redirected lambda handler. {",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: Captured error event `This is a test error`",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "[invoke] outcome {\"ok\":false,\"error\":\"Error: This is a test error\"}",
+      "[invoke] integrations EventFilters FunctionToString LinkedErrors RequestData NodeSystemError ConversationId Console Http NodeFetch OnUncaughtException OnUnhandledRejection ContextLines LocalVariablesAsync Context ChildProcess WorkerThreads ProcessSession Modules Express Fastify Hapi Koa Aws AwsLambda SpanStreaming",
+      "Sentry Logger [log]: Captured error event `sentinel`"
+    ],
+    "all": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 95467, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: [instrumentation:@smithy/core, @smithy/smithy-client, @aws-sdk/smithy-client] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Aws",
+      "Sentry Logger [log]: Redirected lambda handler. {",
+      "  originalHandler: 'handler-esm-plain.handler',",
+      "  newHandler: '$REPRO/quickstarts/aws-lambda/node_modules/@sentry/aws-serverless/build/npm/run-lambda-handler.handler'",
+      "}",
+      "Sentry Logger [log]: Integration installed: AwsLambda",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "[invoke] LAMBDA_TASK_ROOT=$REPRO/quickstarts/aws-lambda _HANDLER=$REPRO/quickstarts/aws-lambda/node_modules/@sentry/aws-serverless/build/npm/run-lambda-handler.handler SENTRY_ORIGINAL_HANDLER=handler-esm-plain.handler",
+      "[invoke] loaded $REPRO/quickstarts/aws-lambda/node_modules/@sentry/aws-serverless/build/npm/run-lambda-handler.mjs via import",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: function.aws",
+      "  name: qs-aws-lambda",
+      "  ID: 8638ca359078e842",
+      "Sentry Logger [log]: Captured error event `This is a test error`",
+      "Sentry Logger [log]: [Tracing] Finishing \"function.aws\" root span \"qs-aws-lambda\" with ID 8638ca359078e842",
+      "Sentry Logger [log]: Not capturing exception because it's already been captured.",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace a35d28f9fc13445993a45c4fbe7882d8 with 1 spans",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "[invoke] outcome {\"ok\":false,\"error\":\"Error: This is a test error\"}",
+      "[invoke] sdk sentry.javascript.aws-serverless 10.67.0",
+      "[invoke] integrations EventFilters FunctionToString LinkedErrors RequestData NodeSystemError ConversationId Console Http NodeFetch OnUncaughtException OnUnhandledRejection ContextLines LocalVariablesAsync Context ChildProcess WorkerThreads ProcessSession Modules Express Fastify Hapi Koa Aws AwsLambda SpanStreaming",
+      "[invoke] options tracesSampleRate=1 traceLifecycle=stream enableLogs=undefined",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: sentinel",
+      "  name: sentinel",
+      "  ID: 9c5a9e23a45c1136",
+      "Sentry Logger [log]: [Tracing] Finishing \"sentinel\" root span \"sentinel\" with ID 9c5a9e23a45c1136",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 039325b49bda4b7b83661f8a8e95b49b with 1 spans",
+      "[invoke] sentinel sent",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send"
+    ]
+  },
+  "envelopes": {
+    "item_types": {
+      "span": 2,
+      "event": 2
+    },
+    "envelope_header": {
+      "sdk": {
+        "name": "sentry.javascript.aws-serverless",
+        "version": "10.67.0"
+      },
+      "has_trace_dsc": true
+    },
+    "events": [
+      {
+        "event_id": "6f61d189d15d4f6a84da0950eca8538c",
+        "level": "error",
+        "exception": "Error: This is a test error",
+        "mechanism": {
+          "type": "auto.function.aws_serverless.otel",
+          "handled": false
+        },
+        "has_stacktrace": true,
+        "trace": {
+          "span_id": "8638ca359078e842",
+          "trace_id": "a35d28f9fc13445993a45c4fbe7882d8"
+        },
+        "contexts_keys": [
+          "trace",
+          "aws.lambda",
+          "aws.cloudwatch.logs",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "aws_lambda_context": {
+          "aws_request_id": "84cd6a44-4590-495f-99e8-f30a90188c95",
+          "function_name": "qs-aws-lambda",
+          "function_version": "$LATEST",
+          "invoked_function_arn": "arn:aws:lambda:us-east-1:123456789012:function:qs-aws-lambda",
+          "execution_duration_in_millis": 0.34558300000000486,
+          "remaining_time_in_millis": 3000,
+          "sys.argv": [
+            "/opt/homebrew/Cellar/node/26.5.0_1/bin/node",
+            "$REPRO/quickstarts/aws-lambda/invoke.mjs"
+          ]
+        },
+        "aws_cloudwatch_context": {
+          "log_group": "/aws/lambda/qs-aws-lambda",
+          "log_stream": "2026/09/09/[$LATEST]0123456789abcdef",
+          "url": "https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/%2Faws%2Flambda%2Fqs-aws-lambda/log-events/2026%2F09%2F09%2F%5B%24LATEST%5D0123456789abcdef?filterPattern=\"84cd6a44-4590-495f-99e8-f30a90188c95\""
+        },
+        "cloud_resource_context": {
+          "cloud.provider": "aws",
+          "cloud.region": "us-east-1",
+          "cloud.platform": "AWS_Lambda_nodejs22.x"
+        },
+        "environment": "production",
+        "sdk": {
+          "name": "sentry.javascript.aws-serverless",
+          "version": "10.67.0",
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "LinkedErrors",
+            "RequestData",
+            "NodeSystemError",
+            "ConversationId",
+            "Console",
+            "Http",
+            "NodeFetch",
+            "OnUncaughtException",
+            "OnUnhandledRejection",
+            "ContextLines",
+            "LocalVariablesAsync",
+            "Context",
+            "ChildProcess",
+            "WorkerThreads",
+            "ProcessSession",
+            "Modules",
+            "Express",
+            "Fastify",
+            "Hapi",
+            "Koa",
+            "Aws",
+            "AwsLambda",
+            "SpanStreaming"
+          ]
+        },
+        "runtime": {
+          "name": "node",
+          "version": "v26.5.0"
+        }
+      },
+      {
+        "event_id": "a150282d66f64e11a2d414dacea1afa2",
+        "level": "info",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": {
+          "type": "generic",
+          "handled": true,
+          "synthetic": true
+        },
+        "has_stacktrace": true,
+        "trace": {
+          "trace_id": "039325b49bda4b7b83661f8a8e95b49b",
+          "span_id": "a36d8f9924f538f6"
+        },
+        "contexts_keys": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "cloud_resource_context": {
+          "cloud.provider": "aws",
+          "cloud.region": "us-east-1",
+          "cloud.platform": "AWS_Lambda_nodejs22.x"
+        },
+        "environment": "production",
+        "sdk": {
+          "name": "sentry.javascript.aws-serverless",
+          "version": "10.67.0",
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "LinkedErrors",
+            "RequestData",
+            "NodeSystemError",
+            "ConversationId",
+            "Console",
+            "Http",
+            "NodeFetch",
+            "OnUncaughtException",
+            "OnUnhandledRejection",
+            "ContextLines",
+            "LocalVariablesAsync",
+            "Context",
+            "ChildProcess",
+            "WorkerThreads",
+            "ProcessSession",
+            "Modules",
+            "Express",
+            "Fastify",
+            "Hapi",
+            "Koa",
+            "Aws",
+            "AwsLambda",
+            "SpanStreaming"
+          ]
+        },
+        "runtime": {
+          "name": "node",
+          "version": "v26.5.0"
+        }
+      }
+    ],
+    "spans": [
+      {
+        "name": "qs-aws-lambda",
+        "op": "function.aws",
+        "origin": "auto.aws_lambda",
+        "is_segment": true,
+        "segment_name": "qs-aws-lambda",
+        "segment_name_source": "component",
+        "status": "error",
+        "status_message": "This is a test error",
+        "kind": "server",
+        "parent_span_id": null,
+        "trace_id": "a35d28f9fc13445993a45c4fbe7882d8",
+        "attributes": {
+          "faas.execution": "84cd6a44-4590-495f-99e8-f30a90188c95",
+          "faas.id": "arn:aws:lambda:us-east-1:123456789012:function:qs-aws-lambda",
+          "cloud.account.id": "123456789012",
+          "cloud.provider": "aws",
+          "cloud.platform": "aws_lambda",
+          "faas.name": "qs-aws-lambda",
+          "faas.coldstart": true,
+          "url.full": "https://abc123.execute-api.us-east-1.amazonaws.com:443/hello?q=1",
+          "cloud.region": "us-east-1",
+          "aws.lambda.aws_request_id": "84cd6a44-4590-495f-99e8-f30a90188c95",
+          "aws.lambda.function_name": "qs-aws-lambda",
+          "aws.lambda.function_version": "$LATEST",
+          "aws.lambda.invoked_function_arn": "arn:aws:lambda:us-east-1:123456789012:function:qs-aws-lambda",
+          "aws.lambda.execution_duration_in_millis": 0.34558300000000486,
+          "aws.lambda.remaining_time_in_millis": 3000,
+          "aws.cloudwatch.logs.log_group": "/aws/lambda/qs-aws-lambda",
+          "aws.cloudwatch.logs.log_stream": "2026/09/09/[$LATEST]0123456789abcdef",
+          "aws.cloudwatch.logs.url": "https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/%2Faws%2Flambda%2Fqs-aws-lambda/log-events/2026%2F09%2F09%2F%5B%24LATEST%5D0123456789abcdef?filterPattern=\"84cd6a44-4590-495f-99e8-f30a90188c95\""
+        },
+        "all_attribute_keys": [
+          "sentry.status.message",
+          "sentry.origin",
+          "sentry.op",
+          "sentry.segment.name.source",
+          "sentry.sample_rate",
+          "sentry.kind",
+          "faas.execution",
+          "faas.id",
+          "cloud.account.id",
+          "cloud.provider",
+          "cloud.platform",
+          "faas.name",
+          "faas.coldstart",
+          "url.full",
+          "sentry.trace_lifecycle",
+          "sentry.segment.name",
+          "sentry.segment.id",
+          "sentry.sdk.name",
+          "sentry.sdk.version",
+          "sentry.environment",
+          "sentry.sdk.integrations",
+          "process.runtime.engine.name",
+          "process.runtime.engine.version",
+          "app.start_time",
+          "device.archs",
+          "device.boot_time",
+          "device.memory_size",
+          "device.processor_count",
+          "device.cpu_description",
+          "device.processor_frequency",
+          "culture.locale",
+          "culture.timezone",
+          "cloud.region",
+          "app.memory",
+          "app.free_memory",
+          "device.free_memory",
+          "aws.lambda.aws_request_id",
+          "aws.lambda.function_name",
+          "aws.lambda.function_version",
+          "aws.lambda.invoked_function_arn",
+          "aws.lambda.execution_duration_in_millis",
+          "aws.lambda.remaining_time_in_millis",
+          "aws.cloudwatch.logs.log_group",
+          "aws.cloudwatch.logs.log_stream",
+          "aws.cloudwatch.logs.url"
+        ]
+      },
+      {
+        "name": "sentinel",
+        "op": "sentinel",
+        "origin": "manual",
+        "is_segment": true,
+        "segment_name": "sentinel",
+        "segment_name_source": "custom",
+        "status": "ok",
+        "parent_span_id": null,
+        "trace_id": "039325b49bda4b7b83661f8a8e95b49b",
+        "attributes": {
+          "cloud.provider": "aws",
+          "cloud.region": "us-east-1",
+          "cloud.platform": "AWS_Lambda_nodejs22.x"
+        },
+        "all_attribute_keys": [
+          "sentry.origin",
+          "sentry.op",
+          "sentry.segment.name.source",
+          "sentry.sample_rate",
+          "sentry.trace_lifecycle",
+          "sentry.segment.name",
+          "sentry.segment.id",
+          "sentry.sdk.name",
+          "sentry.sdk.version",
+          "sentry.environment",
+          "sentry.sdk.integrations",
+          "process.runtime.engine.name",
+          "process.runtime.engine.version",
+          "app.start_time",
+          "device.archs",
+          "device.boot_time",
+          "device.memory_size",
+          "device.processor_count",
+          "device.cpu_description",
+          "device.processor_frequency",
+          "culture.locale",
+          "culture.timezone",
+          "cloud.provider",
+          "cloud.region",
+          "cloud.platform",
+          "os.name",
+          "os.version",
+          "os.kernel_version",
+          "os.build",
+          "app.memory",
+          "app.free_memory",
+          "device.free_memory"
+        ]
+      }
+    ],
+    "transactions": [],
+    "logs": []
+  },
+  "verdict": {
+    "runner_exit_code": 0,
+    "handler_loaded": true,
+    "handler_redirected_to_shim": true,
+    "invocation_outcome": {
+      "ok": false,
+      "error": "Error: This is a test error"
+    },
+    "error_events": 1,
+    "error_event_mechanisms": [
+      {
+        "type": "auto.function.aws_serverless.otel",
+        "handled": false
+      }
+    ],
+    "duplicate_error_events": false,
+    "error_event_has_request": [
+      false
+    ],
+    "error_event_has_aws_lambda_context": [
+      true
+    ],
+    "sentinel_event": 1,
+    "sentinel_state": "arrived",
+    "transaction_envelopes": 0,
+    "span_envelopes": 2,
+    "lambda_segments": [
+      {
+        "name": "qs-aws-lambda",
+        "op": "function.aws",
+        "status": "error",
+        "faas": {
+          "faas.execution": "84cd6a44-4590-495f-99e8-f30a90188c95",
+          "faas.id": "arn:aws:lambda:us-east-1:123456789012:function:qs-aws-lambda",
+          "faas.name": "qs-aws-lambda",
+          "faas.coldstart": true
+        },
+        "cloud": {
+          "cloud.account.id": "123456789012",
+          "cloud.provider": "aws",
+          "cloud.platform": "aws_lambda",
+          "cloud.region": "us-east-1"
+        },
+        "url": "https://abc123.execute-api.us-east-1.amazonaws.com:443/hello?q=1"
+      }
+    ],
+    "log_envelopes": 0,
+    "log_bodies": [],
+    "other_item_types": [],
+    "require_banner": [],
+    "deprecation_output": []
+  }
+}

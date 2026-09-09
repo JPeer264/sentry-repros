@@ -1,0 +1,89 @@
+{
+  "id": "QS-effect",
+  "variant": "runpromise",
+  "command": "node verify-runpromise.ts",
+  "effect_version": "3.22.2",
+  "effect_platform_node_version": "0.108.2",
+  "sdk": {},
+  "sdk_packages": [],
+  "console": {
+    "line_count": 30,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 3712, thread: main.",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Error: Sentry Test Error",
+      "  name: '(FiberFailure) Error',",
+      "    error: Error: Sentry Test Error"
+    ],
+    "integrations": [
+      "SpanStreaming"
+    ],
+    "integration_count": 1,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 3712, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "node:internal/process/promises:324",
+      "    triggerUncaughtException(err, true /* fromPromise */);",
+      "    ^",
+      "Error: Sentry Test Error",
+      "    at file://$REPRO/quickstarts/effect/verify-runpromise.ts:7:22 {",
+      "  name: '(FiberFailure) Error',",
+      "  Symbol(effect/Runtime/FiberFailure): Symbol(effect/Runtime/FiberFailure),",
+      "  Symbol(effect/Runtime/FiberFailure/Cause): {",
+      "    _tag: 'Fail',",
+      "    error: Error: Sentry Test Error",
+      "        at file://$REPRO/quickstarts/effect/verify-runpromise.ts:7:22",
+      "        at Generator.next (<anonymous>)",
+      "        at file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:122:67",
+      "        at effect_internal_function (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/Utils.js:333:12)",
+      "        at Object.Iterator (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:122:21)",
+      "        at FiberRuntime.Iterator (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:1108:46)",
+      "        at file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:1151:31",
+      "        at Object.context (file://$REPRO/quickstarts/effect/node_modules/@sentry/effect/build/esm/tracer.js:149:16)",
+      "        at FiberRuntime.runLoop (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:1142:34)",
+      "        at FiberRuntime.evaluateEffect (file://$REPRO/quickstarts/effect/node_modules/effect/dist/esm/internal/fiberRuntime.js:746:27)",
+      "  }",
+      "}",
+      "Node.js v26.5.0"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 0,
+      "span": 0,
+      "transaction": 0,
+      "log": 0,
+      "trace_metric": 0
+    },
+    "items": []
+  },
+  "spansRaw": [],
+  "verdict": {
+    "status": "broken",
+    "checks": {
+      "app_exit_code": 1,
+      "error_event_sentry_test_error": [],
+      "any_error_event": [],
+      "message_events": [],
+      "sentinel_event": [],
+      "sentinel_span": [],
+      "test_transaction_span": [],
+      "all_spans": [],
+      "transaction_envelopes": 0,
+      "span_envelopes": 0,
+      "log_batches": 0,
+      "log_items": [],
+      "metric_items": [],
+      "other_item_types": [],
+      "deprecation_output": [],
+      "cause_printed_to_console": 2
+    }
+  }
+}

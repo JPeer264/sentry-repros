@@ -28,7 +28,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-elysia](elysia/) | node framework | elysia | npm, manual setup | done | Node tab only (Bun and Deno are in the cells); eight variants |
 | QS-nitro | node framework | nitro | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-effect | node framework | effect | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
-| QS-mastra | node framework | mastra | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
+| [QS-mastra](mastra/) | node framework | mastra | npm, manual setup | done | Node 26.5.0 with the develop tarballs and a mock model endpoint; six variants across the exporter shapes and the built-in integration |
 | QS-nextjs | meta-framework | nextjs | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-nuxt | meta-framework | nuxt | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-sveltekit | meta-framework | sveltekit | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 19 done, 17 planned, 4 not measurable.
+Totals: 20 done, 16 planned, 4 not measurable.
