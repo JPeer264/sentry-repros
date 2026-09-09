@@ -6,7 +6,11 @@ by={i['id']:i for i in items}
 for n,i in enumerate(items,1): i['n']=n
 def slug(h): return re.sub(r'[^a-z0-9_\-]','',h.lower().replace(' ','-'))
 def link(i): return '[%s](#%s)' % (i['title'], slug('%d. %s' % (i['n'], i['title'])))
-OWNER={'X2':'owned by JS-2599','DOC-R20':'owned by SDK-1351','DOC-C1':'v11-gated, under SDK-1296','DOC-C4':'v11-gated, under SDK-1296','DOC-C5':'v11-gated, under SDK-1296','DOC-C3':'v11-gated, under SDK-1296'}
+OWNER={'X2':'owned by JS-2599','DOC-R20':'owned by SDK-1351; SDK-1471 edits the same Bun includes','DOC-C1':'v11-gated, under SDK-1296','DOC-C4':'v11-gated, under SDK-1296','DOC-C5':'v11-gated, under SDK-1296; the honoIntegration page removal overlaps SDK-1482','DOC-C3':'v11-gated, under SDK-1296',
+ 'DOC-Q86':'duplicate of SDK-1483; the seven-snippet list belongs there','DOC-Q92':'duplicate of SDK-1485; the getting-started snippets belong there','DOC-Q111':'import moves owned by SDK-1486; the instrument path fix stays',
+ 'DOC-Q108':'duplicate of SDK-1484','DOC-Q107':'same rewrite as SDK-1484','DOC-Q29':'duplicate of SDK-1482','DOC-Q38':'duplicate of SDK-1482','DOC-Q37':'same page as SDK-1482, which does not list the @sentry/fastify import','DOC-Q45':'qualifies SDK-1482 for the direct-import case',
+ 'DOC-Q62':'duplicate of SDK-1461','DOC-Q39':'overlaps SDK-1465, whose range still leaves Fastify 5 out','DOC-Q97':'overlaps SDK-1487','DOC-Q100':'Astro 4 minimum owned by SDK-1464','DOC-Q68':'attribute renames owned by SDK-1480',
+ 'DOC-B2':'inboundFilters row overlaps SDK-1481','DOC-D2':'inboundFilters row overlaps SDK-1481','X3':'inboundFilters and honoIntegration rows overlap SDK-1481 and SDK-1482','DOC-R8':'overlaps SDK-1481','DOC-R7':'overlaps SDK-1470'}
 PLAN=[
  ('Every runtime guide', [
    ('must','DOC-R1','the stream-mode includes call static the default'),
