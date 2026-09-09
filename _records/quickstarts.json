@@ -204,5 +204,33 @@
    "component tracking verbatim": "broken (missing imports)",
    "wizard install and verify": "not run"
   }
+ },
+ {
+  "id": "QS-fastify",
+  "path": "quickstarts/fastify",
+  "runtime": "Node 26.5.0, develop 03aaf42455; fastify 5.12.3 and 4.29.1",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's --import, CommonJS, first-line import and NODE_OPTIONS paths deliver route-named segments with hook and handler spans, auto.function.fastify error events and logs, on Fastify 4 and 5. Defects: the ESM tab's extensionless import never starts the app; the error handler page imports from the nonexistent @sentry/fastify and its options object is ignored by the deprecated no-op; the integration page's supported range excludes Fastify 5, names an OpenTelemetry package the SDK does not use and documents no error capture, option or span tree; the late-initialization page rests on the removed preload entry; the verify text says transactions; the capture-errors include renders nothing.",
+  "sdk": {
+   "name": "sentry.javascript.node",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "--import (fastify 5)": "works",
+   "CommonJS require first line": "works",
+   "ESM tab verbatim (import \"./instrument\")": "broken (ERR_MODULE_NOT_FOUND)",
+   "first-line import \"./instrument.mjs\"": "works",
+   "NODE_OPTIONS --import": "works",
+   "--require": "works with the unsupported banner",
+   "without setupFastifyErrorHandler": "works (same events)",
+   "setupFastifyErrorHandler(app, { shouldHandleError })": "partial (options ignored)",
+   "fastifyIntegration({ shouldHandleError })": "works",
+   "error handler page verbatim": "broken (@sentry/fastify)",
+   "late init (--import @sentry/node/preload)": "broken (subpath not exported)",
+   "fastify 4": "works (404 captured, FSTDEP017 once)",
+   "fastify 4 without the handler": "works"
+  }
  }
 ]
