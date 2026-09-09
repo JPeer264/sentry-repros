@@ -6,10 +6,9 @@ by={i['id']:i for i in items}
 for n,i in enumerate(items,1): i['n']=n
 def slug(h): return re.sub(r'[^a-z0-9_\-]','',h.lower().replace(' ','-'))
 def link(i): return '[%s](#%s)' % (i['title'], slug('%d. %s' % (i['n'], i['title'])))
-OWNER={'X2':'owned by JS-2599','DOC-R20':'owned by SDK-1351; SDK-1471 edits the same Bun includes','DOC-C1':'v11-gated, under SDK-1296','DOC-C4':'v11-gated, under SDK-1296','DOC-C5':'v11-gated, under SDK-1296; the honoIntegration page removal overlaps SDK-1482','DOC-C3':'v11-gated, under SDK-1296',
- 'DOC-Q86':'duplicate of SDK-1483; the seven-snippet list belongs there','DOC-Q92':'duplicate of SDK-1485; the getting-started snippets belong there','DOC-Q111':'import moves owned by SDK-1486; the instrument path fix stays',
- 'DOC-Q108':'duplicate of SDK-1484','DOC-Q107':'same rewrite as SDK-1484','DOC-Q29':'duplicate of SDK-1482','DOC-Q38':'duplicate of SDK-1482','DOC-Q37':'same page as SDK-1482, which does not list the @sentry/fastify import','DOC-Q45':'qualifies SDK-1482 for the direct-import case',
- 'DOC-Q62':'duplicate of SDK-1461','DOC-Q39':'overlaps SDK-1465, whose range still leaves Fastify 5 out','DOC-Q97':'overlaps SDK-1487','DOC-Q100':'Astro 4 minimum owned by SDK-1464','DOC-Q68':'attribute renames owned by SDK-1480',
+OWNER={'X2':'owned by JS-2599','DOC-R20':'owned by SDK-1351; SDK-1471 edits the same Bun includes','DOC-C1':'v11-gated, under SDK-1296','DOC-C4':'v11-gated, under SDK-1296','DOC-C5':'v11-gated, under SDK-1296; the honoIntegration page removal is also in SDK-1482','DOC-C3':'v11-gated, under SDK-1296',
+ 'DOC-Q92':'build page in SDK-1485','DOC-Q111':'Vite imports in SDK-1486','DOC-Q108':'guide pages in SDK-1484','DOC-Q107':'same section as the SDK-1484 rewrite','DOC-Q37':'same page as SDK-1482, which does not list the @sentry/fastify import','DOC-Q45':'qualifies SDK-1482 for the direct-import case',
+ 'DOC-Q39':'overlaps SDK-1465, whose range still leaves Fastify 5 out','DOC-Q97':'overlaps SDK-1487','DOC-Q100':'Astro 4 minimum in SDK-1464','DOC-Q68':'three renames in SDK-1480',
  'DOC-B2':'inboundFilters row overlaps SDK-1481','DOC-D2':'inboundFilters row overlaps SDK-1481','X3':'inboundFilters and honoIntegration rows overlap SDK-1481 and SDK-1482','DOC-R8':'overlaps SDK-1481','DOC-R7':'overlaps SDK-1470'}
 PLAN=[
  ('Every runtime guide', [
@@ -24,13 +23,12 @@ PLAN=[
    ('later','DOC-R8','v7 migration tables name removed integrations'),
  ]),
  ('Next.js', [
-   ('must','DOC-Q86','every next.config snippet imports withSentryConfig from an entry that no longer exports it'),
    ('must','DOC-Q87','the Pages Router page has no working client init under Turbopack and no instrumentation step'),
    ('should','DOC-Q88','the pages misattribute which errors the error components capture'),
    ('later','DOC-Q89','SaaS-only tunnelRoute, deleted source maps, an undeclared function, a 10% verify sample, plugin telemetry'),
  ]),
  ('SvelteKit', [
-   ('must','DOC-Q92','every vite.config snippet imports sentrySvelteKit from an entry that no longer exports it'),
+   ('must','DOC-Q92','the getting-started include imports sentrySvelteKit from an entry that no longer exports it, in three snippets SDK-1485 does not list'),
    ('should','DOC-Q93','the custom handleErrorWithSentry handler marks every server error handled'),
    ('later','DOC-Q94','unknown-route spans, segment status on 500, an outdated load rationale, a stale Vite prerequisite'),
  ]),
@@ -42,7 +40,7 @@ PLAN=[
  ]),
  ('Astro', [
    ('should','DOC-Q99','the verify endpoint kills the build on the default static output'),
-   ('later','DOC-Q100','the trackClientIp default, Astro 4 as the minimum, view-transition naming, the delete glob, a missing token'),
+   ('later','DOC-Q100','the trackClientIp default, view-transition naming, the delete glob, a missing token'),
  ]),
  ('TanStack Start', [
    ('must','DOC-Q101','the build and start commands assume a Nitro output the printed config never produces'),
@@ -55,7 +53,7 @@ PLAN=[
    ('later','DOC-Q106','header-based continuation, method-named server spans, transactions, a phantom build log line'),
  ]),
  ('React Router', [
-   ('must','DOC-Q111','three snippets do not build: root-entry imports and an unresolvable instrument path'),
+   ('must','DOC-Q111','entry.server imports the instrument file from the wrong directory; the two Vite imports are SDK-1486'),
    ('should','DOC-Q112','the start script answers 500 without NODE_ENV, and the Node-range expandable is inverted'),
    ('later','DOC-Q113','transactions wording, captured 404s, a duplicate client event, unparameterized document requests'),
  ]),
@@ -103,7 +101,7 @@ PLAN=[
  ]),
  ('Ember', [
    ('must','DOC-Q107','the whole-file app.js snippet blanks a new app'),
-   ('should','DOC-Q108','the tracing pages document options that do not exist and omit the initializer tracing needs'),
+   ('should','DOC-Q108','the three tracing includes contradict the initializer setup SDK-1484 documents'),
    ('later','DOC-Q109','a broken anchor, an empty instrumentation page, a .gjs template, no Glimmer component spans, no release'),
  ]),
  ('Gatsby', [
@@ -146,7 +144,7 @@ PLAN=[
  ]),
  ('Mastra', [
    ('should','DOC-Q67','the built-in mastraIntegration is undocumented and combining it with the exporter duplicates every span'),
-   ('later','DOC-Q68','wrong attribute names, unnamed defaults and the trace shape on the Mastra pages'),
+   ('later','DOC-Q68','attribute names beyond the SDK-1480 renames, unnamed defaults and the trace shape on the Mastra pages'),
  ]),
  ('Elysia', [
    ('should','DOC-Q64','the verify route is added after listen() and is never served'),
@@ -160,11 +158,9 @@ PLAN=[
    ('must','DOC-Q26','the late-initialization page rests on the removed @sentry/node/preload entry'),
    ('should','DOC-Q27','the Express and Connect async verify snippets hang on Express 4 and Connect 3'),
    ('should','DOC-Q28','the esm-without-import page says a first-line import cannot instrument frameworks; Express, Fastify, Hapi and Hono are'),
-   ('later','DOC-Q29','the Express, Fastify, Koa and Hapi guides teach deprecated error handler calls'),
    ('later','DOC-Q30','no expressIntegration page'),
    ('later','DOC-Q31','empty, orphaned and unreachable includes on the Express, Fastify, Koa and Connect guides'),
    ('must','DOC-Q37','the Fastify error handler page imports from a package that does not exist'),
-   ('should','DOC-Q38','the Fastify error handler options object is silently ignored'),
    ('should','DOC-Q39','the Fastify supported versions exclude 5'),
    ('later','DOC-Q40','the Fastify integration page names the wrong mechanism and no behaviour'),
    ('must','DOC-Q44','the Koa verify snippet uses a router the guide never creates'),
@@ -180,7 +176,6 @@ PLAN=[
    ('must','DOC-Q58','the NestJS ESM start script is not a runnable command'),
    ('should','DOC-Q59','no NestJS error reaches Sentry without SentryGlobalFilter; the guide says otherwise'),
    ('should','DOC-Q60','the Nest integration page names the wrong mechanism, enablement rule and Nest 4'),
-   ('should','DOC-Q62','the Node prerequisites include says Node 18 while the v11 packages declare 20.19 and later'),
    ('later','DOC-Q61','NestJS details: the module adds nothing observable, transactions wording, doubled Express spans'),
  ]),
  ('Bun', [
@@ -224,7 +219,7 @@ PLAN=[
 ]
 TIER={'must':'Must land with v11','should':'Should land with v11','later':'After the release'}
 out=['# v11 docs minimum: getting started and manual setup','',
- 'The docs changes a new user hits on the way from install to the first event, on Node, Bun, Deno, Cloudflare Workers and in the browser, plus the framework pages that contradict a verified run. Every line links to its draft in [P0](#file-p0-md), [P1](#file-p1-md) or [P2](#file-p2-md). Tiers: **must** blocks or misleads the first setup on develop; **should** is wrong or incomplete for something most users do next; **later** is hygiene. Items owned by a Linear ticket are marked; they still belong in the release, only filed elsewhere.','']
+ 'The docs changes a new user hits on the way from install to the first event, on Node, Bun, Deno, Cloudflare Workers and in the browser, plus the framework pages that contradict a verified run. Every line links to its draft in [P0](#file-p0-md), [P1](#file-p1-md) or [P2](#file-p2-md). Tiers: **must** blocks or misleads the first setup on develop; **should** is wrong or incomplete for something most users do next; **later** is hygiene. Items owned by a Linear ticket are marked; they still belong in the release, only filed elsewhere. Four findings (DOC-Q29, DOC-Q38, DOC-Q62, DOC-Q86) are covered by SDK-1482, SDK-1461 and SDK-1483 and are not listed.','']
 counts={'must':0,'should':0,'later':0}
 for group, rows in PLAN:
     out+=['## %s' % group,'']

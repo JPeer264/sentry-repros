@@ -1,0 +1,17 @@
+Docs changes for the Ember guide that a new user hits between install and the first event on v11, from the runtime docs audit (develop `03aaf42455` and `6f2da7483d`, docs `aebda0ee4`). Each item links to its issue draft in the secret gist (https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21); the reproductions are [`quickstarts/ember/`](<https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/ember>) in the audit repository.
+
+## Must land
+
+- [ ] **P0** · DOC-Q107 · The whole-file app.js snippet blanks a new app
+  `guides/ember/index.mdx:60-105` tells the reader to add the snippet to `app/app.js`, and the snippet is a whole file with `Resolver = Resolver` and an imported but never called `loadInitializers`. Used as the file on an ember-cli 7.2.0 app the page renders nothing: `TypeError: Cannot read properties of undefined (reading 'entries')` from `buildRegistry`, empty body, and Sentry captures its own host app's boot failure. The generated `app.js` uses `Resolver.withModules(compatModules)` and calls `loadInitializers`; with only the import and `Sentry.init` added above the class, the verify error, the example span and replay arrive.
+  **Change:** Show only the two additions (the import and `Sentry.init` above the class) and say to keep the generated `app.js`.
+  Note: same section as the SDK-1484 rewrite.
+  Draft: [Show only the two additions to app.js on the Ember guide instead of a whole file](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#25-show-only-the-two-additions-to-appjs-on-the-ember-guide-instead-of-a-whole-file>)
+
+## Should land
+
+- [ ] **P1** · DOC-Q108 · The three tracing includes contradict the initializer setup SDK-1484 documents
+  `platform-includes/performance/enable-tracing/javascript.ember.mdx:1` says tracing is enabled by default and sideloaded as a chunk, `enable-automatic-instrumentation/javascript.ember.mdx:1-21` passes tracing options through a `browserTracingOptions` init option, and `enable-stream-mode/javascript.ember.mdx:5-27` speaks of transactions and of opting in to stream mode with `spanStreamingIntegration()`. Neither the v2 addon's declarations nor the browser options have `browserTracingOptions`. With the guide's init (`tracesSampleRate: 1.0`) no BrowserTracing integration is installed: no pageload or navigation span, no trace headers on the outgoing fetch, and the route instrumentation spans are dropped as `no_parent_span`. Tracing works after adding `app/instance-initializers/sentry-performance.js` that calls `instrumentAppInstancePerformance(appInstance, {...})`: route-named pageload and navigation segments (`route:user` with `url.template /users/:user_id`), router and hook spans, runloop tasks, web vitals, and propagated fetches; every root arrives as a span item and the client installs SpanStreaming by itself. Linear SDK-1484 rewrites `guides/ember/index.mdx` and `ember-options.mdx` around that initializer and its options; the three includes are not in its page list.
+  **Change:** Replace the enabled-by-default claim and the `browserTracingOptions` snippet with the instance-initializer recipe SDK-1484 documents, state that tracing is opt-in through that initializer, and describe segments with stream as the default.
+  Note: guide pages in SDK-1484.
+  Draft: [Rewrite the Ember tracing includes around the instance initializer](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#147-rewrite-the-ember-tracing-includes-around-the-instance-initializer>)

@@ -33,6 +33,12 @@ def to_md(fragment):
     t=re.sub(r'[ \t]+\n','\n',t); t=re.sub(r'\n{3,}','\n\n',t); return t.strip()
 OWNED={'X2':'owned by Linear JS-2599 (v11 migration guide for docs); do not file separately','DOC-R20':'owned by Linear SDK-1351 (removal of the custom OpenTelemetry setup page); do not file separately',
        'DOC-C1':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C2':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C3':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C4':'v11-gated; file as a sub-issue of Linear SDK-1296','DOC-C5':'v11-gated; file as a sub-issue of Linear SDK-1296'}
+NOTES={'DOC-Q92':'the same import on the build page is Linear SDK-1485; this issue covers the getting-started include only','DOC-Q111':'the two Vite plugin imports on this page are Linear SDK-1486; this issue covers the instrument path only',
+       'DOC-Q108':'the guide and ember-options pages are rewritten by Linear SDK-1484; this issue covers the three tracing includes','DOC-Q100':'the Astro 4 minimum is Linear SDK-1464','DOC-Q68':'the gen_ai.system, gen_ai.tool.input and gen_ai.tool.output renames are Linear SDK-1480',
+       'DOC-Q37':'Linear SDK-1482 rewrites this page and does not mention the import','DOC-Q45':'qualifies Linear SDK-1482, which drops the setupKoaErrorHandler call everywhere','DOC-Q39':'Linear SDK-1465 sets the range to ^3.21.0 || ^4.0.0 on the same line and leaves Fastify 5 out',
+       'DOC-Q97':'Linear SDK-1487 rewrites the same lines and does not record that a throwing action gets no fields','DOC-Q107':'Linear SDK-1484 rewrites the same setup section',
+       'DOC-B2':'the InboundFilters rename in the same table is Linear SDK-1481','DOC-D2':'the InboundFilters rename in the same table is Linear SDK-1481','X3':'the InboundFilters rename and the honoIntegration removal in the same table are Linear SDK-1481 and SDK-1482','DOC-R8':'the InboundFilters rename is Linear SDK-1481','DOC-R7':'the new interoperability page is Linear SDK-1470',
+       'DOC-R20':'Linear SDK-1471 edits the same Bun includes and should drop them instead','DOC-C5':'the honoIntegration page removal is also in Linear SDK-1482'}
 PAIRS={'DOC-F11':'DOC-F28','DOC-F28':'DOC-F11','DOC-F13':'DOC-F30','DOC-F30':'DOC-F13','DOC-F19':'DOC-F36','DOC-F36':'DOC-F19'}
 items=[]
 for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="issue">(.*?)</details></div>', doc, re.S):
@@ -50,7 +56,8 @@ for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="iss
     if m2:
         fw,rt,v=m2.groups(); rt2={'Cloudflare':'Cloudflare Workers'}.get(rt,rt)
         heading={'no':'No page documents %s on %s','wrong':'The page for %s on %s contradicts the verified run','partial':'The page for %s on %s misses the wiring or the limits','yes':'The page for %s on %s is correct'}[v] % (fw,rt2)
-    items.append(dict(id=hid,prio=prio,heading=heading,type=typ,title=title,body=body))
+    sm=re.search(r'Source: runtime docs audit, item ([^<]*)',issue); source=H.unescape(sm.group(1)).strip() if sm else ''
+    items.append(dict(id=hid,prio=prio,heading=heading,type=typ,title=title,body=body,source=source))
 P0_ORDER=['DOC-Q7','DOC-Q12','DOC-Q19','DOC-Q20','DOC-Q25','DOC-Q26','DOC-Q32','DOC-Q37','DOC-Q41','DOC-Q44','DOC-Q48','DOC-Q52','DOC-Q57','DOC-Q58','DOC-Q69','DOC-Q71','DOC-Q75','DOC-Q78','DOC-Q83','DOC-Q86','DOC-Q87','DOC-Q92','DOC-Q95','DOC-Q101','DOC-Q103','DOC-Q107','DOC-Q111','DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
 for pos,i in enumerate(items): i['pos']=pos
 def key(i): return (['P0','P1','P2'].index(i['prio']), P0_ORDER.index(i['id']) if i['id'] in P0_ORDER else 99, i['pos'])
@@ -59,6 +66,7 @@ FOOT='\n\n---\n\n_From the runtime docs audit of September 2026, item %s, see th
 def notes(i):
     n=[]
     if i['id'] in OWNED: n.append('**Note.** '+OWNED[i['id']]+'.')
+    if i['id'] in NOTES: n.append('**Note.** '+NOTES[i['id']]+'.')
     if i['id'] in PAIRS: n.append('**Note.** Touches the same docs file as %s; the two can be filed as one issue.' % PAIRS[i['id']])
     return ('\n\n'.join(n)+'\n\n') if n else ''
 sh=['#!/usr/bin/env bash','# Files the docs issues in getsentry/sentry-docs. Not executed by the audit. Items marked as owned by Linear are commented out.','set -euo pipefail','cd "$(dirname "$0")"','']
@@ -87,9 +95,9 @@ for p in ('P0','P1','P2'):
         it=re.search(r'\*\*Audit item:\*\* (\S+) · \*\*Type:\*\* (\S+)', sec)
         toc.append('- [%s](#%s) · %s · %s' % (h, slug(h), it.group(1), it.group(2)))
     open(os.path.join(GIST,'%s.md' % p),'w').write(head+'\n'.join(toc)+'\n\n'+'\n\n'.join(gist[p])+'\n')
-gidx=['# Runtime docs audit, proposed issues for sentry-docs','','Ninety-six proposed GitHub issues for `getsentry/sentry-docs` from the audit of the Bun, Deno and Cloudflare guides against the shipped SDK (develop at `6f2da7483d`, September 2026). One file per priority; within P0 the order is the suggested filing order.','','| Priority | Meaning | Drafts |','| --- | --- | --- |']
+gidx=['# Runtime docs audit, proposed issues for sentry-docs','','%d proposed GitHub issues for `getsentry/sentry-docs` from the audit of the runtime and framework guides against the shipped SDK (develop at `6f2da7483d` and `03aaf42455`, September 2026). One file per priority; within P0 the order is the suggested filing order.' % len(items),'','| Priority | Meaning | Drafts |','| --- | --- | --- |']
 for p in ('P0','P1','P2'): gidx.append('| [%s](#file-%s-md) | %s | %d |' % (p, p.lower(), MEAN[p], len(gist[p])))
-gidx+=['','**Start with [01-V11-CHECKLIST.md](#file-01-v11-checklist-md):** the getting-started and manual-setup changes that must land with v11, grouped by runtime, each linked to its draft.','','Reproductions, report pages and the same drafts as individual body files: %s' % BASE.replace('/blob/','/tree/'),'','Section 7 (DOC-Q1 to DOC-Q6) comes from the getting-started paths run on 2026-09-08. Seven drafts carry a note: X2 and DOC-R20 are owned by Linear tickets already in progress, and DOC-C1 to DOC-C5 are v11-gated and belong under the v11 docs umbrella. Three pairs touch the same docs file and can be filed as one issue each: DOC-F11 with DOC-F28, DOC-F13 with DOC-F30, DOC-F19 with DOC-F36.','']
+gidx+=['','**Start with [01-V11-CHECKLIST.md](#file-01-v11-checklist-md):** the getting-started and manual-setup changes that must land with v11, grouped by runtime, each linked to its draft.','','Reproductions, report pages and the same drafts as individual body files: %s' % BASE.replace('/blob/','/tree/'),'','Section 7 (DOC-Q1 to DOC-Q113) comes from the getting-started and manual-setup runs of 2026-09-08 and 2026-09-09. X2 and DOC-R20 are owned by Linear tickets already in progress, DOC-C1 to DOC-C5 are v11-gated and belong under the v11 docs umbrella, and %d drafts carry a note on a Linear ticket under SDK-1429 that touches the same lines. Four audit findings are covered by those tickets and have no draft: DOC-Q29 and DOC-Q38 by SDK-1482, DOC-Q62 by SDK-1461, DOC-Q86 by SDK-1483. Three pairs touch the same docs file and can be filed as one issue each: DOC-F11 with DOC-F28, DOC-F13 with DOC-F30, DOC-F19 with DOC-F36.' % len(NOTES),'']
 open(os.path.join(GIST,'README.md'),'w').write('\n'.join(gidx)+'\n')
 from collections import Counter
 print(len(items),'drafts', dict(Counter(i['prio'] for i in items)), '| gist files:', sorted(os.listdir(GIST)))

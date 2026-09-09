@@ -1,0 +1,16 @@
+Docs changes for the React Router guide that a new user hits between install and the first event on v11, from the runtime docs audit (develop `03aaf42455` and `6f2da7483d`, docs `aebda0ee4`). Each item links to its issue draft in the secret gist (https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21); the reproductions are [`quickstarts/react-router/`](<https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/react-router>) in the audit repository.
+
+## Must land
+
+- [ ] **P0** · DOC-Q111 · entry.server imports the instrument file from the wrong directory; the two Vite imports are SDK-1486
+  `guides/react-router/manual-setup.mdx:423` adds `import './instrument.server';` at the top of `app/entry.server.tsx` while `:203` created the file in the project root: the build fails with `Could not resolve "./instrument.server" from "app/entry.server.tsx"`. The two other build failures on the page, `sentryReactRouter` and `SentryReactRouterBuildOptions` at `:455` and `sentryOnBuildEnd` at `:509` imported from a root that no longer exports them, are Linear SDK-1486, which moves them to `@sentry/react-router/vite`. With those moves, this fix and `NODE_ENV=production` the page works end to end: injected meta tags continued by the pageload, route-named server segments with function, Express and fetch children, loader and action errors, sessions, replay, the feedback widget.
+  **Change:** Print `import '../instrument.server';` or place the file next to `entry.server.tsx`. The `+` diff marker at `:516` also sits after the indentation and renders as a unary plus.
+  Note: Vite imports in SDK-1486.
+  Draft: [Fix the instrument import path in the React Router entry.server snippet](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#26-fix-the-instrument-import-path-in-the-react-router-entryserver-snippet>)
+
+## Should land
+
+- [ ] **P1** · DOC-Q112 · The start script answers 500 without NODE_ENV, and the Node-range expandable is inverted
+  `guides/react-router/manual-setup.mdx:401` prints `"start": "NODE_OPTIONS='--import ./instrument.server.mjs' react-router-serve ./build/server/index.js"`. With `NODE_ENV` unset, React 19.2.8 with @react-router/serve 7.18.3 answers every request with 500 (`dispatcher.getOwner is not a function`, the development `react` paired with the production `react-dom/server`, because the CLI requires React before setting the variable); the same happens without Sentry, and with `NODE_ENV=production` everything works. The server SDK captured the failures through `handleError`. `:186-197` say the OpenTelemetry-based auto-instrumentation is supported only on Node 20 below 20.19 and Node 22 below 22.12; on Node 26.5 the `--import` run installed 48 integrations with Express and fetch spans, and the package's engines field requires 20.19 and 22.12 or later, the opposite of the expandable.
+  **Change:** Prefix the start script with `NODE_ENV=production` and say why, and remove the expandable or restate the range from the engines field.
+  Draft: [Prefix the React Router start script with NODE_ENV=production and fix the Node-range expandable](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#148-prefix-the-react-router-start-script-with-node_envproduction-and-fix-the-node-range-expandable>)
