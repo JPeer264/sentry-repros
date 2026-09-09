@@ -477,5 +477,110 @@
    "built-in mastraIntegration, no exporter": "works (tool spans doubled)",
    "exporter plus Sentry.init": "partial (duplicate spans, double init)"
   }
+ },
+ {
+  "id": "QS-gcp-functions",
+  "path": "quickstarts/gcp-functions",
+  "runtime": "Node 26.5.0, develop 03aaf42455; @google-cloud/functions-framework 4.0.0 locally",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The HTTP tabs work: errors with request data, a function.gcp segment with the test span, logs. Defects: the Background tabs call wrapBackgroundFunction and the instrumentation page calls pgIntegration and ioredisIntegration, none of which exist; callback-style handlers lose the function span; HTTP functions split into two traces; no local run step and no faas.name locally; no logs onboarding option; export names drift between steps.",
+  "sdk": {
+   "name": "sentry.javascript.google-cloud-serverless",
+   "version": "10.67.0",
+   "integrations": 26
+  },
+  "variants": {
+   "HTTP config": "works",
+   "HTTP config with FUNCTION_TARGET": "works",
+   "HTTP errors only": "works",
+   "HTTP verify": "works",
+   "HTTP tracing": "works",
+   "Background config (callback)": "partial (no function span)",
+   "Background verify verbatim": "broken (wrapBackgroundFunction)",
+   "Background tracing verbatim": "broken (wrapBackgroundFunction)",
+   "Background tracing with wrapEventFunction": "partial (span nested)",
+   "CloudEvent config": "partial (no function span)",
+   "CloudEvent verify": "partial",
+   "CloudEvent tracing": "partial (span nested)",
+   "automatic instrumentation snippet": "broken (pgIntegration)"
+  }
+ },
+ {
+  "id": "QS-aws-lambda",
+  "path": "quickstarts/aws-lambda",
+  "runtime": "Node 26.5.0, develop 03aaf42455; a runtime stand-in invoking the handler with a fake API Gateway event",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "Both npm install options work through the _HANDLER redirect: one error event with the Lambda contexts and one function.aws span per invocation, with or without wrapHandler. Defects: the ESM verify handler has a stray parenthesis and the wrapper page calls Promise.rejected; the ESM tab creates instrument.mjs while the load step imports instrument.js; wrapper options are overridden by the automatic wrapping; the verify tabs disagree on wrapHandler; a broken anchor; no request data on Lambda events; awslambda-auto needs the Lambda environment. The layer and container-image paths were read only.",
+  "sdk": {
+   "name": "sentry.javascript.aws-serverless",
+   "version": "10.67.0",
+   "integrations": 25
+  },
+  "variants": {
+   "awslambda-auto with the CommonJS verify handler": "works",
+   "ESM verify snippet verbatim": "broken (SyntaxError)",
+   "ESM verify with the parenthesis fixed": "works",
+   "ESM handler without wrapHandler": "works",
+   "awslambda-auto outside the Lambda env": "broken (LAMBDA_TASK_ROOT)",
+   "--require awslambda-auto": "works",
+   "manual instrument.js": "works",
+   "manual ESM as printed (instrument.js)": "broken (ERR_MODULE_NOT_FOUND)",
+   "manual instrument.mjs": "works",
+   "manual with wrapHandler": "works",
+   "wrapHandler options": "partial (overridden)",
+   "wrapHandler without the redirect": "partial (no span)",
+   "Lambda layer": "not run",
+   "container image": "not run"
+  }
+ },
+ {
+  "id": "QS-effect",
+  "path": "quickstarts/effect",
+  "runtime": "Node 26.5.0, develop 03aaf42455; effect 3.22.2 and 4.0.0-rc.112",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The tracer and logger layers deliver spans and logs. Defects: the metrics layer breaks the whole program on Effect v3; a failed effect is never captured although the verify step promises an issue; the install misses @effect/platform-node and the Http.js file is never shown; the span op is function and the pages say transaction; log annotations are not forwarded; only the SpanStreaming integration is installed because the layer forces defaultIntegrations off.",
+  "sdk": {
+   "name": "sentry.javascript.effect",
+   "version": "10.67.0",
+   "integrations": 1
+  },
+  "variants": {
+   "issues (v3, tracer + logger)": "partial (no error event)",
+   "issues, errors-only layer": "partial (no error event)",
+   "tracing": "partial (span, no error)",
+   "logs": "works (annotations dropped)",
+   "metrics layer (v3)": "broken (Service not found: effect/Scope)",
+   "Effect.runPromise": "broken (process crashes)",
+   "Layer.launch configure snippet": "partial",
+   "Effect v4 with the metrics layer": "partial (builds, no error event)"
+  }
+ },
+ {
+  "id": "QS-nitro",
+  "path": "quickstarts/nitro",
+  "runtime": "Node 26.5.0, develop 03aaf42455; nitro 3.0.260415-beta and 3.0.260903-beta",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "On the one Nitro beta the peer range accepts and with serverDir set, the guide delivers route-named segments with h3 middleware spans, error hook events, Server-Timing propagation and logs. Defects: npm install fails on every newer Nitro beta; the config has no serverDir so the verify route answers 404; the verify issue is titled HTTPError; the middleware op and the transactions wording are wrong; newer betas duplicate handler errors and report 404s; source maps are deleted even without a token; enableNitroErrorHandler is untyped; the dev server initializes twice; the Node prerequisite says 18.19.",
+  "sdk": {
+   "name": "sentry.javascript.nitro",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "npm install with nitro@latest": "broken (ERESOLVE)",
+   "guide config with root routes": "broken (404, no routes)",
+   "start (260415 beta, serverDir)": "works",
+   "preview": "works",
+   "dev": "works (double init, two segments per request)",
+   "errors only": "works",
+   "enableNitroErrorHandler false": "partial (nothing captured)",
+   "--import forgotten": "partial (silent)",
+   "nitro 260903 beta via --legacy-peer-deps": "partial (duplicate errors, 404 reported)",
+   "vite.config tab": "not run"
+  }
  }
 ]

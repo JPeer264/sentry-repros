@@ -64,6 +64,26 @@ PLAN=[
  ('Browser WebAssembly', [
    ('should','DOC-Q63','debug IDs need a build_id section and a streaming loader the guide never mentions'),
  ]),
+ ('Google Cloud Functions', [
+   ('must','DOC-Q69','three exports that do not exist: wrapBackgroundFunction, pgIntegration, ioredisIntegration'),
+   ('later','DOC-Q70','callback handlers lose the function span, HTTP functions split into two traces, no run step, no logs option'),
+ ]),
+ ('AWS Lambda', [
+   ('must','DOC-Q71','two snippets do not parse: a stray parenthesis and Promise.rejected'),
+   ('should','DOC-Q72','the ESM tab creates instrument.mjs and the load step imports instrument.js'),
+   ('should','DOC-Q73','the wrapper options are overridden by the v11 automatic wrapping'),
+   ('later','DOC-Q74','verify tabs, a broken anchor, request data, awslambda-auto outside Lambda, transactions comment'),
+ ]),
+ ('Effect', [
+   ('must','DOC-Q75','the metrics layer breaks the whole program on Effect v3'),
+   ('should','DOC-Q76','the verify step promises an issue that nothing captures'),
+   ('later','DOC-Q77','a missing install, an unshown file, the span op, annotations, integrations off'),
+ ]),
+ ('Nitro', [
+   ('must','DOC-Q78','the install fails on current Nitro betas and the config never registers the verify route'),
+   ('should','DOC-Q79','the error and span claims do not match the build'),
+   ('later','DOC-Q80','source maps deleted without a token, an untyped option, the dev double init, $fetch'),
+ ]),
  ('Mastra', [
    ('should','DOC-Q67','the built-in mastraIntegration is undocumented and combining it with the exporter duplicates every span'),
    ('later','DOC-Q68','wrong attribute names, unnamed defaults and the trace shape on the Mastra pages'),

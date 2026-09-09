@@ -26,8 +26,8 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-connect](connect/) | node framework | connect | npm, manual setup | done | Node 26.5.0 with the develop tarballs; fourteen variants; no printed app starts because the Connect helper and integration no longer exist |
 | [QS-hono](hono/) | node framework | hono | npm, manual setup | done | Node tab only (Bun, Deno and Cloudflare are in the cells); thirteen variants across the install pages, the error handler page and the verify snippets |
 | [QS-elysia](elysia/) | node framework | elysia | npm, manual setup | done | Node tab only (Bun and Deno are in the cells); eight variants |
-| QS-nitro | node framework | nitro | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
-| QS-effect | node framework | effect | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
+| [QS-nitro](nitro/) | node framework | nitro | npm, manual setup | done | Node 26.5.0 with the develop tarballs; ten variants on two Nitro betas |
+| [QS-effect](effect/) | node framework | effect | npm, manual setup | done | Node 26.5.0 with the develop tarballs; eight variants on Effect v3 and v4 |
 | [QS-mastra](mastra/) | node framework | mastra | npm, manual setup | done | Node 26.5.0 with the develop tarballs and a mock model endpoint; six variants across the exporter shapes and the built-in integration |
 | QS-nextjs | meta-framework | nextjs | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-nuxt | meta-framework | nuxt | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
@@ -37,12 +37,12 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-react-router | meta-framework | react-router | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-tanstackstart-react | meta-framework | tanstackstart-react | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-solidstart | meta-framework | solidstart | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
-| QS-aws-lambda | serverless | aws-lambda | npm, layer, container-image, esm-npm, cjs-npm | planned | npm path invoked locally with a fake event; the layer and container paths need AWS and stay unmeasured |
-| QS-gcp-functions | serverless | gcp-functions | npm | planned | functions-framework locally |
+| [QS-aws-lambda](aws-lambda/) | serverless | aws-lambda | npm, layer, container-image, esm-npm, cjs-npm | done | npm path invoked locally with a fake event, fourteen variants; the layer and container paths need AWS and stay unmeasured |
+| [QS-gcp-functions](gcp-functions/) | serverless | gcp-functions | npm | done | functions-framework locally with the develop tarballs; thirteen variants across the HTTP, Background and CloudEvent tabs and the instrumentation page |
 | QS-azure-functions | serverless | azure-functions | npm | planned | the wrapper invoked locally with a fake context; no core tools |
 | QS-firebase | serverless | firebase | npm | not measurable | needs the Firebase emulator; not run on this machine |
 | QS-electron | desktop | electron | npm | not measurable | separate repository getsentry/sentry-electron; not the develop of sentry-javascript |
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 20 done, 16 planned, 4 not measurable.
+Totals: 24 done, 12 planned, 4 not measurable.

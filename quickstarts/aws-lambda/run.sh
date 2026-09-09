@@ -67,7 +67,7 @@ fi
 REPRO_ROOT="$(cd "$DIR/../.." && pwd)"
 sed -i '' "s#$REPRO_ROOT#\$REPRO#g" "$DIR/app-$VARIANT.log"
 node "$DIR/summarize.mjs" "$VARIANT" "$CMD" "$DIR/app-$VARIANT.log" "$SINK" "$EXIT" "$SENTINEL_STATE" > "$DIR/results-$VARIANT.json"
-sed -i '' "s#$REPRO_ROOT#\$REPRO#g; s#$(command -v node)#\$NODE#g" "$DIR/results-$VARIANT.json"
+sed -i '' "s#$REPRO_ROOT#\$REPRO#g; s#$(node -p process.execPath)#\$NODE#g" "$DIR/results-$VARIANT.json"
 
 kill "$SINK_PID" 2>/dev/null; wait "$SINK_PID" 2>/dev/null
 echo "wrote results-$VARIANT.json (exit $EXIT, sentinel $SENTINEL_STATE, app log: app-$VARIANT.log)"
