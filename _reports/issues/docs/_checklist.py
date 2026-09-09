@@ -19,6 +19,16 @@ PLAN=[
    ('must','DOC-R20','the Bun OpenTelemetry setup includes import a package and exports that no longer exist'),
    ('later','DOC-R8','v7 migration tables name removed integrations'),
  ]),
+ ('Next.js', [
+   ('must','DOC-Q86','every next.config snippet imports withSentryConfig from an entry that no longer exports it'),
+   ('must','DOC-Q87','the Pages Router page has no working client init under Turbopack and no instrumentation step'),
+   ('should','DOC-Q88','the pages misattribute which errors the error components capture'),
+   ('later','DOC-Q89','SaaS-only tunnelRoute, deleted source maps, an undeclared function, a 10% verify sample, plugin telemetry'),
+ ]),
+ ('Nuxt', [
+   ('should','DOC-Q90','the pages still make --import the crucial step; the server config is bundled into the Nitro build'),
+   ('later','DOC-Q91','deprecated inject modes documented as current, Nuxt 4 missing, a verify button that creates a second issue'),
+ ]),
  ('Cloudflare Pages', [
    ('must','DOC-Q83','the Pages tracing verify snippet uses Sentry without importing it'),
    ('later','DOC-Q84','the nodejs_compat requirement depends on the date, method-named spans, waitUntil on Pages'),

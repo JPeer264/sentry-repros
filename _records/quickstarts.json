@@ -624,5 +624,41 @@
    "no flags at compatibility date 2026-09-01": "works",
    "no flags at 2024-09-23": "broken (No such module node:async_hooks)"
   }
+ },
+ {
+  "id": "QS-nextjs",
+  "path": "quickstarts/nextjs",
+  "runtime": "Next 16.3.4 with Turbopack, Node 26.5.0 server, Chrome 153 headless client, develop 03aaf42455",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "With withSentryConfig imported from @sentry/nextjs/config the App Router page works end to end: tunnel route, verify button, logs, replay, feedback, pageload and navigation segments, route-named server segments, every server error through onRequestError, browser-to-server-to-downstream propagation. Defects: every next.config snippet imports withSentryConfig from the main entry and the build fails; the Pages Router page's Turbopack tab uses sentry.client.config.ts, which Turbopack ignores silently, and the page has no instrumentation.ts step; the error components are misattributed; tunnelRoute is SaaS-only; source maps are deleted without a token; an undeclared function; a 10% sample in the verify step.",
+  "sdk": {
+   "name": "sentry.javascript.nextjs",
+   "version": "10.67.0",
+   "integrations": "15 client, 45 server"
+  },
+  "variants": {
+   "App Router (config import fixed)": "partial (config snippet broken as printed)",
+   "Pages Router under Turbopack": "broken (client SDK not bundled)"
+  }
+ },
+ {
+  "id": "QS-nuxt",
+  "path": "quickstarts/nuxt",
+  "runtime": "Nuxt 4.5.2 on nitropack 2.13.4, Node 26.5.0 server, Chrome 153 headless client, develop 03aaf42455",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The manual-setup page works end to end and the server SDK initializes from the bundled config with no --import: server errors through the Nitro hook, route-named server segments, outgoing propagation, client errors, pageload and navigation segments, logs, sessions, replay, feedback, trace continuation from the client. Defects: the pages still make --import the crucial step although the preloaded file is now a warning shim; the deprecated inject modes are documented as current; Nuxt 4 is missing from the prerequisites; transactions wording; a hidden logs option; the Throw Server Error button creates a client FetchError issue and a retried server event; static routes are method-named.",
+  "sdk": {
+   "name": "sentry.javascript.nuxt",
+   "version": "10.67.0",
+   "integrations": "17 client, 46 server"
+  },
+  "variants": {
+   "plain node .output/server/index.mjs": "works",
+   "--import of the built shim": "works (warning only)",
+   "autoInjectServerSentry top-level-import": "works (deprecated)",
+   "autoInjectServerSentry experimental_dynamic-import": "works (deprecated)"
+  }
  }
 ]

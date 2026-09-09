@@ -1,0 +1,11 @@
+---
+// Repro-only: a server-side `fetch` to the sink's recorder route, to see whether the server SDK
+// propagates `sentry-trace` / `baggage` on outgoing requests made during a page render.
+import Base from "../layouts/Base.astro";
+const res = await fetch("http://127.0.0.1:4756/recorder?from=server");
+const body = await res.json();
+---
+
+<Base title="fetch-recorder">
+  <pre id="recorder">{JSON.stringify(body)}</pre>
+</Base>

@@ -1,0 +1,29 @@
+---
+// getting-started-complete/javascript.astro.mdx:510-532 verbatim (the "Tracing" verify snippet, which
+// reuses the `one` button id, so it lives on its own page), wrapped in the repro layout.
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="test-tracing">
+<script>
+  import * as Sentry from "@sentry/astro";
+
+  const button = document.getElementById("one");
+
+  button.addEventListener("click", throwApiError);
+
+  async function throwApiError() {
+    await Sentry.startSpan(
+      {
+        name: "Example Frontend Span",
+        op: "test",
+      },
+      async () => {
+        await fetch("/api/test-error");
+      }
+    );
+  }
+</script>
+
+<button id="one" type="button">Throw an API error with a trace</button>
+</Base>

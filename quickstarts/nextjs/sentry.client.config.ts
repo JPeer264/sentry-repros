@@ -8,9 +8,6 @@ Sentry.init({
   tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.1,
   integrations: [
     Sentry.replayIntegration(),
-    Sentry.feedbackIntegration({
-      colorScheme: "system",
-    }),
   ],
 
   // Capture Replay for 10% of all sessions,
@@ -23,8 +20,6 @@ Sentry.init({
   tracesSampler: () => 1.0,
 });
 
-// This export will instrument router navigations
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
 
 // Repro-only hooks for the driver.
 const w = window as unknown as Record<string, unknown>;

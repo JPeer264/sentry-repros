@@ -75,6 +75,8 @@ if (appAlive) {
     headers: { 'sentry-trace': '12345678123456781234567812345678-1234567812345678-1', baggage: 'sentry-trace_id=12345678123456781234567812345678,sentry-environment=qs,sentry-public_key=public,sentry-sample_rate=1,sentry-sampled=true' },
   });
   await serverStep('unmatched route', '/api/nope');
+  await serverStep('SSR of the parameterized page', '/users/42');
+  await serverStep('SSR of the docs verify page', '/example-error');
 }
 
 // Browser.
@@ -180,8 +182,11 @@ const rawSpanItems = raw.filter(x => x.header.type === 'span').flatMap(x => (x.p
 const attrs = s => Object.fromEntries(Object.entries(s.attributes || {}).map(([k, v]) => [k, v?.value]));
 const serverSegments = rawSpanItems.filter(s => s.side === 'server' && s.is_segment);
 const usersSegment = serverSegments.find(s => attrs(s)['http.route'] === '/api/users/:id' || s.name === 'GET /api/users/:id');
-const exampleSegment = serverSegments.find(s => /sentry-example/.test(String(attrs(s)['url.path'] || attrs(s)['http.route'] || s.name)));
 const frontendSpan = rawSpanItems.find(s => s.side === 'browser' && s.name === 'Example Frontend Span');
+// The docs button's $fetch is one of several calls to /api/sentry-example (Node calls it too, and ofetch
+// retries a 500 once), so look for any server segment in the browser span's trace.
+const continuedSegments = frontendSpan ? serverSegments.filter(s => s.trace_id === frontendSpan.trace_id) : [];
+const clientTraceIds = new Set(rawSpanItems.filter(s => s.side === 'browser').map(s => s.trace_id));
 
 const summary = {
   sdk: {
@@ -219,8 +224,9 @@ const summary = {
   },
   trace_continuation: {
     frontend_span_trace: frontendSpan?.trace_id ?? null,
-    example_route_segment_trace: exampleSegment?.trace_id ?? null,
-    same_trace: !!(frontendSpan && exampleSegment && frontendSpan.trace_id === exampleSegment.trace_id),
+    server_segments_in_that_trace: continuedSegments.map(s => ({ name: s.name, url_path: attrs(s)['url.path'], parent_span_id: s.parent_span_id })),
+    same_trace: continuedSegments.length > 0,
+    server_segments_in_any_client_trace: serverSegments.filter(s => clientTraceIds.has(s.trace_id)).map(s => attrs(s)['url.path']),
   },
   console: {
     server_notable: appLog.filter(l => /warn|deprecat|error|--import|Bundled|Sentry Logger \[(warn|error)\]|Initializing|registerHooks|no longer/i.test(l) && !l.includes('Integration installed')),
@@ -237,6 +243,11 @@ const checks = {
   client_button_error_event: summary.browser.events.some(e => String(e.exception).includes('Nuxt Button Error')),
   client_frontend_span: !!frontendSpan,
   client_pageload_segment: summary.browser.segments.some(s => s.op === 'pageload'),
+  client_feedback_widget: steps.find(s => s.label === 'pageload /')?.result?.feedbackWidget ?? null,
+  client_replay_event: summary.browser.replay_events > 0,
+  client_logs: summary.browser.logs.length,
+  server_logs: summary.server.logs.length,
+  client_to_server_trace_continued: continuedSegments.length > 0,
   client_navigation_segments: summary.browser.segments.filter(s => s.op === 'navigation').map(s => s.name),
   server_example_error_event: summary.server.events.some(e => String(e.exception).includes('Sentry Example API Route Error')),
   server_error_route_event: summary.server.events.some(e => String(e.exception).includes('Server Route Error')),

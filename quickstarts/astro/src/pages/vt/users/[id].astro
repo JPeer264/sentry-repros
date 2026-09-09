@@ -1,0 +1,13 @@
+---
+// Repro-only parameterized route under the view transitions router.
+import { ClientRouter } from "astro:transitions";
+import Base from "../../../layouts/Base.astro";
+const { id } = Astro.params;
+---
+
+<Base title={`user ${id} (view transitions)`}>
+  <ClientRouter slot="head" />
+  <h1>User <span id="user-id">{id}</span></h1>
+  <a id="nav-next" href={`/vt/users/${Number(id) + 1}`}>next user</a>
+  <a id="nav-home" href="/vt/">home</a>
+</Base>

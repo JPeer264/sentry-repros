@@ -1,0 +1,39 @@
+---
+// Repro-only shell around the docs snippets: exposes the client SDK on `window` for the driver
+// and a sentinel helper (one message plus one span) that the driver polls the sink for.
+const { title = "QS-astro" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+    <script>
+      import * as Sentry from "@sentry/astro";
+
+      window.Sentry = Sentry;
+      window.__qsSentinel = (name) => {
+        Sentry.captureMessage(name);
+        Sentry.startSpan({ name: `${name}-span`, op: "test" }, () => {});
+      };
+      window.__qsMeta = () => {
+        const client = Sentry.getClient();
+        const options = client ? client.getOptions() : undefined;
+        return {
+          initialized: !!client,
+          sdk: options && options._metadata && options._metadata.sdk,
+          integrations: client ? Object.keys(client._integrations || {}) : [],
+          tunnel: options && options.tunnel,
+          routeMeta: document.querySelector('meta[name="sentry-route-name"]')?.getAttribute("content") ?? null,
+          traceMeta: document.querySelector('meta[name="sentry-trace"]')?.getAttribute("content") ?? null,
+          baggageMeta: document.querySelector('meta[name="baggage"]')?.getAttribute("content") ?? null,
+        };
+      };
+      document.body.setAttribute("data-wired", "1");
+    </script>
+  </body>
+</html>

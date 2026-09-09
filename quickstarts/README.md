@@ -29,8 +29,8 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-nitro](nitro/) | node framework | nitro | npm, manual setup | done | Node 26.5.0 with the develop tarballs; ten variants on two Nitro betas |
 | [QS-effect](effect/) | node framework | effect | npm, manual setup | done | Node 26.5.0 with the develop tarballs; eight variants on Effect v3 and v4 |
 | [QS-mastra](mastra/) | node framework | mastra | npm, manual setup | done | Node 26.5.0 with the develop tarballs and a mock model endpoint; six variants across the exporter shapes and the built-in integration |
-| QS-nextjs | meta-framework | nextjs | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
-| QS-nuxt | meta-framework | nuxt | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
+| [QS-nextjs](nextjs/) | meta-framework | nextjs | wizard is out of scope, manual setup, install variants | done | next build with Turbopack, next start on Node plus Chrome; App Router end to end, Pages Router client init and instrumentation step; resumed once after a rate limit |
+| [QS-nuxt](nuxt/) | meta-framework | nuxt | wizard is out of scope, manual setup, install variants | done | nuxt build plus node .output/server/index.mjs and Chrome; four variants across the start command and the deprecated inject modes; resumed once after a rate limit |
 | QS-sveltekit | meta-framework | sveltekit | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-astro | meta-framework | astro | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-remix | meta-framework | remix | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 26 done, 10 planned, 4 not measurable.
+Totals: 28 done, 8 planned, 4 not measurable.
