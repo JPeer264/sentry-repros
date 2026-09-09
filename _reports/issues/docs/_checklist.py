@@ -33,7 +33,7 @@ PLAN=[
    ('should','DOC-Q15','the Profiler span ops are named wrong'),
    ('later','DOC-Q16','the routing snippet uses the deprecated V7 API'),
    ('later','DOC-Q17','the verify step says transactions and its test span ends before the error'),
-   ('later','DOC-Q18','sessions need a release, on the Vue, Angular and Svelte guides too'),
+   ('later','DOC-Q18','sessions need a release, on the Vue, Angular, Svelte and Solid guides too'),
  ]),
  ('Angular', [
    ('must','DOC-Q32','three snippets do not compile under the tsconfig ng new generates'),
@@ -46,6 +46,12 @@ PLAN=[
    ('must','DOC-Q41','the Svelte v5 verify snippet binds onClick, which compiles to nothing'),
    ('should','DOC-Q42','old span ops, the wrong trackUpdates default and no runes caveat on the component tracking page'),
    ('later','DOC-Q43','transactions wording, a 0 ms test span and a placeholder that is a syntax error'),
+ ]),
+ ('Solid', [
+   ('must','DOC-Q48','the tracing snippet needs @solidjs/router, which the guide never installs'),
+   ('should','DOC-Q49','the DEV guard skips init under vite dev, so the verify step sends nothing'),
+   ('should','DOC-Q50','no navigation spans without withSentryRouterRouting'),
+   ('later','DOC-Q51','TypeScript in a javascript fence and transactions wording'),
  ]),
  ('Vue', [
    ('must','DOC-Q19','the Vue Router page\'s only full example is Vue 2 code that fails on Vue 3'),

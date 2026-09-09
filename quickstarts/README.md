@@ -9,7 +9,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-vue](vue/) | browser framework | vue | npm, manual setup | done | esbuild + headless Chrome with the full Vue build alias; eleven variants across the guide, Vue Router, component tracking, Pinia, multiple apps and late init; the Vue 2 tab and the source-maps wizard not run |
 | [QS-angular](angular/) | browser framework | angular | npm, manual setup | done | Angular CLI build + headless Chrome; ten variants across manual-setup, the error handler and component tracking pages; the wizard-only index page not run |
 | [QS-svelte](svelte/) | browser framework | svelte | npm, manual setup | done | esbuild-svelte + headless Chrome; five variants across the guide and the component tracking page; the Svelte 3-4 tabs and the source-maps wizard not run |
-| QS-solid | browser framework | solid | npm, manual setup | planned | build plus headless Chrome |
+| [QS-solid](solid/) | browser framework | solid | npm, manual setup | done | esbuild-plugin-solid + headless Chrome; seven variants across the guide, the router pages and the error boundary; the TanStack Router page not runnable as printed |
 | QS-ember | browser framework | ember | npm, manual setup | planned | build plus headless Chrome |
 | QS-gatsby | browser framework | gatsby | npm, manual setup | planned | build plus headless Chrome |
 | QS-wasm | browser | wasm | npm | planned | headless Chrome with a wasm module |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 23 planned, 13 done, 4 not measurable.
+Totals: 22 planned, 14 done, 4 not measurable.

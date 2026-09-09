@@ -47,7 +47,7 @@ for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="iss
     body_html=re.search(r'<div class="body">(.*)$',issue,re.S).group(1)
     items.append(dict(id=hid,heading=title_h3,type=typ,title=it,body_html=body_html,body_md=to_md(body_html)))
 
-order=['DOC-Q7','DOC-Q12','DOC-Q19','DOC-Q20','DOC-Q25','DOC-Q26','DOC-Q32','DOC-Q37','DOC-Q41','DOC-Q44','DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
+order=['DOC-Q7','DOC-Q12','DOC-Q19','DOC-Q20','DOC-Q25','DOC-Q26','DOC-Q32','DOC-Q37','DOC-Q41','DOC-Q44','DOC-Q48','DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
 order=[o for o in order if o in {i['id'] for i in items}]+[i['id'] for i in items if i['id'] not in order]
 items.sort(key=lambda i: order.index(i['id']))
 

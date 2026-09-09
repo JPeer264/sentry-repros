@@ -310,5 +310,27 @@
    "verify snippet verbatim": "works",
    "late init (--import @sentry/node/preload)": "broken (subpath not exported)"
   }
+ },
+ {
+  "id": "QS-solid",
+  "path": "quickstarts/solid",
+  "runtime": "Chrome 153 headless, develop 03aaf42455; solid-js 1.9.15, @solidjs/router 1.0.0, esbuild-plugin-solid 0.6.0",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's production build works: 16 integrations, both verify errors, the boundary error, logs, replay, propagation, a Pageload segment with the example span. Defects: the tracing snippet imports a module that needs @solidjs/router, which the guide never installs; the DEV guard skips init under vite dev so the verify step sends nothing; solidRouterBrowserTracingIntegration alone yields no navigation spans without withSentryRouterRouting; TypeScript in a javascript fence on the TanStack Router page; transactions wording; no sessions without a release.",
+  "sdk": {
+   "name": "sentry.javascript.solid",
+   "version": "10.67.0",
+   "integrations": 16
+  },
+  "variants": {
+   "base (production build)": "works",
+   "base under the development condition": "partial (init skipped by the DEV guard)",
+   "Solid Router page with withSentryRouterRouting": "works",
+   "guide snippet around a plain Router": "partial (no navigation spans)",
+   "error boundary": "works",
+   "guide snippet without @solidjs/router": "broken (unresolved import)",
+   "TanStack Router page": "not run (parse error in the javascript fence)"
+  }
  }
 ]
