@@ -57,7 +57,7 @@ async function probe(path, init) {
   try {
     const res = await fetch(`${app}${path}`, init);
     const text = await res.text();
-    return { status: res.status, body: text.slice(0, 300) };
+    return { status: res.status, body: text.slice(0, 300), text };
   } catch (e) {
     return { error: String(e?.cause?.code ?? e?.message ?? e) };
   }
@@ -77,12 +77,15 @@ page.on('console', m => consoleLines.push(`${m.type()}: ${m.text()}`));
 page.on('pageerror', e => pageErrors.push(String(e && e.message ? e.message : e)));
 
 const homeResponse = await page.goto(`${app}/`, { waitUntil: 'load' });
+// index.mdx:184 / server/middleware.d.ts: the middleware should add sentry-trace <meta> tags to the page
+const homeHtml = (await homeResponse?.text()) ?? '';
+const htmlMeta = { sentryTraceMeta: /<meta name="sentry-trace"[^>]*>/.exec(homeHtml)?.[0] ?? null, baggageMeta: /<meta name="baggage"[^>]*>/.exec(homeHtml)?.[0]?.slice(0, 120) ?? null };
 const sdkUp = await until('SDK init', () => page.evaluate(() => !!(window.Sentry && window.Sentry.getClient && window.Sentry.getClient())), 60);
 const appUp = await until('app rendered', () => page.evaluate(() => document.querySelector('[data-wired="1"]') !== null), 40);
 const meta = await page.evaluate(() => (window.__qsMeta ? window.__qsMeta() : { initialized: false }));
 steps.push({
   label: 'boot (GET /, entry-client.tsx index.mdx:93-140)',
-  result: { status: homeResponse?.status(), sdkUp, appUp, pageErrorsAtBoot: pageErrors.slice(), feedbackWidget: await page.evaluate(() => !!document.querySelector('#sentry-feedback')), traceMeta: meta.traceMeta },
+  result: { status: homeResponse?.status(), htmlMeta, sdkUp, appUp, pageErrorsAtBoot: pageErrors.slice(), feedbackWidget: await page.evaluate(() => !!document.querySelector('#sentry-feedback')), traceMeta: meta.traceMeta },
 });
 
 if (appUp) {
@@ -131,11 +134,11 @@ if (sdkUp) {
 const serverMetaProbe = await probe('/sentinel');
 let serverMeta = null;
 try {
-  serverMeta = JSON.parse(serverMetaProbe.body);
+  serverMeta = JSON.parse(serverMetaProbe.text);
 } catch {}
 const serverSentinel = await until('server sentinel', async () => {
   const items = await get('/__items');
-  return hasEvent(items, i => i.message === 'server-sentinel') && hasSpan(items, s => s.name === 'server-sentinel-span') && hasSpan(items, s => s.is_segment && /sentinel/.test(s.name ?? ''));
+  return hasEvent(items, i => i.message === 'server-sentinel') && hasSpan(items, s => s.name === 'server-sentinel-span') && hasSpan(items, s => s.is_segment && s.url_path === '/sentinel');
 }, 400, 150);
 
 // The pageload segment ends after the browser tracing idle timeout, so it lands after the sentinel.
@@ -156,5 +159,5 @@ const summary = {
 };
 
 await browser.close();
-finish({ serverUp, meta, serverMeta, steps, clientSentinel, serverSentinel, pageloadArrived, secondNavigation, summary, console: consoleLines, pageErrors, items, headers, raw });
+finish({ serverUp, meta, serverMeta, serverMetaProbe: { status: serverMetaProbe.status, error: serverMetaProbe.error }, steps, clientSentinel, serverSentinel, pageloadArrived, secondNavigation, summary, console: consoleLines, pageErrors, items, headers, raw });
 console.log(`wrote ${resultName}.json (${items.length} sink items, ${pageErrors.length} page errors, clientSentinel=${clientSentinel}, serverSentinel=${serverSentinel}, pageload=${pageloadArrived})`);

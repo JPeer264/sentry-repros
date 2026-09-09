@@ -740,5 +740,24 @@
    "server entry importing the instrument file, no --import": "works",
    "plugin first in the list": "not run"
   }
+ },
+ {
+  "id": "QS-solidstart",
+  "path": "quickstarts/solidstart",
+  "runtime": "@solidjs/start 2.0.4 with nitro 3.0.260903-beta, Node 26.5.0 server, Chrome 153 headless client, develop 03aaf42455",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide describes SolidStart 1; on SolidStart 2 the app.config.ts is ignored, the build creates no instrument file so the start command fails, and the middleware subpath does not exist. With sentrySolidStart from @sentry/solidstart/vite and node --import ./src/instrument.server.ts the client and server work in one trace, but the verify API-route error and server functions are never captured, server spans are method-named, and the Vite plugin deleted about 3,500 source maps under node_modules without a token.",
+  "sdk": {
+   "name": "sentry.javascript.solidstart",
+   "version": "10.67.0",
+   "integrations": "14 client, 46 server"
+  },
+  "variants": {
+   "start command as printed": "broken (file never created)",
+   "node --import ./src/instrument.server.ts": "partial (server errors not captured)",
+   "app.config.ts and subpaths check": "broken (defineConfig and /middleware missing)",
+   "SolidStart 1 with vinxi": "not run"
+  }
  }
 ]

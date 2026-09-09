@@ -1,0 +1,1583 @@
+{
+  "variant": "base",
+  "meta": {
+    "initialized": true,
+    "sdk": {
+      "name": "sentry.javascript.ember",
+      "packages": [
+        {
+          "name": "npm:@sentry/ember",
+          "version": "10.67.0"
+        }
+      ],
+      "version": "10.67.0",
+      "settings": {
+        "infer_ip": "auto"
+      }
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession",
+      "Replay",
+      "Feedback"
+    ],
+    "traceLifecycle": "stream",
+    "tunnel": "/tunnel"
+  },
+  "steps": [
+    {
+      "label": "boot",
+      "result": {
+        "sdkUp": true,
+        "appUp": true,
+        "pageErrorsAtBoot": [],
+        "bodyText": "Test Sentry Error Fetch recorder User 42 Home Hello application",
+        "emberApp": true,
+        "feedbackWidget": true
+      }
+    },
+    {
+      "label": "click #btn-throw (index.mdx:191-206, startSpan \"Example Span\" + setTimeout throw \"Sentry Test Error\")",
+      "result": {
+        "eventArrived": true
+      },
+      "itemsBefore": 0
+    },
+    {
+      "label": "click #btn-fetch (relative + absolute same-origin fetch to /recorder)",
+      "result": {
+        "recorderHits": true,
+        "headers": [
+          {
+            "url": "/recorder?from=relative",
+            "sentry-trace": null,
+            "baggage": null,
+            "traceparent": null
+          },
+          {
+            "url": "/recorder?from=absolute",
+            "sentry-trace": null,
+            "baggage": null,
+            "traceparent": null
+          }
+        ]
+      },
+      "itemsBefore": 1
+    },
+    {
+      "label": "click #nav-user (LinkTo user route, /users/:user_id, instrumentRoutePerformance)",
+      "result": {
+        "navigated": true,
+        "path": "/users/42",
+        "helloComponents": [
+          "Hello application",
+          "Hello 42"
+        ]
+      },
+      "itemsBefore": 2
+    },
+    {
+      "label": "click #nav-home (LinkTo index)",
+      "result": {
+        "home": true
+      },
+      "itemsBefore": 2
+    },
+    {
+      "label": "replay after minReplayDuration",
+      "result": {
+        "replayArrived": true
+      }
+    }
+  ],
+  "sentinel1": true,
+  "pageloadArrived": false,
+  "navigationArrived": false,
+  "replayArrived": true,
+  "summary": {
+    "itemTypes": [
+      "event",
+      "span",
+      "event",
+      "span",
+      "event",
+      "replay_event",
+      "replay_recording"
+    ],
+    "events": [
+      {
+        "exception": "Error: Sentry Test Error",
+        "mechanism": "auto.browser.browserapierrors.setTimeout",
+        "handled": false,
+        "sdk": "sentry.javascript.ember",
+        "sdk_version": "10.67.0",
+        "integrations": [
+          "EventFilters",
+          "FunctionToString",
+          "ConversationId",
+          "BrowserApiErrors",
+          "Breadcrumbs",
+          "GlobalHandlers",
+          "LinkedErrors",
+          "Dedupe",
+          "HttpContext",
+          "CultureContext",
+          "BrowserSession",
+          "Replay",
+          "Feedback",
+          "SpanStreaming"
+        ]
+      },
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "sdk": "sentry.javascript.ember",
+        "sdk_version": "10.67.0",
+        "integrations": [
+          "EventFilters",
+          "FunctionToString",
+          "ConversationId",
+          "BrowserApiErrors",
+          "Breadcrumbs",
+          "GlobalHandlers",
+          "LinkedErrors",
+          "Dedupe",
+          "HttpContext",
+          "CultureContext",
+          "BrowserSession",
+          "Replay",
+          "Feedback",
+          "SpanStreaming"
+        ]
+      },
+      {
+        "exception": "Error: Error for the replay buffer",
+        "mechanism": "generic",
+        "handled": true,
+        "sdk": "sentry.javascript.ember",
+        "sdk_version": "10.67.0",
+        "integrations": [
+          "EventFilters",
+          "FunctionToString",
+          "ConversationId",
+          "BrowserApiErrors",
+          "Breadcrumbs",
+          "GlobalHandlers",
+          "LinkedErrors",
+          "Dedupe",
+          "HttpContext",
+          "CultureContext",
+          "BrowserSession",
+          "Replay",
+          "Feedback",
+          "SpanStreaming"
+        ]
+      }
+    ],
+    "spans": [
+      {
+        "op": "test",
+        "name": "Example Span",
+        "is_segment": true,
+        "source": "custom",
+        "origin": "manual",
+        "status": "ok",
+        "duration_ms": 0
+      },
+      {
+        "op": "test",
+        "name": "sentinel-span",
+        "is_segment": true,
+        "source": "custom",
+        "origin": "manual",
+        "status": "ok",
+        "duration_ms": 0
+      }
+    ],
+    "transactions": [],
+    "sessions": [],
+    "logs": [],
+    "replay": 1,
+    "headers": [
+      {
+        "url": "/recorder?from=relative",
+        "sentry-trace": null,
+        "baggage": null,
+        "traceparent": null
+      },
+      {
+        "url": "/recorder?from=absolute",
+        "sentry-trace": null,
+        "baggage": null,
+        "traceparent": null
+      }
+    ],
+    "buildWarnings": [
+      "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit."
+    ]
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: Replay",
+    "log: Sentry Logger [log]: Integration installed: Feedback",
+    "log: Sentry Logger [log]: [Replay]  Creating new session",
+    "log: Sentry Logger [log]: [Replay]  Starting replay in buffer mode",
+    "log: Sentry Logger [log]: [Replay]  Using compression worker",
+    "log: Sentry Logger [log]: [Replay]  Updating session start time to earliest event in buffer to Wed Sep 09 2026 12:13:34 GMT+0200 (Central European Summer Time)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: test\n  name: Example Span\n  ID: b44ec5252b83dfcd",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" root span \"Example Span\" with ID b44ec5252b83dfcd",
+    "log: Sentry Logger [log]: Captured error event `Sentry Test Error`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: [Replay]  Converting buffer to session",
+    "log: Sentry Logger [log]: [Replay]  Session duration (0s) is too short, not sending replay.",
+    "log: Sentry Logger [log]: Sending span envelope for trace 9019a1420ba14a62811e99dcedb05be6 with 1 spans",
+    "log: Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+    "log: Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+    "log: Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+    "log: Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+    "log: Sentry Logger [log]: Captured error event `sentinel`",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: test\n  name: sentinel-span\n  ID: b9436cda60392c99",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" root span \"sentinel-span\" with ID b9436cda60392c99",
+    "log: Sentry Logger [log]: Sending span envelope for trace 9019a1420ba14a62811e99dcedb05be6 with 1 spans",
+    "log: Sentry Logger [log]: Captured error event `Error for the replay buffer`"
+  ],
+  "pageErrors": [
+    "Sentry Test Error"
+  ],
+  "build": [
+    "- Building",
+    "Environment: production",
+    "- Building",
+    "- building... ",
+    "vite v8.2.2 building client environment for production...",
+    "- Building",
+    "Environment: production",
+    "- Building",
+    "- building... ",
+    "- cleaning up",
+    "cleaning up...",
+    "- cleaning up",
+    "Built project successfully. Stored in \"/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/ember/tmp/compat-prebuild\".",
+    "transforming...",
+    "<script src=\"/@embroider/virtual/vendor.js\"> in \"/index.html\" can't be bundled without type=\"module\" attribute",
+    "",
+    "/@embroider/virtual/app.css doesn't exist at build time, it will remain unchanged to be resolved at runtime",
+    "✓ 525 modules transformed.",
+    "",
+    "(!) outDir /private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder is not inside project root and will not be emptied.",
+    "Use --emptyOutDir to override.",
+    "",
+    "rendering chunks...",
+    "computing gzip size...",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/@embroider/virtual/vendor.js           0.31 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/index.html                             1.15 kB │ gzip:   0.60 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/ember-welcome-page/construction.png   91.11 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/@embroider/virtual/vendor.css          0.00 kB │ gzip:   0.02 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/assets/main-x1XGuNl0.css               0.00 kB │ gzip:   0.02 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/@embroider/virtual/app.css             0.11 kB │ gzip:   0.12 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/assets/rolldown-runtime-CxhCXM28.js    0.71 kB │ gzip:   0.43 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/assets/modules-4-12-B7UkYIVq.js        9.08 kB │ gzip:   3.95 kB",
+    "../../../../../../private/var/folders/rn/fyg_2sr53tb6_6gzh49148tw0000gn/T/broccoli--36780-BLI4iETOjWn5/out-0-builder/assets/main-TZmNX7cw.js              963.79 kB │ gzip: 304.79 kB",
+    "",
+    "[plugin builtin:vite-reporter] ",
+    "(!) Some chunks are larger than 500 kB after minification. Consider:",
+    "- Using dynamic import() to code-split the application",
+    "- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting",
+    "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.",
+    "✓ built in 9.00s",
+    "\u001b[33m[PLUGIN_TIMINGS] \u001b[0mPlugin hooks ran for 7.2s of this 7.2s build (99%).",
+    "3 hooks are listed without a time. Their calls overlapped, so the time inside one call includes work from other calls. To find their cost, profile the build with `node --cpu-prof`:",
+    "  - embroider-resolver resolveId (2034 calls)",
+    "  - babel transform (523 calls)",
+    "  - vite:terser renderChunk (3 calls)",
+    "See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.",
+    "",
+    "- cleaning up",
+    "cleaning up...",
+    "- cleaning up",
+    "Built project successfully. Stored in \"dist/\".",
+    "File sizes:",
+    " - dist/@embroider/virtual/app.css: 116 B (120 B gzipped)",
+    " - dist/@embroider/virtual/vendor.css: 0 B",
+    " - dist/@embroider/virtual/vendor.js: 316 B (228 B gzipped)",
+    " - dist/assets/main-TZmNX7cw.js: 963.8 kB (301.24 kB gzipped)",
+    " - dist/assets/main-x1XGuNl0.css: 1 B (21 B gzipped)",
+    " - dist/assets/modules-4-12-B7UkYIVq.js: 9.09 kB (3.9 kB gzipped)",
+    " - dist/assets/rolldown-runtime-CxhCXM28.js: 716 B (431 B gzipped)",
+    ""
+  ],
+  "items": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Test Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Test Error",
+          "mechanism": "auto.browser.browserapierrors.setTimeout",
+          "handled": false,
+          "frames": 2
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.setTimeout",
+      "handled": false,
+      "sdk": "sentry.javascript.ember",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/ember",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Replay",
+        "Feedback",
+        "SpanStreaming"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "?",
+        "filename": "http://localhost:4766/assets/main-TZmNX7cw.js",
+        "in_app": true
+      },
+      "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+      "tags": {
+        "replayId": "4f610c3973f74d189067c2c5c78e2c8a"
+      },
+      "extra": {
+        "arguments": []
+      },
+      "breadcrumbs": [
+        "navigation:",
+        "ui.click: body.ember-application > button#btn-throw[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4766/",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.ember",
+      "sdk_version": "10.67.0",
+      "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+      "items": [
+        "test Example Span"
+      ],
+      "raw": [
+        {
+          "name": "Example Span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "b44ec5252b83dfcd",
+          "is_segment": true,
+          "origin": "manual",
+          "source": "custom",
+          "url": "http://localhost:4766/",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.segment.name.source": "custom",
+            "sentry.sample_rate": 1,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Example Span",
+            "sentry.segment.id": "b44ec5252b83dfcd",
+            "sentry.sdk.name": "sentry.javascript.ember",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "Replay",
+              "Feedback",
+              "SpanStreaming"
+            ],
+            "url.full": "http://localhost:4766/",
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory",
+            "sentry.replay_id": "4f610c3973f74d189067c2c5c78e2c8a",
+            "sentry._internal.replay_is_buffering": true
+          }
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 5
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.ember",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/ember",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Replay",
+        "Feedback",
+        "SpanStreaming"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "HP",
+        "filename": "http://localhost:4766/assets/main-TZmNX7cw.js",
+        "in_app": true
+      },
+      "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+      "tags": {
+        "replayId": "4f610c3973f74d189067c2c5c78e2c8a"
+      },
+      "breadcrumbs": [
+        "navigation:",
+        "ui.click: body.ember-application > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body.ember-application > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4766/recorder?from=absolute",
+        "ui.click: body.ember-application > a#nav-user.ember-view",
+        "navigation:",
+        "ui.click: body.ember-application > a#nav-home.ember-view",
+        "navigation:"
+      ],
+      "request": {
+        "url": "http://localhost:4766/",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.ember",
+      "sdk_version": "10.67.0",
+      "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+      "items": [
+        "test sentinel-span"
+      ],
+      "raw": [
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "b9436cda60392c99",
+          "is_segment": true,
+          "origin": "manual",
+          "source": "custom",
+          "url": "http://localhost:4766/",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.segment.name.source": "custom",
+            "sentry.sample_rate": 1,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "sentinel-span",
+            "sentry.segment.id": "b9436cda60392c99",
+            "sentry.sdk.name": "sentry.javascript.ember",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "Replay",
+              "Feedback",
+              "SpanStreaming"
+            ],
+            "url.full": "http://localhost:4766/",
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory",
+            "sentry.replay_id": "4f610c3973f74d189067c2c5c78e2c8a"
+          }
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error for the replay buffer",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error for the replay buffer",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 3
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "sdk": "sentry.javascript.ember",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/ember",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Replay",
+        "Feedback",
+        "SpanStreaming"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "eval",
+        "filename": "",
+        "in_app": true
+      },
+      "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+      "tags": {
+        "replayId": "4f610c3973f74d189067c2c5c78e2c8a"
+      },
+      "breadcrumbs": [
+        "navigation:",
+        "ui.click: body.ember-application > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Test Error",
+        "ui.click: body.ember-application > button#btn-fetch[type=\"button\"]",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4766/recorder?from=absolute",
+        "ui.click: body.ember-application > a#nav-user.ember-view",
+        "navigation:",
+        "ui.click: body.ember-application > a#nav-home.ember-view",
+        "navigation:",
+        "sentry.event: sentinel"
+      ],
+      "request": {
+        "url": "http://localhost:4766/",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "replay_event",
+      "replay_type": "buffer",
+      "segment_id": 0,
+      "sdk": "sentry.javascript.ember",
+      "sdk_version": "10.67.0",
+      "error_ids": 3,
+      "trace_ids": 1,
+      "urls": [
+        "http://localhost:4766/",
+        "http://localhost:4766/",
+        "http://localhost:4766/users/42",
+        "http://localhost:4766/"
+      ]
+    },
+    {
+      "type": "replay_recording"
+    }
+  ],
+  "headers": [
+    {
+      "url": "/recorder?from=relative",
+      "sentry-trace": null,
+      "baggage": null,
+      "traceparent": null
+    },
+    {
+      "url": "/recorder?from=absolute",
+      "sentry-trace": null,
+      "baggage": null,
+      "traceparent": null
+    }
+  ],
+  "raw": [
+    {
+      "envHeader": {
+        "event_id": "6faed657ed014b3a941b1bee14dc1a98",
+        "sent_at": "2026-09-09T10:13:34.409Z",
+        "sdk": {
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0"
+        },
+        "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0",
+        "trace": {
+          "environment": "production",
+          "public_key": "examplePublicKey",
+          "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Sentry Test Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4766/assets/main-TZmNX7cw.js",
+                    "function": "n",
+                    "in_app": true,
+                    "lineno": 2,
+                    "colno": 728903
+                  },
+                  {
+                    "filename": "http://localhost:4766/assets/main-TZmNX7cw.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 2,
+                    "colno": 951102
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.browserapierrors.setTimeout",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "6faed657ed014b3a941b1bee14dc1a98",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4766/",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+            "span_id": "bfbc9818a00278fa"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788948814.408,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Replay",
+            "Feedback",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/ember",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788948814.235,
+            "category": "navigation",
+            "data": {
+              "from": "/",
+              "to": "/"
+            }
+          },
+          {
+            "timestamp": 1788948814.304,
+            "category": "ui.click",
+            "message": "body.ember-application > button#btn-throw[type=\"button\"]"
+          }
+        ],
+        "tags": {
+          "replayId": "4f610c3973f74d189067c2c5c78e2c8a"
+        },
+        "extra": {
+          "arguments": []
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T10:13:34.818Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "examplePublicKey",
+          "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+          "org_id": "0",
+          "replay_id": "4f610c3973f74d189067c2c5c78e2c8a",
+          "transaction": "Example Span",
+          "sampled": "true",
+          "sample_rand": "0.3784935182909117",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0"
+        },
+        "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "Example Span",
+            "span_id": "b44ec5252b83dfcd",
+            "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+            "start_timestamp": 1788948814.3051002,
+            "end_timestamp": 1788948814.3055,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "custom",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Example Span",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b44ec5252b83dfcd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.ember",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "Replay",
+                  "Feedback",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "url.full": {
+                "value": "http://localhost:4766/",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "4f610c3973f74d189067c2c5c78e2c8a",
+                "type": "string"
+              },
+              "sentry._internal.replay_is_buffering": {
+                "value": true,
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "780a976dce0944879f961d407928a7a5",
+        "sent_at": "2026-09-09T10:13:35.167Z",
+        "sdk": {
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0"
+        },
+        "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0",
+        "trace": {
+          "environment": "production",
+          "public_key": "examplePublicKey",
+          "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+          "org_id": "0",
+          "replay_id": "4f610c3973f74d189067c2c5c78e2c8a"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 313,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4766/assets/main-TZmNX7cw.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 311,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4766/assets/main-TZmNX7cw.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 2,
+                    "colno": 959176
+                  },
+                  {
+                    "filename": "http://localhost:4766/assets/main-TZmNX7cw.js",
+                    "function": "HP",
+                    "in_app": true,
+                    "lineno": 2,
+                    "colno": 598431
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "780a976dce0944879f961d407928a7a5",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4766/",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+            "span_id": "8c35f4fd9683b6e2"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788948815.167,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Replay",
+            "Feedback",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/ember",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788948814.235,
+            "category": "navigation",
+            "data": {
+              "from": "/",
+              "to": "/"
+            }
+          },
+          {
+            "timestamp": 1788948814.304,
+            "category": "ui.click",
+            "message": "body.ember-application > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788948814.409,
+            "category": "sentry.event",
+            "event_id": "6faed657ed014b3a941b1bee14dc1a98",
+            "level": "error",
+            "message": "Error: Sentry Test Error"
+          },
+          {
+            "timestamp": 1788948814.585,
+            "category": "ui.click",
+            "message": "body.ember-application > button#btn-fetch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788948814.6,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "/recorder?from=relative",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788948814.601,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4766/recorder?from=absolute",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788948814.873,
+            "category": "ui.click",
+            "message": "body.ember-application > a#nav-user.ember-view"
+          },
+          {
+            "timestamp": 1788948814.899,
+            "category": "navigation",
+            "data": {
+              "from": "/",
+              "to": "/users/42"
+            }
+          },
+          {
+            "timestamp": 1788948815.162,
+            "category": "ui.click",
+            "message": "body.ember-application > a#nav-home.ember-view"
+          },
+          {
+            "timestamp": 1788948815.162,
+            "category": "navigation",
+            "data": {
+              "from": "/users/42",
+              "to": "/"
+            }
+          }
+        ],
+        "tags": {
+          "replayId": "4f610c3973f74d189067c2c5c78e2c8a"
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T10:13:35.669Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "examplePublicKey",
+          "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+          "org_id": "0",
+          "replay_id": "4f610c3973f74d189067c2c5c78e2c8a",
+          "transaction": "sentinel-span",
+          "sampled": "true",
+          "sample_rand": "0.3784935182909117",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0"
+        },
+        "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "sentinel-span",
+            "span_id": "b9436cda60392c99",
+            "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+            "start_timestamp": 1788948815.1682,
+            "end_timestamp": 1788948815.1682,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "custom",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "sentinel-span",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b9436cda60392c99",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.ember",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "Replay",
+                  "Feedback",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "url.full": {
+                "value": "http://localhost:4766/",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "4f610c3973f74d189067c2c5c78e2c8a",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "3c0c40f404ed489393a79c6f04b80743",
+        "sent_at": "2026-09-09T10:13:38.738Z",
+        "sdk": {
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0"
+        },
+        "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0",
+        "trace": {
+          "environment": "production",
+          "public_key": "examplePublicKey",
+          "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+          "org_id": "0",
+          "replay_id": "4f610c3973f74d189067c2c5c78e2c8a"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Error for the replay buffer",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 313,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 311,
+                    "colno": 30
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "3c0c40f404ed489393a79c6f04b80743",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4766/",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "9019a1420ba14a62811e99dcedb05be6",
+            "span_id": "a9bccfcaa2120ccc"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788948818.737,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Replay",
+            "Feedback",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/ember",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788948814.235,
+            "category": "navigation",
+            "data": {
+              "from": "/",
+              "to": "/"
+            }
+          },
+          {
+            "timestamp": 1788948814.304,
+            "category": "ui.click",
+            "message": "body.ember-application > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788948814.409,
+            "category": "sentry.event",
+            "event_id": "6faed657ed014b3a941b1bee14dc1a98",
+            "level": "error",
+            "message": "Error: Sentry Test Error"
+          },
+          {
+            "timestamp": 1788948814.585,
+            "category": "ui.click",
+            "message": "body.ember-application > button#btn-fetch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788948814.6,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "/recorder?from=relative",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788948814.601,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4766/recorder?from=absolute",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788948814.873,
+            "category": "ui.click",
+            "message": "body.ember-application > a#nav-user.ember-view"
+          },
+          {
+            "timestamp": 1788948814.899,
+            "category": "navigation",
+            "data": {
+              "from": "/",
+              "to": "/users/42"
+            }
+          },
+          {
+            "timestamp": 1788948815.162,
+            "category": "ui.click",
+            "message": "body.ember-application > a#nav-home.ember-view"
+          },
+          {
+            "timestamp": 1788948815.162,
+            "category": "navigation",
+            "data": {
+              "from": "/users/42",
+              "to": "/"
+            }
+          },
+          {
+            "timestamp": 1788948815.167,
+            "category": "sentry.event",
+            "event_id": "780a976dce0944879f961d407928a7a5",
+            "level": "info",
+            "message": "sentinel"
+          }
+        ],
+        "tags": {
+          "replayId": "4f610c3973f74d189067c2c5c78e2c8a"
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "4f610c3973f74d189067c2c5c78e2c8a",
+        "sent_at": "2026-09-09T10:13:39.917Z",
+        "sdk": {
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0"
+        },
+        "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0"
+      },
+      "header": {
+        "type": "replay_event"
+      },
+      "payload": {
+        "type": "replay_event",
+        "replay_start_timestamp": 1788948814.1803,
+        "timestamp": 1788948819.916,
+        "error_ids": [
+          "6faed657ed014b3a941b1bee14dc1a98",
+          "780a976dce0944879f961d407928a7a5",
+          "3c0c40f404ed489393a79c6f04b80743"
+        ],
+        "trace_ids": [
+          "9019a1420ba14a62811e99dcedb05be6"
+        ],
+        "segment_names": [
+          "Example Span",
+          "sentinel-span"
+        ],
+        "urls": [
+          "http://localhost:4766/",
+          "http://localhost:4766/",
+          "http://localhost:4766/users/42",
+          "http://localhost:4766/"
+        ],
+        "replay_id": "4f610c3973f74d189067c2c5c78e2c8a",
+        "segment_id": 0,
+        "replay_type": "buffer",
+        "request": {
+          "url": "http://localhost:4766/",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "event_id": "4f610c3973f74d189067c2c5c78e2c8a",
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Replay",
+            "Feedback",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0",
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "platform": "javascript"
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "4f610c3973f74d189067c2c5c78e2c8a",
+        "sent_at": "2026-09-09T10:13:39.917Z",
+        "sdk": {
+          "name": "sentry.javascript.ember",
+          "version": "10.67.0"
+        },
+        "dsn": "https://examplePublicKey@o0.ingest.sentry.io/0"
+      },
+      "header": {
+        "type": "replay_recording",
+        "length": 4311
+      },
+      "payload": {
+        "omitted": true
+      }
+    }
+  ]
+}

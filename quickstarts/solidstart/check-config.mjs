@@ -1,7 +1,7 @@
 // Evaluates the page's config-time snippets against what `npm install @solidjs/start` gives today
 // (SolidStart 2): index.mdx:214-231 (withSentry + defineConfig from @solidjs/start/config) and
 // features/middleware.mdx:11 (the @sentry/solidstart/middleware subpath). Writes results-check-config.json.
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -31,6 +31,7 @@ try {
 } catch (e) {
   out.steps.push({ label: 'index.mdx:297 vinxi (start:vinxi script)', ok: false, error: `${e.code}: vinxi is not a dependency of @solidjs/start@2` });
 }
-out.pkg = { '@solidjs/start': require('@solidjs/start/package.json').version, '@sentry/solidstart': require('@sentry/solidstart/package.json').version, exports: Object.keys(require('@sentry/solidstart/package.json').exports) };
+const pkg = p => JSON.parse(readFileSync(new URL(`./node_modules/${p}/package.json`, import.meta.url), 'utf8'));
+out.pkg = { '@solidjs/start': pkg('@solidjs/start').version, '@sentry/solidstart': pkg('@sentry/solidstart').version, exports: Object.keys(pkg('@sentry/solidstart').exports) };
 writeFileSync(new URL('./results-check-config.json', import.meta.url), JSON.stringify(out, null, 2));
 console.log(JSON.stringify(out.steps.map(s => `${s.ok ? 'ok ' : 'ERR'} ${s.label}${s.error ? ' -> ' + s.error : ''}`), null, 1));

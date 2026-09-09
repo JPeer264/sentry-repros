@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/solidstart";
 import { A } from "@solidjs/router";
-import { ErrorBoundary, createSignal } from "solid-js";
+import { ErrorBoundary, Show, createSignal } from "solid-js";
 
 // getting-started-capture-errors/javascript.solidstart.mdx:2-6 verbatim
 // Wrap Solid"s ErrorBoundary to automatically capture exceptions
@@ -12,9 +12,8 @@ async function serverFunctionThrows() {
   throw new Error("Sentry Test Server Function Error");
 }
 
-function Explodes(props: { when: boolean }) {
-  if (props.when) throw new Error("Sentry Test Render Error");
-  return <div id="boundary-child">Some Component</div>;
+function Explodes() {
+  throw new Error("Sentry Test Render Error");
 }
 
 export default function Home() {
@@ -64,7 +63,9 @@ export default function Home() {
         Break the boundary
       </button>
       <SentryErrorBoundary fallback={(err) => <div id="boundary-fallback">Error: {err.message}</div>}>
-        <Explodes when={explode()} />
+        <Show when={explode()} fallback={<div id="boundary-child">Some Component</div>}>
+          <Explodes />
+        </Show>
       </SentryErrorBoundary>
 
       {/* repro-only: server function that throws, server-side fetch to the recorder, navigation */}

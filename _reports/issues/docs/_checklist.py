@@ -44,6 +44,12 @@ PLAN=[
    ('must','DOC-Q101','the build and start commands assume a Nitro output the printed config never produces'),
    ('later','DOC-Q102','method-named server segments, uncaptured loader errors, a non-working diff, no release, a mismatched include'),
  ]),
+ ('SolidStart', [
+   ('must','DOC-Q103','the guide describes SolidStart 1; on SolidStart 2 its config, start command and middleware import do not exist'),
+   ('should','DOC-Q104','the Vite plugin deletes every source map below the project root, node_modules included'),
+   ('should','DOC-Q105','the verify button promises an API-route error that is never sent; server functions undocumented'),
+   ('later','DOC-Q106','header-based continuation, method-named server spans, transactions, a phantom build log line'),
+ ]),
  ('Nuxt', [
    ('should','DOC-Q90','the pages still make --import the crucial step; the server config is bundled into the Nitro build'),
    ('later','DOC-Q91','deprecated inject modes documented as current, Nuxt 4 missing, a verify button that creates a second issue'),
