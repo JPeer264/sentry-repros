@@ -153,5 +153,31 @@
    "late init (full Vue build)": "works",
    "late init (runtime-only build)": "broken (renders nothing)"
   }
+ },
+ {
+  "id": "QS-express",
+  "path": "quickstarts/express",
+  "runtime": "Node 26.5.0, develop 03aaf42455; express 4.22.2 and 5.2.1",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's --import, CommonJS, first-line import and NODE_OPTIONS paths deliver route-named segments with middleware and handler spans, auto.http.express error events with request data, and logs. Defects: the ESM tab's extensionless import never starts the app; the late-initialization page rests on the removed @sentry/node/preload entry; the async tracing verify snippet hangs on Express 4 and works on Express 5; the esm-without-import page's framework warning is wrong for Express; setupExpressErrorHandler is deprecated in the build and changes nothing; no expressIntegration page; an empty capture-errors include, an orphaned top-level-import include and an unreachable logs section.",
+  "sdk": {
+   "name": "sentry.javascript.node",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "--import (express 4)": "works",
+   "CommonJS require first line": "works",
+   "ESM tab verbatim (import \"./instrument\")": "broken (ERR_MODULE_NOT_FOUND)",
+   "first-line import \"./instrument.mjs\"": "works",
+   "NODE_OPTIONS --import": "works",
+   "--require": "works with the unsupported banner",
+   "without setupExpressErrorHandler": "works (same events)",
+   "expressIntegration({ shouldHandleError })": "works",
+   "late init (--import @sentry/node/preload)": "broken (subpath not exported)",
+   "express 5": "works",
+   "express 5 without the handler": "works"
+  }
  }
 ]

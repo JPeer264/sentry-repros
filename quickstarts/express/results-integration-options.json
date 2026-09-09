@@ -1,0 +1,5263 @@
+{
+  "id": "QS-express",
+  "variant": "integration-options",
+  "command": "node --import ./instrument-options.mjs app-no-handler.mjs",
+  "express_version": "4.22.2",
+  "sdk": {
+    "name": "sentry.javascript.node",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "steps": [
+    {
+      "route": "/users/42",
+      "http_code": "200",
+      "seconds": "0.002371",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-sentry",
+      "http_code": "500",
+      "seconds": "0.003651",
+      "curl_exit": 0
+    },
+    {
+      "route": "/error-404",
+      "http_code": "404",
+      "seconds": "0.001700",
+      "curl_exit": 0
+    },
+    {
+      "route": "/error-503",
+      "http_code": "503",
+      "seconds": "0.001659",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-log",
+      "http_code": "200",
+      "seconds": "0.001202",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-sentry-tracing",
+      "http_code": "000",
+      "seconds": "3.011606",
+      "curl_exit": 28
+    },
+    {
+      "route": "/sentinel",
+      "http_code": "200",
+      "seconds": "0.002752",
+      "curl_exit": 0
+    }
+  ],
+  "console": {
+    "line_count": 486,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 93936, thread: main.",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Error: My first Sentry error!",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "  name: /error-404",
+      "  root description: GET /error-404",
+      "Sentry Logger [log]: Captured error event `custom 404`",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/error-404\" with ID a82f2442906126b0",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /error-404\" with ID 927f8da7e794bc6e",
+      "Error: custom 404",
+      "  name: /error-503",
+      "  root description: GET /error-503",
+      "Sentry Logger [log]: Captured error event `custom 503`",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/error-503\" with ID 8f049c8e75460dbc",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /error-503\" with ID a2d5d7e99ab2cea7",
+      "Error: custom 503",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason:",
+      "Error: My first Sentry error!",
+      "Sentry Logger [log]: Captured error event `sentinel`"
+    ],
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "LinkedErrors",
+      "RequestData",
+      "NodeSystemError",
+      "ConversationId",
+      "Console",
+      "Http",
+      "NodeFetch",
+      "OnUncaughtException",
+      "OnUnhandledRejection",
+      "ContextLines",
+      "LocalVariablesAsync",
+      "Context",
+      "ChildProcess",
+      "WorkerThreads",
+      "ProcessSession",
+      "Modules",
+      "Express",
+      "Fastify",
+      "Hapi",
+      "Koa",
+      "Graphql",
+      "Mongo",
+      "Mongoose",
+      "Mysql",
+      "Mysql2",
+      "Redis",
+      "Postgres",
+      "Prisma",
+      "Tedious",
+      "GenericPool",
+      "Kafka",
+      "Amqplib",
+      "LruMemoizer",
+      "Aws",
+      "LangChain",
+      "LangGraph",
+      "Mastra",
+      "VercelAI",
+      "OpenAI",
+      "Anthropic_AI",
+      "Google_GenAI",
+      "PostgresJs",
+      "Firebase",
+      "SpanStreaming"
+    ],
+    "integration_count": 46,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 93936, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: [instrumentation:graphql] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Graphql",
+      "Sentry Logger [log]: [instrumentation:mongodb] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mongo",
+      "Sentry Logger [log]: [instrumentation:mongoose] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mongoose",
+      "Sentry Logger [log]: [instrumentation:mysql] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mysql",
+      "Sentry Logger [log]: [instrumentation:mysql2] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mysql2",
+      "Sentry Logger [log]: [instrumentation:@redis/client, redis] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: [instrumentation:@redis/client, redis] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: [instrumentation:ioredis] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Redis",
+      "Sentry Logger [log]: [instrumentation:pg, pg-pool] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Postgres",
+      "Sentry Logger [log]: Integration installed: Prisma",
+      "Sentry Logger [log]: [instrumentation:tedious] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Tedious",
+      "Sentry Logger [log]: [instrumentation:generic-pool] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: GenericPool",
+      "Sentry Logger [log]: [instrumentation:kafkajs] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Kafka",
+      "Sentry Logger [log]: [instrumentation:amqplib] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Amqplib",
+      "Sentry Logger [log]: [instrumentation:lru-memoizer] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: LruMemoizer",
+      "Sentry Logger [log]: [instrumentation:@smithy/core, @smithy/smithy-client, @aws-sdk/smithy-client] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Aws",
+      "Sentry Logger [log]: [instrumentation:@langchain/core, @langchain/openai, @langchain/google-genai, @langchain/mistralai, @langchain/google-common] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: [instrumentation:@langchain/core, @langchain/openai, @langchain/google-genai, @langchain/mistralai, @langchain/google-common] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: LangChain",
+      "Sentry Logger [log]: [instrumentation:@langchain/langgraph] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: LangGraph",
+      "Sentry Logger [log]: [instrumentation:@mastra/core] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mastra",
+      "Sentry Logger [log]: [instrumentation:ai] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: VercelAI",
+      "Sentry Logger [log]: [instrumentation:openai] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: OpenAI",
+      "Sentry Logger [log]: [instrumentation:@anthropic-ai/sdk] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Anthropic_AI",
+      "Sentry Logger [log]: [instrumentation:@google/genai] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Google_GenAI",
+      "Sentry Logger [log]: [instrumentation:postgres] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: PostgresJs",
+      "Sentry Logger [log]: [instrumentation:@firebase/firestore, firebase-functions] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Firebase",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: [instrumentation:express, router] \"express\" injected at runtime, subscribing now",
+      "Sentry Logger [log]: [instrumentation:express, router] subscribing to channels",
+      "app listening 4717",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: 8ea8932d3ebdcbae",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: 83020ecd05f46186",
+      "  parent ID: 8ea8932d3ebdcbae",
+      "  root ID: 8ea8932d3ebdcbae",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: 8ccd334412a8f64b",
+      "  parent ID: 8ea8932d3ebdcbae",
+      "  root ID: 8ea8932d3ebdcbae",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: 9fc4fb6ac32d3360",
+      "  parent ID: 8ea8932d3ebdcbae",
+      "  root ID: 8ea8932d3ebdcbae",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID 9fc4fb6ac32d3360",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID 8ccd334412a8f64b",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID 83020ecd05f46186",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID 8ea8932d3ebdcbae",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: 9a491f30590cfd18",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: b892ee8591560832",
+      "  parent ID: 9a491f30590cfd18",
+      "  root ID: 9a491f30590cfd18",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: 9066bad63d23ac1b",
+      "  parent ID: 9a491f30590cfd18",
+      "  root ID: 9a491f30590cfd18",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: ab57f905eb68c732",
+      "  parent ID: 9a491f30590cfd18",
+      "  root ID: 9a491f30590cfd18",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: handler",
+      "  name: /users/:id",
+      "  ID: a4d99e1d91ebc3f7",
+      "  parent ID: 9a491f30590cfd18",
+      "  root ID: 9a491f30590cfd18",
+      "  root op: http.server",
+      "  root description: GET /users/:id",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID ab57f905eb68c732",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID 9066bad63d23ac1b",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID b892ee8591560832",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/users/:id\" with ID a4d99e1d91ebc3f7",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /users/:id\" with ID 9a491f30590cfd18",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: 85723fe44d4610d2",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: b21606667a944915",
+      "  parent ID: 85723fe44d4610d2",
+      "  root ID: 85723fe44d4610d2",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: a51f36f24b218576",
+      "  parent ID: 85723fe44d4610d2",
+      "  root ID: 85723fe44d4610d2",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: ae08b676264cd775",
+      "  parent ID: 85723fe44d4610d2",
+      "  root ID: 85723fe44d4610d2",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: handler",
+      "  name: /debug-sentry",
+      "  ID: 8736ef0145b183c2",
+      "  parent ID: 85723fe44d4610d2",
+      "  root ID: 85723fe44d4610d2",
+      "  root op: http.server",
+      "  root description: GET /debug-sentry",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/debug-sentry\" with ID 8736ef0145b183c2",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID ae08b676264cd775",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID a51f36f24b218576",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID b21606667a944915",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /debug-sentry\" with ID 85723fe44d4610d2",
+      "Error: My first Sentry error!",
+      "    at mainHandler (file://$REPRO/quickstarts/express/routes.mjs:11:11)",
+      "    at Layer.__apm$wrapped ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:49:9)",
+      "    at __apm$traced ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:54:26)",
+      "    at $REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:81:14",
+      "    at Channel.runStores (node:diagnostics_channel:202:12)",
+      "    at Layer.handle [as handle_request] ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:79:33)",
+      "    at next ($REPRO/quickstarts/express/node_modules/express/lib/router/route.js:149:13)",
+      "    at Route.dispatch ($REPRO/quickstarts/express/node_modules/express/lib/router/route.js:119:3)",
+      "    at Layer.__apm$wrapped ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:49:9)",
+      "    at __apm$traced ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:54:26)",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: 927f8da7e794bc6e",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: 8e0e2c8bec1b8713",
+      "  parent ID: 927f8da7e794bc6e",
+      "  root ID: 927f8da7e794bc6e",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: 879b504087f5a415",
+      "  parent ID: 927f8da7e794bc6e",
+      "  root ID: 927f8da7e794bc6e",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: b283ae7fb00c17fe",
+      "  parent ID: 927f8da7e794bc6e",
+      "  root ID: 927f8da7e794bc6e",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: handler",
+      "  name: /error-404",
+      "  ID: a82f2442906126b0",
+      "  parent ID: 927f8da7e794bc6e",
+      "  root ID: 927f8da7e794bc6e",
+      "  root op: http.server",
+      "  root description: GET /error-404",
+      "Sentry Logger [log]: Captured error event `custom 404`",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/error-404\" with ID a82f2442906126b0",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID b283ae7fb00c17fe",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID 879b504087f5a415",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID 8e0e2c8bec1b8713",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /error-404\" with ID 927f8da7e794bc6e",
+      "Error: custom 404",
+      "    at file://$REPRO/quickstarts/express/routes.mjs:32:24",
+      "    at Layer.__apm$wrapped ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:49:9)",
+      "    at __apm$traced ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:54:26)",
+      "    at $REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:81:14",
+      "    at Channel.runStores (node:diagnostics_channel:202:12)",
+      "    at Layer.handle [as handle_request] ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:79:33)",
+      "    at next ($REPRO/quickstarts/express/node_modules/express/lib/router/route.js:149:13)",
+      "    at Route.dispatch ($REPRO/quickstarts/express/node_modules/express/lib/router/route.js:119:3)",
+      "    at Layer.__apm$wrapped ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:49:9)",
+      "    at __apm$traced ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:54:26)",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: a2d5d7e99ab2cea7",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: 92d688186e4d5037",
+      "  parent ID: a2d5d7e99ab2cea7",
+      "  root ID: a2d5d7e99ab2cea7",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: 96160c66faedfab7",
+      "  parent ID: a2d5d7e99ab2cea7",
+      "  root ID: a2d5d7e99ab2cea7",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: 9d862f26493e53a7",
+      "  parent ID: a2d5d7e99ab2cea7",
+      "  root ID: a2d5d7e99ab2cea7",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: handler",
+      "  name: /error-503",
+      "  ID: 8f049c8e75460dbc",
+      "  parent ID: a2d5d7e99ab2cea7",
+      "  root ID: a2d5d7e99ab2cea7",
+      "  root op: http.server",
+      "  root description: GET /error-503",
+      "Sentry Logger [log]: Captured error event `custom 503`",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/error-503\" with ID 8f049c8e75460dbc",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID 9d862f26493e53a7",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID 96160c66faedfab7",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID 92d688186e4d5037",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /error-503\" with ID a2d5d7e99ab2cea7",
+      "Error: custom 503",
+      "    at file://$REPRO/quickstarts/express/routes.mjs:35:24",
+      "    at Layer.__apm$wrapped ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:49:9)",
+      "    at __apm$traced ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:54:26)",
+      "    at $REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:81:14",
+      "    at Channel.runStores (node:diagnostics_channel:202:12)",
+      "    at Layer.handle [as handle_request] ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:79:33)",
+      "    at next ($REPRO/quickstarts/express/node_modules/express/lib/router/route.js:149:13)",
+      "    at Route.dispatch ($REPRO/quickstarts/express/node_modules/express/lib/router/route.js:119:3)",
+      "    at Layer.__apm$wrapped ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:49:9)",
+      "    at __apm$traced ($REPRO/quickstarts/express/node_modules/express/lib/router/layer.js:54:26)",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: b420088affb1acbc",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: 943307e7f76e7801",
+      "  parent ID: b420088affb1acbc",
+      "  root ID: b420088affb1acbc",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: a49a4281c98daf16",
+      "  parent ID: b420088affb1acbc",
+      "  root ID: b420088affb1acbc",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: aa870c44f5843579",
+      "  parent ID: b420088affb1acbc",
+      "  root ID: b420088affb1acbc",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: handler",
+      "  name: /debug-log",
+      "  ID: b7c6deb41a670c11",
+      "  parent ID: b420088affb1acbc",
+      "  root ID: b420088affb1acbc",
+      "  root op: http.server",
+      "  root description: GET /debug-log",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID aa870c44f5843579",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID a49a4281c98daf16",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID 943307e7f76e7801",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/debug-log\" with ID b7c6deb41a670c11",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /debug-log\" with ID b420088affb1acbc",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: ae0e4b3fb96a8d79",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: 90e8baa3da9b80a8",
+      "  parent ID: ae0e4b3fb96a8d79",
+      "  root ID: ae0e4b3fb96a8d79",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: b9b58cd5fab36c43",
+      "  parent ID: ae0e4b3fb96a8d79",
+      "  root ID: ae0e4b3fb96a8d79",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: 89a2a35b7f90ca82",
+      "  parent ID: ae0e4b3fb96a8d79",
+      "  root ID: ae0e4b3fb96a8d79",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: handler",
+      "  name: /debug-sentry-tracing",
+      "  ID: 9f7e4b8b737d335b",
+      "  parent ID: ae0e4b3fb96a8d79",
+      "  root ID: ae0e4b3fb96a8d79",
+      "  root op: http.server",
+      "  root description: GET /debug-sentry-tracing",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: test",
+      "  name: My First Test Transaction",
+      "  ID: 9d720161fc1b96b1",
+      "  parent ID: 9f7e4b8b737d335b",
+      "  root ID: ae0e4b3fb96a8d79",
+      "  root op: http.server",
+      "  root description: GET /debug-sentry-tracing",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID 89a2a35b7f90ca82",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID b9b58cd5fab36c43",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID 90e8baa3da9b80a8",
+      "Sentry Logger [log]: [Tracing] Finishing \"test\" span \"My First Test Transaction\" with ID 9d720161fc1b96b1",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason:",
+      "Error: My first Sentry error!",
+      "    at file://$REPRO/quickstarts/express/routes.mjs:24:15",
+      "    at async file://$REPRO/quickstarts/express/routes.mjs:17:5",
+      "Sentry Logger [log]: Sending span envelope for trace 561702135b2e4ed2a882abcc88e5f74f with 4 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 9a1d7469fcea4395b2fb608ba4fff89a with 5 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 21b5a3a0d32c4e47b8e796989738c887 with 5 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 2766dc18db3d4ff0a1f71bbac3f32b37 with 5 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 141febfcd1f241548155104daa38680d with 5 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 33890cbaf871429db7f37961a761c6df with 5 spans",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /debug-sentry-tracing\" with ID ae0e4b3fb96a8d79",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  op: http.server",
+      "  name: GET",
+      "  ID: 970b8562544f80fc",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: query",
+      "  ID: ab98bd59043fb4af",
+      "  parent ID: 970b8562544f80fc",
+      "  root ID: 970b8562544f80fc",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: expressInit",
+      "  ID: 8ef5b046e610e5bc",
+      "  parent ID: 970b8562544f80fc",
+      "  root ID: 970b8562544f80fc",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: middleware",
+      "  name: auditMiddleware",
+      "  ID: 8df201915ad95e75",
+      "  parent ID: 970b8562544f80fc",
+      "  root ID: 970b8562544f80fc",
+      "  root op: http.server",
+      "  root description: GET",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "  op: handler",
+      "  name: /sentinel",
+      "  ID: babdf5dbd4e259e3",
+      "  parent ID: 970b8562544f80fc",
+      "  root ID: 970b8562544f80fc",
+      "  root op: http.server",
+      "  root description: GET /sentinel",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"auditMiddleware\" with ID 8df201915ad95e75",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"expressInit\" with ID 8ef5b046e610e5bc",
+      "Sentry Logger [log]: [Tracing] Finishing \"middleware\" span \"query\" with ID ab98bd59043fb4af",
+      "Sentry Logger [log]: [Tracing] Finishing \"handler\" span \"/sentinel\" with ID babdf5dbd4e259e3",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /sentinel\" with ID 970b8562544f80fc",
+      "Sentry Logger [log]: Sending span envelope for trace 10176a11efb04476bbd9ed9e7ee2cbf1 with 5 spans",
+      "Sentry Logger [log]: Sending span envelope for trace b33043508b4849439329e66ef4b28b13 with 5 spans"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 5,
+      "span": 8,
+      "transaction": 0,
+      "log": 1
+    },
+    "items": [
+      {
+        "type": "event",
+        "exception": "Error: My first Sentry error!",
+        "mechanism": "auto.http.express",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /debug-sentry",
+        "trace_id": "21b5a3a0d32c4e47b8e796989738c887",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4717/debug-sentry",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4717",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "Error: custom 404",
+        "mechanism": "auto.http.express",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /error-404",
+        "trace_id": "2766dc18db3d4ff0a1f71bbac3f32b37",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4717/error-404",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4717",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "Error: custom 503",
+        "mechanism": "auto.http.express",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /error-503",
+        "trace_id": "141febfcd1f241548155104daa38680d",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4717/error-503",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4717",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "Error: My first Sentry error!",
+        "mechanism": "auto.node.onunhandledrejection",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /debug-sentry-tracing",
+        "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4717/debug-sentry-tracing",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4717",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "561702135b2e4ed2a882abcc88e5f74f",
+        "items": [
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "http.server GET"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "8ea8932d3ebdcbae",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "8ea8932d3ebdcbae",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "8ea8932d3ebdcbae",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "GET",
+            "segment_name": "GET",
+            "status_code": 404,
+            "op": "http.server",
+            "status": "error",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/nope"
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "9a1d7469fcea4395b2fb608ba4fff89a",
+        "items": [
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "handler /users/:id",
+          "http.server GET /users/:id"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET /users/:id",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "9a491f30590cfd18",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET /users/:id",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "9a491f30590cfd18",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET /users/:id",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "9a491f30590cfd18",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "/users/:id",
+            "segment_name": "GET /users/:id",
+            "op": "handler",
+            "status": "ok",
+            "parent_span_id": "9a491f30590cfd18",
+            "is_segment": false,
+            "origin": "auto.http.express",
+            "route": "/users/:id"
+          },
+          {
+            "name": "GET /users/:id",
+            "segment_name": "GET /users/:id",
+            "status_code": 200,
+            "op": "http.server",
+            "status": "ok",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/users/42",
+            "route": "/users/:id"
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "21b5a3a0d32c4e47b8e796989738c887",
+        "items": [
+          "handler /debug-sentry",
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "http.server GET /debug-sentry"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "/debug-sentry",
+            "segment_name": "GET /debug-sentry",
+            "op": "handler",
+            "status": "error",
+            "parent_span_id": "85723fe44d4610d2",
+            "is_segment": false,
+            "origin": "auto.http.express",
+            "route": "/debug-sentry"
+          },
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET /debug-sentry",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "85723fe44d4610d2",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET /debug-sentry",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "85723fe44d4610d2",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET /debug-sentry",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "85723fe44d4610d2",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "GET /debug-sentry",
+            "segment_name": "GET /debug-sentry",
+            "status_code": 500,
+            "op": "http.server",
+            "status": "error",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/debug-sentry",
+            "route": "/debug-sentry"
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "2766dc18db3d4ff0a1f71bbac3f32b37",
+        "items": [
+          "handler /error-404",
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "http.server GET /error-404"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "/error-404",
+            "segment_name": "GET /error-404",
+            "op": "handler",
+            "status": "error",
+            "parent_span_id": "927f8da7e794bc6e",
+            "is_segment": false,
+            "origin": "auto.http.express",
+            "route": "/error-404"
+          },
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET /error-404",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "927f8da7e794bc6e",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET /error-404",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "927f8da7e794bc6e",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET /error-404",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "927f8da7e794bc6e",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "GET /error-404",
+            "segment_name": "GET /error-404",
+            "status_code": 404,
+            "op": "http.server",
+            "status": "error",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/error-404",
+            "route": "/error-404"
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "141febfcd1f241548155104daa38680d",
+        "items": [
+          "handler /error-503",
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "http.server GET /error-503"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "/error-503",
+            "segment_name": "GET /error-503",
+            "op": "handler",
+            "status": "error",
+            "parent_span_id": "a2d5d7e99ab2cea7",
+            "is_segment": false,
+            "origin": "auto.http.express",
+            "route": "/error-503"
+          },
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET /error-503",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "a2d5d7e99ab2cea7",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET /error-503",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "a2d5d7e99ab2cea7",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET /error-503",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "a2d5d7e99ab2cea7",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "GET /error-503",
+            "segment_name": "GET /error-503",
+            "status_code": 503,
+            "op": "http.server",
+            "status": "error",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/error-503",
+            "route": "/error-503"
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "33890cbaf871429db7f37961a761c6df",
+        "items": [
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "handler /debug-log",
+          "http.server GET /debug-log"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET /debug-log",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "b420088affb1acbc",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET /debug-log",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "b420088affb1acbc",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET /debug-log",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "b420088affb1acbc",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "/debug-log",
+            "segment_name": "GET /debug-log",
+            "op": "handler",
+            "status": "ok",
+            "parent_span_id": "b420088affb1acbc",
+            "is_segment": false,
+            "origin": "auto.http.express",
+            "route": "/debug-log"
+          },
+          {
+            "name": "GET /debug-log",
+            "segment_name": "GET /debug-log",
+            "status_code": 200,
+            "op": "http.server",
+            "status": "ok",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/debug-log",
+            "route": "/debug-log"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /sentinel",
+        "trace_id": "b33043508b4849439329e66ef4b28b13",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4717/sentinel",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4717",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1",
+        "items": [
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "test My First Test Transaction",
+          "http.server GET /debug-sentry-tracing"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET /debug-sentry-tracing",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "ae0e4b3fb96a8d79",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET /debug-sentry-tracing",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "ae0e4b3fb96a8d79",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET /debug-sentry-tracing",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "ae0e4b3fb96a8d79",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "My First Test Transaction",
+            "segment_name": "GET /debug-sentry-tracing",
+            "op": "test",
+            "status": "error",
+            "parent_span_id": "9f7e4b8b737d335b",
+            "is_segment": false,
+            "origin": "manual"
+          },
+          {
+            "name": "GET /debug-sentry-tracing",
+            "segment_name": "GET /debug-sentry-tracing",
+            "status_code": 200,
+            "op": "http.server",
+            "status": "ok",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/debug-sentry-tracing",
+            "route": "/debug-sentry-tracing"
+          }
+        ]
+      },
+      {
+        "type": "span",
+        "sdk_version": "10.67.0",
+        "trace_id": "b33043508b4849439329e66ef4b28b13",
+        "items": [
+          "middleware auditMiddleware",
+          "middleware expressInit",
+          "middleware query",
+          "handler /sentinel",
+          "http.server GET /sentinel"
+        ],
+        "sdk": "sentry.javascript.node",
+        "raw": [
+          {
+            "name": "auditMiddleware",
+            "segment_name": "GET /sentinel",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "970b8562544f80fc",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "expressInit",
+            "segment_name": "GET /sentinel",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "970b8562544f80fc",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "query",
+            "segment_name": "GET /sentinel",
+            "op": "middleware",
+            "status": "ok",
+            "parent_span_id": "970b8562544f80fc",
+            "is_segment": false,
+            "origin": "auto.http.express"
+          },
+          {
+            "name": "/sentinel",
+            "segment_name": "GET /sentinel",
+            "op": "handler",
+            "status": "ok",
+            "parent_span_id": "970b8562544f80fc",
+            "is_segment": false,
+            "origin": "auto.http.express",
+            "route": "/sentinel"
+          },
+          {
+            "name": "GET /sentinel",
+            "segment_name": "GET /sentinel",
+            "status_code": 200,
+            "op": "http.server",
+            "status": "ok",
+            "is_segment": true,
+            "origin": "auto.http.http_server",
+            "url": "http://127.0.0.1:4717/sentinel",
+            "route": "/sentinel"
+          }
+        ]
+      },
+      {
+        "type": "log",
+        "items": [
+          "info: User example action completed"
+        ]
+      }
+    ]
+  },
+  "spansRaw": [
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "auditMiddleware",
+          "span_id": "9fc4fb6ac32d3360",
+          "trace_id": "561702135b2e4ed2a882abcc88e5f74f",
+          "parent_span_id": "8ea8932d3ebdcbae",
+          "start_timestamp": 1788929895.656741,
+          "end_timestamp": 1788929895.657211,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8ea8932d3ebdcbae",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "8ccd334412a8f64b",
+          "trace_id": "561702135b2e4ed2a882abcc88e5f74f",
+          "parent_span_id": "8ea8932d3ebdcbae",
+          "start_timestamp": 1788929895.6565506,
+          "end_timestamp": 1788929895.657753,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8ea8932d3ebdcbae",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "83020ecd05f46186",
+          "trace_id": "561702135b2e4ed2a882abcc88e5f74f",
+          "parent_span_id": "8ea8932d3ebdcbae",
+          "start_timestamp": 1788929895.6562319,
+          "end_timestamp": 1788929895.6578505,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8ea8932d3ebdcbae",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET",
+          "span_id": "8ea8932d3ebdcbae",
+          "trace_id": "561702135b2e4ed2a882abcc88e5f74f",
+          "start_timestamp": 1788929895.6553872,
+          "end_timestamp": 1788929895.6592603,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "not_found",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/nope",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/nope",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 404,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "NOT FOUND",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 63225,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63225,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8ea8932d3ebdcbae",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 119357440,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18976669696,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1199423488,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "auditMiddleware",
+          "span_id": "ab57f905eb68c732",
+          "trace_id": "9a1d7469fcea4395b2fb608ba4fff89a",
+          "parent_span_id": "9a491f30590cfd18",
+          "start_timestamp": 1788929895.6693432,
+          "end_timestamp": 1788929895.670567,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /users/:id",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "9a491f30590cfd18",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "9066bad63d23ac1b",
+          "trace_id": "9a1d7469fcea4395b2fb608ba4fff89a",
+          "parent_span_id": "9a491f30590cfd18",
+          "start_timestamp": 1788929895.6692743,
+          "end_timestamp": 1788929895.6706605,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /users/:id",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "9a491f30590cfd18",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "b892ee8591560832",
+          "trace_id": "9a1d7469fcea4395b2fb608ba4fff89a",
+          "parent_span_id": "9a491f30590cfd18",
+          "start_timestamp": 1788929895.6691797,
+          "end_timestamp": 1788929895.6707165,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /users/:id",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "9a491f30590cfd18",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "/users/:id",
+          "span_id": "a4d99e1d91ebc3f7",
+          "trace_id": "9a1d7469fcea4395b2fb608ba4fff89a",
+          "parent_span_id": "9a491f30590cfd18",
+          "start_timestamp": 1788929895.6695762,
+          "end_timestamp": 1788929895.6708133,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "handler",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "/users/:id",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "request_handler",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/users/:id",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /users/:id",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "9a491f30590cfd18",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET /users/:id",
+          "span_id": "9a491f30590cfd18",
+          "trace_id": "9a1d7469fcea4395b2fb608ba4fff89a",
+          "start_timestamp": 1788929895.669069,
+          "end_timestamp": 1788929895.6709037,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/users/42",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/users/42",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/users/:id",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "OK",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 63226,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63226,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /users/:id",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "9a491f30590cfd18",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 119652352,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18976669696,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1199423488,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "/debug-sentry",
+          "span_id": "8736ef0145b183c2",
+          "trace_id": "21b5a3a0d32c4e47b8e796989738c887",
+          "parent_span_id": "85723fe44d4610d2",
+          "start_timestamp": 1788929895.680882,
+          "end_timestamp": 1788929895.6831157,
+          "is_segment": false,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "My first Sentry error!",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "handler",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "/debug-sentry",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "request_handler",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/debug-sentry",
+              "type": "string"
+            },
+            "error.type": {
+              "value": "Error",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "85723fe44d4610d2",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "auditMiddleware",
+          "span_id": "ae08b676264cd775",
+          "trace_id": "21b5a3a0d32c4e47b8e796989738c887",
+          "parent_span_id": "85723fe44d4610d2",
+          "start_timestamp": 1788929895.6808195,
+          "end_timestamp": 1788929895.6831963,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "85723fe44d4610d2",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "a51f36f24b218576",
+          "trace_id": "21b5a3a0d32c4e47b8e796989738c887",
+          "parent_span_id": "85723fe44d4610d2",
+          "start_timestamp": 1788929895.6807582,
+          "end_timestamp": 1788929895.6832452,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "85723fe44d4610d2",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "b21606667a944915",
+          "trace_id": "21b5a3a0d32c4e47b8e796989738c887",
+          "parent_span_id": "85723fe44d4610d2",
+          "start_timestamp": 1788929895.6806788,
+          "end_timestamp": 1788929895.6832747,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "85723fe44d4610d2",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET /debug-sentry",
+          "span_id": "85723fe44d4610d2",
+          "trace_id": "21b5a3a0d32c4e47b8e796989738c887",
+          "start_timestamp": 1788929895.6806023,
+          "end_timestamp": 1788929895.6836452,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "internal_error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/debug-sentry",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/debug-sentry",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/debug-sentry",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 500,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "INTERNAL SERVER ERROR",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 63227,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63227,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "85723fe44d4610d2",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 119980032,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18976669696,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1199423488,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "/error-404",
+          "span_id": "a82f2442906126b0",
+          "trace_id": "2766dc18db3d4ff0a1f71bbac3f32b37",
+          "parent_span_id": "927f8da7e794bc6e",
+          "start_timestamp": 1788929895.6937075,
+          "end_timestamp": 1788929895.6941133,
+          "is_segment": false,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "custom 404",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "handler",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "/error-404",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "request_handler",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/error-404",
+              "type": "string"
+            },
+            "error.type": {
+              "value": "Error",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-404",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "927f8da7e794bc6e",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "auditMiddleware",
+          "span_id": "b283ae7fb00c17fe",
+          "trace_id": "2766dc18db3d4ff0a1f71bbac3f32b37",
+          "parent_span_id": "927f8da7e794bc6e",
+          "start_timestamp": 1788929895.6936576,
+          "end_timestamp": 1788929895.6941671,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-404",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "927f8da7e794bc6e",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "879b504087f5a415",
+          "trace_id": "2766dc18db3d4ff0a1f71bbac3f32b37",
+          "parent_span_id": "927f8da7e794bc6e",
+          "start_timestamp": 1788929895.6936104,
+          "end_timestamp": 1788929895.6941953,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-404",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "927f8da7e794bc6e",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "8e0e2c8bec1b8713",
+          "trace_id": "2766dc18db3d4ff0a1f71bbac3f32b37",
+          "parent_span_id": "927f8da7e794bc6e",
+          "start_timestamp": 1788929895.693544,
+          "end_timestamp": 1788929895.6942174,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-404",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "927f8da7e794bc6e",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET /error-404",
+          "span_id": "927f8da7e794bc6e",
+          "trace_id": "2766dc18db3d4ff0a1f71bbac3f32b37",
+          "start_timestamp": 1788929895.6934505,
+          "end_timestamp": 1788929895.6944246,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "not_found",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/error-404",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/error-404",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/error-404",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 404,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "NOT FOUND",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 63229,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63229,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-404",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "927f8da7e794bc6e",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 120340480,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18976669696,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1199423488,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "/error-503",
+          "span_id": "8f049c8e75460dbc",
+          "trace_id": "141febfcd1f241548155104daa38680d",
+          "parent_span_id": "a2d5d7e99ab2cea7",
+          "start_timestamp": 1788929895.7050228,
+          "end_timestamp": 1788929895.7053545,
+          "is_segment": false,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "custom 503",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "handler",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "/error-503",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "request_handler",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/error-503",
+              "type": "string"
+            },
+            "error.type": {
+              "value": "Error",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-503",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a2d5d7e99ab2cea7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "auditMiddleware",
+          "span_id": "9d862f26493e53a7",
+          "trace_id": "141febfcd1f241548155104daa38680d",
+          "parent_span_id": "a2d5d7e99ab2cea7",
+          "start_timestamp": 1788929895.7049832,
+          "end_timestamp": 1788929895.7054045,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-503",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a2d5d7e99ab2cea7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "96160c66faedfab7",
+          "trace_id": "141febfcd1f241548155104daa38680d",
+          "parent_span_id": "a2d5d7e99ab2cea7",
+          "start_timestamp": 1788929895.704938,
+          "end_timestamp": 1788929895.7054644,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-503",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a2d5d7e99ab2cea7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "92d688186e4d5037",
+          "trace_id": "141febfcd1f241548155104daa38680d",
+          "parent_span_id": "a2d5d7e99ab2cea7",
+          "start_timestamp": 1788929895.7048876,
+          "end_timestamp": 1788929895.7055063,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-503",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a2d5d7e99ab2cea7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET /error-503",
+          "span_id": "a2d5d7e99ab2cea7",
+          "trace_id": "141febfcd1f241548155104daa38680d",
+          "start_timestamp": 1788929895.704807,
+          "end_timestamp": 1788929895.7057314,
+          "is_segment": true,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "unavailable",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/error-503",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/error-503",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/error-503",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 503,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "SERVICE UNAVAILABLE",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 63230,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63230,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /error-503",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a2d5d7e99ab2cea7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 120455168,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18976669696,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1199423488,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "auditMiddleware",
+          "span_id": "aa870c44f5843579",
+          "trace_id": "33890cbaf871429db7f37961a761c6df",
+          "parent_span_id": "b420088affb1acbc",
+          "start_timestamp": 1788929895.7157638,
+          "end_timestamp": 1788929895.716181,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-log",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b420088affb1acbc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "a49a4281c98daf16",
+          "trace_id": "33890cbaf871429db7f37961a761c6df",
+          "parent_span_id": "b420088affb1acbc",
+          "start_timestamp": 1788929895.7157302,
+          "end_timestamp": 1788929895.716223,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-log",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b420088affb1acbc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "943307e7f76e7801",
+          "trace_id": "33890cbaf871429db7f37961a761c6df",
+          "parent_span_id": "b420088affb1acbc",
+          "start_timestamp": 1788929895.7156904,
+          "end_timestamp": 1788929895.716244,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-log",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b420088affb1acbc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "/debug-log",
+          "span_id": "b7c6deb41a670c11",
+          "trace_id": "33890cbaf871429db7f37961a761c6df",
+          "parent_span_id": "b420088affb1acbc",
+          "start_timestamp": 1788929895.7157962,
+          "end_timestamp": 1788929895.7162952,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "handler",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "/debug-log",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "request_handler",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/debug-log",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-log",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b420088affb1acbc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET /debug-log",
+          "span_id": "b420088affb1acbc",
+          "trace_id": "33890cbaf871429db7f37961a761c6df",
+          "start_timestamp": 1788929895.7156312,
+          "end_timestamp": 1788929895.7163832,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/debug-log",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/debug-log",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/debug-log",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "OK",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 63231,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63231,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-log",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b420088affb1acbc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 120520704,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18976669696,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1199423488,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "auditMiddleware",
+          "span_id": "89a2a35b7f90ca82",
+          "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1",
+          "parent_span_id": "ae0e4b3fb96a8d79",
+          "start_timestamp": 1788929895.7257462,
+          "end_timestamp": 1788929895.7261047,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry-tracing",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "ae0e4b3fb96a8d79",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "b9b58cd5fab36c43",
+          "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1",
+          "parent_span_id": "ae0e4b3fb96a8d79",
+          "start_timestamp": 1788929895.7256997,
+          "end_timestamp": 1788929895.7261393,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry-tracing",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "ae0e4b3fb96a8d79",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "90e8baa3da9b80a8",
+          "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1",
+          "parent_span_id": "ae0e4b3fb96a8d79",
+          "start_timestamp": 1788929895.725655,
+          "end_timestamp": 1788929895.7261653,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry-tracing",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "ae0e4b3fb96a8d79",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "My First Test Transaction",
+          "span_id": "9d720161fc1b96b1",
+          "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1",
+          "parent_span_id": "9f7e4b8b737d335b",
+          "start_timestamp": 1788929895.7259424,
+          "end_timestamp": 1788929895.828459,
+          "is_segment": false,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "internal_error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "manual",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "test",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry-tracing",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "ae0e4b3fb96a8d79",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET /debug-sentry-tracing",
+          "span_id": "ae0e4b3fb96a8d79",
+          "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1",
+          "start_timestamp": 1788929895.7255962,
+          "end_timestamp": 1788929898.7379615,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/debug-sentry-tracing",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/debug-sentry-tracing",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/debug-sentry-tracing",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "client.port": {
+              "value": 63232,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63232,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /debug-sentry-tracing",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "ae0e4b3fb96a8d79",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 121651200,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18953469952,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1152827392,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "auditMiddleware",
+          "span_id": "8df201915ad95e75",
+          "trace_id": "b33043508b4849439329e66ef4b28b13",
+          "parent_span_id": "970b8562544f80fc",
+          "start_timestamp": 1788929898.7614217,
+          "end_timestamp": 1788929898.7625,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "auditMiddleware",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /sentinel",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "970b8562544f80fc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "expressInit",
+          "span_id": "8ef5b046e610e5bc",
+          "trace_id": "b33043508b4849439329e66ef4b28b13",
+          "parent_span_id": "970b8562544f80fc",
+          "start_timestamp": 1788929898.7613354,
+          "end_timestamp": 1788929898.7625825,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "expressInit",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /sentinel",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "970b8562544f80fc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "span_id": "ab98bd59043fb4af",
+          "trace_id": "b33043508b4849439329e66ef4b28b13",
+          "parent_span_id": "970b8562544f80fc",
+          "start_timestamp": 1788929898.7612183,
+          "end_timestamp": 1788929898.762629,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "query",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "middleware",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /sentinel",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "970b8562544f80fc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "/sentinel",
+          "span_id": "babdf5dbd4e259e3",
+          "trace_id": "b33043508b4849439329e66ef4b28b13",
+          "parent_span_id": "970b8562544f80fc",
+          "start_timestamp": 1788929898.7614977,
+          "end_timestamp": 1788929898.762777,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.express",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "handler",
+              "type": "string"
+            },
+            "express.name": {
+              "value": "/sentinel",
+              "type": "string"
+            },
+            "express.type": {
+              "value": "request_handler",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/sentinel",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /sentinel",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "970b8562544f80fc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET /sentinel",
+          "span_id": "970b8562544f80fc",
+          "trace_id": "b33043508b4849439329e66ef4b28b13",
+          "start_timestamp": 1788929898.761077,
+          "end_timestamp": 1788929898.7629092,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.http_server",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "sentry.kind": {
+              "value": "server",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4717/sentinel",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/sentinel",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "network.transport": {
+              "value": "tcp",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4717",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.route": {
+              "value": "/sentinel",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "http.response.status_text": {
+              "value": "OK",
+              "type": "string"
+            },
+            "client.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "network.local.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.local.port": {
+              "value": 4717,
+              "type": "integer"
+            },
+            "client.port": {
+              "value": 63248,
+              "type": "integer"
+            },
+            "network.peer.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "network.peer.port": {
+              "value": 63248,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /sentinel",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "970b8562544f80fc",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.node",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "EventFilters",
+                "FunctionToString",
+                "LinkedErrors",
+                "RequestData",
+                "NodeSystemError",
+                "ConversationId",
+                "Console",
+                "Http",
+                "NodeFetch",
+                "OnUncaughtException",
+                "OnUnhandledRejection",
+                "ContextLines",
+                "LocalVariablesAsync",
+                "Context",
+                "ChildProcess",
+                "WorkerThreads",
+                "ProcessSession",
+                "Modules",
+                "Express",
+                "Fastify",
+                "Hapi",
+                "Koa",
+                "Graphql",
+                "Mongo",
+                "Mongoose",
+                "Mysql",
+                "Mysql2",
+                "Redis",
+                "Postgres",
+                "Prisma",
+                "Tedious",
+                "GenericPool",
+                "Kafka",
+                "Amqplib",
+                "LruMemoizer",
+                "Aws",
+                "LangChain",
+                "LangGraph",
+                "Mastra",
+                "VercelAI",
+                "OpenAI",
+                "Anthropic_AI",
+                "Google_GenAI",
+                "PostgresJs",
+                "Firebase",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "process.runtime.engine.name": {
+              "value": "v8",
+              "type": "string"
+            },
+            "process.runtime.engine.version": {
+              "value": "14.6.202.34-node.24",
+              "type": "string"
+            },
+            "app.start_time": {
+              "value": "2026-09-09T04:58:15.423Z",
+              "type": "string"
+            },
+            "device.archs": {
+              "value": [
+                "arm64"
+              ],
+              "type": "array"
+            },
+            "device.boot_time": {
+              "value": "2026-09-07T11:23:00.556Z",
+              "type": "string"
+            },
+            "device.memory_size": {
+              "value": 68719476736,
+              "type": "integer"
+            },
+            "device.processor_count": {
+              "value": 16,
+              "type": "integer"
+            },
+            "device.cpu_description": {
+              "value": "Apple M4 Max",
+              "type": "string"
+            },
+            "device.processor_frequency": {
+              "value": 2400,
+              "type": "integer"
+            },
+            "culture.locale": {
+              "value": "en-US",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "os.name": {
+              "value": "macOS",
+              "type": "string"
+            },
+            "os.version": {
+              "value": "15.7.7",
+              "type": "string"
+            },
+            "os.kernel_version": {
+              "value": "24.6.0",
+              "type": "string"
+            },
+            "os.build": {
+              "value": "24G720",
+              "type": "string"
+            },
+            "app.memory": {
+              "value": 121896960,
+              "type": "integer"
+            },
+            "app.free_memory": {
+              "value": 18949079040,
+              "type": "integer"
+            },
+            "device.free_memory": {
+              "value": 1147453440,
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "verdict": {
+    "status": "works",
+    "checks": {
+      "app_started": true,
+      "app_alive_at_end": true,
+      "error_event_debug_sentry": [
+        {
+          "mechanism": "auto.http.express",
+          "handled": false,
+          "transaction": "GET /debug-sentry",
+          "request": "http://127.0.0.1:4717/debug-sentry",
+          "trace_id": "21b5a3a0d32c4e47b8e796989738c887"
+        }
+      ],
+      "error_event_tracing_route": [
+        {
+          "mechanism": "auto.node.onunhandledrejection",
+          "handled": false,
+          "transaction": "GET /debug-sentry-tracing",
+          "request": "http://127.0.0.1:4717/debug-sentry-tracing",
+          "trace_id": "10176a11efb04476bbd9ed9e7ee2cbf1"
+        }
+      ],
+      "error_404_captured": true,
+      "error_503_captured": true,
+      "sentinel_event": true,
+      "transaction_envelopes": 0,
+      "span_envelopes": 8,
+      "segments": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "error",
+          "status_code": 404,
+          "url": "http://127.0.0.1:4717/nope"
+        },
+        {
+          "name": "GET /users/:id",
+          "op": "http.server",
+          "route": "/users/:id",
+          "status": "ok",
+          "status_code": 200,
+          "url": "http://127.0.0.1:4717/users/42"
+        },
+        {
+          "name": "GET /debug-sentry",
+          "op": "http.server",
+          "route": "/debug-sentry",
+          "status": "error",
+          "status_code": 500,
+          "url": "http://127.0.0.1:4717/debug-sentry"
+        },
+        {
+          "name": "GET /error-404",
+          "op": "http.server",
+          "route": "/error-404",
+          "status": "error",
+          "status_code": 404,
+          "url": "http://127.0.0.1:4717/error-404"
+        },
+        {
+          "name": "GET /error-503",
+          "op": "http.server",
+          "route": "/error-503",
+          "status": "error",
+          "status_code": 503,
+          "url": "http://127.0.0.1:4717/error-503"
+        },
+        {
+          "name": "GET /debug-log",
+          "op": "http.server",
+          "route": "/debug-log",
+          "status": "ok",
+          "status_code": 200,
+          "url": "http://127.0.0.1:4717/debug-log"
+        },
+        {
+          "name": "GET /debug-sentry-tracing",
+          "op": "http.server",
+          "route": "/debug-sentry-tracing",
+          "status": "ok",
+          "status_code": 200,
+          "url": "http://127.0.0.1:4717/debug-sentry-tracing"
+        },
+        {
+          "name": "GET /sentinel",
+          "op": "http.server",
+          "route": "/sentinel",
+          "status": "ok",
+          "status_code": 200,
+          "url": "http://127.0.0.1:4717/sentinel"
+        }
+      ],
+      "route_named_segment_for_users": true,
+      "child_spans": [
+        "middleware auditMiddleware",
+        "middleware expressInit",
+        "middleware query",
+        "handler /users/:id",
+        "handler /debug-sentry",
+        "handler /error-404",
+        "handler /error-503",
+        "handler /debug-log",
+        "test My First Test Transaction",
+        "handler /sentinel"
+      ],
+      "child_ops": [
+        "middleware",
+        "handler",
+        "test"
+      ],
+      "manual_test_span": [
+        {
+          "name": "My First Test Transaction",
+          "status": "error",
+          "segment_name": "GET /debug-sentry-tracing"
+        }
+      ],
+      "log_batches": 1,
+      "log_bodies": [
+        "info: User example action completed"
+      ],
+      "other_item_types": [],
+      "require_banner": [],
+      "deprecation_output": []
+    }
+  }
+}

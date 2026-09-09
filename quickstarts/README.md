@@ -18,7 +18,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-deno](deno/) | plain runtime | deno | documented, manual variants | done | deno 2.9.0 |
 | [QS-cloudflare](cloudflare/) | plain runtime | cloudflare | documented, manual variants | done | wrangler local |
 | QS-cloudflare-pages | plain runtime | cloudflare (Pages functions middleware) | sentryPagesPlugin | planned | wrangler pages dev |
-| QS-express | node framework | express | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
+| [QS-express](express/) | node framework | express | npm, manual setup | done | Node 26.5.0 with the develop tarballs; eleven variants across the install variants, the error handler, the integration options and express 4 and 5 |
 | QS-fastify | node framework | fastify | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-koa | node framework | koa | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-hapi | node framework | hapi | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 29 planned, 7 done, 4 not measurable.
+Totals: 28 planned, 8 done, 4 not measurable.

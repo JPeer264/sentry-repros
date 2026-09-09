@@ -43,8 +43,15 @@ PLAN=[
    ('later','DOC-Q23','the late-init and multiple-apps snippets miss their imports'),
    ('later','DOC-Q24','the dev build reports the verify error without component context'),
  ]),
- ('Node', [
+ ('Node and Express', [
    ('should','DOC-Q5','--require banner, and a first-line ESM import equals --import'),
+   ('must','DOC-Q25','the Express ESM tab imports the instrument file without its extension'),
+   ('must','DOC-Q26','the late-initialization page rests on the removed @sentry/node/preload entry'),
+   ('should','DOC-Q27','the Express async verify snippet hangs on Express 4'),
+   ('should','DOC-Q28','the esm-without-import page says a first-line import cannot instrument frameworks'),
+   ('later','DOC-Q29','the Express guide teaches the deprecated setupExpressErrorHandler'),
+   ('later','DOC-Q30','no expressIntegration page'),
+   ('later','DOC-Q31','empty, orphaned and unreachable includes on the Express guide'),
  ]),
  ('Bun', [
    ('must','DOC-B1','the instrumentation step is backwards and never names the plugin'),
