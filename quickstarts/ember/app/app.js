@@ -1,10 +1,14 @@
-// index.mdx:60-105 copied whole-file, as the guide's "Add the following to your app/app.js file"
-// reads, plus the tunneling snippet line (platform-includes/getting-started-tunneling/javascript.mdx:16),
-// `debug: true`, and the harness hooks after init.
-import Application from "@ember/application";
-import Resolver from "ember-resolver";
-import loadInitializers from "ember-load-initializers";
-import config from "./config/environment";
+// The ember-cli 7.2.0 generated app/app.js with only the Sentry lines of index.mdx:65-99 merged in
+// (import + Sentry.init before the Application class), plus the tunneling snippet line
+// (platform-includes/getting-started-tunneling/javascript.mdx:16), `debug: true`, and harness hooks.
+import '@warp-drive/ember/install';
+import Application from '@ember/application';
+import compatModules from '@embroider/virtual/compat-modules';
+import Resolver from 'ember-resolver';
+import loadInitializers from 'ember-load-initializers';
+import config from 'qs-ember/config/environment';
+import { importSync, isDevelopingApp, macroCondition } from '@embroider/macros';
+import setupInspector from '@embroider/legacy-inspector-support/ember-source-4.12';
 
 import * as Sentry from "@sentry/ember";
 
@@ -62,8 +66,15 @@ window.__qsMeta = () => {
   };
 };
 
+if (macroCondition(isDevelopingApp())) {
+  importSync('./deprecation-workflow');
+}
+
 export default class App extends Application {
   modulePrefix = config.modulePrefix;
   podModulePrefix = config.podModulePrefix;
-  Resolver = Resolver;
+  Resolver = Resolver.withModules(compatModules);
+  inspector = setupInspector(this);
 }
+
+loadInitializers(App, config.modulePrefix, compatModules);

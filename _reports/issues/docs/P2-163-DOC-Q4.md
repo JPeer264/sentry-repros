@@ -1,0 +1,11 @@
+Following the "Apply Instrumentation to Your App" step at `guides/bun/index.mdx:82-105` as written, `bun --preload ./instrument.ts app.ts` (the command at `:100`) with `debug: true` prints `No available Node API to register diagnostics-channel injection hooks; skipping.` at startup and `[Sentry] No diagnostics-channel injection detected. Channel-based integrations will not record spans. Make sure the diagnostics channels are injected via the runtime --import hook or a bundler plugin before the instrumented modules load.` after the first request. Neither line is mentioned on the Bun guide or the troubleshooting pages, and the guide names no bundler plugin (DOC-B1).
+
+Observed on `develop` with bun 1.4.2: the warnings are correct. The first comes from `packages/server-runtime-injection/src/register.ts:160` (`:201` at develop head), the second from `packages/server-utils/src/orchestrion/detect.ts:38-42`; both go through `debug.warn`, so they print only with `debug: true`. Runtime instrumentation (`Bun.serve`, fetch, errors, logs) works on the documented path, and library instrumentation needs the `Bun.build` with `sentryBunPlugin()`. A reader who sees the warning has no page that says which of the two it refers to.
+
+What to change:
+
+- Quote both lines on the Bun guide next to the run command at `:100`, say that they print only with `debug: true` and that runtime instrumentation is unaffected, and link the plugin build step from DOC-B1 as the fix for library spans.
+
+---
+
+_From the runtime docs audit of September 2026, item DOC-Q4, see the [docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) in the runtime audit repository. Behavior verified on `getsentry/sentry-javascript` develop at `6f2da7483d` (package 10.67.0) against docs at `046ce5942`; citations re-checked on 2026-09-08 against docs `aebda0ee4` and develop `03aaf42455`, after a second verification pass over every item._

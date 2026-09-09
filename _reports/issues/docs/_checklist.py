@@ -92,6 +92,11 @@ PLAN=[
    ('should','DOC-Q50','no navigation spans without withSentryRouterRouting'),
    ('later','DOC-Q51','TypeScript in a javascript fence and transactions wording'),
  ]),
+ ('Ember', [
+   ('must','DOC-Q107','the whole-file app.js snippet blanks a new app'),
+   ('should','DOC-Q108','the tracing pages document options that do not exist and omit the initializer tracing needs'),
+   ('later','DOC-Q109','a broken anchor, an empty instrumentation page, a .gjs template, no Glimmer component spans, no release'),
+ ]),
  ('Vue', [
    ('must','DOC-Q19','the Vue Router page\'s only full example is Vue 2 code that fails on Vue 3'),
    ('must','DOC-Q20','the tracingOptions.hooks snippet is a syntax error'),
