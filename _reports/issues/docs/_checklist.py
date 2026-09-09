@@ -103,6 +103,7 @@ PLAN=[
  ]),
  ('Node, Express, Fastify, Koa, Hapi, Connect, Hono and NestJS', [
    ('should','DOC-Q5','--require banner, and a first-line ESM import equals --import'),
+   ('must','DOC-Q85','the Node install pages do not reflect the v11 install-method decision: --import main, bundler plus top-level import, @sentry/node/import with late init, no CommonJS option'),
    ('must','DOC-Q25','the Express, Fastify, Koa, Hapi and Connect ESM tabs import the instrument file without its extension'),
    ('must','DOC-Q26','the late-initialization page rests on the removed @sentry/node/preload entry'),
    ('should','DOC-Q27','the Express and Connect async verify snippets hang on Express 4 and Connect 3'),
