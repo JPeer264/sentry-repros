@@ -1,0 +1,164 @@
+[
+  {
+    "section": "Header note",
+    "applied": [
+      "Added a dated alert block in the page's existing `div.alert` style, directly under the 'Snapshot check on 2026-09-07' alert, headed 'Errata applied on 2026-09-09'.",
+      "The note says the errata of 2026-09-08 and 2026-09-09 are applied, points at ERRATA.md next to the page and at the verification/ directory (probes-bun.md, probes-deno.md, probes-cloudflare.md, consistency.md and their JSON siblings).",
+      "The note names the four verdicts that changed (outgoing fetch on Express and React Router on Deno; route names and errors for Hapi on Workers) and records that every SDK-level cause was checked against the audit pin 6f2da7483d and holds by file and line.",
+      "The note names the two recurring correction kinds, a wrong probe citation and a clause with no shipped file behind it, and introduces the '(record only)' tag used throughout."
+    ],
+    "skipped": [
+      "No link to any URL was added: the pointers are the relative file names ERRATA.md and verification/, as the no-absolute-paths rule requires."
+    ]
+  },
+  {
+    "section": "Capability matrix",
+    "applied": [
+      "Intro line now states that the Deno and Cloudflare probes were rebuilt on develop only, so every '/ 10.73.0' half in those two columns is record only.",
+      "Server span naming, Bun: [B03] replaced by [B11, B09, B17, B19] for the parameterized-name half, and the clause 'a plain Bun.serve fetch handler is method-only (GET) under the default stream lifecycle and URL-named under static [B03]' added.",
+      "Handler error captured with request context, Bun.serve half: [B03] replaced by [B05, B09], the two probes whose routes throw and whose events carry request.url.",
+      "Server span naming, Deno: the static half now cites [D04, D09, D14]; the stream half keeps [D03, D12].",
+      "Outgoing fetch span and headers, Deno: reworded to 'no span and no trace headers [D04]; the call leaves a fetch breadcrumb and nothing else [D02]', moving the breadcrumb evidence off D04.",
+      "Release health sessions, Bun: the manual startSession/captureSession clause tagged '(record only)' and the dropped caveat added, that the manual sessions arrive as exited with errors: 0 even when the request captured an exception.",
+      "Release health sessions, Deno: 'manual sessions work' tagged '(record only)' with the caveat that they cannot be marked crashed.",
+      "Release health sessions, Cloudflare: the @sentry/core startSession/endSession clause tagged '(record only)'.",
+      "Library spans: database driver, Cloudflare: [C16, quick start C-vite] replaced by [N3, devA against devC].",
+      "Server span naming, Cloudflare: [C15] split into method-only under stream [C10], URL under static [C13, C06, C07], and Hono route names [C15].",
+      "Single-file binary, Deno: the 99 MB figure tagged record only, with the reason (placeholder binary, compile.log holds embedded-file sizes only)."
+    ],
+    "skipped": [
+      "Did not tag every individual '/ 10.73.0' half in the Deno and Cloudflare columns; the blanket sentence in the matrix intro carries it, and per-cell tags would have added roughly forty repetitions of the same clause.",
+      "Left the Bun per-request-isolation citation [B03, B18] alone: B03 does drive the isolation route, so that citation is not one the verifiers flagged.",
+      "Left the Cron monitors, Deno cell as it stands; the non-default denoCronIntegration correction the errata asks for went into F22, where the errata directs it."
+    ]
+  },
+  {
+    "section": "Findings F1-F50",
+    "applied": [
+      "F4: the shipped /stream route records a 1 ms span (2 ms in the original run) and the 0 ms figure is stated as exact for /stream-cancel only; the node:http comparison (907 ms full, 305 ms on abort) and the startSpanManual workaround are marked record only.",
+      "F11: split into what B08 and D08 ship (natural exit, await Sentry.flush(2000)) and what is record only (Sentry.close(2000).then(() => process.exit()) and process.exitCode = n).",
+      "F15: the bundled variant rewritten. The shipped working shape is B14's build4, everything @sentry/* external except @sentry/nestjs/setup; the one shipped variant that bundles @sentry/nestjs while leaving @sentry/bun, core, node and server-utils external does not boot (ReferenceError: node is not defined); the 'no @sentry/* external at all' shape is marked record only, with its NestJS 12.0.1 / express 5.2.1 provenance.",
+      "F16: the node:http contrast now cites D14 and D04, and the 10.73.0 half is marked record only.",
+      "F17: the 'a scoped --allow-env=DEBUG is not enough' clause marked record only, naming D02's three shipped label sets.",
+      "F19: the .mjs crash and both ways out (import-map remap, --conditions=require) marked record only; replaced with what D17 shows, an untransformed static ESM import with no crash, probe-format.ts's 'load format ... => undefined', and createRequire as the one shipped leg that produces gen_ai spans. This also removes the contradiction with the matrix cell above it.",
+      "F20: 'confirmed on 2.8.3 and 2.9.0' replaced by 'X03 covers both Deno versions, D15 only 2.9.0, its 2.8.3 binary being gone'.",
+      "F21: the 10.73.0 mysql2Integration clause marked record only, with the develop-only rebuild as the reason.",
+      "F22: added that denoCronIntegration is not a default integration (packages/deno/src/sdk.ts:29-49) although its JSDoc says it is (deno-cron.ts:64), and that an app omitting integrations: [denoCronIntegration()] neither crashes on 2.9.0 nor sends check-ins.",
+      "F23 and F25: the 10.73.0 halves marked record only.",
+      "F26: the Deno.serve fix half marked record only, naming the four shipped D12 variants that all end in app.listen({ port, hostname }); the app.listen() half is left as fully supported.",
+      "F27: the 99 MB figure marked record only, with the placeholder binary and compile.log as the reason.",
+      "F31: citation narrowed to [C10]; C14 is named as the probe that dodges Dedupe with a per-run sentinel, so the Workers half rests on a record note; 'cacheClient: false or removing the Dedupe integration restores per-request delivery' and the C26 workflow leg marked record only.",
+      "F32: citation reduced to [C09]; the module-scope setAsyncLocalStorageAsyncContextStrategy() fix stated as the shipped one, traceLifecycle: 'static' marked record only, and 'confirmed twice' qualified with the rebuild's partial match, the ALS control leg not delivering the sentinel over three timed runs.",
+      "F33: 'produces a transaction' replaced by 'produces a span envelope on develop, named bare GET with url.path as an attribute', with the transaction wording kept for 10.73.0 under the static lifecycle.",
+      "F36: the @sentry/core session path marked record only on all three runtimes (C12, B05, D05) with the exited / errors: 0 caveat.",
+      "F37: the dead auto-wrap path and the browser-SDK-in-the-Worker symptom marked record only; C18 stated as shipping the working setup only.",
+      "F38: added that of C17, C19, C20, C21, C22 and C15 only C15 has a shipped probe, that the other five were 10.73.0-only runs the develop-only rebuild did not carry, and that the shipped evidence for those five frameworks is the framework cells.",
+      "F41: every field-level claim attributed to N1's out2/matrix.txt, and the recommended scoped flag line marked record only, the shipped leg running the unscoped superset.",
+      "F45: added the caveat the probe makes prominent, that every websocket handler invocation shares one trace id for the lifetime of the Durable Object isolate, including a fresh socket pair after the first pair closed.",
+      "F46: 'work on all three runtimes' replaced by 'work on Bun, which is the runtime N6 ships an app for; for Cloudflare and Deno the shipped evidence is an export-surface check over the built packages, not a run'.",
+      "F48: '[N8; works on both versions]' replaced by 'works on develop, with the 10.73.0 half record only'.",
+      "F49: 'named by raw path' replaced by 'named by HTTP method only', with the shipped names (GET / for the index, bare GET for /api/alice, /api2/bob, /boom); the middleware is now stated to fix the error capture only, since the workaround run's span is still bare GET.",
+      "F50: the 'documented flow does produce debug IDs' refutation marked record only, naming the hand-appended _sentryDebugIds snippet as the shipped positive control."
+    ],
+    "skipped": [
+      "Finding numbers, list order and the F-anchors are untouched; no finding was added, removed or renumbered.",
+      "No SDK-change request was added anywhere; where an errata line names an SDK cause it is stated as a fact about the shipped code, not as an ask."
+    ]
+  },
+  {
+    "section": "Docs coverage, probe by probe",
+    "applied": [
+      "B17 line: added that B17 ships no unbundled control leg, so the plain-run contrast belongs to B19, which ships both legs, and to B16's 'No diagnostics-channel injection detected' warning.",
+      "C06 line: 'wrapping it again does not duplicate spans' pulled out of the assertion and marked record only, with the shipped probe's finding that the wrapper is not exported on develop.",
+      "'Behaviors with no page at all' list: added that C20 is a 10.73.0-only run with no probe directory and that its shipped evidence is the framework cell M-tanstack-cf."
+    ],
+    "skipped": [
+      "The status counts in the coverage table (yes 8, partial 21, no ...) were left alone; no errata line disputes them."
+    ]
+  },
+  {
+    "section": "Probe records",
+    "applied": [
+      "C17, C19, C20, C21 and C22: each Repro paragraph replaced by the sentence that the run was 10.73.0-only, that the develop-only rebuild did not carry it, that there is no probe directory and no probe-record entry, and which framework cell holds the shipped evidence (M-sveltekit-cf, M-nuxt-cf, M-reactrouter-cf, M-tanstack-cf, M-nextjs-cf). The five $REPRO/probes/C<n>/10.73.0 paths are gone.",
+      "B07: Evidence note, sink dumps went to the terminal, directory holds scripts, sink and README only, lines come from the run journal, re-run on 2026-09-08 reproduced exactly.",
+      "B08: Evidence note, the empty-sink dumps after process.exit are not persisted, exit-debug.log's 'Captured error event `x-exit`' line with no transport line after it is the one decisive shipped line, and the Sentry.close()/process.exitCode variants have no file.",
+      "B18: Evidence note, sink-*.log holds only 'sink listening <port>', so the isolation evidence and the '\"request\": null' error events come from the run journal.",
+      "N7: Evidence note, sink dump not persisted; the three 10.73.0 defects and the 'a v11 path does exist' conclusion come from the run journal.",
+      "D08: Evidence note, ships no result file at all, the curl __items reads went to the terminal, and the three programs do test the three cases the verdict names.",
+      "D16: Evidence note, the 99 MB figure comes from the run journal, the shipped binary is a 0-byte placeholder, compile.log records embedded-file sizes only, and the Run block's --output path differs from compile.log's.",
+      "N9: Evidence note, the workaround event with trace 3a87513472624a42ac80c5b8ebc5a717 is from a second run whose items file does not ship, the K2 echo body was never saved because the driver discards response bodies, and the span half of K2 does ship.",
+      "X02: Evidence note, the log-bun140-*.txt files were produced with Bun 1.4.2 as the README says, and the 1.3.14 leg is real.",
+      "D02, D07, D15: Evidence notes for the driver-stdout lines held by no shipped file, plus D02's three shipped permission labels with no scoped --allow-env run, and D15's 2.9.0-only leg.",
+      "D05: Evidence note for the two quoted blocks trimmed without an ellipsis, and that the probe runs only the automatic denoHttpIntegration path, which is why the manual-session clause is record only.",
+      "D09 and D14: Evidence notes for the eleven stale result files whose names embed env arguments, and for main-http-hook.ts shipping with no Run line and no result file.",
+      "C03, C07, C14, C25, N2, N3, N4, N6: Evidence notes for the hand-written summary line, the three terminal-only HTTP bodies, the missing last sink: line plus the per-run sentinel that keeps C14 out of the Dedupe evidence, the seven-item negative control trimmed to three, the sentinel line copied from the record, the stale README draft replaced on 2026-09-08, the abandoned-attempt leftovers, and N6's Bun-only runtime evidence.",
+      "C09: Evidence note that the primary finding reproduced exactly but the AsyncLocalStorage control leg did not deliver the sentinel over three timed runs, recorded as a partial match.",
+      "C18: Evidence note that only the working setup is shipped and the dead auto-wrap path was not rebuilt."
+    ],
+    "skipped": [
+      "Repo-side fixes the errata records as already done or as directory hygiene were not written into the page: the B06/B14 broken package.json tarball paths, the C02/C18 and B01/D16 'see record' verdict fields normalized in _records, the nineteen READMEs renamed from _toolbox/qs/sink.mjs to _toolbox/sink.mjs (the page already names the right file), the N3 README replacement, the INDEX.md empty-runtime fallback and the _records/quickstarts.json variants. None of them is a sentence in this report.",
+      "Pre-existing $SCRATCH and $REPRO placeholders outside the five C17-C22 Repro lines were left as they are; only those five were in scope.",
+      "One pre-existing partially anonymized path, '/Users/.../scratchpad/deep/verify3-N2-...', survives inside an N2 pre block. It is not an errata line and rewriting pre-block transcripts was out of scope."
+    ]
+  },
+  {
+    "section": "Framework matrix",
+    "applied": [
+      "Four verdicts changed where a corrected DOC-F item overturned a limit: outgoing fetch on Express on Deno and on React Router on Deno, both broken to works-with-wiring on fetchIntegration() from @sentry/cloudflare; route names for Hapi on Workers, partial to works-with-wiring on the four-line onPreResponse rename; errors for Hapi on Workers, broken to works-with-wiring on the onRequest close-event extension. Each tooltip carries the recipe.",
+      "Counts in the 'What the refutations changed' alert updated to match: 76 work only with extra wiring, 16 stay partial, 16 stay broken, out of the same 351 that ran, with a sentence naming the four cells that moved.",
+      "Root cause R4 recount: 9 Deno cells recover outgoing fetch with a shipped integration, Remix through installGlobals(), Nuxt only under the stream lifecycle, and 6 stay broken (Koa, Hapi, Oak, Fresh, NestJS, TanStack), with Express and React Router named as the two that moved.",
+      "Root cause R7 extended with the plain-wrangler fallbacks the corrected items measured: setupExpressErrorHandler(app) from @sentry/server-utils plus patchExpressModule(express, () => ({})) from @sentry/core/server for Express (stream lifecycle only, deprecated API), app.on('error', ...) plus an updateSpanName call for Koa (source custom), the onPreResponse rename and the onRequest close fix for Hapi, that database spans have no plain-wrangler equivalent on any of the four, and that mysql2 on workerd needs disableEval: true.",
+      "'Docs gaps per runtime' gained a lead-in note saying the one-liners are the docs agents' first drafts and that the verified wording is in audit items DOC-F1 to DOC-F51 (Bun F1-F17, Deno F18-F34, Cloudflare F35-F51), with the item as the later text where the two disagree.",
+      "Nuxt on Bun docs-gap line: start command corrected to nuxt/index.mdx:72 with 'bun run .output/server/index.mjs', plus the ec50b3e8f1 note (server config bundled into the Nitro build, both autoInjectServerSentry modes deprecated until v12, no .output/server/sentry.server.config.mjs to --import any more, the node --import command obsolete on Node too) and the bunServerIntegration/bunHttpServerIntegration preset split."
+    ],
+    "skipped": [
+      "The remaining 45 'Docs gaps per runtime' one-liners were left as written. They are the docs agents' drafts, the errata lists no correction against them, and the lead-in note now sends the reader to the corrected audit items instead of regenerating 51 paragraphs.",
+      "Verdict tokens were changed only for the four cells a corrected item overturns. No other icon or class was touched, so the 243 works and 25 not-run tallies are unchanged.",
+      "Hono on Deno keeps its works-with-wiring outgoing-fetch verdict even though DOC-F18 names no remedy for that cell: the errata does not direct a change there, and flipping it would be a verdict change with no errata line behind it."
+    ]
+  },
+  {
+    "section": "Cell records",
+    "applied": [
+      "The 20 cells the consistency check lists gained a meta-line evidence note. The 14 original-round cells (M-elysia-cf, M-elysia-deno, M-express-cf, M-fastify-cf, M-fresh-bun, M-fresh-cf, M-hapi-cf, M-koa-cf, M-nestjs-cf, M-oak-bun, M-oak-cf, M-remix-deno, M-solidstart-deno, M-sveltekit-cf) read 'not re-run in the rebuild ... they come from the run journal'; the 6 rebuilt cells (M-hono-cf, M-nuxt-bun, M-reactrouter-bun, M-reactrouter-deno, M-remix-bun, M-tanstack-cf) read 'sink output not persisted ... read over HTTP and never written to a file'.",
+      "Bun database spans with the channel pin, stated on the verdict line of M-astro-bun, M-nextjs-bun, M-tanstack-bun, M-solidstart-bun and M-sveltekit-bun, with Bun's weak channel registry as the cause, and on M-hono-bun as the qualification to its no-build-step rule; each cites the refutation directory the item cites (verify4-M-astro-bun-dbspans, -nextjs-bun-dbspans, -tanstack-bun-dbspans, -solidstart-bun-dbspans, -sveltekit-bun-dbspans), and M-hono-bun records that no refutation run exists for it.",
+      "The eleven works-after-all refutations whose shipped directory holds no output now say so on their capability row, in the errata's words 'recorded in the run journal; the shipped directory holds startup logs only': M-astro-bun/db spans, M-elysia-deno/outgoing fetch, M-elysia-deno/route names, M-fastify-deno/outgoing fetch, M-koa-deno/db spans, M-koa-deno/errors, M-nestjs-cf/errors, M-nextjs-bun/db spans, M-nuxt-bun/incoming trace, M-reactrouter-bun/incoming trace, M-solidstart-bun/incoming trace.",
+      "M-nextjs-bun: route names corrected to a clean works, GET /api/users/[id] with source route and no spurious /app prefix in both rebuild result files, with the project-directory-named-app cause; db spans corrected to working with the channel pin, citing the rebuild's own db mysql2.pool.connect / db SELECT id, name FROM users lines.",
+      "M-nuxt-bun: db spans corrected, the rebuild did not reproduce the recorded span, and the measured recipe is bunServerIntegration() added to the @sentry/nuxt init plus nitro.externals.external ['mysql2'], with the two separate failures (genFunc$1 without the externals entry, requiresParentSpan without the integration); route names corrected to the additive fix that keeps sdk sentry.javascript.nuxt, with bunServerIntegration() for the bun preset and bunHttpServerIntegration() for node-server; and a paragraph before the setup block for develop commit ec50b3e8f1.",
+      "M-remix-bun: outgoing fetch corrected, the rebuild's recorder saw sentryTrace null and baggage null in both modes, so that capability rests on the run journal.",
+      "Cloudflare plain-wrangler recipes stated on the verdict lines of M-express-cf (errors, route names, db spans), M-koa-cf (errors, route names, db spans) and M-hapi-cf (errors, route names, db spans), each naming the exact shipped exports and the caveats: setupExpressErrorHandler from @sentry/server-utils as its own install, patchExpressModule deprecated and stream-lifecycle only, Koa's app.on('error') fallback and its source custom rename, Hapi's onRequest close fix and onPreResponse rename, and that vite dev cannot start Express on workerd.",
+      "mysql2 with disableEval: true on workerd stated on the db-span rows of M-express-cf, M-koa-cf and M-hapi-cf, together with the fact that database spans have no plain-wrangler equivalent and that mysql 2.x works unchanged.",
+      "Deno fetch integrations stated on the verdict lines of M-express-deno and M-reactrouter-deno: fetchIntegration() from @sentry/cloudflare, shipped and unmodified on Deno, with the Deno-only guard for React Router and winterCGFetchIntegration() from @sentry/vercel-edge named as the same mechanism."
+    ],
+    "skipped": [
+      "The 23 refutation directories that ship run files with no record are covered by one sentence in the framework-matrix alert rather than per cell: they change no verdict, and the audit items already treat those runs as unrecorded.",
+      "Cell record ids, anchors and the c-M-* section structure are untouched; every correction is a sentence prefixed to an existing verdict cell or a paragraph added inside the section.",
+      "The long transcript pre blocks inside the cell records were not edited; the errata's corrections are about the verdict and setup sentences around them."
+    ]
+  },
+  {
+    "section": "The short version",
+    "applied": [
+      "Deno paragraph: 'it turns any .mjs it does transform into a crash' removed, replaced by what the shipped run shows, the ESM source coming back untouched with no crash.",
+      "Deno paragraph: the Oak-on-Deno.serve fix marked as a record-only result, every shipped Oak variant ending in app.listen().",
+      "Cloudflare paragraph: added that five of the seven 10.73.0 framework runs are record only and that their shipped evidence is the framework cells.",
+      "Cloudflare paragraph: the @sentry/core session API clause marked as a record-only result on all three runtimes."
+    ],
+    "skipped": [
+      "The Bun paragraph was left as written; the errata's Bun corrections are citation and record-only tags that live in the matrix, the findings and the probe cards, and none contradicts this summary."
+    ]
+  },
+  {
+    "section": "Validation",
+    "applied": [
+      "Tag balance checked after the edits: div 112/112, table 56/56, section 51/51, details 51/51, pre 232/232, plus ul, ol, li, p, tr, td, span, a, h3, h4, code, strong, em, b, thead, tbody, th all balanced.",
+      "All 66 in-page hrefs resolve to an existing id; the only non-anchor href is the pre-existing Google Fonts stylesheet.",
+      "No claude.ai link, no absolute machine path, no $SCRATCH and no $REPRO string was introduced by any edit; the five $SCRATCH and $REPRO references in the C17-C22 Repro lines were removed.",
+      "Grid integrity checked: 376 v-spans, all with a well-formed title attribute, and the non-not-run tally is 243 + 76 + 16 + 16 = 351, matching the alert."
+    ],
+    "skipped": [
+      "One pre-existing structural oddity was left alone: on the D16-rerun Repro line an <em> opened by a 'pack/*.tgz' glob closes inside the next <code> element ('run-</em>.log'), an artifact of the original markdown conversion. It renders correctly and is not an errata line.",
+      "The CSS, the nav list, the section ids and the anchors were not modified."
+    ]
+  }
+]
