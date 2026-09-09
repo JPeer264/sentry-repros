@@ -1,0 +1,4791 @@
+{
+  "variant": "multiple-apps",
+  "pagePath": "/multiple-apps.html",
+  "mode": "production",
+  "fullBuild": true,
+  "meta": {
+    "initialized": true,
+    "SDK_VERSION": "10.67.0",
+    "sdk": {
+      "name": "sentry.javascript.vue",
+      "version": "10.67.0",
+      "packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession",
+      "Vue",
+      "BrowserTracing",
+      "SpanStreaming",
+      "WebVitals"
+    ],
+    "options": {
+      "tracesSampleRate": 1,
+      "tracePropagationTargets": [],
+      "tunnel": "/tunnel",
+      "traceLifecycle": "stream",
+      "attachStacktrace": true,
+      "debug": true
+    },
+    "vue": "3.5.42"
+  },
+  "steps": [
+    {
+      "label": "boot",
+      "result": {
+        "sdkUp": true,
+        "appUp": true,
+        "pageErrorsAtBoot": [],
+        "feedbackWidget": false,
+        "appHtml": "\n    <div id=\"app-one\" data-v-app=\"\"><div><button id=\"throw-one\">throw one</button><span class=\"lazy-child\">child</span></div></div>\n    <div id=\"app-two\" data-v-app=\"\"><div><button id=\"throw-two\">throw two</button><span class=\"lazy-child\">child</span></div></div>\n    <div id=\"app-three\" data-v-app="
+      }
+    },
+    {
+      "label": "click #throw-one (method throws inside that app)",
+      "result": {
+        "captured": true
+      },
+      "itemsBefore": 0
+    },
+    {
+      "label": "click #throw-two (method throws inside that app)",
+      "result": {
+        "captured": true
+      },
+      "itemsBefore": 1
+    },
+    {
+      "label": "click #throw-three (method throws inside that app)",
+      "result": {
+        "captured": true
+      },
+      "itemsBefore": 2
+    },
+    {
+      "label": "click #throw-lazy (method throws inside that app)",
+      "result": {
+        "captured": true
+      },
+      "itemsBefore": 3
+    }
+  ],
+  "sentinel1": true,
+  "pageloadArrived": true,
+  "summary": {
+    "itemTypes": [
+      "event",
+      "event",
+      "event",
+      "event",
+      "event",
+      "span"
+    ],
+    "events": [
+      {
+        "exception": "Error: Error from app one",
+        "mechanism": "auto.function.vue.error_handler",
+        "handled": false,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "vue",
+          "culture"
+        ],
+        "vue": {
+          "componentName": "<Root>",
+          "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+          "trace": "\n\n(found in <Root>)",
+          "propsData": {
+            "label": "one"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          "ui.click: body > div#app-one > div > button#throw-one",
+          "console: Error: Error from app one"
+        ]
+      },
+      {
+        "exception": "Error: Error from app two",
+        "mechanism": "auto.function.vue.error_handler",
+        "handled": false,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "vue",
+          "culture"
+        ],
+        "vue": {
+          "componentName": "<Root>",
+          "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+          "trace": "\n\n(found in <Root>)",
+          "propsData": {
+            "label": "two"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          "ui.click: body > div#app-one > div > button#throw-one",
+          "console: Error: Error from app one",
+          "sentry.event: Error: Error from app one",
+          "ui.click: body > div#app-two > div > button#throw-two",
+          "console: Error: Error from app two"
+        ]
+      },
+      {
+        "exception": "Error: Error from app three",
+        "mechanism": "auto.function.vue.error_handler",
+        "handled": false,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "vue",
+          "culture"
+        ],
+        "vue": {
+          "componentName": "<Root>",
+          "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+          "trace": "\n\n(found in <Root>)",
+          "propsData": {
+            "label": "three"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          "ui.click: body > div#app-one > div > button#throw-one",
+          "console: Error: Error from app one",
+          "sentry.event: Error: Error from app one",
+          "ui.click: body > div#app-two > div > button#throw-two",
+          "console: Error: Error from app two",
+          "sentry.event: Error: Error from app two",
+          "ui.click: body > div#app-three > div > button#throw-three",
+          "console: Error: Error from app three"
+        ]
+      },
+      {
+        "exception": "Error: Error from app lazy",
+        "mechanism": "auto.function.vue.error_handler",
+        "handled": false,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "vue",
+          "culture"
+        ],
+        "vue": {
+          "componentName": "<Root>",
+          "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+          "trace": "\n\n(found in <Root>)",
+          "propsData": {
+            "label": "lazy"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          "ui.click: body > div#app-one > div > button#throw-one",
+          "console: Error: Error from app one",
+          "sentry.event: Error: Error from app one",
+          "ui.click: body > div#app-two > div > button#throw-two",
+          "console: Error: Error from app two",
+          "sentry.event: Error: Error from app two",
+          "ui.click: body > div#app-three > div > button#throw-three",
+          "console: Error: Error from app three",
+          "sentry.event: Error: Error from app three",
+          "ui.click: body > div#app-lazy > div > button#throw-lazy",
+          "console: Error: Error from app lazy"
+        ]
+      },
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "exceptions": 1,
+        "contexts": [
+          "trace",
+          "culture"
+        ],
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          "ui.click: body > div#app-one > div > button#throw-one",
+          "console: Error: Error from app one",
+          "sentry.event: Error: Error from app one",
+          "ui.click: body > div#app-two > div > button#throw-two",
+          "console: Error: Error from app two",
+          "sentry.event: Error: Error from app two",
+          "ui.click: body > div#app-three > div > button#throw-three",
+          "console: Error: Error from app three",
+          "sentry.event: Error: Error from app three",
+          "ui.click: body > div#app-lazy > div > button#throw-lazy",
+          "console: Error: Error from app lazy",
+          "sentry.event: Error: Error from app lazy"
+        ]
+      }
+    ],
+    "spans": [
+      {
+        "op": "ui.mount",
+        "name": "Vue <Root>",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "a6038f57759f8028"
+      },
+      {
+        "op": "ui.mount",
+        "name": "Vue <Root>",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "9be8f6b922d2cb90"
+      },
+      {
+        "op": "ui.mount",
+        "name": "Vue <Root>",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "9d6c679043d1c192"
+      },
+      {
+        "op": "ui.mount",
+        "name": "Vue <LazyChild>",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "912df492fecb35db"
+      },
+      {
+        "op": "ui.mount",
+        "name": "Vue <Root>",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "9902a1dd957c2495"
+      },
+      {
+        "op": "test",
+        "name": "sentinel-span",
+        "is_segment": false,
+        "origin": "manual",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "994b7ee96edebb38"
+      },
+      {
+        "op": "ui.render",
+        "name": "Application Render",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 2,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "891d32fa6181b76c"
+      },
+      {
+        "op": "ui.render",
+        "name": "Application Render",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "b0998c7e83a5c6ef"
+      },
+      {
+        "op": "ui.render",
+        "name": "Application Render",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "a2421de68dccf333"
+      },
+      {
+        "op": "ui.render",
+        "name": "Application Render",
+        "is_segment": false,
+        "origin": "auto.ui.vue",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "a440de16095daf1f"
+      },
+      {
+        "op": "browser.dom_content_loaded_event",
+        "name": "http://localhost:4714/multiple-apps.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "a97493d8af00c79c"
+      },
+      {
+        "op": "browser.load_event",
+        "name": "http://localhost:4714/multiple-apps.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "a664734c1887b7bb"
+      },
+      {
+        "op": "browser.connect",
+        "name": "http://localhost:4714/multiple-apps.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "ab4211edf56ea1dd"
+      },
+      {
+        "op": "browser.cache",
+        "name": "http://localhost:4714/multiple-apps.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "8ea38b09818e80dc"
+      },
+      {
+        "op": "browser.dns",
+        "name": "http://localhost:4714/multiple-apps.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "90cb5243cd6bf3c5"
+      },
+      {
+        "op": "browser.request",
+        "name": "http://localhost:4714/multiple-apps.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "90e80a14a52d583a"
+      },
+      {
+        "op": "browser.response",
+        "name": "http://localhost:4714/multiple-apps.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "aeebeebaee3ee6b9"
+      },
+      {
+        "op": "resource.script",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 3,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "b27baa356f1a94fb"
+      },
+      {
+        "op": "resource.other",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "a1cd8a7ca1f8dc02"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "a1b249cdc974fc12"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-contentful-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a7ff8d99a6103498",
+        "span_id": "8a4630d5ccf17436"
+      },
+      {
+        "op": "pageload",
+        "name": "Pageload",
+        "is_segment": true,
+        "source": "url",
+        "origin": "auto.pageload.browser",
+        "url_path": "/multiple-apps.html",
+        "status": "ok",
+        "duration_ms": 591,
+        "span_id": "a7ff8d99a6103498"
+      }
+    ],
+    "logs": [],
+    "attachments": [],
+    "sessions": [],
+    "replay": 0,
+    "headers": []
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: Vue",
+    "log: Sentry Logger [log]: Integration installed: BrowserTracing",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Sentry Logger [log]: Integration installed: WebVitals",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: pageload\n  name: Pageload\n  ID: a7ff8d99a6103498",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.render\n  name: Application Render\n  ID: 891d32fa6181b76c\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: Vue <Root>\n  ID: a6038f57759f8028\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"Vue <Root>\" with ID a6038f57759f8028",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.render\n  name: Application Render\n  ID: b0998c7e83a5c6ef\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: Vue <Root>\n  ID: 9be8f6b922d2cb90\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"Vue <Root>\" with ID 9be8f6b922d2cb90",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.render\n  name: Application Render\n  ID: a2421de68dccf333\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: Vue <Root>\n  ID: 9d6c679043d1c192\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"Vue <Root>\" with ID 9d6c679043d1c192",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.render\n  name: Application Render\n  ID: a440de16095daf1f\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: Vue <Root>\n  ID: 9902a1dd957c2495\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: Vue <LazyChild>\n  ID: 912df492fecb35db\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"Vue <LazyChild>\" with ID 912df492fecb35db",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"Vue <Root>\" with ID 9902a1dd957c2495",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Error: Error from app one\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)",
+    "log: Sentry Logger [log]: Captured error event `Error from app one`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "error: Error: Error from app two\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)",
+    "log: Sentry Logger [log]: Captured error event `Error from app two`",
+    "error: Error: Error from app three\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)",
+    "log: Sentry Logger [log]: Captured error event `Error from app three`",
+    "error: Error: Error from app lazy\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)",
+    "log: Sentry Logger [log]: Captured error event `Error from app lazy`",
+    "log: Sentry Logger [log]: Captured error event `sentinel`",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: test\n  name: sentinel-span\n  ID: 994b7ee96edebb38\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" span \"sentinel-span\" with ID 994b7ee96edebb38",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.render\" span \"Application Render\" with ID 891d32fa6181b76c",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.render\" span \"Application Render\" with ID b0998c7e83a5c6ef",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.render\" span \"Application Render\" with ID a2421de68dccf333",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.render\" span \"Application Render\" with ID a440de16095daf1f",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dom_content_loaded_event\n  name: http://localhost:4714/multiple-apps.html\n  ID: a97493d8af00c79c\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dom_content_loaded_event\" span \"http://localhost:4714/multiple-apps.html\" with ID a97493d8af00c79c",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.load_event\n  name: http://localhost:4714/multiple-apps.html\n  ID: a664734c1887b7bb\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.load_event\" span \"http://localhost:4714/multiple-apps.html\" with ID a664734c1887b7bb",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.connect\n  name: http://localhost:4714/multiple-apps.html\n  ID: ab4211edf56ea1dd\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.connect\" span \"http://localhost:4714/multiple-apps.html\" with ID ab4211edf56ea1dd",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.cache\n  name: http://localhost:4714/multiple-apps.html\n  ID: 8ea38b09818e80dc\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.cache\" span \"http://localhost:4714/multiple-apps.html\" with ID 8ea38b09818e80dc",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dns\n  name: http://localhost:4714/multiple-apps.html\n  ID: 90cb5243cd6bf3c5\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dns\" span \"http://localhost:4714/multiple-apps.html\" with ID 90cb5243cd6bf3c5",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.request\n  name: http://localhost:4714/multiple-apps.html\n  ID: 90e80a14a52d583a\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.request\" span \"http://localhost:4714/multiple-apps.html\" with ID 90e80a14a52d583a",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.response\n  name: http://localhost:4714/multiple-apps.html\n  ID: aeebeebaee3ee6b9\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.response\" span \"http://localhost:4714/multiple-apps.html\" with ID aeebeebaee3ee6b9",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.script\n  name: localhost\n  ID: b27baa356f1a94fb\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.script\" span \"localhost\" with ID b27baa356f1a94fb",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.other\n  name: localhost\n  ID: a1cd8a7ca1f8dc02\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.other\" span \"localhost\" with ID a1cd8a7ca1f8dc02",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-paint\n  ID: a1b249cdc974fc12\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-paint\" with ID a1b249cdc974fc12",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-contentful-paint\n  ID: 8a4630d5ccf17436\n  parent ID: a7ff8d99a6103498\n  root ID: a7ff8d99a6103498\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-contentful-paint\" with ID 8a4630d5ccf17436",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"pageload\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"pageload\" root span \"Pageload\" with ID a7ff8d99a6103498",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.value: 1.4000000059604645} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fp.value: 56} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fcp.value: 56} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.request_time: 0.9000000059604645} on pageload span",
+    "log: Sentry Logger [log]: Sending span envelope for trace 82038e1b9f6b4756a5f886f1561e3741 with 22 spans"
+  ],
+  "pageErrors": [],
+  "itemsAfterVerify": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app one",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app one",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "one"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app two",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app two",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "two"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app three",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app three",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "three"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two",
+        "sentry.event: Error: Error from app two",
+        "ui.click: body > div#app-three > div > button#throw-three",
+        "console: Error: Error from app three"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app lazy",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app lazy",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "lazy"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two",
+        "sentry.event: Error: Error from app two",
+        "ui.click: body > div#app-three > div > button#throw-three",
+        "console: Error: Error from app three",
+        "sentry.event: Error: Error from app three",
+        "ui.click: body > div#app-lazy > div > button#throw-lazy",
+        "console: Error: Error from app lazy"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two",
+        "sentry.event: Error: Error from app two",
+        "ui.click: body > div#app-three > div > button#throw-three",
+        "console: Error: Error from app three",
+        "sentry.event: Error: Error from app three",
+        "ui.click: body > div#app-lazy > div > button#throw-lazy",
+        "console: Error: Error from app lazy",
+        "sentry.event: Error: Error from app lazy"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "items": [
+        "ui.mount Vue <Root>",
+        "ui.mount Vue <Root>",
+        "ui.mount Vue <Root>",
+        "ui.mount Vue <LazyChild>",
+        "ui.mount Vue <Root>",
+        "test sentinel-span",
+        "ui.render Application Render",
+        "ui.render Application Render",
+        "ui.render Application Render",
+        "ui.render Application Render",
+        "browser.dom_content_loaded_event http://localhost:4714/multiple-apps.html",
+        "browser.load_event http://localhost:4714/multiple-apps.html",
+        "browser.connect http://localhost:4714/multiple-apps.html",
+        "browser.cache http://localhost:4714/multiple-apps.html",
+        "browser.dns http://localhost:4714/multiple-apps.html",
+        "browser.request http://localhost:4714/multiple-apps.html",
+        "browser.response http://localhost:4714/multiple-apps.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "a6038f57759f8028",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9be8f6b922d2cb90",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9d6c679043d1c192",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <LazyChild>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "912df492fecb35db",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9902a1dd957c2495",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "994b7ee96edebb38",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "891d32fa6181b76c",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "b0998c7e83a5c6ef",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "a2421de68dccf333",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "a440de16095daf1f",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "a97493d8af00c79c",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "a664734c1887b7bb",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "ab4211edf56ea1dd",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "8ea38b09818e80dc",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "90cb5243cd6bf3c5",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "90e80a14a52d583a",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "aeebeebaee3ee6b9",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "b27baa356f1a94fb",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4714/multiple-apps.js",
+          "status_code": 200,
+          "duration_ms": 3,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4714",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4714/multiple-apps.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1488384,
+            "http.response.body.size": 1488084,
+            "http.response.body.decoded_size": 1488084,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788903643.8943,
+            "http.request.domain_lookup_start": 1788903643.8943,
+            "http.request.domain_lookup_end": 1788903643.8943,
+            "http.request.connect_start": 1788903643.8943,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788903643.8943,
+            "http.request.request_start": 1788903643.8963,
+            "http.request.response_start": 1788903643.8972,
+            "http.request.response_end": 1788903643.8978,
+            "http.request.time_to_first_byte": 0.006099999994039536,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "a1cd8a7ca1f8dc02",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4714/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4714",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4714/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788903643.9418,
+            "http.request.domain_lookup_start": 1788903643.9418,
+            "http.request.domain_lookup_end": 1788903643.9418,
+            "http.request.connect_start": 1788903643.9418,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788903643.9418,
+            "http.request.request_start": 1788903643.9419003,
+            "http.request.response_start": 1788903643.9424002,
+            "http.request.response_end": 1788903643.9426,
+            "http.request.time_to_first_byte": 0.05129999999701977,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "a1b249cdc974fc12",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "8a4630d5ccf17436",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "ok",
+          "span_id": "a7ff8d99a6103498",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4714/multiple-apps.html",
+          "url_path": "/multiple-apps.html",
+          "duration_ms": 591,
+          "attributes": {
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/multiple-apps.html",
+            "url.full": "http://localhost:4714/multiple-apps.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 50,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 1.4000000059604645,
+            "browser.web_vital.fp.value": 56,
+            "browser.web_vital.fcp.value": 56,
+            "browser.web_vital.ttfb.request_time": 0.9000000059604645,
+            "browser.performance.time_origin": 1788903643.8911002,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "Vue",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app one",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app one",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "one"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app two",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app two",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "two"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app three",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app three",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "three"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two",
+        "sentry.event: Error: Error from app two",
+        "ui.click: body > div#app-three > div > button#throw-three",
+        "console: Error: Error from app three"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error from app lazy",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error from app lazy",
+          "mechanism": "auto.function.vue.error_handler",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.function.vue.error_handler",
+      "handled": false,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "vue",
+        "culture"
+      ],
+      "vue": {
+        "componentName": "<Root>",
+        "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+        "trace": "\n\n(found in <Root>)",
+        "propsData": {
+          "label": "lazy"
+        }
+      },
+      "topFrame": {
+        "function": "Proxy.boom",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two",
+        "sentry.event: Error: Error from app two",
+        "ui.click: body > div#app-three > div > button#throw-three",
+        "console: Error: Error from app three",
+        "sentry.event: Error: Error from app three",
+        "ui.click: body > div#app-lazy > div > button#throw-lazy",
+        "console: Error: Error from app lazy"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/vue",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Vue",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4714/multiple-apps.js",
+        "in_app": true
+      },
+      "transaction": "/multiple-apps.html",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "breadcrumbs": [
+        "ui.click: body > div#app-one > div > button#throw-one",
+        "console: Error: Error from app one",
+        "sentry.event: Error: Error from app one",
+        "ui.click: body > div#app-two > div > button#throw-two",
+        "console: Error: Error from app two",
+        "sentry.event: Error: Error from app two",
+        "ui.click: body > div#app-three > div > button#throw-three",
+        "console: Error: Error from app three",
+        "sentry.event: Error: Error from app three",
+        "ui.click: body > div#app-lazy > div > button#throw-lazy",
+        "console: Error: Error from app lazy",
+        "sentry.event: Error: Error from app lazy"
+      ],
+      "breadcrumbs_raw": [],
+      "request": {
+        "url": "http://localhost:4714/multiple-apps.html",
+        "hasData": false,
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.vue",
+      "sdk_version": "10.67.0",
+      "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+      "items": [
+        "ui.mount Vue <Root>",
+        "ui.mount Vue <Root>",
+        "ui.mount Vue <Root>",
+        "ui.mount Vue <LazyChild>",
+        "ui.mount Vue <Root>",
+        "test sentinel-span",
+        "ui.render Application Render",
+        "ui.render Application Render",
+        "ui.render Application Render",
+        "ui.render Application Render",
+        "browser.dom_content_loaded_event http://localhost:4714/multiple-apps.html",
+        "browser.load_event http://localhost:4714/multiple-apps.html",
+        "browser.connect http://localhost:4714/multiple-apps.html",
+        "browser.cache http://localhost:4714/multiple-apps.html",
+        "browser.dns http://localhost:4714/multiple-apps.html",
+        "browser.request http://localhost:4714/multiple-apps.html",
+        "browser.response http://localhost:4714/multiple-apps.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "a6038f57759f8028",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9be8f6b922d2cb90",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9d6c679043d1c192",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <LazyChild>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "912df492fecb35db",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Vue <Root>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9902a1dd957c2495",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "994b7ee96edebb38",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "891d32fa6181b76c",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "b0998c7e83a5c6ef",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "a2421de68dccf333",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Application Render",
+          "op": "ui.render",
+          "status": "ok",
+          "span_id": "a440de16095daf1f",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.vue",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.vue",
+            "sentry.op": "ui.render",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "a97493d8af00c79c",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "a664734c1887b7bb",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "ab4211edf56ea1dd",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "8ea38b09818e80dc",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "90cb5243cd6bf3c5",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "90e80a14a52d583a",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4714/multiple-apps.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "aeebeebaee3ee6b9",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "b27baa356f1a94fb",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4714/multiple-apps.js",
+          "status_code": 200,
+          "duration_ms": 3,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4714",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4714/multiple-apps.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1488384,
+            "http.response.body.size": 1488084,
+            "http.response.body.decoded_size": 1488084,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788903643.8943,
+            "http.request.domain_lookup_start": 1788903643.8943,
+            "http.request.domain_lookup_end": 1788903643.8943,
+            "http.request.connect_start": 1788903643.8943,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788903643.8943,
+            "http.request.request_start": 1788903643.8963,
+            "http.request.response_start": 1788903643.8972,
+            "http.request.response_end": 1788903643.8978,
+            "http.request.time_to_first_byte": 0.006099999994039536,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "a1cd8a7ca1f8dc02",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4714/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4714",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4714/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788903643.9418,
+            "http.request.domain_lookup_start": 1788903643.9418,
+            "http.request.domain_lookup_end": 1788903643.9418,
+            "http.request.connect_start": 1788903643.9418,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788903643.9418,
+            "http.request.request_start": 1788903643.9419003,
+            "http.request.response_start": 1788903643.9424002,
+            "http.request.response_end": 1788903643.9426,
+            "http.request.time_to_first_byte": 0.05129999999701977,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "a1b249cdc974fc12",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "8a4630d5ccf17436",
+          "parent_span_id": "a7ff8d99a6103498",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "ok",
+          "span_id": "a7ff8d99a6103498",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4714/multiple-apps.html",
+          "url_path": "/multiple-apps.html",
+          "duration_ms": 591,
+          "attributes": {
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/multiple-apps.html",
+            "url.full": "http://localhost:4714/multiple-apps.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 50,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 1.4000000059604645,
+            "browser.web_vital.fp.value": 56,
+            "browser.web_vital.fcp.value": 56,
+            "browser.web_vital.ttfb.request_time": 0.9000000059604645,
+            "browser.performance.time_origin": 1788903643.8911002,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a7ff8d99a6103498",
+            "sentry.sdk.name": "sentry.javascript.vue",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "Vue",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    }
+  ],
+  "headers": [],
+  "raw": [
+    {
+      "envHeader": {
+        "event_id": "0b9aa0186bed419a859a4ee92da814de",
+        "sent_at": "2026-09-08T21:40:44.016Z",
+        "sdk": {
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.8538832422726959",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Error from app one",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "HTMLButtonElement.invoker",
+                    "in_app": true,
+                    "lineno": 11247,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithAsyncErrorHandling",
+                    "in_app": true,
+                    "lineno": 2610,
+                    "colno": 17
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithErrorHandling",
+                    "in_app": true,
+                    "lineno": 2603,
+                    "colno": 19
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "Proxy.boom",
+                    "in_app": true,
+                    "lineno": 46770,
+                    "colno": 13
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.function.vue.error_handler",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "0b9aa0186bed419a859a4ee92da814de",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4714/multiple-apps.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "a7ff8d99a6103498",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741"
+          },
+          "vue": {
+            "componentName": "<Root>",
+            "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+            "trace": "\n\n(found in <Root>)",
+            "propsData": {
+              "label": "one"
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788903644.015,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Vue",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/vue",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788903643.997,
+            "category": "ui.click",
+            "message": "body > div#app-one > div > button#throw-one"
+          },
+          {
+            "timestamp": 1788903643.997,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app one",
+                  "name": "Error",
+                  "stack": "Error: Error from app one\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app one"
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "6db281878a73453d85dbe9c16d15465f",
+        "sent_at": "2026-09-08T21:40:44.127Z",
+        "sdk": {
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.8538832422726959",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Error from app two",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "HTMLButtonElement.invoker",
+                    "in_app": true,
+                    "lineno": 11247,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithAsyncErrorHandling",
+                    "in_app": true,
+                    "lineno": 2610,
+                    "colno": 17
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithErrorHandling",
+                    "in_app": true,
+                    "lineno": 2603,
+                    "colno": 19
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "Proxy.boom",
+                    "in_app": true,
+                    "lineno": 46770,
+                    "colno": 13
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.function.vue.error_handler",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "6db281878a73453d85dbe9c16d15465f",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4714/multiple-apps.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "a7ff8d99a6103498",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741"
+          },
+          "vue": {
+            "componentName": "<Root>",
+            "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+            "trace": "\n\n(found in <Root>)",
+            "propsData": {
+              "label": "two"
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788903644.127,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Vue",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/vue",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788903643.997,
+            "category": "ui.click",
+            "message": "body > div#app-one > div > button#throw-one"
+          },
+          {
+            "timestamp": 1788903643.997,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app one",
+                  "name": "Error",
+                  "stack": "Error: Error from app one\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.016,
+            "category": "sentry.event",
+            "event_id": "0b9aa0186bed419a859a4ee92da814de",
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.11,
+            "category": "ui.click",
+            "message": "body > div#app-two > div > button#throw-two"
+          },
+          {
+            "timestamp": 1788903644.111,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app two",
+                  "name": "Error",
+                  "stack": "Error: Error from app two\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app two"
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "9c53dc4400e44b4da7d44862d34bb507",
+        "sent_at": "2026-09-08T21:40:44.242Z",
+        "sdk": {
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.8538832422726959",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Error from app three",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "HTMLButtonElement.invoker",
+                    "in_app": true,
+                    "lineno": 11247,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithAsyncErrorHandling",
+                    "in_app": true,
+                    "lineno": 2610,
+                    "colno": 17
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithErrorHandling",
+                    "in_app": true,
+                    "lineno": 2603,
+                    "colno": 19
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "Proxy.boom",
+                    "in_app": true,
+                    "lineno": 46770,
+                    "colno": 13
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.function.vue.error_handler",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "9c53dc4400e44b4da7d44862d34bb507",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4714/multiple-apps.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "a7ff8d99a6103498",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741"
+          },
+          "vue": {
+            "componentName": "<Root>",
+            "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+            "trace": "\n\n(found in <Root>)",
+            "propsData": {
+              "label": "three"
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788903644.242,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Vue",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/vue",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788903643.997,
+            "category": "ui.click",
+            "message": "body > div#app-one > div > button#throw-one"
+          },
+          {
+            "timestamp": 1788903643.997,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app one",
+                  "name": "Error",
+                  "stack": "Error: Error from app one\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.016,
+            "category": "sentry.event",
+            "event_id": "0b9aa0186bed419a859a4ee92da814de",
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.11,
+            "category": "ui.click",
+            "message": "body > div#app-two > div > button#throw-two"
+          },
+          {
+            "timestamp": 1788903644.111,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app two",
+                  "name": "Error",
+                  "stack": "Error: Error from app two\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app two"
+          },
+          {
+            "timestamp": 1788903644.127,
+            "category": "sentry.event",
+            "event_id": "6db281878a73453d85dbe9c16d15465f",
+            "level": "error",
+            "message": "Error: Error from app two"
+          },
+          {
+            "timestamp": 1788903644.227,
+            "category": "ui.click",
+            "message": "body > div#app-three > div > button#throw-three"
+          },
+          {
+            "timestamp": 1788903644.227,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app three",
+                  "name": "Error",
+                  "stack": "Error: Error from app three\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app three"
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "cadc46d3e1e24dd685b2201a5303da62",
+        "sent_at": "2026-09-08T21:40:44.379Z",
+        "sdk": {
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.8538832422726959",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Error from app lazy",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "HTMLButtonElement.invoker",
+                    "in_app": true,
+                    "lineno": 11247,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithAsyncErrorHandling",
+                    "in_app": true,
+                    "lineno": 2610,
+                    "colno": 17
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "callWithErrorHandling",
+                    "in_app": true,
+                    "lineno": 2603,
+                    "colno": 19
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "Proxy.boom",
+                    "in_app": true,
+                    "lineno": 46770,
+                    "colno": 13
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.function.vue.error_handler",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "cadc46d3e1e24dd685b2201a5303da62",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4714/multiple-apps.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "a7ff8d99a6103498",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741"
+          },
+          "vue": {
+            "componentName": "<Root>",
+            "lifecycleHook": "https://vuejs.org/error-reference/#runtime-5",
+            "trace": "\n\n(found in <Root>)",
+            "propsData": {
+              "label": "lazy"
+            }
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788903644.378,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Vue",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/vue",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788903643.997,
+            "category": "ui.click",
+            "message": "body > div#app-one > div > button#throw-one"
+          },
+          {
+            "timestamp": 1788903643.997,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app one",
+                  "name": "Error",
+                  "stack": "Error: Error from app one\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.016,
+            "category": "sentry.event",
+            "event_id": "0b9aa0186bed419a859a4ee92da814de",
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.11,
+            "category": "ui.click",
+            "message": "body > div#app-two > div > button#throw-two"
+          },
+          {
+            "timestamp": 1788903644.111,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app two",
+                  "name": "Error",
+                  "stack": "Error: Error from app two\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app two"
+          },
+          {
+            "timestamp": 1788903644.127,
+            "category": "sentry.event",
+            "event_id": "6db281878a73453d85dbe9c16d15465f",
+            "level": "error",
+            "message": "Error: Error from app two"
+          },
+          {
+            "timestamp": 1788903644.227,
+            "category": "ui.click",
+            "message": "body > div#app-three > div > button#throw-three"
+          },
+          {
+            "timestamp": 1788903644.227,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app three",
+                  "name": "Error",
+                  "stack": "Error: Error from app three\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app three"
+          },
+          {
+            "timestamp": 1788903644.242,
+            "category": "sentry.event",
+            "event_id": "9c53dc4400e44b4da7d44862d34bb507",
+            "level": "error",
+            "message": "Error: Error from app three"
+          },
+          {
+            "timestamp": 1788903644.362,
+            "category": "ui.click",
+            "message": "body > div#app-lazy > div > button#throw-lazy"
+          },
+          {
+            "timestamp": 1788903644.362,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app lazy",
+                  "name": "Error",
+                  "stack": "Error: Error from app lazy\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app lazy"
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "c853b627144843c5b66ac843a8bb95d9",
+        "sent_at": "2026-09-08T21:40:44.480Z",
+        "sdk": {
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.8538832422726959",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4714/multiple-apps.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 46751,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "c853b627144843c5b66ac843a8bb95d9",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4714/multiple-apps.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "a7ff8d99a6103498",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788903644.48,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Vue",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/vue",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/multiple-apps.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788903643.997,
+            "category": "ui.click",
+            "message": "body > div#app-one > div > button#throw-one"
+          },
+          {
+            "timestamp": 1788903643.997,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app one",
+                  "name": "Error",
+                  "stack": "Error: Error from app one\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.016,
+            "category": "sentry.event",
+            "event_id": "0b9aa0186bed419a859a4ee92da814de",
+            "level": "error",
+            "message": "Error: Error from app one"
+          },
+          {
+            "timestamp": 1788903644.11,
+            "category": "ui.click",
+            "message": "body > div#app-two > div > button#throw-two"
+          },
+          {
+            "timestamp": 1788903644.111,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app two",
+                  "name": "Error",
+                  "stack": "Error: Error from app two\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app two"
+          },
+          {
+            "timestamp": 1788903644.127,
+            "category": "sentry.event",
+            "event_id": "6db281878a73453d85dbe9c16d15465f",
+            "level": "error",
+            "message": "Error: Error from app two"
+          },
+          {
+            "timestamp": 1788903644.227,
+            "category": "ui.click",
+            "message": "body > div#app-three > div > button#throw-three"
+          },
+          {
+            "timestamp": 1788903644.227,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app three",
+                  "name": "Error",
+                  "stack": "Error: Error from app three\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app three"
+          },
+          {
+            "timestamp": 1788903644.242,
+            "category": "sentry.event",
+            "event_id": "9c53dc4400e44b4da7d44862d34bb507",
+            "level": "error",
+            "message": "Error: Error from app three"
+          },
+          {
+            "timestamp": 1788903644.362,
+            "category": "ui.click",
+            "message": "body > div#app-lazy > div > button#throw-lazy"
+          },
+          {
+            "timestamp": 1788903644.362,
+            "category": "console",
+            "data": {
+              "arguments": [
+                {
+                  "message": "Error from app lazy",
+                  "name": "Error",
+                  "stack": "Error: Error from app lazy\n    at Proxy.boom (http://localhost:4714/multiple-apps.js:46770:13)\n    at callWithErrorHandling (http://localhost:4714/multiple-apps.js:2603:19)\n    at callWithAsyncErrorHandling (http://localhost:4714/multiple-apps.js:2610:17)\n    at HTMLButtonElement.invoker (http://localhost:4714/multiple-apps.js:11247:7)\n    at HTMLButtonElement.sentryWrapped (http://localhost:4714/multiple-apps.js:32849:17)"
+                }
+              ],
+              "logger": "console"
+            },
+            "level": "error",
+            "message": "Error: Error from app lazy"
+          },
+          {
+            "timestamp": 1788903644.379,
+            "category": "sentry.event",
+            "event_id": "cadc46d3e1e24dd685b2201a5303da62",
+            "level": "error",
+            "message": "Error: Error from app lazy"
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-08T21:40:47.453Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.8538832422726959",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.vue",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 22,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "Vue <Root>",
+            "span_id": "a6038f57759f8028",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.933,
+            "end_timestamp": 1788903643.9342003,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Vue <Root>",
+            "span_id": "9be8f6b922d2cb90",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9349,
+            "end_timestamp": 1788903643.9352002,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Vue <Root>",
+            "span_id": "9d6c679043d1c192",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9354002,
+            "end_timestamp": 1788903643.9355,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Vue <LazyChild>",
+            "span_id": "912df492fecb35db",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9359002,
+            "end_timestamp": 1788903643.9361,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Vue <Root>",
+            "span_id": "9902a1dd957c2495",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9357002,
+            "end_timestamp": 1788903643.9361,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sentinel-span",
+            "span_id": "994b7ee96edebb38",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903644.4815,
+            "end_timestamp": 1788903644.4818,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Application Render",
+            "span_id": "891d32fa6181b76c",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9326,
+            "end_timestamp": 1788903643.9341002,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.render",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Application Render",
+            "span_id": "b0998c7e83a5c6ef",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9348001,
+            "end_timestamp": 1788903643.9351,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.render",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Application Render",
+            "span_id": "a2421de68dccf333",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9353,
+            "end_timestamp": 1788903643.9355,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.render",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Application Render",
+            "span_id": "a440de16095daf1f",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9356,
+            "end_timestamp": 1788903643.9361,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.vue",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.render",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4714/multiple-apps.html",
+            "span_id": "a97493d8af00c79c",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9363003,
+            "end_timestamp": 1788903643.9363003,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dom_content_loaded_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4714/multiple-apps.html",
+            "span_id": "a664734c1887b7bb",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9364002,
+            "end_timestamp": 1788903643.9365,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.load_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4714/multiple-apps.html",
+            "span_id": "ab4211edf56ea1dd",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.8914,
+            "end_timestamp": 1788903643.8914,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.connect",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4714/multiple-apps.html",
+            "span_id": "8ea38b09818e80dc",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.8914,
+            "end_timestamp": 1788903643.8914,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.cache",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4714/multiple-apps.html",
+            "span_id": "90cb5243cd6bf3c5",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.8914,
+            "end_timestamp": 1788903643.8914,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dns",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4714/multiple-apps.html",
+            "span_id": "90e80a14a52d583a",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.8916001,
+            "end_timestamp": 1788903643.8927002,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.request",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4714/multiple-apps.html",
+            "span_id": "aeebeebaee3ee6b9",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.8925002,
+            "end_timestamp": 1788903643.8927002,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.response",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "b27baa356f1a94fb",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.8943002,
+            "end_timestamp": 1788903643.8978002,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.script",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4714",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4714/multiple-apps.js",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 1488384,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 1488084,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 1488084,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788903643.8943,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788903643.8943,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788903643.8943,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788903643.8943,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788903643.8943,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788903643.8963,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788903643.8972,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788903643.8978,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.006099999994039536,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "a1cd8a7ca1f8dc02",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9418,
+            "end_timestamp": 1788903643.9426,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.other",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4714",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4714/favicon.ico",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 404,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 309,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788903643.9418,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788903643.9418,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788903643.9418,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788903643.9418,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788903643.9418,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788903643.9419003,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788903643.9424002,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788903643.9426,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.05129999999701977,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-paint",
+            "span_id": "a1b249cdc974fc12",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9471002,
+            "end_timestamp": 1788903643.9471002,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-contentful-paint",
+            "span_id": "8a4630d5ccf17436",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "parent_span_id": "a7ff8d99a6103498",
+            "start_timestamp": 1788903643.9471002,
+            "end_timestamp": 1788903643.9471002,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Pageload",
+            "span_id": "a7ff8d99a6103498",
+            "trace_id": "82038e1b9f6b4756a5f886f1561e3741",
+            "start_timestamp": 1788903643.8911002,
+            "end_timestamp": 1788903644.4818,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.pageload.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "pageload",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "url",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/multiple-apps.html",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4714/multiple-apps.html",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 50,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "idleTimeout",
+                "type": "string"
+              },
+              "browser.web_vital.ttfb.value": {
+                "value": 1.4000000059604645,
+                "type": "double"
+              },
+              "browser.web_vital.fp.value": {
+                "value": 56,
+                "type": "integer"
+              },
+              "browser.web_vital.fcp.value": {
+                "value": 56,
+                "type": "integer"
+              },
+              "browser.web_vital.ttfb.request_time": {
+                "value": 0.9000000059604645,
+                "type": "double"
+              },
+              "browser.performance.time_origin": {
+                "value": 1788903643.8911002,
+                "type": "double"
+              },
+              "browser.performance.navigation.activation_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a7ff8d99a6103498",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.vue",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "Vue",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

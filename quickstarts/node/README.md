@@ -116,6 +116,8 @@ envelope was sent for any route**):
 `/debug-span` — the manual span, the `http.client` span and the server span arrive in one envelope:
 
 ```json
+_The block below is quoted from an earlier run of the same variant; the shipped `results-import.json` carries the same envelope shape under trace `6980a053fd4348c6b82e3172314b7390`._
+
 {"type":"span","trace_id":"5393eb9d38124fa2865eca3d0a233367",
  "items":["http.client GET 127.0.0.1","test My First Test Transaction","http.server GET"],
  "raw":[{"name":"GET 127.0.0.1","op":"http.client","status":"ok","parent_span_id":"b41e57d76efd508f",

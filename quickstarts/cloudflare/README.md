@@ -32,7 +32,7 @@ Five run shapes are exercised as separate variants (`base`, `compat-floor`, `req
 ## Install
 
 ```bash
-cd /Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare
+cd $REPRO/quickstarts/cloudflare
 npm install   # package.json pins every @sentry/* to a tarball and repeats them in `overrides`
 ```
 
@@ -48,7 +48,7 @@ published dependency. No `@sentry/*` SDK package came from the registry.
 ## Run
 
 ```bash
-cd /Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare
+cd $REPRO/quickstarts/cloudflare
 ./run.sh base          # wrangler.jsonc          withSentry, nodejs_compat, compatibility_date 2026-09-01
 ./run.sh compat-floor  # wrangler-floor.jsonc    same worker, compatibility_date 2024-09-23
 ./run.sh request       # wrangler-request.jsonc  wrapRequestHandler from @sentry/cloudflare/request, nodejs_als only
@@ -139,7 +139,7 @@ Error event, verbatim and trimmed from `/__items`:
 {"type":"event","exception":"Error: My first Sentry error!","mechanism":"auto.http.cloudflare","handled":false,
  "sdk":"sentry.javascript.cloudflare","sdk_version":"10.67.0","runtime":"cloudflare",
  "hasContextLine":false,"hasAppFrame":false,
- "appFrames":[{"filename":"/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/cloudflare/.wrangler/tmp/dev-fsyj7x/index.js"}],
+ "appFrames":[{"filename":"$REPRO/quickstarts/cloudflare/.wrangler/tmp/dev-fsyj7x/index.js"}],
  "trace_id":"56a3b615aa264ee9857c76257f11e1e9","user":{"ip_address":"127.0.0.1"},
  "request":{"url":"http://127.0.0.1:41502/debug-sentry","method":"GET","hasData":false,
             "headers":{"accept":"*/*","accept-encoding":"br, gzip","cf-connecting-ip":"127.0.0.1",

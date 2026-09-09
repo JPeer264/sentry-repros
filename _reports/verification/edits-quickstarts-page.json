@@ -1,0 +1,251 @@
+[
+  {
+    "section": "Page lede",
+    "applied": [
+      "Dropped \"and against the published 10.73.0 where the tables say so\": no corrected item and no shipped run carries 10.73.0 evidence, and the verification tables no longer have that column."
+    ],
+    "skipped": [
+      "Left the two \"Before SDK 11.0\" alerts (Bun step 1, Cloudflare step 2) in place: they are guide content about the released line, sourced from the deep probe report, not verification-section claims, and the corrected item set neither confirms nor contradicts them."
+    ]
+  },
+  {
+    "section": "Bun, step 1 alert",
+    "applied": [
+      "Scoped the module-scope rule to drivers Sentry instruments by code injection (mysql@2), and stated that drivers publishing their own channels (mysql2 3.20+) are unaffected: DOC-F4 records a mysql2 connection created inside a request still producing spans."
+    ],
+    "skipped": [
+      "Kept \"Works with Bun 1.3.14 or later\": DOC-B4 records 1.3.14 as the version CI runs the Bun SDK against, so the floor stands even though the quick-start run used 1.4.2."
+    ]
+  },
+  {
+    "section": "Bun, step 3 Instrument your libraries",
+    "applied": [
+      "Added the two channel-injection warning lines an unbundled run prints, that they appear only with debug: true, and that runtime instrumentation is unaffected by them (DOC-Q4, quickstarts/bun/app-preload.log)."
+    ],
+    "skipped": [
+      "Left external: [\"@sentry/*\"] in the build.ts snippet: it is the recipe DOC-F3, DOC-F5, DOC-F6 and DOC-F9 verified for Express, Koa, Hapi and NestJS. The Hono and Elysia exception is stated in their table rows instead, where it applies."
+    ]
+  },
+  {
+    "section": "Bun, step 4 Verify",
+    "applied": [
+      "Removed the dedupe claim and the enableDedupe: false option: the Bun run installs 42 integrations and Dedupe is not among them (quickstarts/bun/app-preload.log), so hitting the route twice sends two issues.",
+      "Rewrote the expected result from what the run recorded: the http.client, test and http.server spans arrive in one span envelope, no transaction envelope is sent under the default stream lifecycle, the error event has no transaction field, and the log arrives on the flush timer (DOC-Q1, results-preload.json)."
+    ],
+    "skipped": []
+  },
+  {
+    "section": "Bun, step 6 intro, integration snippet and channel pin",
+    "applied": [
+      "Named the two mechanisms behind the gap: Bun never publishes the http.server.request.start channel the Node request span opens from, and its native fetch emits none of the undici channels (DOC-F11, DOC-F13).",
+      "Corrected the integration blurb: bunServerIntegration covers Bun.serve servers, bunHttpServerIntegration covers node:http servers, and the onBun gate on fetchIntegration is load bearing because the same build on Node emits two http.client spans per request (DOC-F14).",
+      "Restated the channel pin as a Bun garbage-collection workaround and extended the pinned list with the ioredis and orchestrion mysql2 channels the cells used (DOC-F10, DOC-F13, DOC-F17).",
+      "Relabelled the snippet filename hint, since SvelteKit, React Router, TanStack Start and SolidStart do not all use instrument.server.ts."
+    ],
+    "skipped": [
+      "Did not drop bunServerIntegration from the shared snippet even though Next.js needs only fetchIntegration: the snippet is the general recipe and the table names the per framework subset."
+    ]
+  },
+  {
+    "section": "Bun, frameworks table",
+    "applied": [
+      "Split Hono and Elysia into separate rows and inverted the external advice: the verified bundle recipe is no external at all; externalizing hono together with @sentry/* boots but returns the unbundled behaviour, and Elysia additionally rejects packages: \"external\" and packages: \"*\" (DOC-F1, DOC-F2).",
+      "Split Fastify out of the Express, Koa, Hapi row: Fastify needs no plugin build for route names, handler spans or mysql2 3.20+, only for injected drivers (DOC-F4).",
+      "NestJS: replaced the nonexistent nestIntegration() with SentryModule.forRoot() plus SentryGlobalFilter as APP_FILTER, added that init must come from @sentry/bun or no server span is emitted, and completed the external peer list (DOC-F9).",
+      "Next.js: reduced the addition to fetchIntegration() plus the channel pin, added the TypeScript 5.x pin and the removed sendDefaultPii option, and corrected the start command to bun --bun ./node_modules/.bin/next start (DOC-F10).",
+      "Nuxt: named bunServerIntegration() for the bun preset and bunHttpServerIntegration() for node-server, stated what is lost without it, corrected the mysql2 externals note to the query failing rather than the driver breaking, and recorded that develop bundles sentry.server.config.ts into the Nitro build after ec50b3e8f1, so no inject mode or start-up flag is needed (DOC-F11).",
+      "Split SvelteKit and Astro: SvelteKit needs fetchIntegration(), the driver import next to Sentry.init, the @sentry/sveltekit/vite import path and the experimental instrumentation and tracing options; Astro needs the preload, the channel pin and ssr.noExternal (DOC-F12, DOC-F13).",
+      "React Router: named bunHttpServerIntegration() and fetchIntegration() specifically, and stated that the instrumentations export alone is what restores route-named server spans (DOC-F14).",
+      "TanStack Start: corrected the plugin position to last in the Vite plugin list, and stated the four capabilities recorded broken in that shape rather than implying the integrations fix them (DOC-F15).",
+      "Remix: dropped the \"sideEffects\": false requirement, which comes from a run with no recorded result, and replaced it with the keep-external plugin, the handler wrapper and what plain bun server.mjs loses (DOC-F16).",
+      "Oak: added the never-app.listen() rule with what it costs, and qualified the routes map, which leaves regex, optional and wildcard routes on source url; the router middleware is the second option (DOC-F7).",
+      "Fresh: added the Bun.serve mount that makes the SDK see requests at all, the three error hooks, and that captureConsoleIntegration stops reporting once _error.tsx or onError exists (DOC-F8).",
+      "SolidStart: named the two integrations and the channel pin, and kept the route-name and API-route-error limits with page-render errors added (DOC-F17)."
+    ],
+    "skipped": [
+      "Did not claim bunHttpServerIntegration() fixes TanStack Start's isolation, incoming traces, fetch spans or route names: DOC-F15 records those follow-up runs as having no recorded result.",
+      "Did not restore the \"Bun.serve routes map\" row wording for Oak as a full fix: DOC-F7 records the route-name verdict as partial."
+    ]
+  },
+  {
+    "section": "Deno, step 1 Install",
+    "applied": [
+      "Added that every run behind the page used nodeModulesDir \"manual\" with an npm-installed tree, while \"auto\" is the value that pairs with deno add: the quick-start run and all framework cells used \"manual\"."
+    ],
+    "skipped": []
+  },
+  {
+    "section": "Deno, step 2 Configure",
+    "applied": [
+      "Dropped \"A scoped --allow-env=... is not enough for the hook\": the ERRATA records that no shipped leg ever ran a scoped --allow-env.",
+      "Softened the --allow-read wording to what was measured (the flag must cover the entry file and the working directory) and dropped the --allow-read=./src example, which has no shipped run.",
+      "Split the silent-skip sentence: --allow-read and --allow-sys degrade events silently, --allow-env is a hard crash before any user code runs (quickstarts/deno/results-guide-flags.json).",
+      "Rewrote the outgoing-fetch alert: stated that @sentry/deno ships no fetch integration and pointed at the two shipped ones, and removed the \"Track progress in sentry-javascript#23891\" line, which reads as an SDK-change request."
+    ],
+    "skipped": [
+      "Kept the fetch breadcrumb claim: the ERRATA relocates its evidence to D02's raw-hook-all.json rather than retracting it.",
+      "Kept the deno serve --parallel sentence: DOC-R17 records 16 workers, 55 requests and 55 spans with per-request tags staying inside their worker."
+    ]
+  },
+  {
+    "section": "Deno, step 3 Instrument your libraries",
+    "applied": [
+      "Replaced the openai and @anthropic-ai/sdk names in the works-without-setup list with \"the AI SDKs\" plus a pointer to the CommonJS-only limit, so the list no longer contradicts the limit below it.",
+      "Corrected the JSON-require casualty list to Express, Hapi, NestJS, Koa's dependencies and mysql2, added Fastify as the exception that must not carry the hook at all (DOC-F21), and removed \"until the fix ships\".",
+      "Replaced the OpenAI remedy (import-map remap or --conditions=require) with what D17 actually shows: only a createRequire load produced gen_ai spans, a static ESM import came back untransformed (ERRATA, F19)."
+    ],
+    "skipped": []
+  },
+  {
+    "section": "Deno, step 4 Verify",
+    "applied": [
+      "Rewrote the expected result: both traces are named GET with source url, the manual span ships in the request span's envelope, no transaction envelope is sent, and events carry no transaction field (DOC-Q1, DOC-Q3, results-quickstart.json)."
+    ],
+    "skipped": []
+  },
+  {
+    "section": "Deno, step 6 intro and fetch snippet",
+    "applied": [
+      "Replaced the hand-written @sentry/core fetch integration and its snippet with the two shipped ones, fetchIntegration() from @sentry/cloudflare and winterCGFetchIntegration() from @sentry/vercel-edge, and stated the gap as @sentry/deno shipping neither (DOC-F18 to DOC-F34).",
+      "Added the warning against hand-writing one: in the Remix cell it propagated headers and then suppressed every server transaction and span envelope for the process (DOC-F33).",
+      "Extended the framework list in the intro to the frameworks the table now covers, and reframed \"Two things apply to all of them\" as two things that cut across the table."
+    ],
+    "skipped": [
+      "Did not present either shipped integration as universally applicable: the table names the one that was run per framework, and says where neither was run."
+    ]
+  },
+  {
+    "section": "Deno, frameworks table",
+    "applied": [
+      "Split the four grouped rows into one row per framework, because the corrected items give different wiring for each.",
+      "Hono: nothing beyond steps 1 to 3, and the fetch gap stated with no remedy, since neither integration was run against Hono (DOC-F18).",
+      "Express: the JSON load hook, what each shape delivers, and setupExpressErrorHandler from @sentry/server-utils for the plain shape, which @sentry/deno does not re-export (DOC-F20).",
+      "Fastify: no hook at all, mysql2 3.20+ works, setupFastifyErrorHandler is a deprecated no-op, winterCGFetchIntegration for fetch (DOC-F21).",
+      "Koa: the --import preload instead of a static hook import, why a first-line import is too late, the esbuild alternative, createConnection over createPool, and the misleading debug output (DOC-F22).",
+      "Hapi: the three verified wirings, attachHapiErrorHandler from @sentry/server-utils, and the onPreHandler rename as the no-build route-name option (DOC-F23).",
+      "NestJS: the boot workaround as a fork with what each branch costs, plus enableRuntimeChannelInjection and the mandatory APP_FILTER (DOC-F26).",
+      "Oak: added the finally block, the segment name source, and what app.listen() costs (DOC-F24).",
+      "Fresh: replaced \"Isolation leaks across requests, no fix\" with the recorded mitigation, the scrub of the inherited isolation scope, and the warning against withIsolationScope(new Scope()); corrected the driver externals to both lists (DOC-F25).",
+      "Next.js: added the three-way database story, the webpack requirement and contexts.runtime reporting node (DOC-F27).",
+      "Nuxt: added winterCGFetchIntegration, the mysql2 externals.inline entry and the error-response naming gap (DOC-F28).",
+      "SvelteKit: named @sentry/cloudflare as the fetchIntegration source and already a dependency, and stated that mysql needs nothing while mysql2 needs the require-cache prewarm (DOC-F29).",
+      "Elysia: replaced the single wiring with the two verified ones and what the documented init costs (DOC-F19).",
+      "Remix: added the installGlobals ordering rule, the simple database shape, and that Express cannot be the Remix server (DOC-F33).",
+      "SolidStart: replaced \"wrap scope changes in withIsolationScope\" with the array-form middleware, setHttpServerSpanRouteAttribute, the production build requirement and the isolation symptom stated without a cause (DOC-F34).",
+      "Split React Router and TanStack Start: the node:http server entry and renderToReadableStream for one, the deno-entry wrapper and noExternals for the other (DOC-F31, DOC-F32).",
+      "Added Astro, whose src/middleware.ts import is required rather than optional (DOC-F30)."
+    ],
+    "skipped": [
+      "Did not name a fetch remedy for Hono, Koa, Hapi or TanStack Start: those cells record the gap with nothing shipped that closed it.",
+      "Did not promise Nuxt isolation and incoming-trace continuation on the node-server output: DOC-F28 records both as measured only on the deno_server build."
+    ]
+  },
+  {
+    "section": "Deno, Next steps",
+    "applied": [
+      "Corrected the framework line: Express, Hapi and NestJS need the JSON hook, Koa needs it inside a --import preload.",
+      "Rewrote the Deno.cron bullet as facts: the integration is not in the default set, throws at init on Deno 2.9.0 and later, works up to 2.8.3, is a silent no-op without --unstable-cron, and withMonitor or captureCheckIn work on every version (DOC-R2)."
+    ],
+    "skipped": []
+  },
+  {
+    "section": "Cloudflare, step 2 Configure",
+    "applied": [
+      "Rewrote the sessions paragraph: @sentry/cloudflare exports none of startSession, endSession or captureSession and the exported Session is a type only. Dropped the recommendation to add @sentry/core and call them from there, which DOC-R18 records as an untested path.",
+      "Rewrote the waitUntil alert: an error thrown or a promise rejected there is not captured on either trace lifecycle, with the reason. Dropped the unsourced \"do not await Sentry.flush() on SDK 10.x\" instruction and kept the flush fact that is recorded (DOC-R14).",
+      "Added the request-wrapper caveats to the compatibility note: its events carry no request data and it establishes no per-request isolation (DOC-F50, quickstarts/cloudflare/results-request.json).",
+      "Extended the Durable Object sentence to the four wrapped non-fetch handlers, the alarm span's new trace and link back to setAlarm, and the error mechanism (DOC-R16)."
+    ],
+    "skipped": [
+      "Left the \"Before SDK 11.0\" alert about dataCollection.httpBodies and shared scheduled/queue trace ids: it is a released-line statement from the deep probe report and no corrected item touches it."
+    ]
+  },
+  {
+    "section": "Cloudflare, step 3 Vite plugin",
+    "applied": [
+      "Added the instrument.server.* options file, documented since docs commit 9bfe0e96c, and what happens without it: the Worker reads DSN, release, environment and sample rate from its env bindings (DOC-Q2, DOC-C4).",
+      "Added the wranglerConfigPath rule: it is required whenever the project holds more than one wrangler config, a config resolved to the wrong file instruments nothing while the build succeeds, and the built entry is the check (DOC-Q2)."
+    ],
+    "skipped": [
+      "Kept the \"before 11.0 the plugin is a no-op unless _experimental.useDiagnosticsChannelInjection is passed\" alert: DOC-C4 confirms that sentence for the released line and records the flag as gone on develop."
+    ]
+  },
+  {
+    "section": "Cloudflare, step 4 Verify",
+    "applied": [
+      "Rewrote the expected result: span envelopes rather than transactions under the default lifecycle, spans named GET with source url, no transaction field on the event, and the wrangler dev stack trace with no context lines and frames in the dev bundle, pointing at step 5 (DOC-Q1, DOC-Q3, DOC-Q6)."
+    ],
+    "skipped": []
+  },
+  {
+    "section": "Cloudflare, frameworks table",
+    "applied": [
+      "Split the \"Nothing extra is needed\" row into Hono, Astro, React Router and TanStack Start, because three of the four need something.",
+      "Hono: database spans are build-time only, with autoInstrumentation: false because the middleware already applies withSentry, and no middleware.hono spans on Workers (DOC-F35).",
+      "Astro: confirmed nothing extra including database spans, and recorded why wrangler's main points at the config file (DOC-F47).",
+      "React Router: the hand-written handleError export, the react-router.config.ts flags, and buildTimeInstrumentation removing database spans (DOC-F48).",
+      "TanStack Start: sentryTanstackStart() in vite.config.ts is required, what disappears without it, and that vite dev produces no database spans (DOC-F49).",
+      "Next.js: added the CommonJS next.config requirement with the exact failure, the removed sendDefaultPii option, that fetchIntegration covers node:http too, the mysql2 disableEval rule and that mysql 2.x records nothing (DOC-F44).",
+      "Nuxt: corrected the naming claim, parameterized routes do work and only parameterless ones lack http.route, added the two nitro settings and the nuxt dev caveat, and removed the \"SDK fix is one line\" aside (DOC-F45).",
+      "SvelteKit: corrected ssr.noExternal from the /^@sentry\\// regex to the three-package list and reframed it as a build failure on flat node_modules rather than a driver-span fix; added that database spans need no setup on pnpm and that kit.experimental.tracing.server makes naming worse (DOC-F46).",
+      "Remix: added the @sentry/remix/cloudflare handleError import, the instrumentBuild entry, the makeWrappedCreateRequestHandler double-report, the sentryCloudflareVitePlugin build that was actually run with its ssr options, and the wrapRequestHandler isolation caveat with what it exists for (DOC-F50).",
+      "SolidStart: added the rollupConfig.external line and its silent failure mode, the hand-written wrangler config, and the page-render and trace-continuation limits (DOC-F51)."
+    ],
+    "skipped": [
+      "Did not document sentryRemixVitePlugin from @sentry/remix/vite for Cloudflare: DOC-F50 records it as not exercised in this audit."
+    ]
+  },
+  {
+    "section": "Cloudflare, Node HTTP frameworks on Workers",
+    "applied": [
+      "Overturned \"A Worker bundled by wrangler alone produces none of them and logs no warning\": such a Worker still gets isolation, incoming trace continuation, outgoing fetch spans and logs, has no database spans at all, and gets error capture and route names from app-side wiring (DOC-F37, DOC-F39, DOC-F40, DOC-F43).",
+      "Added the module-scope rule as a shared paragraph, and the mysql rules: mysql 2.x unchanged, mysql2 needs disableEval: true with the connection opened inside the handler (DOC-F37, DOC-F39, DOC-F40, DOC-F41, DOC-F43).",
+      "Express: added the plain-wrangler recipe, setupExpressErrorHandler from @sentry/server-utils and patchExpressModule from @sentry/core/server, and that vite dev cannot start Express on workerd (DOC-F37).",
+      "Koa: added the plain-wrangler fallback and that the manual rename yields source custom, not route (DOC-F39).",
+      "Hapi: added that hapiIntegration is not a Cloudflare default and must come from @sentry/server-utils, and the plain-wrangler onPreResponse recipes (DOC-F40).",
+      "NestJS: recorded that the SentryGlobalFilter half needs no bundler plugin, named @sentry/nestjs/setup, added lazy boot and that expected HttpExceptions stay unreported (DOC-F43).",
+      "Fastify: added the second restriction (new Function in the router), that schemas are no escape, that Fastify 4 is the same, and the node:http control that rules out the Cloudflare half (DOC-F38).",
+      "Extended the Oak, Fresh and Elysia paragraph with the JSR and @sentry/server-utils install rules, that Elysia's own init cannot be used on Workers, Fresh's separate wrangler entry and captureConsoleIntegration, and the finally-then-source ordering for the naming middleware (DOC-F36, DOC-F41, DOC-F42)."
+    ],
+    "skipped": [
+      "Did not add a mysql2 disableEval claim to the Oak and Fresh rows as verified: DOC-F41 and DOC-F42 record those cells as not having exercised it, so the rule is stated once in the shared paragraph where it was measured."
+    ]
+  },
+  {
+    "section": "How the quick starts were verified, intro and tables",
+    "applied": [
+      "Repointed the intro from ../qs/ to quickstarts/<runtime>/, named the real re-run command (./run.sh <variant>) and the real file names (results-<variant>.json, app-<variant>.log, sink-<variant>.log), and said the framework rows come from the deep probe report cell records instead.",
+      "Dropped the 10.73.0 column from all three tables and every row that cited a ../qs/qs10/ or v10-* run: no shipped file carries that evidence.",
+      "Rebuilt the Bun table from quickstarts/bun: the preload, bunfig, self-import, watch, bundle and bundle-minimal variants, the routes-map naming contrast, the one-envelope verify result, and the two debug-only warnings.",
+      "Rebuilt the Deno table from quickstarts/deno: the quickstart, guide-flags, guide-flags-nohook, no-hook, import-flag and deno-serve variants, including the NotCapable crash and the silent loss of server_name, OS version, context lines and app:/// paths.",
+      "Rebuilt the Cloudflare table from quickstarts/cloudflare: base, compat-floor, request, vite and waituntil, with the wrangler and workerd versions the run used.",
+      "Retitled the three subheadings to the versions actually run (bun 1.4.2, deno 2.9.0, wrangler 4.129.0) and updated the matching nav labels; the heading ids are unchanged."
+    ],
+    "skipped": [
+      "Dropped the source-map row from the Bun table: the shipped reproduction builds with sourcemap \"external\" but never runs sentry-cli sourcemaps inject, so there is nothing to cite. Step 5 keeps the CLI recipe.",
+      "Dropped the \"a compatibility date newer than the local workerd fails to start\" row: the shipped Cloudflare reproduction has no such leg.",
+      "Dropped the database rows (module-scope versus per-request connection, channel scenario-lazy) from the Bun table: the shipped quick starts carry no database leg, and that evidence lives in the deep probe report."
+    ]
+  },
+  {
+    "section": "How the quick starts were verified, findings",
+    "applied": [
+      "Replaced the K11, K12 and 10.x bullets, all of which cited vanished ../qs/ paths, with eight findings the shipped runs show, each naming its file: no transaction envelope on any runtime, no transaction field on Bun and Cloudflare error events against Node's, the two Bun warnings, the Deno flag set that cannot start a hooked app, the invisible cost of omitting the hook import, the unreadable first Cloudflare stack trace, the silently wrong wrangler config, and the uncaptured waitUntil rejection.",
+      "Removed the \"the SDK should warn when...\" clause from the old K12 bullet: SDK-change requests do not belong on the page."
+    ],
+    "skipped": [
+      "Did not carry K11 forward: its evidence (app-modconn versus app-noend, the lazy channel scenario) is not in the shipped quickstarts directories. The behaviour it describes survives as the module-scope rule in the Bun step 1 alert."
+    ]
+  },
+  {
+    "section": "Nav and generated blocks",
+    "applied": [
+      "Updated the three verification-section nav labels to match the retitled headings; no nav entry added or removed, and every heading id is unchanged.",
+      "Checked the file after editing: div, pre, table, section, thead, tbody, tr, td, th, ul, li, p, a, code, span, h1 to h4, strong, em and blockquote all balance, and every in-page href resolves to an id that exists."
+    ],
+    "skipped": [
+      "Left the generated coverage block between <!--QS-COVERAGE--> and <!--/QS-COVERAGE--> and the <!--QS-NAV--> entries untouched, including its claude.ai deep-report links.",
+      "Left the five existing deep-report links in the guide sections; no new claude.ai link was added."
+    ]
+  }
+]

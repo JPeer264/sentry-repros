@@ -4,7 +4,7 @@ Milestone: XPlatform Functionality Gaps
 Labels: JavaScript, Task
 Priority: Low
 
-`packages/deno/README.md:70` and `src/import.mjs:10` show `--import=@sentry/deno/import`, which Deno resolves as a file path and rejects. `packages/cloudflare/README.md:82-99` imports `wrapRequestHandler` from the main entry, which develop no longer exports (`ERR_PACKAGE_PATH_NOT_EXPORTED`); it lives on `@sentry/cloudflare/request`.
+`packages/deno/README.md:70` and `src/import.mjs:10` show `--import=@sentry/deno/import`, which Deno resolves as a file path and rejects with `Module not found`. `packages/cloudflare/README.md:88` and `:99` import `wrapRequestHandler` from the main entry, which develop no longer exports (`packages/cloudflare/src/index.ts:117` exports only `_INTERNAL_wrapRequestHandler`); it lives on `@sentry/cloudflare/request`.
 
 **Work item.** Fix both READMEs in one PR.
 

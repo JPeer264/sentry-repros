@@ -178,6 +178,8 @@ Every route, `/users/:id` included, is named `GET`; the segment attributes are
 `http.client` span at all**:
 
 ```json
+_The block below is quoted from an earlier run of the same variant; the shipped `results-quickstart.json` carries the same envelope shape under trace `d048e15b956b4204b51de02aa7c26964`._
+
 {"type":"span","trace_id":"983e6dd9d6e940e1bbd0ffff8e292360",
  "items":["test My First Test Span","http.server GET"],
  "raw":[{"name":"My First Test Span","op":"test","status":"ok","parent_span_id":"b506e46cc229da49",

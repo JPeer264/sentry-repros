@@ -1391,8 +1391,8 @@
    },
    {
     "name": "route names",
-    "verdict": "partial",
-    "detail": "Parameterized route is named `GET /app/api/users/[id]` with `transaction_info.source: \"route\"` (static lifecycle) and as an `http.server` span of the same name under stream lifecycle. Correct low cardinality, but the name carries a spurious `/app` prefix from the app-router directory, and the same request's event payload disagrees: `event.transaction` is `GET /api/users/[id]` while the transaction envelope says `GET /app/api/users/[id]`, so events and transactions group under different names."
+    "verdict": "works",
+    "detail": "Parameterized route is named `GET /app/api/users/[id]` with `transaction_info.source: \"route\"` (static lifecycle) and as an `http.server` span of the same name under stream lifecycle. Correct low cardinality, but the name carries a spurious `/app` prefix from the app-router directory, and the same request's event payload disagrees: `event.transaction` is `GET /api/users/[id]` while the transaction envelope says `GET /app/api/users/[id]`, so events and transactions group under different names. Rebuild 2026-09-07: items-static.json and items-stream.json name the route GET /api/users/[id] with source route and no /app prefix."
    },
    {
     "name": "isolation",
@@ -1411,8 +1411,8 @@
    },
    {
     "name": "db spans",
-    "verdict": "broken",
-    "detail": "A module-scope `mysql2/promise` pool queried from a route handler produced no `db` span; the transaction contained only Next's own three spans. Both instrumentation paths fail. (a) Runtime hook: `[Sentry] Runtime hook not registered` - `@sentry/nextjs/build/import-hook.mjs` no-ops on bun, and stays unregistered whether launched plainly, with `NODE_OPTIONS=\"--import ...\"` (bun ignores it), or with `bun --bun --preload ./node_modules/@sentry/nextjs/build/import-hook.mjs`. (b) Build-time injection: `[Sentry] Bundler plugin ran, injected libraries=[]`, because Next's server build leaves `mysql2` as a bare `require(\"mysql2/promise\")` external; tested with and without `serverExternalPackages: ['mysql2']`, identical. The Bun.build + `sentryBunPlugin()` path that rescues plain Bun apps does not exist for Next.js, so no path works. The SDK does detect bun and subscribes eagerly (`[instrumentation:mysql2] Bun/Deno, subscribing eagerly`), so it silently believes it is instrumented. traceLifecycle 'static'."
+    "verdict": "works",
+    "detail": "A module-scope `mysql2/promise` pool queried from a route handler produced no `db` span; the transaction contained only Next's own three spans. Both instrumentation paths fail. (a) Runtime hook: `[Sentry] Runtime hook not registered` - `@sentry/nextjs/build/import-hook.mjs` no-ops on bun, and stays unregistered whether launched plainly, with `NODE_OPTIONS=\"--import ...\"` (bun ignores it), or with `bun --bun --preload ./node_modules/@sentry/nextjs/build/import-hook.mjs`. (b) Build-time injection: `[Sentry] Bundler plugin ran, injected libraries=[]`, because Next's server build leaves `mysql2` as a bare `require(\"mysql2/promise\")` external; tested with and without `serverExternalPackages: ['mysql2']`, identical. The Bun.build + `sentryBunPlugin()` path that rescues plain Bun apps does not exist for Next.js, so no path works. The SDK does detect bun and subscribes eagerly (`[instrumentation:mysql2] Bun/Deno, subscribing eagerly`), so it silently believes it is instrumented. traceLifecycle 'static'. Rebuild 2026-09-07: the GET /api/db transaction carries db mysql2.pool.connect, db mysql2.connect and db SELECT id, name FROM users (origin auto.db.mysql2.diagnostic_channel)."
    },
    {
     "name": "logs",
@@ -1573,8 +1573,8 @@
    },
    {
     "name": "db spans",
-    "verdict": "partial",
-    "detail": "Instrumentation path: none of the special ones. mysql2 v3 publishes its own `diagnostics_channel` tracingChannels (`mysql2:query`, `mysql2:connect`, `mysql2:pool:connect`) and @sentry/bun subscribes eagerly ('[instrumentation:mysql2] Bun/Deno, subscribing eagerly'), so NO Bun plugin build was needed. The Nuxt module's build-time orchestrion pass injected nothing into the nitro bundle at all ('[Sentry] Bundler plugin ran, injected libraries=[]'; zero `orchestrion:` channel names in .output/server/index.mjs) on either preset. Under `@sentry/bun` a module-scope pool query yields `db SELECT users` with db.query.text/db.query.summary/db.namespace and origin `auto.db.mysql2.diagnostic_channel`; under `@sentry/nuxt` no db span appears. Separately, the query itself always fails inside the nitro bundle with `genFunc$1 is not a function` (a rollup commonjs interop break on mysql2's generate-function) \u2014 this reproduces identically on the node-server preset under plain node, so it is a Nitro/mysql2 bundling bug, not a bun or Sentry one. Stream lifecycle."
+    "verdict": "broken",
+    "detail": "Instrumentation path: none of the special ones. mysql2 v3 publishes its own `diagnostics_channel` tracingChannels (`mysql2:query`, `mysql2:connect`, `mysql2:pool:connect`) and @sentry/bun subscribes eagerly ('[instrumentation:mysql2] Bun/Deno, subscribing eagerly'), so NO Bun plugin build was needed. The Nuxt module's build-time orchestrion pass injected nothing into the nitro bundle at all ('[Sentry] Bundler plugin ran, injected libraries=[]'; zero `orchestrion:` channel names in .output/server/index.mjs) on either preset. Under `@sentry/bun` a module-scope pool query yields `db SELECT users` with db.query.text/db.query.summary/db.namespace and origin `auto.db.mysql2.diagnostic_channel`; under `@sentry/nuxt` no db span appears. Separately, the query itself always fails inside the nitro bundle with `genFunc$1 is not a function` (a rollup commonjs interop break on mysql2's generate-function) \u2014 this reproduces identically on the node-server preset under plain node, so it is a Nitro/mysql2 bundling bug, not a bun or Sentry one. Stream lifecycle. Rebuild 2026-09-07: no mysql2 span appeared under either variant; the logs show only [instrumentation:mysql2] Bun/Deno, subscribing eagerly. The recorded partial verdict did not reproduce."
    },
    {
     "name": "logs",
@@ -2034,8 +2034,8 @@
    },
    {
     "name": "outgoing fetch",
-    "verdict": "partial",
-    "detail": "Plain `bun server.mjs`: headers only \u2014 the recorder received `sentry-trace: a19cc67a\u2026-884e3f78b27078a5` and a baggage header, but NO `http.client` span was emitted (no span envelopes exist in this mode at all). With the Bun.build bundle: WORKS fully \u2014 transaction `GET outfetch` contains `http.client GET http://127.0.0.1:41519/rec`, and the recorder saw `sentry-trace: 510a3fcd\u2026-8f5c7bf3a115a44a-1` plus baggage with `sentry-transaction`, `sentry-sampled`, `sentry-sample_rate`. traceLifecycle: 'static'."
+    "verdict": "broken",
+    "detail": "Plain `bun server.mjs`: headers only \u2014 the recorder received `sentry-trace: a19cc67a\u2026-884e3f78b27078a5` and a baggage header, but NO `http.client` span was emitted (no span envelopes exist in this mode at all). With the Bun.build bundle: WORKS fully \u2014 transaction `GET outfetch` contains `http.client GET http://127.0.0.1:41519/rec`, and the recorder saw `sentry-trace: 510a3fcd\u2026-8f5c7bf3a115a44a-1` plus baggage with `sentry-transaction`, `sentry-sampled`, `sentry-sample_rate`. traceLifecycle: 'static'. Rebuild 2026-09-07: the recorder saw sentry-trace null in both modes and Mode B GET outfetch had no http.client span. The recorded partial verdict did not reproduce."
    },
    {
     "name": "db spans",

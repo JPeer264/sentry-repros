@@ -15,7 +15,8 @@
    "--import": "yes",
    "--require": "partial (works, undocumented banner)",
    "first-line import": "yes",
-   "NODE_OPTIONS --import": "yes"
+   "NODE_OPTIONS --import": "yes",
+   "express library check (--import and first-line import)": "works (handler /users/:id and http.server GET /users/:id in results-express-flag.json and results-express-self.json)"
   }
  },
  {
@@ -35,7 +36,8 @@
    "bunfig preload": "yes",
    "first-line import": "yes",
    "Bun.build + sentryBunPlugin": "yes",
-   "--watch": "yes"
+   "--watch": "yes",
+   "bundle-minimal (no external)": "works (results-bundle-minimal.json, same shape as the bundle variant)"
   }
  },
  {
@@ -124,6 +126,32 @@
    "Redux": "partial (denylist claim)",
    "component names (Babel plugin)": "not run",
    "TanStack Router": "not run"
+  }
+ },
+ {
+  "id": "QS-vue",
+  "path": "quickstarts/vue",
+  "runtime": "Chrome 152 headless, develop 03aaf42455; vue 3.5.42, vue-router 4.6.4, pinia 3.0.4, esbuild bundles with the full Vue build alias",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's install, init (17 integrations), verify error, async span, logs, propagation and replay work; pageload and navigation arrive as span items named by route name or parameterized path. Defects: the Vue Router page's only full example is Vue 2 code that fails on the guide's Vue 3 install; the tracingOptions.hooks snippet lacks a comma; the component tracking page states the wrong default hooks and ui.vue.* op names and prints a duplicate-key snippet; Pinia state carries passwords in clear despite the page's PII sentence; the pages say transactions; the late-init and multiple-apps snippets miss their imports; the dev build reports the verify error without component context; no sessions without a release.",
+  "sdk": {
+   "name": "sentry.javascript.vue",
+   "version": "10.67.0",
+   "integrations": 17
+  },
+  "variants": {
+   "base (guide config, production build)": "works",
+   "base in development mode": "partial (BrowserApiErrors captures first)",
+   "vue-router with routeLabel path": "works",
+   "vue-router page snippet verbatim": "broken (Vue 2 code)",
+   "component tracking (:28-48)": "partial (duplicate key, no update spans)",
+   "component tracking hooks snippet": "broken (missing comma)",
+   "component tracking hooks fixed": "works",
+   "Pinia plugin": "works (passwords in clear)",
+   "multiple apps": "works with import * as Vue",
+   "late init (full Vue build)": "works",
+   "late init (runtime-only build)": "broken (renders nothing)"
   }
  }
 ]

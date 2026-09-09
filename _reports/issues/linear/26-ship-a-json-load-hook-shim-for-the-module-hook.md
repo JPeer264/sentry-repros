@@ -4,7 +4,7 @@ Milestone: Deno Functionality Gaps
 Labels: JavaScript, Deno, Bug
 Priority: High
 
-Registering any `Module.registerHooks` load hook on Deno 2.9 makes CommonJS `require("*.json")` compile as JavaScript (denoland/deno#36240, fix in denoland/deno#36243, both open). Under `@sentry/deno/import` that breaks Express, Hapi, Fastify, mysql2, Koa's dependencies and NestJS at import with `SyntaxError: Unexpected token ':'`. A second load hook that delegates and sets `format: "json"` for `.json` URLs works around it, verified with the hook on and off.
+Registering any `Module.registerHooks` load hook on Deno 2.9 makes CommonJS `require("*.json")` compile as JavaScript (denoland/deno#36240, fix in denoland/deno#36243, both open). Under `@sentry/deno/import` that breaks Express, Hapi, Fastify, mysql2, Koa's dependencies and NestJS at import with `SyntaxError: Unexpected token ':'`, and under the runtime channel injection it turns every Next.js request into a 500. A second load hook that delegates and sets `format: "json"` for `.json` URLs works around it, verified with the hook on and off. The public option today is `enableRuntimeChannelInjection: false`, which buys a process that boots at the price of every channel-based integration.
 
 **Work item.** Register that shim in `register.ts` until the Deno fix ships, with a version check to drop it afterwards.
 

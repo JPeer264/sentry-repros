@@ -4,7 +4,9 @@ Milestone: Deno + Framework gaps
 Labels: JavaScript, Deno, Bug
 Priority: High
 
-With `Sentry.init` from `@sentry/elysia`, there is no `http.server` span on Deno, every request in the process shares one trace, incoming `sentry-trace` headers are ignored, and tags and request URLs bleed between concurrent requests, because that init delegates to `@sentry/bun`. Initializing from `@sentry/deno` before `Deno.serve` and importing only `withElysia` (plus `fetchIntegration` from `@sentry/elysia` for outgoing requests) makes errors, route names, isolation, incoming trace, outgoing fetch, database spans and logs work, at the cost of `sdk.name` reporting `sentry.javascript.deno`.
+With `Sentry.init` from `@sentry/elysia`, there is no `http.server` span on Deno, every Elysia lifecycle phase becomes its own root transaction on one process-wide trace, incoming `sentry-trace` headers are ignored, and the isolation scope carries the previous request's route into the next event, because that init delegates to `@sentry/bun`.
+
+Two wirings fix it, both from shipped exports and both exercised in the static and the stream lifecycle. Initialize from `@sentry/deno` before `Deno.serve` and import only `withElysia` from `@sentry/elysia`, or keep `Sentry.init` from `@sentry/elysia` and pass `integrations: [denoServeIntegration()]` from `@sentry/deno`. Errors, route names, isolation, incoming trace, database spans and logs then work, with `fetchIntegration()` from `@sentry/elysia`, a re-export of the Bun integration, for outgoing requests. The wiring decides what events report: `sdk.name` `sentry.javascript.deno` in the first, `sentry.javascript.bun` with `contexts.runtime.name` `bun` and session envelopes in the second.
 
 **Work item.** Pick the base SDK by runtime in `@sentry/elysia`. Same root as JS-3582 and JS-3583 on Node.
 

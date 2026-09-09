@@ -3,6 +3,8 @@ import json, os, collections
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 rec=lambda n: json.load(open(os.path.join(ROOT,'_records',n)))
 probes, cells, results = rec('probes.json'), rec('cells.json'), {r['id']:r for r in rec('results.json')}
+_all={c['id']:c for c in rec('cells-all.json')}
+cells=cells+[c for i,c in _all.items() if i not in {c['id'] for c in cells}]
 def row(kind, x):
     r=results.get(x['id'],{}); exists=os.path.isdir(os.path.join(ROOT,kind,x['id']))
     title=(x.get('title') or (x.get('framework','')+' on '+x.get('runtime',''))).replace('|','/')[:90]

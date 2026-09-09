@@ -25,7 +25,7 @@ shape (`bundle-minimal`) that drops `external: ["@sentry/*"]` from the build.
 ## Install
 
 ```bash
-cd /Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/bun
+cd $REPRO/quickstarts/bun
 bun install     # package.json pins every @sentry/* to a tarball in ../../_toolbox/pack/
 ```
 
@@ -50,7 +50,7 @@ an unpublished build, not a defect in the guide.
 ## Run
 
 ```bash
-cd /Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/bun
+cd $REPRO/quickstarts/bun
 ./run.sh preload         # bun --preload ./instrument.ts app.ts            -> results-preload.json
 ./run.sh bunfig          # preload = ["./instrument.ts"] in bunfig.toml    -> results-bunfig.json
 ./run.sh self-import     # import "./instrument" first line, bun app.ts    -> results-self-import.json

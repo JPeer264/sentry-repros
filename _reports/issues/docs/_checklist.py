@@ -29,11 +29,19 @@ PLAN=[
  ('React', [
    ('must','DOC-Q12','three React Router v6 and v7 snippets do not run on React 19'),
    ('should','DOC-Q13','on React 19 the root error hooks silence the ErrorBoundary features'),
-   ('should','DOC-Q14','the denylist claim does not cover Redux state'),
+   ('should','DOC-Q14','the denylist claim does not cover Redux or Pinia state'),
    ('should','DOC-Q15','the Profiler span ops are named wrong'),
    ('later','DOC-Q16','the routing snippet uses the deprecated V7 API'),
    ('later','DOC-Q17','the verify step says transactions and its test span ends before the error'),
-   ('later','DOC-Q18','sessions need a release'),
+   ('later','DOC-Q18','sessions need a release, on the Vue guide too'),
+ ]),
+ ('Vue', [
+   ('must','DOC-Q19','the Vue Router page\'s only full example is Vue 2 code that fails on Vue 3'),
+   ('must','DOC-Q20','the tracingOptions.hooks snippet is a syntax error'),
+   ('should','DOC-Q21','wrong default hooks, wrong span ops and a duplicate-key snippet on the component tracking page'),
+   ('later','DOC-Q22','the pages say transactions'),
+   ('later','DOC-Q23','the late-init and multiple-apps snippets miss their imports'),
+   ('later','DOC-Q24','the dev build reports the verify error without component context'),
  ]),
  ('Node', [
    ('should','DOC-Q5','--require banner, and a first-line ESM import equals --import'),
