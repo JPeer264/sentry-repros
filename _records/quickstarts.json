@@ -677,5 +677,27 @@
    "vite.config import verbatim": "broken (no such export)",
    "base with @sentry/sveltekit/vite": "works"
   }
+ },
+ {
+  "id": "QS-remix",
+  "path": "quickstarts/remix",
+  "runtime": "Remix 2 with the Vite build, remix-serve and Express on Node 26.5.0, Chrome 153 headless client, develop 03aaf42455",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "With the start command corrected the page works: both verify errors, loader and action errors through handleError, loader and action spans inside request segments, the pageload continuing the server trace, propagation from both sides. Defects: the entry.server snippet has two handleError exports and the vite.config imports a package the install never adds, so both builds fail; the start command dies on a Vite build; the captureActionFormDataKeys claim is wrong; transactions wording; a missing import; served source maps; the sanitized boundary event; a navigation linked to the previous trace; no release.",
+  "sdk": {
+   "name": "sentry.javascript.remix",
+   "version": "10.67.0",
+   "integrations": "15 client, 47 server"
+  },
+  "variants": {
+   "remix-serve with --import": "works",
+   "sentryHandleError form": "works",
+   "Express server importing the instrument file": "works",
+   "sentryRemixVitePlugin from @sentry/remix/vite": "works",
+   "vite.config as printed (@sentry/vite-plugin)": "broken (package not installed)",
+   "entry.server.tsx as printed": "broken (duplicate export)",
+   "start command as printed": "broken (directory import)"
+  }
  }
 ]

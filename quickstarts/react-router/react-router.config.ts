@@ -1,7 +1,8 @@
-// manual-setup.mdx:507-519 verbatim, including the `+(await ...)` line as the page prints it.
-// The page imports `sentryOnBuildEnd` from "@sentry/react-router"; see README for what happens.
+// manual-setup.mdx:507-519 with one change: `sentryOnBuildEnd` is imported from
+// "@sentry/react-router/vite" (the root export has none on develop, see
+// react-router.config.docs-verbatim.ts and README). The `+(await ...)` line is kept as the page prints it.
 import type { Config } from "@react-router/dev/config";
-import { sentryOnBuildEnd } from "@sentry/react-router";
+import { sentryOnBuildEnd } from "@sentry/react-router/vite";
 
 export default {
   ssr: true,

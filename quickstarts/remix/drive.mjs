@@ -114,10 +114,22 @@ if (appUp) {
     await page.goto(`${base}/action-throws`, { waitUntil: 'load' });
     await until('action page', () => page.evaluate(() => document.querySelector('#action-page') !== null), 10000);
     await until('hydrated', () => page.evaluate(() => typeof window.__remixContext === 'object' && !!window.Sentry?.getClient()), 10000);
+    let okAction = null;
+    if (await page.$('#btn-action-ok')) {
+      await page.click('#btn-action-ok');
+      const ok = await until('action ok', () => page.evaluate(() => document.querySelector('#action-ok') !== null), 10000);
+      const formDataAttributes = key => {
+        const all = [];
+        for (const env of key.filter(i => i.type === 'span' && isServer(i))) for (const s of env.raw || []) if (/^ACTION/.test(s.name)) all.push(Object.fromEntries(Object.entries(s.attributes).filter(([k]) => k.includes('form_data'))));
+        return all;
+      };
+      const arrived = await until('ok ACTION span', async () => formDataAttributes(await get('/__items')).length > 0, 10000, 250);
+      okAction = { ok, arrived, formDataAttributes: formDataAttributes(await get('/__items')) };
+    }
     await page.click('#btn-action');
     const boundary = await until('root ErrorBoundary after action', () => page.evaluate(() => document.querySelector('#root-error-boundary') !== null), 10000);
     const serverEvent = await until('server action error event', async () => hasEvent(await get('/__items'), i => isServer(i) && String(i.exception).includes('Sentry Example Action Error')));
-    return { boundary, serverEvent, boundaryText: await page.evaluate(() => document.querySelector('#root-error-boundary')?.textContent ?? null) };
+    return { okAction, boundary, serverEvent, boundaryText: await page.evaluate(() => document.querySelector('#root-error-boundary')?.textContent ?? null) };
   });
   await step('goto /loader-throws (document request, loader throws during SSR)', async () => {
     const res = await page.goto(`${base}/loader-throws`, { waitUntil: 'load' });

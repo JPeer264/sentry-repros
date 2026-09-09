@@ -30,6 +30,12 @@ PLAN=[
    ('should','DOC-Q93','the custom handleErrorWithSentry handler marks every server error handled'),
    ('later','DOC-Q94','unknown-route spans, segment status on 500, an outdated load rationale, a stale Vite prerequisite'),
  ]),
+ ('Remix', [
+   ('must','DOC-Q95','two snippets fail the build: a doubled handleError export and an uninstalled Vite plugin package'),
+   ('should','DOC-Q96','the start command does not work with a Vite build'),
+   ('should','DOC-Q97','the captureActionFormDataKeys claim describes data that never appears on errored actions'),
+   ('later','DOC-Q98','transactions wording, a missing import, served source maps, the sanitized boundary event, no release'),
+ ]),
  ('Nuxt', [
    ('should','DOC-Q90','the pages still make --import the crucial step; the server config is bundled into the Nitro build'),
    ('later','DOC-Q91','deprecated inject modes documented as current, Nuxt 4 missing, a verify button that creates a second issue'),

@@ -1,6 +1,7 @@
 // The `create-react-router` basic template's root.tsx (Layout, App, ErrorBoundary), which is what a
 // new user has when they reach the guide. The guide itself shows no root.tsx snippet. Repro-only
 // additions: the nav links and the ids/data attributes the driver reads.
+import { useEffect } from "react";
 import { isRouteErrorResponse, Link, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { Route } from "./+types/root";
 
@@ -30,6 +31,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    document.body.setAttribute("data-wired", "1");
+  }, []);
   return <Outlet />;
 }
 

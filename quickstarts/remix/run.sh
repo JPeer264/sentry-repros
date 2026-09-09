@@ -113,5 +113,10 @@ fi
 kill $SERVER_PID 2>/dev/null; wait $SERVER_PID 2>/dev/null
 kill $SINK_PID 2>/dev/null; wait $SINK_PID 2>/dev/null
 pkill -f "remix-serve ./build/server/index.js" 2>/dev/null
-echo "wrote $DIR/${RESULT_NAME}.json (server log: server-${VARIANT}.log, build log: build-${VARIANT}.log)"
+# Machine paths in stack traces and logs become the $REPRO placeholder (the repo root).
+REPO_ROOT="$(cd "$DIR/../.." && pwd)"
+for f in "$DIR/results-${VARIANT}.json" "$DIR/build-${VARIANT}.log" "$DIR/server-${VARIANT}.log" "$DIR/sink-${VARIANT}.log"; do
+  [ -f "$f" ] && sed -i '' "s#${REPO_ROOT}#\$REPRO#g" "$f"
+done
+echo "wrote ${RESULT_NAME}.json (server log: server-${VARIANT}.log, build log: build-${VARIANT}.log)"
 exit $STATUS

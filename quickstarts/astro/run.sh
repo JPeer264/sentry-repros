@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 # Usage:
-#   ./run.sh build [base|middleware|static-default|removed-option]   astro build -> dist/ or dist-<variant>/, log in build-<variant>.log
+#   ./run.sh build [base|middleware|static-default|removed-option]   astro build -> dist/ or dist-<variant>/, build-<variant>.log, results-build-<variant>.json
 #   ./run.sh base | view-transitions | server                        sink on 127.0.0.1:4756, `PORT=4757 node ./dist/server/entry.mjs`, drive.mjs
 #   ./run.sh base-middleware | server-middleware                     the same against dist-middleware/
 # Every process this script starts is killed before it exits.
 set -u
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPRO_ROOT="$(cd "$DIR/../.." && pwd)"
 cd "$DIR"
 export ASTRO_TELEMETRY_DISABLED=1
+# Stack traces and build logs carry the absolute checkout path; every file this script writes gets it replaced.
+scrub() { REPRO_ROOT="$REPRO_ROOT" perl -pi -e 's/\Q$ENV{REPRO_ROOT}\E/\$REPRO/g' "$@" 2>/dev/null; }
+trap 'scrub results-*.json build-*.log server-*.log sink-*.log' EXIT
 SINK_PORT="${SINK_PORT:-4756}"
 APP_PORT="${APP_PORT:-4757}"
 CMD="${1:-base}"
@@ -38,7 +42,7 @@ if [ "$CMD" = "build" ]; then
       envelopes: null,
       verdict: { status: exit === 0 ? "build succeeded" : "build failed", sentryWarnings: build.filter(l => /sentry/i.test(l) && /warn/i.test(l)), errors: build.filter(l => /error/i.test(l) && !/sentry-vite-plugin/.test(l)).slice(0, 12) },
     };
-    fs.writeFileSync(`results-${v}.json`, JSON.stringify(out, null, 2));
+    fs.writeFileSync(`results-build-${v}.json`, JSON.stringify(out, null, 2));
   '
   exit $S
 fi
@@ -59,6 +63,7 @@ cleanup() {
   [ -n "$APP_PID" ] && kill "$APP_PID" 2>/dev/null
   [ -n "$SINK_PID" ] && kill "$SINK_PID" 2>/dev/null
   wait 2>/dev/null
+  scrub results-*.json build-*.log server-*.log sink-*.log
 }
 trap cleanup EXIT
 
