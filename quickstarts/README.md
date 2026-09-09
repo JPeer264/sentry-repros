@@ -21,7 +21,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-express](express/) | node framework | express | npm, manual setup | done | Node 26.5.0 with the develop tarballs; eleven variants across the install variants, the error handler, the integration options and express 4 and 5 |
 | [QS-fastify](fastify/) | node framework | fastify | npm, manual setup | done | Node 26.5.0 with the develop tarballs; thirteen variants across the install variants, the error handler page, the integration options and fastify 4 and 5 |
 | [QS-koa](koa/) | node framework | koa | npm, manual setup | done | Node 26.5.0 with the develop tarballs; fourteen variants across the install variants, the error handler, the integration options and the verify snippet |
-| QS-hapi | node framework | hapi | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
+| [QS-hapi](hapi/) | node framework | hapi | npm, manual setup | done | Node 26.5.0 with the develop tarballs; thirteen variants across the install variants, the error handler, the integration options and the verify snippet |
 | QS-nestjs | node framework | nestjs | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-connect | node framework | connect | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-hono | node framework | hono | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 24 planned, 12 done, 4 not measurable.
+Totals: 23 planned, 13 done, 4 not measurable.

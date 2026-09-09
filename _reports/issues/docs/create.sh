@@ -7,7 +7,7 @@ gh issue create -R getsentry/sentry-docs --title "Fix the tracing verify snippet
 gh issue create -R getsentry/sentry-docs --title "Fix the React Router v6 and v7 page snippets that fail on React 19" --body-file P0-02-DOC-Q12.md
 gh issue create -R getsentry/sentry-docs --title "Add a Vue 3 example to the Vue Router instrumentation page" --body-file P0-03-DOC-Q19.md
 gh issue create -R getsentry/sentry-docs --title "Add the missing comma to the tracingOptions.hooks snippet on the Vue component tracking page" --body-file P0-04-DOC-Q20.md
-gh issue create -R getsentry/sentry-docs --title "Fix the extensionless instrument import on the Express, Fastify and Koa guides and the esm-without-import page" --body-file P0-05-DOC-Q25.md
+gh issue create -R getsentry/sentry-docs --title "Fix the extensionless instrument import on the Express, Fastify, Koa and Hapi guides and the esm-without-import page" --body-file P0-05-DOC-Q25.md
 gh issue create -R getsentry/sentry-docs --title "Rewrite or remove the late-initialization install page for v11" --body-file P0-06-DOC-Q26.md
 gh issue create -R getsentry/sentry-docs --title "Fix the Angular manual-setup, error handler and component tracking snippets that fail to build" --body-file P0-07-DOC-Q32.md
 gh issue create -R getsentry/sentry-docs --title "Fix the Fastify error handler page: @sentry/fastify does not exist and fastify() is never imported" --body-file P0-08-DOC-Q37.md
@@ -108,34 +108,35 @@ gh issue create -R getsentry/sentry-docs --title "Correct the supported Fastify 
 gh issue create -R getsentry/sentry-docs --title "Correct the Svelte component tracking page: span ops, the trackUpdates default and the runes-mode limit" --body-file P1-103-DOC-Q42.md
 gh issue create -R getsentry/sentry-docs --title "Qualify the Koa error handler claims on the migration and esm-without-import pages" --body-file P1-104-DOC-Q45.md
 gh issue create -R getsentry/sentry-docs --title "Rewrite the Koa integration page around the diagnostics-channel instrumentation" --body-file P1-105-DOC-Q46.md
-gh issue create -R getsentry/sentry-docs --title "Fix Bun guide hygiene: version floor, Hono install command, v7 wording" --body-file P2-106-DOC-B4.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones" --body-file P2-107-DOC-D5.md
-gh issue create -R getsentry/sentry-docs --title "Show deno add and an import map in the Deno guide's install step" --body-file P2-108-DOC-D6.md
-# gh issue create -R getsentry/sentry-docs --title "Add the four missing Cloudflare SdkOption entries and drop the deprecated enableRpcTracePropagation block" --body-file P2-109-DOC-C3.md
-gh issue create -R getsentry/sentry-docs --title "Add a bindings table to the Cloudflare features/index.mdx" --body-file P2-110-DOC-C6.md
-gh issue create -R getsentry/sentry-docs --title "Fix snippet errors across the Cloudflare includes and framework pages" --body-file P2-111-DOC-C8.md
-gh issue create -R getsentry/sentry-docs --title "Fix \"Tracing is enabled by default\" in the Bun, Deno and Cloudflare enable-tracing includes" --body-file P2-112-X1.md
-gh issue create -R getsentry/sentry-docs --title "Confirm tested versions and database spans on the Astro on Cloudflare page" --body-file P2-113-DOC-F47.md
-gh issue create -R getsentry/sentry-docs --title "Add Deno and Cloudflare to the OpenTelemetry overview and API pages" --body-file P2-114-DOC-R7.md
-gh issue create -R getsentry/sentry-docs --title "Fix removed integration names in the Bun and Deno v7 migration tables" --body-file P2-115-DOC-R8.md
-gh issue create -R getsentry/sentry-docs --title "Document the Durable Object WebSocket and alarm instrumentation" --body-file P2-116-DOC-R16.md
-gh issue create -R getsentry/sentry-docs --title "Add deno serve to the Deno guide run commands" --body-file P2-117-DOC-R17.md
-gh issue create -R getsentry/sentry-docs --title "Note that the root Pages middleware also spans static asset requests" --body-file P2-118-DOC-R19.md
-gh issue create -R getsentry/sentry-docs --title "Explain the channel-injection warnings on the Bun guide" --body-file P2-119-DOC-Q4.md
-gh issue create -R getsentry/sentry-docs --title "Update the Node getting-started page for --require and for first-line ESM imports" --body-file P2-120-DOC-Q5.md
-gh issue create -R getsentry/sentry-docs --title "Say on the Cloudflare guide that readable stack traces need the source maps step" --body-file P2-121-DOC-Q6.md
-gh issue create -R getsentry/sentry-docs --title "Say on the browser config page that the sample tracePropagationTargets matches localhost only" --body-file P2-122-DOC-Q10.md
-gh issue create -R getsentry/sentry-docs --title "Tell browser readers to wait before triggering the verify error if they expect a replay" --body-file P2-123-DOC-Q11.md
-gh issue create -R getsentry/sentry-docs --title "Move the React guide routing snippet to the version-agnostic React Router API" --body-file P2-124-DOC-Q16.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the React verify step for the stream lifecycle and fix the test span" --body-file P2-125-DOC-Q17.md
-gh issue create -R getsentry/sentry-docs --title "Say on the React, Vue, Angular and Svelte guides that release health sessions need a release" --body-file P2-126-DOC-Q18.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the Vue guide and its feature pages for the stream lifecycle" --body-file P2-127-DOC-Q22.md
-gh issue create -R getsentry/sentry-docs --title "Fix the late-initialization and multiple-apps snippets on the Vue pages" --body-file P2-128-DOC-Q23.md
-gh issue create -R getsentry/sentry-docs --title "Say on the Vue guide that the component context of the verify error appears in production builds" --body-file P2-129-DOC-Q24.md
-gh issue create -R getsentry/sentry-docs --title "Drop the deprecated setup*ErrorHandler calls from the Express, Fastify and Koa getting-started snippets" --body-file P2-130-DOC-Q29.md
-gh issue create -R getsentry/sentry-docs --title "Add an expressIntegration page to the integrations directory" --body-file P2-131-DOC-Q30.md
-gh issue create -R getsentry/sentry-docs --title "Fix the empty capture-errors include and the orphaned includes on the Express guide" --body-file P2-132-DOC-Q31.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the Angular manual-setup verify and tracing text for the stream lifecycle" --body-file P2-133-DOC-Q35.md
-gh issue create -R getsentry/sentry-docs --title "Fix the Angular pages' deprecated bootstrap call, the missing logs onboarding option and the stray export" --body-file P2-134-DOC-Q36.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the Fastify integration page around the diagnostics-channel instrumentation and its options" --body-file P2-135-DOC-Q40.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the Svelte verify and tracing text for the stream lifecycle and fix the compilerOptions placeholder" --body-file P2-136-DOC-Q43.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the Hapi integration page and its table row" --body-file P1-106-DOC-Q47.md
+gh issue create -R getsentry/sentry-docs --title "Fix Bun guide hygiene: version floor, Hono install command, v7 wording" --body-file P2-107-DOC-B4.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones" --body-file P2-108-DOC-D5.md
+gh issue create -R getsentry/sentry-docs --title "Show deno add and an import map in the Deno guide's install step" --body-file P2-109-DOC-D6.md
+# gh issue create -R getsentry/sentry-docs --title "Add the four missing Cloudflare SdkOption entries and drop the deprecated enableRpcTracePropagation block" --body-file P2-110-DOC-C3.md
+gh issue create -R getsentry/sentry-docs --title "Add a bindings table to the Cloudflare features/index.mdx" --body-file P2-111-DOC-C6.md
+gh issue create -R getsentry/sentry-docs --title "Fix snippet errors across the Cloudflare includes and framework pages" --body-file P2-112-DOC-C8.md
+gh issue create -R getsentry/sentry-docs --title "Fix \"Tracing is enabled by default\" in the Bun, Deno and Cloudflare enable-tracing includes" --body-file P2-113-X1.md
+gh issue create -R getsentry/sentry-docs --title "Confirm tested versions and database spans on the Astro on Cloudflare page" --body-file P2-114-DOC-F47.md
+gh issue create -R getsentry/sentry-docs --title "Add Deno and Cloudflare to the OpenTelemetry overview and API pages" --body-file P2-115-DOC-R7.md
+gh issue create -R getsentry/sentry-docs --title "Fix removed integration names in the Bun and Deno v7 migration tables" --body-file P2-116-DOC-R8.md
+gh issue create -R getsentry/sentry-docs --title "Document the Durable Object WebSocket and alarm instrumentation" --body-file P2-117-DOC-R16.md
+gh issue create -R getsentry/sentry-docs --title "Add deno serve to the Deno guide run commands" --body-file P2-118-DOC-R17.md
+gh issue create -R getsentry/sentry-docs --title "Note that the root Pages middleware also spans static asset requests" --body-file P2-119-DOC-R19.md
+gh issue create -R getsentry/sentry-docs --title "Explain the channel-injection warnings on the Bun guide" --body-file P2-120-DOC-Q4.md
+gh issue create -R getsentry/sentry-docs --title "Update the Node getting-started page for --require and for first-line ESM imports" --body-file P2-121-DOC-Q5.md
+gh issue create -R getsentry/sentry-docs --title "Say on the Cloudflare guide that readable stack traces need the source maps step" --body-file P2-122-DOC-Q6.md
+gh issue create -R getsentry/sentry-docs --title "Say on the browser config page that the sample tracePropagationTargets matches localhost only" --body-file P2-123-DOC-Q10.md
+gh issue create -R getsentry/sentry-docs --title "Tell browser readers to wait before triggering the verify error if they expect a replay" --body-file P2-124-DOC-Q11.md
+gh issue create -R getsentry/sentry-docs --title "Move the React guide routing snippet to the version-agnostic React Router API" --body-file P2-125-DOC-Q16.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the React verify step for the stream lifecycle and fix the test span" --body-file P2-126-DOC-Q17.md
+gh issue create -R getsentry/sentry-docs --title "Say on the React, Vue, Angular and Svelte guides that release health sessions need a release" --body-file P2-127-DOC-Q18.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the Vue guide and its feature pages for the stream lifecycle" --body-file P2-128-DOC-Q22.md
+gh issue create -R getsentry/sentry-docs --title "Fix the late-initialization and multiple-apps snippets on the Vue pages" --body-file P2-129-DOC-Q23.md
+gh issue create -R getsentry/sentry-docs --title "Say on the Vue guide that the component context of the verify error appears in production builds" --body-file P2-130-DOC-Q24.md
+gh issue create -R getsentry/sentry-docs --title "Drop the deprecated setup*ErrorHandler calls from the Express, Fastify, Koa and Hapi getting-started snippets" --body-file P2-131-DOC-Q29.md
+gh issue create -R getsentry/sentry-docs --title "Add an expressIntegration page to the integrations directory" --body-file P2-132-DOC-Q30.md
+gh issue create -R getsentry/sentry-docs --title "Fix the empty capture-errors include and the orphaned includes on the Express guide" --body-file P2-133-DOC-Q31.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the Angular manual-setup verify and tracing text for the stream lifecycle" --body-file P2-134-DOC-Q35.md
+gh issue create -R getsentry/sentry-docs --title "Fix the Angular pages' deprecated bootstrap call, the missing logs onboarding option and the stray export" --body-file P2-135-DOC-Q36.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the Fastify integration page around the diagnostics-channel instrumentation and its options" --body-file P2-136-DOC-Q40.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the Svelte verify and tracing text for the stream lifecycle and fix the compilerOptions placeholder" --body-file P2-137-DOC-Q43.md

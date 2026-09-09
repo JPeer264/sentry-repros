@@ -8,7 +8,7 @@ Fourteen drafts for `getsentry/sentry-docs`, in the suggested filing order. Each
 | 2 | `02-DOC-Q12.md` | Fix the React Router v6 and v7 page snippets that fail on React 19 | docs-change | DOC-Q12 |
 | 3 | `03-DOC-Q19.md` | Add a Vue 3 example to the Vue Router instrumentation page | docs-change | DOC-Q19 |
 | 4 | `04-DOC-Q20.md` | Add the missing comma to the tracingOptions.hooks snippet on the Vue component tracking page | docs-change | DOC-Q20 |
-| 5 | `05-DOC-Q25.md` | Fix the extensionless instrument import on the Express, Fastify and Koa guides and the esm-without-import page | docs-change | DOC-Q25 |
+| 5 | `05-DOC-Q25.md` | Fix the extensionless instrument import on the Express, Fastify, Koa and Hapi guides and the esm-without-import page | docs-change | DOC-Q25 |
 | 6 | `06-DOC-Q26.md` | Rewrite or remove the late-initialization install page for v11 | docs-change | DOC-Q26 |
 | 7 | `07-DOC-Q32.md` | Fix the Angular manual-setup, error handler and component tracking snippets that fail to build | docs-change | DOC-Q32 |
 | 8 | `08-DOC-Q37.md` | Fix the Fastify error handler page: @sentry/fastify does not exist and fastify() is never imported | docs-change | DOC-Q37 |

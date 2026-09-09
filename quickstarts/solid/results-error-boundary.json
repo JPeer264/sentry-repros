@@ -1,0 +1,1348 @@
+{
+  "variant": "error-boundary",
+  "pagePath": "/error-boundary.html",
+  "mode": "production",
+  "build": {
+    "ok": true,
+    "mode": "production",
+    "src": "src/error-boundary/index.jsx",
+    "conditions": [],
+    "esbuildWarnings": []
+  },
+  "meta": {
+    "initialized": true,
+    "SDK_VERSION": "10.67.0",
+    "sdk": {
+      "name": "sentry.javascript.solid",
+      "version": "10.67.0",
+      "packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession"
+    ],
+    "options": {
+      "tracePropagationTargets": [],
+      "tunnel": "/tunnel",
+      "traceLifecycle": "stream",
+      "attachStacktrace": true,
+      "debug": true
+    },
+    "solid": "1.9.15",
+    "router": "1.0.0",
+    "solidDev": false
+  },
+  "steps": [
+    {
+      "label": "boot",
+      "result": {
+        "sdkUp": true,
+        "appUp": true,
+        "pageErrorsAtBoot": [],
+        "feedbackWidget": false,
+        "appHtml": "<div><h1>QS-solid error-boundary</h1><div>Some Component</div><button id=\"btn-render-throw\" type=\"button\">throw during render</button><span id=\"bomb\">bomb idle</span><button id=\"btn-handler-throw\" type=\"button\">throw in handler</button><button id=\"btn-async-throw\" type=\"button\">throw async</button></div>"
+      }
+    },
+    {
+      "label": "click #btn-render-throw (child throws during render inside SentryErrorBoundary)",
+      "result": {
+        "captured": true,
+        "fallback": "Error: Boundary Render Error",
+        "pageErrors": []
+      },
+      "itemsBefore": 0,
+      "itemsAfter": 1
+    },
+    {
+      "label": "click #btn-reset (fallback reset(), child re-renders idle)",
+      "result": {
+        "reset": true,
+        "fallbackGone": true
+      },
+      "itemsBefore": 1,
+      "itemsAfter": 1
+    },
+    {
+      "label": "click #btn-handler-throw (onClick throws inside the boundary subtree)",
+      "result": {
+        "captured": true,
+        "fallback": null,
+        "pageErrors": [
+          "Boundary Handler Error"
+        ]
+      },
+      "itemsBefore": 1,
+      "itemsAfter": 2
+    },
+    {
+      "label": "click #btn-async-throw (setTimeout throw inside the boundary subtree)",
+      "result": {
+        "captured": true,
+        "fallback": null,
+        "pageErrors": [
+          "Boundary Handler Error",
+          "Boundary Async Error"
+        ]
+      },
+      "itemsBefore": 2,
+      "itemsAfter": 3
+    }
+  ],
+  "sentinel1": true,
+  "pageloadArrived": false,
+  "deadlineHit": false,
+  "summary": {
+    "itemTypes": [
+      "event",
+      "event",
+      "event",
+      "event"
+    ],
+    "events": [
+      {
+        "exception": "Error: Boundary Render Error",
+        "mechanism": "auto.function.solid.error_boundary",
+        "handled": true,
+        "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+        "topFrame": {
+          "function": "boom",
+          "filename": "http://localhost:4723/error-boundary.js",
+          "in_app": true
+        },
+        "breadcrumbs": []
+      },
+      {
+        "exception": "Error: Boundary Handler Error",
+        "mechanism": "auto.browser.global_handlers.onerror",
+        "handled": false,
+        "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+        "topFrame": {
+          "function": "boom",
+          "filename": "http://localhost:4723/error-boundary.js",
+          "in_app": true
+        },
+        "breadcrumbs": [
+          "sentry.event: Error: Boundary Render Error",
+          "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+          "ui.click: div > button#btn-reset[type=\"button\"]"
+        ]
+      },
+      {
+        "exception": "Error: Boundary Async Error",
+        "mechanism": "auto.browser.browserapierrors.setTimeout",
+        "handled": false,
+        "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+        "topFrame": {
+          "function": "boom",
+          "filename": "http://localhost:4723/error-boundary.js",
+          "in_app": true
+        },
+        "breadcrumbs": [
+          "sentry.event: Error: Boundary Render Error",
+          "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+          "ui.click: div > button#btn-reset[type=\"button\"]",
+          "sentry.event: Error: Boundary Handler Error",
+          "ui.click: body > div#app > div > button#btn-handler-throw[type=\"button\"]",
+          "ui.click: body > div#app > div > button#btn-async-throw[type=\"button\"]"
+        ]
+      },
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+        "topFrame": {
+          "function": "window.__qsSentinel",
+          "filename": "http://localhost:4723/error-boundary.js",
+          "in_app": true
+        },
+        "breadcrumbs": [
+          "sentry.event: Error: Boundary Render Error",
+          "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+          "ui.click: div > button#btn-reset[type=\"button\"]",
+          "sentry.event: Error: Boundary Handler Error",
+          "ui.click: body > div#app > div > button#btn-handler-throw[type=\"button\"]",
+          "ui.click: body > div#app > div > button#btn-async-throw[type=\"button\"]",
+          "sentry.event: Error: Boundary Async Error"
+        ]
+      }
+    ],
+    "spans": [],
+    "logs": [],
+    "sessions": [],
+    "replay": 0,
+    "headers": []
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "log: Sentry Logger [log]: Captured error event `Boundary Render Error`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Captured error event `Boundary Handler Error`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Captured error event `Boundary Async Error`",
+    "log: Sentry Logger [log]: Captured error event `sentinel`",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming"
+  ],
+  "pageErrors": [
+    "Boundary Handler Error",
+    "Boundary Async Error"
+  ],
+  "itemsAfterVerify": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Boundary Render Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Boundary Render Error",
+          "mechanism": "auto.function.solid.error_boundary",
+          "handled": true,
+          "frames": 16
+        }
+      ],
+      "mechanism": "auto.function.solid.error_boundary",
+      "handled": true,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "boom",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "8ad2a383452a9051",
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Boundary Handler Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Boundary Handler Error",
+          "mechanism": "auto.browser.global_handlers.onerror",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.browser.global_handlers.onerror",
+      "handled": false,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "boom",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "8745f2bfac828161",
+      "breadcrumbs": [
+        "sentry.event: Error: Boundary Render Error",
+        "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+        "ui.click: div > button#btn-reset[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Boundary Async Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Boundary Async Error",
+          "mechanism": "auto.browser.browserapierrors.setTimeout",
+          "handled": false,
+          "frames": 2
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.setTimeout",
+      "handled": false,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "boom",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "947a3773a3fa784f",
+      "extra": {
+        "arguments": []
+      },
+      "breadcrumbs": [
+        "sentry.event: Error: Boundary Render Error",
+        "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+        "ui.click: div > button#btn-reset[type=\"button\"]",
+        "sentry.event: Error: Boundary Handler Error",
+        "ui.click: body > div#app > div > button#btn-handler-throw[type=\"button\"]",
+        "ui.click: body > div#app > div > button#btn-async-throw[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "8184424fd048ba3e",
+      "breadcrumbs": [
+        "sentry.event: Error: Boundary Render Error",
+        "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+        "ui.click: div > button#btn-reset[type=\"button\"]",
+        "sentry.event: Error: Boundary Handler Error",
+        "ui.click: body > div#app > div > button#btn-handler-throw[type=\"button\"]",
+        "ui.click: body > div#app > div > button#btn-async-throw[type=\"button\"]",
+        "sentry.event: Error: Boundary Async Error"
+      ],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    }
+  ],
+  "items": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Boundary Render Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Boundary Render Error",
+          "mechanism": "auto.function.solid.error_boundary",
+          "handled": true,
+          "frames": 16
+        }
+      ],
+      "mechanism": "auto.function.solid.error_boundary",
+      "handled": true,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "boom",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "8ad2a383452a9051",
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Boundary Handler Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Boundary Handler Error",
+          "mechanism": "auto.browser.global_handlers.onerror",
+          "handled": false,
+          "frames": 4
+        }
+      ],
+      "mechanism": "auto.browser.global_handlers.onerror",
+      "handled": false,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "boom",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "8745f2bfac828161",
+      "breadcrumbs": [
+        "sentry.event: Error: Boundary Render Error",
+        "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+        "ui.click: div > button#btn-reset[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Boundary Async Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Boundary Async Error",
+          "mechanism": "auto.browser.browserapierrors.setTimeout",
+          "handled": false,
+          "frames": 2
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.setTimeout",
+      "handled": false,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "boom",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "947a3773a3fa784f",
+      "extra": {
+        "arguments": []
+      },
+      "breadcrumbs": [
+        "sentry.event: Error: Boundary Render Error",
+        "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+        "ui.click: div > button#btn-reset[type=\"button\"]",
+        "sentry.event: Error: Boundary Handler Error",
+        "ui.click: body > div#app > div > button#btn-handler-throw[type=\"button\"]",
+        "ui.click: body > div#app > div > button#btn-async-throw[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4723/error-boundary.js",
+        "in_app": true
+      },
+      "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+      "span_id": "8184424fd048ba3e",
+      "breadcrumbs": [
+        "sentry.event: Error: Boundary Render Error",
+        "ui.click: body > div#app > div > button#btn-render-throw[type=\"button\"]",
+        "ui.click: div > button#btn-reset[type=\"button\"]",
+        "sentry.event: Error: Boundary Handler Error",
+        "ui.click: body > div#app > div > button#btn-handler-throw[type=\"button\"]",
+        "ui.click: body > div#app > div > button#btn-async-throw[type=\"button\"]",
+        "sentry.event: Error: Boundary Async Error"
+      ],
+      "request": {
+        "url": "http://localhost:4723/error-boundary.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    }
+  ],
+  "headers": [],
+  "raw": [
+    {
+      "envHeader": {
+        "event_id": "b93a91792edd40ac8fdb865db61dc9e4",
+        "sent_at": "2026-09-09T06:24:12.620Z",
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Boundary Render Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "HTMLDocument.eventHandler",
+                    "in_app": true,
+                    "lineno": 971,
+                    "colno": 12
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "handleNode",
+                    "in_app": true,
+                    "lineno": 950,
+                    "colno": 64
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "App._el$3.$$click",
+                    "in_app": true,
+                    "lineno": 29370,
+                    "colno": 27
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "setter",
+                    "in_app": true,
+                    "lineno": 92,
+                    "colno": 12
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "writeSignal",
+                    "in_app": true,
+                    "lineno": 236,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "runUpdates",
+                    "in_app": true,
+                    "lineno": 403,
+                    "colno": 5
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "completeUpdates",
+                    "in_app": true,
+                    "lineno": 454,
+                    "colno": 18
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "runUpdates",
+                    "in_app": true,
+                    "lineno": 402,
+                    "colno": 17
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 454,
+                    "colno": 35
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "runUserEffects",
+                    "in_app": true,
+                    "lineno": 481,
+                    "colno": 19
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "runTop",
+                    "in_app": true,
+                    "lineno": 385,
+                    "colno": 7
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "updateComputation",
+                    "in_app": true,
+                    "lineno": 263,
+                    "colno": 3
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "runComputation",
+                    "in_app": true,
+                    "lineno": 280,
+                    "colno": 22
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "Object.fn",
+                    "in_app": true,
+                    "lineno": 929,
+                    "colno": 60
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 29386,
+                    "colno": 34
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "boom",
+                    "in_app": true,
+                    "lineno": 29362,
+                    "colno": 9
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.function.solid.error_boundary",
+                "handled": true
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "b93a91792edd40ac8fdb865db61dc9e4",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4723/error-boundary.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+            "span_id": "8ad2a383452a9051"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788935052.619,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession"
+          ],
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/solid",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "a6936b0892e840f79b54cd876ae16e67",
+        "sent_at": "2026-09-09T06:24:12.696Z",
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Boundary Handler Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "HTMLDocument.eventHandler",
+                    "in_app": true,
+                    "lineno": 971,
+                    "colno": 12
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "handleNode",
+                    "in_app": true,
+                    "lineno": 950,
+                    "colno": 64
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "_el$5.$$click",
+                    "in_app": true,
+                    "lineno": 29391,
+                    "colno": 33
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "boom",
+                    "in_app": true,
+                    "lineno": 29362,
+                    "colno": 9
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.global_handlers.onerror",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4723/error-boundary.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+            "span_id": "8745f2bfac828161"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "event_id": "a6936b0892e840f79b54cd876ae16e67",
+        "timestamp": 1788935052.695,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession"
+          ],
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/solid",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788935052.62,
+            "category": "sentry.event",
+            "event_id": "b93a91792edd40ac8fdb865db61dc9e4",
+            "level": "error",
+            "message": "Error: Boundary Render Error"
+          },
+          {
+            "timestamp": 1788935052.621,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-render-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.661,
+            "category": "ui.click",
+            "message": "div > button#btn-reset[type=\"button\"]"
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "3c70f4d1e5bd46d9a44b530789774c57",
+        "sent_at": "2026-09-09T06:24:12.744Z",
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Boundary Async Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 29395,
+                    "colno": 50
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "boom",
+                    "in_app": true,
+                    "lineno": 29362,
+                    "colno": 9
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.browserapierrors.setTimeout",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "3c70f4d1e5bd46d9a44b530789774c57",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4723/error-boundary.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+            "span_id": "947a3773a3fa784f"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788935052.744,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession"
+          ],
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/solid",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788935052.62,
+            "category": "sentry.event",
+            "event_id": "b93a91792edd40ac8fdb865db61dc9e4",
+            "level": "error",
+            "message": "Error: Boundary Render Error"
+          },
+          {
+            "timestamp": 1788935052.621,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-render-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.661,
+            "category": "ui.click",
+            "message": "div > button#btn-reset[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.695,
+            "category": "sentry.event",
+            "event_id": "a6936b0892e840f79b54cd876ae16e67",
+            "level": "error",
+            "message": "Error: Boundary Handler Error"
+          },
+          {
+            "timestamp": 1788935052.696,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-handler-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.729,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-async-throw[type=\"button\"]"
+          }
+        ],
+        "extra": {
+          "arguments": []
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "99d8903d976342c1a5d8145b67e9d8d3",
+        "sent_at": "2026-09-09T06:24:12.838Z",
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4723/error-boundary.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 29344,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "99d8903d976342c1a5d8145b67e9d8d3",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4723/error-boundary.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "eecad2b4a1b74ac4a0e7e13573b0b9b5",
+            "span_id": "8184424fd048ba3e"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788935052.838,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession"
+          ],
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/solid",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788935052.62,
+            "category": "sentry.event",
+            "event_id": "b93a91792edd40ac8fdb865db61dc9e4",
+            "level": "error",
+            "message": "Error: Boundary Render Error"
+          },
+          {
+            "timestamp": 1788935052.621,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-render-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.661,
+            "category": "ui.click",
+            "message": "div > button#btn-reset[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.695,
+            "category": "sentry.event",
+            "event_id": "a6936b0892e840f79b54cd876ae16e67",
+            "level": "error",
+            "message": "Error: Boundary Handler Error"
+          },
+          {
+            "timestamp": 1788935052.696,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-handler-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.729,
+            "category": "ui.click",
+            "message": "body > div#app > div > button#btn-async-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788935052.744,
+            "category": "sentry.event",
+            "event_id": "3c70f4d1e5bd46d9a44b530789774c57",
+            "level": "error",
+            "message": "Error: Boundary Async Error"
+          }
+        ]
+      }
+    }
+  ]
+}

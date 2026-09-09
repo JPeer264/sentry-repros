@@ -1,0 +1,5203 @@
+{
+  "variant": "router",
+  "pagePath": "/router",
+  "mode": "production",
+  "build": {
+    "ok": true,
+    "mode": "production",
+    "src": "src/router/index.jsx",
+    "conditions": [],
+    "esbuildWarnings": []
+  },
+  "meta": {
+    "initialized": true,
+    "SDK_VERSION": "10.67.0",
+    "sdk": {
+      "name": "sentry.javascript.solid",
+      "version": "10.67.0",
+      "packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession",
+      "BrowserTracing",
+      "SpanStreaming",
+      "WebVitals"
+    ],
+    "options": {
+      "tracesSampleRate": 1,
+      "tracePropagationTargets": [],
+      "tunnel": "/tunnel",
+      "traceLifecycle": "stream",
+      "attachStacktrace": true,
+      "debug": true
+    },
+    "solid": "1.9.15",
+    "router": "1.0.0",
+    "solidDev": false
+  },
+  "steps": [
+    {
+      "label": "boot",
+      "result": {
+        "sdkUp": true,
+        "appUp": true,
+        "pageErrorsAtBoot": [],
+        "feedbackWidget": false,
+        "appHtml": "<div><h1 id=\"home\">QS-solid router home</h1><a id=\"link-user\" href=\"/router/users/42\" class=\"inactive\" link=\"\">user 42</a></div>"
+      }
+    },
+    {
+      "label": "click #link-user (<A href=\"/<variant>/users/42\">)",
+      "result": {
+        "rendered": true,
+        "pathname": "/router/users/42"
+      },
+      "itemsBefore": 0,
+      "itemsAfter": 0
+    },
+    {
+      "label": "click #link-home (<A href=\"/<variant>\">)",
+      "result": {
+        "rendered": true,
+        "pathname": "/router"
+      },
+      "itemsBefore": 0,
+      "itemsAfter": 0
+    },
+    {
+      "label": "wait until no span is active (pageload and navigation segments ended)",
+      "result": {
+        "idle": true
+      },
+      "itemsBefore": 0,
+      "itemsAfter": 2
+    },
+    {
+      "label": "segments after the navigations",
+      "result": {
+        "segments": [
+          {
+            "op": "pageload",
+            "name": "/router",
+            "is_segment": true,
+            "source": "route",
+            "origin": "auto.pageload.browser",
+            "url_path": "/router",
+            "url_template": "/router",
+            "params": {},
+            "status": "ok",
+            "duration_ms": 93,
+            "span_id": "8df46d1ab3b4c5a0"
+          },
+          {
+            "op": "navigation",
+            "name": "/router/users/:id",
+            "is_segment": true,
+            "source": "route",
+            "origin": "auto.navigation.solid.solidrouter",
+            "url_path": "/router/users/42",
+            "url_template": "/router/users/:id",
+            "params": {
+              "url.path.parameter.id": "42",
+              "params.id": "42"
+            },
+            "status": "ok",
+            "duration_ms": 38,
+            "span_id": "8e7d85d7446660f2"
+          },
+          {
+            "op": "navigation",
+            "name": "/router",
+            "is_segment": true,
+            "source": "route",
+            "origin": "auto.navigation.solid.solidrouter",
+            "url_path": "/router",
+            "url_template": "/router",
+            "params": {},
+            "status": "ok",
+            "duration_ms": 1003,
+            "span_id": "be8ea82d8bd6ed4b"
+          },
+          {
+            "op": "test",
+            "name": "sentinel-span",
+            "is_segment": true,
+            "source": "custom",
+            "origin": "manual",
+            "params": {},
+            "status": "ok",
+            "duration_ms": 0,
+            "span_id": "af2ae79186fd854d"
+          }
+        ]
+      },
+      "itemsBefore": 4,
+      "itemsAfter": 4
+    },
+    {
+      "label": "second page load at /<variant>/users/7 (parameterized route as the landing page)",
+      "result": {
+        "up": true,
+        "rendered": true,
+        "idle": true,
+        "sentinel2": true,
+        "pageload2Arrived": true,
+        "pageloads": [
+          {
+            "op": "pageload",
+            "name": "/router",
+            "is_segment": true,
+            "source": "route",
+            "origin": "auto.pageload.browser",
+            "url_path": "/router",
+            "url_template": "/router",
+            "params": {},
+            "status": "ok",
+            "duration_ms": 93,
+            "span_id": "8df46d1ab3b4c5a0"
+          },
+          {
+            "op": "pageload",
+            "name": "/router/users/:id",
+            "is_segment": true,
+            "source": "route",
+            "origin": "auto.pageload.browser",
+            "url_path": "/router/users/7",
+            "url_template": "/router/users/:id",
+            "params": {
+              "url.path.parameter.id": "7",
+              "params.id": "7"
+            },
+            "status": "ok",
+            "duration_ms": 28,
+            "span_id": "a6a46b65cd1941fd"
+          }
+        ]
+      },
+      "itemsBefore": 4,
+      "itemsAfter": 7
+    }
+  ],
+  "sentinel1": true,
+  "pageloadArrived": true,
+  "deadlineHit": false,
+  "summary": {
+    "itemTypes": [
+      "span",
+      "span",
+      "event",
+      "span",
+      "span",
+      "event",
+      "span"
+    ],
+    "events": [
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "transaction": "/router",
+        "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+        "topFrame": {
+          "function": "window.__qsSentinel",
+          "filename": "http://localhost:4723/router.js",
+          "in_app": true
+        },
+        "breadcrumbs": [
+          "ui.click: body > div#root > div > a#link-user.inactive",
+          "navigation:",
+          "ui.click: body > div#root > div > a#link-home.active",
+          "navigation:"
+        ]
+      },
+      {
+        "message": "sentinel-2",
+        "exception": "undefined: sentinel-2",
+        "mechanism": "generic",
+        "handled": true,
+        "transaction": "/router/users/7",
+        "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+        "topFrame": {
+          "function": "window.__qsSentinel",
+          "filename": "http://localhost:4723/router.js",
+          "in_app": true
+        },
+        "breadcrumbs": []
+      }
+    ],
+    "spans": [
+      {
+        "op": "ui.webvital.lcp",
+        "name": "body > div#root > div > h1#home",
+        "is_segment": false,
+        "origin": "auto.http.browser.lcp",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 40,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "a583b45269688b8f"
+      },
+      {
+        "op": "ui.webvital.cls",
+        "name": "Layout shift",
+        "is_segment": false,
+        "origin": "auto.http.browser.cls",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "9434da952ec83806"
+      },
+      {
+        "op": "browser.dom_content_loaded_event",
+        "name": "http://localhost:4723/router",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "b4555a6b86da9806"
+      },
+      {
+        "op": "browser.load_event",
+        "name": "http://localhost:4723/router",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "9b9966249b8c62b3"
+      },
+      {
+        "op": "browser.connect",
+        "name": "http://localhost:4723/router",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "84d4e5b551b6788a"
+      },
+      {
+        "op": "browser.cache",
+        "name": "http://localhost:4723/router",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "8d4346769d360391"
+      },
+      {
+        "op": "browser.dns",
+        "name": "http://localhost:4723/router",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "b6336b757ddefb00"
+      },
+      {
+        "op": "browser.request",
+        "name": "http://localhost:4723/router",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 2,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "ab30fd5e5df88f5a"
+      },
+      {
+        "op": "browser.response",
+        "name": "http://localhost:4723/router",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "9f61551b8f66d2ae"
+      },
+      {
+        "op": "resource.script",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 3,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "bb198354d2086676"
+      },
+      {
+        "op": "resource.other",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "b2e1db233488a4b9"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "9d6a1b16170fb1c5"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-contentful-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "8df46d1ab3b4c5a0",
+        "span_id": "8b09d695f6eedfe0"
+      },
+      {
+        "op": "pageload",
+        "name": "/router",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.pageload.browser",
+        "url_path": "/router",
+        "url_template": "/router",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 93,
+        "span_id": "8df46d1ab3b4c5a0"
+      },
+      {
+        "op": "navigation",
+        "name": "/router/users/:id",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.navigation.solid.solidrouter",
+        "url_path": "/router/users/42",
+        "url_template": "/router/users/:id",
+        "params": {
+          "url.path.parameter.id": "42",
+          "params.id": "42"
+        },
+        "status": "ok",
+        "duration_ms": 38,
+        "span_id": "8e7d85d7446660f2"
+      },
+      {
+        "op": "navigation",
+        "name": "/router",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.navigation.solid.solidrouter",
+        "url_path": "/router",
+        "url_template": "/router",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 1003,
+        "span_id": "be8ea82d8bd6ed4b"
+      },
+      {
+        "op": "test",
+        "name": "sentinel-span",
+        "is_segment": true,
+        "source": "custom",
+        "origin": "manual",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "span_id": "af2ae79186fd854d"
+      },
+      {
+        "op": "ui.interaction.click",
+        "name": "body > div#root",
+        "is_segment": false,
+        "origin": "auto.http.browser.inp",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 24,
+        "parent_span_id": "8e7d85d7446660f2",
+        "span_id": "9f1e36d430fdcf53"
+      },
+      {
+        "op": "browser.unload_event",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "b7ac124ccde0581b"
+      },
+      {
+        "op": "browser.dom_content_loaded_event",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "b015e89bd0e32436"
+      },
+      {
+        "op": "browser.load_event",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "b528cf0401b31331"
+      },
+      {
+        "op": "browser.connect",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "bc1439ccb4eaa4a5"
+      },
+      {
+        "op": "browser.cache",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "9f521f568f13cad9"
+      },
+      {
+        "op": "browser.dns",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "bd26be9a86f9683b"
+      },
+      {
+        "op": "browser.request",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "bd064f9cf6e79d17"
+      },
+      {
+        "op": "browser.response",
+        "name": "http://localhost:4723/router/users/7",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "9fa95fedbc3a551a"
+      },
+      {
+        "op": "resource.script",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "8b27b41f751124c4"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "9f16c19bdddf5b53"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-contentful-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a6a46b65cd1941fd",
+        "span_id": "99dc43e49e664a7b"
+      },
+      {
+        "op": "pageload",
+        "name": "/router/users/:id",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.pageload.browser",
+        "url_path": "/router/users/7",
+        "url_template": "/router/users/:id",
+        "params": {
+          "url.path.parameter.id": "7",
+          "params.id": "7"
+        },
+        "status": "ok",
+        "duration_ms": 28,
+        "span_id": "a6a46b65cd1941fd"
+      },
+      {
+        "op": "test",
+        "name": "sentinel-2-span",
+        "is_segment": true,
+        "source": "custom",
+        "origin": "manual",
+        "params": {},
+        "status": "ok",
+        "duration_ms": 0,
+        "span_id": "8166cf0f563fb064"
+      }
+    ],
+    "logs": [],
+    "sessions": [],
+    "replay": 0,
+    "headers": []
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: BrowserTracing",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Sentry Logger [log]: Integration installed: WebVitals",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: pageload\n  name: Pageload\n  ID: 8df46d1ab3b4c5a0",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "log: Sentry Logger [log]: Sending LCP span (40)",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.webvital.lcp\n  name: body > div#root > div > h1#home\n  ID: a583b45269688b8f\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.webvital.lcp\" span \"body > div#root > div > h1#home\" with ID a583b45269688b8f",
+    "log: Sentry Logger [log]: Sending CLS span (0)",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.webvital.cls\n  name: Layout shift\n  ID: 9434da952ec83806\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.webvital.cls\" span \"Layout shift\" with ID 9434da952ec83806",
+    "log: Sentry Logger [log]: [Tracing] Finishing current active span with op: pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dom_content_loaded_event\n  name: http://localhost:4723/router\n  ID: b4555a6b86da9806\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dom_content_loaded_event\" span \"http://localhost:4723/router\" with ID b4555a6b86da9806",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.load_event\n  name: http://localhost:4723/router\n  ID: 9b9966249b8c62b3\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.load_event\" span \"http://localhost:4723/router\" with ID 9b9966249b8c62b3",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.connect\n  name: http://localhost:4723/router\n  ID: 84d4e5b551b6788a\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.connect\" span \"http://localhost:4723/router\" with ID 84d4e5b551b6788a",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.cache\n  name: http://localhost:4723/router\n  ID: 8d4346769d360391\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.cache\" span \"http://localhost:4723/router\" with ID 8d4346769d360391",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dns\n  name: http://localhost:4723/router\n  ID: b6336b757ddefb00\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dns\" span \"http://localhost:4723/router\" with ID b6336b757ddefb00",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.request\n  name: http://localhost:4723/router\n  ID: ab30fd5e5df88f5a\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.request\" span \"http://localhost:4723/router\" with ID ab30fd5e5df88f5a",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.response\n  name: http://localhost:4723/router\n  ID: 9f61551b8f66d2ae\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.response\" span \"http://localhost:4723/router\" with ID 9f61551b8f66d2ae",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.script\n  name: localhost\n  ID: bb198354d2086676\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.script\" span \"localhost\" with ID bb198354d2086676",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.other\n  name: localhost\n  ID: b2e1db233488a4b9\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.other\" span \"localhost\" with ID b2e1db233488a4b9",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-paint\n  ID: 9d6a1b16170fb1c5\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-paint\" with ID 9d6a1b16170fb1c5",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-contentful-paint\n  ID: 8b09d695f6eedfe0\n  parent ID: 8df46d1ab3b4c5a0\n  root ID: 8df46d1ab3b4c5a0\n  root op: pageload\n  root description: /router",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-contentful-paint\" with ID 8b09d695f6eedfe0",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"pageload\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"pageload\" root span \"/router\" with ID 8df46d1ab3b4c5a0",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.value: 2} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fp.value: 40} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fcp.value: 40} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.request_time: 1.4000000059604645} on pageload span",
+    "log: Sentry Logger [log]: Adding previous_trace `{\"spanId\":\"8df46d1ab3b4c5a0\",\"traceId\":\"32f5bce6203d49989cf789ad949e2e0f\",\"traceFlags\":1}` link to span `{\"op\":\"navigation\",\"spanId\":\"8e7d85d7446660f2\",\"traceId\":\"d9fc19e86c824c58b69ca6ec5ad0eec5\",\"traceFlags\":1}`",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: navigation\n  name: Navigation\n  ID: 8e7d85d7446660f2",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "log: Sentry Logger [log]: [Tracing] Finishing current active span with op: navigation",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"navigation\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"navigation\" root span \"/router/users/:id\" with ID 8e7d85d7446660f2",
+    "log: Sentry Logger [log]: Adding previous_trace `{\"spanId\":\"8e7d85d7446660f2\",\"traceId\":\"d9fc19e86c824c58b69ca6ec5ad0eec5\",\"traceFlags\":1}` link to span `{\"op\":\"navigation\",\"spanId\":\"be8ea82d8bd6ed4b\",\"traceId\":\"2e49b0e3c5f44fc1b435b554b5226f47\",\"traceFlags\":1}`",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: navigation\n  name: Navigation\n  ID: be8ea82d8bd6ed4b",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "log: Sentry Logger [log]: Sending span envelope for trace 32f5bce6203d49989cf789ad949e2e0f with 14 spans",
+    "log: Sentry Logger [log]: Sending span envelope for trace d9fc19e86c824c58b69ca6ec5ad0eec5 with 1 spans",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"navigation\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"navigation\" root span \"/router\" with ID be8ea82d8bd6ed4b",
+    "log: Sentry Logger [log]: Captured error event `sentinel`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: test\n  name: sentinel-span\n  ID: af2ae79186fd854d",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" root span \"sentinel-span\" with ID af2ae79186fd854d",
+    "log: Sentry Logger [log]: Sending span envelope for trace 2e49b0e3c5f44fc1b435b554b5226f47 with 2 spans",
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: BrowserTracing",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Sentry Logger [log]: Integration installed: WebVitals",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: pageload\n  name: Pageload\n  ID: a6a46b65cd1941fd",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.unload_event\n  name: http://localhost:4723/router/users/7\n  ID: b7ac124ccde0581b\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.unload_event\" span \"http://localhost:4723/router/users/7\" with ID b7ac124ccde0581b",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dom_content_loaded_event\n  name: http://localhost:4723/router/users/7\n  ID: b015e89bd0e32436\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dom_content_loaded_event\" span \"http://localhost:4723/router/users/7\" with ID b015e89bd0e32436",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.load_event\n  name: http://localhost:4723/router/users/7\n  ID: b528cf0401b31331\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.load_event\" span \"http://localhost:4723/router/users/7\" with ID b528cf0401b31331",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.connect\n  name: http://localhost:4723/router/users/7\n  ID: bc1439ccb4eaa4a5\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.connect\" span \"http://localhost:4723/router/users/7\" with ID bc1439ccb4eaa4a5",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.cache\n  name: http://localhost:4723/router/users/7\n  ID: 9f521f568f13cad9\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.cache\" span \"http://localhost:4723/router/users/7\" with ID 9f521f568f13cad9",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dns\n  name: http://localhost:4723/router/users/7\n  ID: bd26be9a86f9683b\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dns\" span \"http://localhost:4723/router/users/7\" with ID bd26be9a86f9683b",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.request\n  name: http://localhost:4723/router/users/7\n  ID: bd064f9cf6e79d17\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.request\" span \"http://localhost:4723/router/users/7\" with ID bd064f9cf6e79d17",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.response\n  name: http://localhost:4723/router/users/7\n  ID: 9fa95fedbc3a551a\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.response\" span \"http://localhost:4723/router/users/7\" with ID 9fa95fedbc3a551a",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.script\n  name: localhost\n  ID: 8b27b41f751124c4\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.script\" span \"localhost\" with ID 8b27b41f751124c4",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-paint\n  ID: 9f16c19bdddf5b53\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-paint\" with ID 9f16c19bdddf5b53",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-contentful-paint\n  ID: 99dc43e49e664a7b\n  parent ID: a6a46b65cd1941fd\n  root ID: a6a46b65cd1941fd\n  root op: pageload\n  root description: /router/users/:id",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-contentful-paint\" with ID 99dc43e49e664a7b",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"pageload\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"pageload\" root span \"/router/users/:id\" with ID a6a46b65cd1941fd",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.value: 1.7999999970197678} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fp.value: 28} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fcp.value: 28} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.request_time: 1} on pageload span",
+    "log: Sentry Logger [log]: Captured error event `sentinel-2`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: test\n  name: sentinel-2-span\n  ID: 8166cf0f563fb064",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" root span \"sentinel-2-span\" with ID 8166cf0f563fb064",
+    "log: Sentry Logger [log]: Sending span envelope for trace 1b306f0c97494166b1eb8c923a59caf6 with 13 spans"
+  ],
+  "pageErrors": [],
+  "itemsAfterVerify": [
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+      "items": [
+        "ui.webvital.lcp body > div#root > div > h1#home",
+        "ui.webvital.cls Layout shift",
+        "browser.dom_content_loaded_event http://localhost:4723/router",
+        "browser.load_event http://localhost:4723/router",
+        "browser.connect http://localhost:4723/router",
+        "browser.cache http://localhost:4723/router",
+        "browser.dns http://localhost:4723/router",
+        "browser.request http://localhost:4723/router",
+        "browser.response http://localhost:4723/router",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload /router"
+      ],
+      "raw": [
+        {
+          "name": "body > div#root > div > h1#home",
+          "op": "ui.webvital.lcp",
+          "status": "ok",
+          "span_id": "a583b45269688b8f",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.http.browser.lcp",
+          "duration_ms": 40,
+          "attributes": {
+            "sentry.origin": "auto.http.browser.lcp",
+            "sentry.op": "ui.webvital.lcp",
+            "sentry.exclusive_time": 0,
+            "browser.web_vital.lcp.value": 40,
+            "sentry.transaction": "/router",
+            "sentry.segment.name": "/router",
+            "user_agent.original": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "browser.web_vital.lcp.element": "body > div#root > div > h1#home",
+            "browser.web_vital.lcp.id": "home",
+            "browser.web_vital.lcp.load_time": 0,
+            "browser.web_vital.lcp.render_time": 40,
+            "browser.web_vital.lcp.size": 10878,
+            "sentry.pageload.span_id": "8df46d1ab3b4c5a0",
+            "browser.web_vital.lcp.report_event": "navigation",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Layout shift",
+          "op": "ui.webvital.cls",
+          "status": "ok",
+          "span_id": "9434da952ec83806",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.http.browser.cls",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.http.browser.cls",
+            "sentry.op": "ui.webvital.cls",
+            "sentry.exclusive_time": 0,
+            "browser.web_vital.cls.value": 0,
+            "sentry.transaction": "/router",
+            "sentry.segment.name": "/router",
+            "user_agent.original": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "sentry.pageload.span_id": "8df46d1ab3b4c5a0",
+            "browser.web_vital.cls.report_event": "navigation",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "b4555a6b86da9806",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "9b9966249b8c62b3",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "84d4e5b551b6788a",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "8d4346769d360391",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "b6336b757ddefb00",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "ab30fd5e5df88f5a",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "9f61551b8f66d2ae",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "bb198354d2086676",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4723/router.js",
+          "status_code": 200,
+          "duration_ms": 3,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4723",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4723/router.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1029341,
+            "http.response.body.size": 1029041,
+            "http.response.body.decoded_size": 1029041,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788935047.4757,
+            "http.request.domain_lookup_start": 1788935047.4757,
+            "http.request.domain_lookup_end": 1788935047.4757,
+            "http.request.connect_start": 1788935047.4757,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788935047.4757,
+            "http.request.request_start": 1788935047.4777,
+            "http.request.response_start": 1788935047.4786,
+            "http.request.response_end": 1788935047.4791,
+            "http.request.time_to_first_byte": 0.006599999994039535,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "b2e1db233488a4b9",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4723/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4723",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4723/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788935047.5072,
+            "http.request.domain_lookup_start": 1788935047.5072,
+            "http.request.domain_lookup_end": 1788935047.5072,
+            "http.request.connect_start": 1788935047.5072,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788935047.5072,
+            "http.request.request_start": 1788935047.5073001,
+            "http.request.response_start": 1788935047.508,
+            "http.request.response_end": 1788935047.5081,
+            "http.request.time_to_first_byte": 0.036,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "9d6a1b16170fb1c5",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "8b09d695f6eedfe0",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "/router",
+          "op": "pageload",
+          "status": "ok",
+          "span_id": "8df46d1ab3b4c5a0",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "route",
+          "url": "http://localhost:4723/router",
+          "url_path": "/router",
+          "duration_ms": 93,
+          "attributes": {
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "url.path": "/router",
+            "url.full": "http://localhost:4723/router",
+            "url.template": "/router",
+            "sentry.idle_span_finish_reason": "cancelled",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "browser.web_vital.ttfb.value": 2,
+            "browser.web_vital.fp.value": 40,
+            "browser.web_vital.fcp.value": 40,
+            "browser.web_vital.ttfb.request_time": 1.4000000059604645,
+            "browser.performance.time_origin": 1788935047.472,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+      "items": [
+        "navigation /router/users/:id"
+      ],
+      "raw": [
+        {
+          "name": "/router/users/:id",
+          "op": "navigation",
+          "status": "ok",
+          "span_id": "8e7d85d7446660f2",
+          "is_segment": true,
+          "origin": "auto.navigation.solid.solidrouter",
+          "source": "route",
+          "url": "http://localhost:4723/router/users/42",
+          "url_path": "/router/users/42",
+          "duration_ms": 38,
+          "attributes": {
+            "sentry.origin": "auto.navigation.solid.solidrouter",
+            "sentry.op": "navigation",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "url.path": "/router/users/42",
+            "url.full": "http://localhost:4723/router/users/42",
+            "sentry.previous_trace": "32f5bce6203d49989cf789ad949e2e0f-8df46d1ab3b4c5a0-1",
+            "url.template": "/router/users/:id",
+            "url.path.parameter.id": "42",
+            "params.id": "42",
+            "sentry.idle_span_finish_reason": "cancelled",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "8e7d85d7446660f2",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4723/router.js",
+        "in_app": true
+      },
+      "transaction": "/router",
+      "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+      "span_id": "9a43f0b0acad590d",
+      "breadcrumbs": [
+        "ui.click: body > div#root > div > a#link-user.inactive",
+        "navigation:",
+        "ui.click: body > div#root > div > a#link-home.active",
+        "navigation:"
+      ],
+      "request": {
+        "url": "http://localhost:4723/router",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+      "items": [
+        "navigation /router",
+        "test sentinel-span"
+      ],
+      "raw": [
+        {
+          "name": "/router",
+          "op": "navigation",
+          "status": "ok",
+          "span_id": "be8ea82d8bd6ed4b",
+          "is_segment": true,
+          "origin": "auto.navigation.solid.solidrouter",
+          "source": "route",
+          "url": "http://localhost:4723/router",
+          "url_path": "/router",
+          "duration_ms": 1003,
+          "attributes": {
+            "sentry.origin": "auto.navigation.solid.solidrouter",
+            "sentry.op": "navigation",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "url.path": "/router",
+            "url.full": "http://localhost:4723/router",
+            "sentry.previous_trace": "d9fc19e86c824c58b69ca6ec5ad0eec5-8e7d85d7446660f2-1",
+            "url.template": "/router",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "be8ea82d8bd6ed4b",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "af2ae79186fd854d",
+          "is_segment": true,
+          "origin": "manual",
+          "source": "custom",
+          "url": "http://localhost:4723/router",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.segment.name.source": "custom",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "sentinel-span",
+            "sentry.segment.id": "af2ae79186fd854d",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "url.full": "http://localhost:4723/router",
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+      "items": [
+        "ui.webvital.lcp body > div#root > div > h1#home",
+        "ui.webvital.cls Layout shift",
+        "browser.dom_content_loaded_event http://localhost:4723/router",
+        "browser.load_event http://localhost:4723/router",
+        "browser.connect http://localhost:4723/router",
+        "browser.cache http://localhost:4723/router",
+        "browser.dns http://localhost:4723/router",
+        "browser.request http://localhost:4723/router",
+        "browser.response http://localhost:4723/router",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload /router"
+      ],
+      "raw": [
+        {
+          "name": "body > div#root > div > h1#home",
+          "op": "ui.webvital.lcp",
+          "status": "ok",
+          "span_id": "a583b45269688b8f",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.http.browser.lcp",
+          "duration_ms": 40,
+          "attributes": {
+            "sentry.origin": "auto.http.browser.lcp",
+            "sentry.op": "ui.webvital.lcp",
+            "sentry.exclusive_time": 0,
+            "browser.web_vital.lcp.value": 40,
+            "sentry.transaction": "/router",
+            "sentry.segment.name": "/router",
+            "user_agent.original": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "browser.web_vital.lcp.element": "body > div#root > div > h1#home",
+            "browser.web_vital.lcp.id": "home",
+            "browser.web_vital.lcp.load_time": 0,
+            "browser.web_vital.lcp.render_time": 40,
+            "browser.web_vital.lcp.size": 10878,
+            "sentry.pageload.span_id": "8df46d1ab3b4c5a0",
+            "browser.web_vital.lcp.report_event": "navigation",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Layout shift",
+          "op": "ui.webvital.cls",
+          "status": "ok",
+          "span_id": "9434da952ec83806",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.http.browser.cls",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.http.browser.cls",
+            "sentry.op": "ui.webvital.cls",
+            "sentry.exclusive_time": 0,
+            "browser.web_vital.cls.value": 0,
+            "sentry.transaction": "/router",
+            "sentry.segment.name": "/router",
+            "user_agent.original": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "sentry.pageload.span_id": "8df46d1ab3b4c5a0",
+            "browser.web_vital.cls.report_event": "navigation",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "b4555a6b86da9806",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "9b9966249b8c62b3",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "84d4e5b551b6788a",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "8d4346769d360391",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "b6336b757ddefb00",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "ab30fd5e5df88f5a",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "9f61551b8f66d2ae",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "bb198354d2086676",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4723/router.js",
+          "status_code": 200,
+          "duration_ms": 3,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4723",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4723/router.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1029341,
+            "http.response.body.size": 1029041,
+            "http.response.body.decoded_size": 1029041,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788935047.4757,
+            "http.request.domain_lookup_start": 1788935047.4757,
+            "http.request.domain_lookup_end": 1788935047.4757,
+            "http.request.connect_start": 1788935047.4757,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788935047.4757,
+            "http.request.request_start": 1788935047.4777,
+            "http.request.response_start": 1788935047.4786,
+            "http.request.response_end": 1788935047.4791,
+            "http.request.time_to_first_byte": 0.006599999994039535,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "b2e1db233488a4b9",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4723/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4723",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4723/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788935047.5072,
+            "http.request.domain_lookup_start": 1788935047.5072,
+            "http.request.domain_lookup_end": 1788935047.5072,
+            "http.request.connect_start": 1788935047.5072,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788935047.5072,
+            "http.request.request_start": 1788935047.5073001,
+            "http.request.response_start": 1788935047.508,
+            "http.request.response_end": 1788935047.5081,
+            "http.request.time_to_first_byte": 0.036,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "9d6a1b16170fb1c5",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "8b09d695f6eedfe0",
+          "parent_span_id": "8df46d1ab3b4c5a0",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "/router",
+          "op": "pageload",
+          "status": "ok",
+          "span_id": "8df46d1ab3b4c5a0",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "route",
+          "url": "http://localhost:4723/router",
+          "url_path": "/router",
+          "duration_ms": 93,
+          "attributes": {
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "url.path": "/router",
+            "url.full": "http://localhost:4723/router",
+            "url.template": "/router",
+            "sentry.idle_span_finish_reason": "cancelled",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "browser.web_vital.ttfb.value": 2,
+            "browser.web_vital.fp.value": 40,
+            "browser.web_vital.fcp.value": 40,
+            "browser.web_vital.ttfb.request_time": 1.4000000059604645,
+            "browser.performance.time_origin": 1788935047.472,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "8df46d1ab3b4c5a0",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+      "items": [
+        "navigation /router/users/:id"
+      ],
+      "raw": [
+        {
+          "name": "/router/users/:id",
+          "op": "navigation",
+          "status": "ok",
+          "span_id": "8e7d85d7446660f2",
+          "is_segment": true,
+          "origin": "auto.navigation.solid.solidrouter",
+          "source": "route",
+          "url": "http://localhost:4723/router/users/42",
+          "url_path": "/router/users/42",
+          "duration_ms": 38,
+          "attributes": {
+            "sentry.origin": "auto.navigation.solid.solidrouter",
+            "sentry.op": "navigation",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "url.path": "/router/users/42",
+            "url.full": "http://localhost:4723/router/users/42",
+            "sentry.previous_trace": "32f5bce6203d49989cf789ad949e2e0f-8df46d1ab3b4c5a0-1",
+            "url.template": "/router/users/:id",
+            "url.path.parameter.id": "42",
+            "params.id": "42",
+            "sentry.idle_span_finish_reason": "cancelled",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "8e7d85d7446660f2",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4723/router.js",
+        "in_app": true
+      },
+      "transaction": "/router",
+      "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+      "span_id": "9a43f0b0acad590d",
+      "breadcrumbs": [
+        "ui.click: body > div#root > div > a#link-user.inactive",
+        "navigation:",
+        "ui.click: body > div#root > div > a#link-home.active",
+        "navigation:"
+      ],
+      "request": {
+        "url": "http://localhost:4723/router",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+      "items": [
+        "navigation /router",
+        "test sentinel-span"
+      ],
+      "raw": [
+        {
+          "name": "/router",
+          "op": "navigation",
+          "status": "ok",
+          "span_id": "be8ea82d8bd6ed4b",
+          "is_segment": true,
+          "origin": "auto.navigation.solid.solidrouter",
+          "source": "route",
+          "url": "http://localhost:4723/router",
+          "url_path": "/router",
+          "duration_ms": 1003,
+          "attributes": {
+            "sentry.origin": "auto.navigation.solid.solidrouter",
+            "sentry.op": "navigation",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "url.path": "/router",
+            "url.full": "http://localhost:4723/router",
+            "sentry.previous_trace": "d9fc19e86c824c58b69ca6ec5ad0eec5-8e7d85d7446660f2-1",
+            "url.template": "/router",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router",
+            "sentry.segment.id": "be8ea82d8bd6ed4b",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "af2ae79186fd854d",
+          "is_segment": true,
+          "origin": "manual",
+          "source": "custom",
+          "url": "http://localhost:4723/router",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.segment.name.source": "custom",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "sentinel-span",
+            "sentry.segment.id": "af2ae79186fd854d",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "url.full": "http://localhost:4723/router",
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+      "items": [
+        "ui.interaction.click body > div#root"
+      ],
+      "raw": [
+        {
+          "name": "body > div#root",
+          "op": "ui.interaction.click",
+          "status": "ok",
+          "span_id": "9f1e36d430fdcf53",
+          "parent_span_id": "8e7d85d7446660f2",
+          "is_segment": false,
+          "origin": "auto.http.browser.inp",
+          "duration_ms": 24,
+          "attributes": {
+            "sentry.origin": "auto.http.browser.inp",
+            "sentry.op": "ui.interaction.click",
+            "sentry.exclusive_time": 24,
+            "browser.web_vital.inp.value": 24,
+            "sentry.transaction": "/router/users/:id",
+            "sentry.segment.name": "/router/users/:id",
+            "user_agent.original": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.id": "8e7d85d7446660f2",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel-2",
+      "exception": "undefined: sentinel-2",
+      "exceptions": [
+        {
+          "value": "sentinel-2",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/solid",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4723/router.js",
+        "in_app": true
+      },
+      "transaction": "/router/users/7",
+      "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+      "span_id": "a409a5d02a91457c",
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://localhost:4723/router/users/7",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.solid",
+      "sdk_version": "10.67.0",
+      "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+      "items": [
+        "browser.unload_event http://localhost:4723/router/users/7",
+        "browser.dom_content_loaded_event http://localhost:4723/router/users/7",
+        "browser.load_event http://localhost:4723/router/users/7",
+        "browser.connect http://localhost:4723/router/users/7",
+        "browser.cache http://localhost:4723/router/users/7",
+        "browser.dns http://localhost:4723/router/users/7",
+        "browser.request http://localhost:4723/router/users/7",
+        "browser.response http://localhost:4723/router/users/7",
+        "resource.script localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload /router/users/:id",
+        "test sentinel-2-span"
+      ],
+      "raw": [
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.unload_event",
+          "status": "ok",
+          "span_id": "b7ac124ccde0581b",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.unload_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "b015e89bd0e32436",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "b528cf0401b31331",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "bc1439ccb4eaa4a5",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "9f521f568f13cad9",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "bd26be9a86f9683b",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "bd064f9cf6e79d17",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4723/router/users/7",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "9fa95fedbc3a551a",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "8b27b41f751124c4",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4723/router.js",
+          "status_code": 200,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4723",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4723/router.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1029341,
+            "http.response.body.size": 1029041,
+            "http.response.body.decoded_size": 1029041,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788935049.3070998,
+            "http.request.domain_lookup_start": 1788935049.3070998,
+            "http.request.domain_lookup_end": 1788935049.3070998,
+            "http.request.connect_start": 1788935049.3070998,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788935049.3070998,
+            "http.request.request_start": 1788935049.3072,
+            "http.request.response_start": 1788935049.308,
+            "http.request.response_end": 1788935049.3085,
+            "http.request.time_to_first_byte": 0.006799999997019768,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "9f16c19bdddf5b53",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "99dc43e49e664a7b",
+          "parent_span_id": "a6a46b65cd1941fd",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "/router/users/:id",
+          "op": "pageload",
+          "status": "ok",
+          "span_id": "a6a46b65cd1941fd",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "route",
+          "url": "http://localhost:4723/router/users/7",
+          "url_path": "/router/users/7",
+          "duration_ms": 28,
+          "attributes": {
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "url.path": "/router/users/7",
+            "url.full": "http://localhost:4723/router/users/7",
+            "url.template": "/router/users/:id",
+            "url.path.parameter.id": "7",
+            "params.id": "7",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 1.7999999970197678,
+            "browser.web_vital.fp.value": 28,
+            "browser.web_vital.fcp.value": 28,
+            "browser.web_vital.ttfb.request_time": 1,
+            "browser.performance.time_origin": 1788935049.3012,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "/router/users/:id",
+            "sentry.segment.id": "a6a46b65cd1941fd",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        },
+        {
+          "name": "sentinel-2-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "8166cf0f563fb064",
+          "is_segment": true,
+          "origin": "manual",
+          "source": "custom",
+          "url": "http://localhost:4723/router/users/7",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.segment.name.source": "custom",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "sentinel-2-span",
+            "sentry.segment.id": "8166cf0f563fb064",
+            "sentry.sdk.name": "sentry.javascript.solid",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "url.full": "http://localhost:4723/router/users/7",
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    }
+  ],
+  "headers": [],
+  "raw": [
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:24:08.074Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+          "org_id": "0",
+          "transaction": "/router",
+          "sampled": "true",
+          "sample_rand": "0.5386674531218907",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 14,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "body > div#root > div > h1#home",
+            "span_id": "a583b45269688b8f",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.472,
+            "end_timestamp": 1788935047.512,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.browser.lcp",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.webvital.lcp",
+                "type": "string"
+              },
+              "sentry.exclusive_time": {
+                "value": 0,
+                "type": "integer"
+              },
+              "browser.web_vital.lcp.value": {
+                "value": 40,
+                "type": "integer"
+              },
+              "sentry.transaction": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "user_agent.original": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "browser.web_vital.lcp.element": {
+                "value": "body > div#root > div > h1#home",
+                "type": "string"
+              },
+              "browser.web_vital.lcp.id": {
+                "value": "home",
+                "type": "string"
+              },
+              "browser.web_vital.lcp.load_time": {
+                "value": 0,
+                "type": "integer"
+              },
+              "browser.web_vital.lcp.render_time": {
+                "value": 40,
+                "type": "integer"
+              },
+              "browser.web_vital.lcp.size": {
+                "value": 10878,
+                "type": "integer"
+              },
+              "sentry.pageload.span_id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "browser.web_vital.lcp.report_event": {
+                "value": "navigation",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Layout shift",
+            "span_id": "9434da952ec83806",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.5649,
+            "end_timestamp": 1788935047.5649,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.browser.cls",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.webvital.cls",
+                "type": "string"
+              },
+              "sentry.exclusive_time": {
+                "value": 0,
+                "type": "integer"
+              },
+              "browser.web_vital.cls.value": {
+                "value": 0,
+                "type": "integer"
+              },
+              "sentry.transaction": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "user_agent.original": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "sentry.pageload.span_id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "browser.web_vital.cls.report_event": {
+                "value": "navigation",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router",
+            "span_id": "b4555a6b86da9806",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.5024998,
+            "end_timestamp": 1788935047.5026,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dom_content_loaded_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router",
+            "span_id": "9b9966249b8c62b3",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.5026999,
+            "end_timestamp": 1788935047.5026999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.load_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router",
+            "span_id": "84d4e5b551b6788a",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.4722998,
+            "end_timestamp": 1788935047.4722998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.connect",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router",
+            "span_id": "8d4346769d360391",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.4722998,
+            "end_timestamp": 1788935047.4722998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.cache",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router",
+            "span_id": "b6336b757ddefb00",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.4722998,
+            "end_timestamp": 1788935047.4722998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dns",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router",
+            "span_id": "ab30fd5e5df88f5a",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.4726,
+            "end_timestamp": 1788935047.4741998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.request",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router",
+            "span_id": "9f61551b8f66d2ae",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.474,
+            "end_timestamp": 1788935047.4741998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.response",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "bb198354d2086676",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.4757,
+            "end_timestamp": 1788935047.4791,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.script",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4723",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router.js",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 1029341,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 1029041,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 1029041,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788935047.4757,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788935047.4757,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788935047.4757,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788935047.4757,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788935047.4757,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788935047.4777,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788935047.4786,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788935047.4791,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.006599999994039535,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "b2e1db233488a4b9",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.5072,
+            "end_timestamp": 1788935047.5081,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.other",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4723",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/favicon.ico",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 404,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 309,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788935047.5072,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788935047.5072,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788935047.5072,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788935047.5072,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788935047.5072,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788935047.5073001,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788935047.508,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788935047.5081,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.036,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-paint",
+            "span_id": "9d6a1b16170fb1c5",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.5119998,
+            "end_timestamp": 1788935047.5119998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-contentful-paint",
+            "span_id": "8b09d695f6eedfe0",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "parent_span_id": "8df46d1ab3b4c5a0",
+            "start_timestamp": 1788935047.5119998,
+            "end_timestamp": 1788935047.5119998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "/router",
+            "span_id": "8df46d1ab3b4c5a0",
+            "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+            "start_timestamp": 1788935047.472,
+            "end_timestamp": 1788935047.5649,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.pageload.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "pageload",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/router",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router",
+                "type": "string"
+              },
+              "url.template": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "cancelled",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 150,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "browser.web_vital.ttfb.value": {
+                "value": 2,
+                "type": "integer"
+              },
+              "browser.web_vital.fp.value": {
+                "value": 40,
+                "type": "integer"
+              },
+              "browser.web_vital.fcp.value": {
+                "value": 40,
+                "type": "integer"
+              },
+              "browser.web_vital.ttfb.request_time": {
+                "value": 1.4000000059604645,
+                "type": "double"
+              },
+              "browser.performance.time_origin": {
+                "value": 1788935047.472,
+                "type": "double"
+              },
+              "browser.performance.navigation.activation_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8df46d1ab3b4c5a0",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:24:08.113Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+          "org_id": "0",
+          "transaction": "/router/users/:id",
+          "sampled": "true",
+          "sample_rand": "0.33461546231113104",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "/router/users/:id",
+            "span_id": "8e7d85d7446660f2",
+            "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+            "start_timestamp": 1788935047.5732,
+            "end_timestamp": 1788935047.6111002,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.navigation.solid.solidrouter",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "navigation",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/router/users/42",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router/users/42",
+                "type": "string"
+              },
+              "sentry.previous_trace": {
+                "value": "32f5bce6203d49989cf789ad949e2e0f-8df46d1ab3b4c5a0-1",
+                "type": "string"
+              },
+              "url.template": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "url.path.parameter.id": {
+                "value": "42",
+                "type": "string"
+              },
+              "params.id": {
+                "value": "42",
+                "type": "string"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "cancelled",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 150,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8e7d85d7446660f2",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            },
+            "links": [
+              {
+                "span_id": "8df46d1ab3b4c5a0",
+                "trace_id": "32f5bce6203d49989cf789ad949e2e0f",
+                "sampled": true,
+                "attributes": {
+                  "sentry.link.type": {
+                    "value": "previous_trace",
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "72d826f8406f4d0ab79eab0525b08695",
+        "sent_at": "2026-09-09T06:24:08.648Z",
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+          "org_id": "0",
+          "transaction": "/router",
+          "sampled": "true",
+          "sample_rand": "0.5386674531218907",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4723/router.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4723/router.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 31041,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "72d826f8406f4d0ab79eab0525b08695",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4723/router",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+            "span_id": "9a43f0b0acad590d"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788935048.646,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/solid",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/router",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788935047.563,
+            "category": "ui.click",
+            "message": "body > div#root > div > a#link-user.inactive"
+          },
+          {
+            "timestamp": 1788935047.574,
+            "category": "navigation",
+            "data": {
+              "from": "/router",
+              "to": "/router/users/42"
+            }
+          },
+          {
+            "timestamp": 1788935047.61,
+            "category": "ui.click",
+            "message": "body > div#root > div > a#link-home.active"
+          },
+          {
+            "timestamp": 1788935047.611,
+            "category": "navigation",
+            "data": {
+              "from": "/router/users/42",
+              "to": "/router"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:24:09.117Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+          "org_id": "0",
+          "transaction": "/router",
+          "sampled": "true",
+          "sample_rand": "0.5386674531218907",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 2,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "/router",
+            "span_id": "be8ea82d8bd6ed4b",
+            "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+            "start_timestamp": 1788935047.6114,
+            "end_timestamp": 1788935048.6141999,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.navigation.solid.solidrouter",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "navigation",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/router",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router",
+                "type": "string"
+              },
+              "sentry.previous_trace": {
+                "value": "d9fc19e86c824c58b69ca6ec5ad0eec5-8e7d85d7446660f2-1",
+                "type": "string"
+              },
+              "url.template": {
+                "value": "/router",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 150,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "idleTimeout",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "be8ea82d8bd6ed4b",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            },
+            "links": [
+              {
+                "span_id": "8e7d85d7446660f2",
+                "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+                "sampled": true,
+                "attributes": {
+                  "sentry.link.type": {
+                    "value": "previous_trace",
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "sentinel-span",
+            "span_id": "af2ae79186fd854d",
+            "trace_id": "2e49b0e3c5f44fc1b435b554b5226f47",
+            "start_timestamp": 1788935048.6493,
+            "end_timestamp": 1788935048.6497,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "custom",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "sentinel-span",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "af2ae79186fd854d",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:24:09.305Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+          "org_id": "0",
+          "transaction": "/router/users/:id",
+          "sampled": "true",
+          "sample_rand": "0.33461546231113104",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "body > div#root",
+            "span_id": "9f1e36d430fdcf53",
+            "trace_id": "d9fc19e86c824c58b69ca6ec5ad0eec5",
+            "parent_span_id": "8e7d85d7446660f2",
+            "start_timestamp": 1788935047.5623999,
+            "end_timestamp": 1788935047.5863998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.browser.inp",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.interaction.click",
+                "type": "string"
+              },
+              "sentry.exclusive_time": {
+                "value": 24,
+                "type": "integer"
+              },
+              "browser.web_vital.inp.value": {
+                "value": 24,
+                "type": "integer"
+              },
+              "sentry.transaction": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "user_agent.original": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8e7d85d7446660f2",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "a52c5bfaa06d43498c1f980c3c796608",
+        "sent_at": "2026-09-09T06:24:10.333Z",
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+          "org_id": "0",
+          "transaction": "/router/users/:id",
+          "sampled": "true",
+          "sample_rand": "0.02916384763326907",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel-2",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4723/router.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4723/router.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 31041,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel-2",
+        "level": "info",
+        "event_id": "a52c5bfaa06d43498c1f980c3c796608",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4723/router/users/7",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "span_id": "a409a5d02a91457c"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788935050.333,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/solid",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/router/users/7"
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:24:10.831Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+          "org_id": "0",
+          "transaction": "/router/users/:id",
+          "sampled": "true",
+          "sample_rand": "0.02916384763326907",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.solid",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 13,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "b7ac124ccde0581b",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3056998,
+            "end_timestamp": 1788935049.3056998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.unload_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "b015e89bd0e32436",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3221998,
+            "end_timestamp": 1788935049.3221998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dom_content_loaded_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "b528cf0401b31331",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3223,
+            "end_timestamp": 1788935049.3223999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.load_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "bc1439ccb4eaa4a5",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3014998,
+            "end_timestamp": 1788935049.3014998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.connect",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "9f521f568f13cad9",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3014998,
+            "end_timestamp": 1788935049.3014998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.cache",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "bd26be9a86f9683b",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3014998,
+            "end_timestamp": 1788935049.3014998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dns",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "bd064f9cf6e79d17",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3019998,
+            "end_timestamp": 1788935049.3030999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.request",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4723/router/users/7",
+            "span_id": "9fa95fedbc3a551a",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.303,
+            "end_timestamp": 1788935049.3030999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.response",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "8b27b41f751124c4",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3070998,
+            "end_timestamp": 1788935049.3084998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.script",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4723",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router.js",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 1029341,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 1029041,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 1029041,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788935049.3070998,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788935049.3070998,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788935049.3070998,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788935049.3070998,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788935049.3070998,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788935049.3072,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788935049.308,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788935049.3085,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.006799999997019768,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-paint",
+            "span_id": "9f16c19bdddf5b53",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3292,
+            "end_timestamp": 1788935049.3292,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-contentful-paint",
+            "span_id": "99dc43e49e664a7b",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "parent_span_id": "a6a46b65cd1941fd",
+            "start_timestamp": 1788935049.3292,
+            "end_timestamp": 1788935049.3292,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "/router/users/:id",
+            "span_id": "a6a46b65cd1941fd",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "start_timestamp": 1788935049.3012,
+            "end_timestamp": 1788935049.3292,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.pageload.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "pageload",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/router/users/7",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router/users/7",
+                "type": "string"
+              },
+              "url.template": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "url.path.parameter.id": {
+                "value": "7",
+                "type": "string"
+              },
+              "params.id": {
+                "value": "7",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 150,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "idleTimeout",
+                "type": "string"
+              },
+              "browser.web_vital.ttfb.value": {
+                "value": 1.7999999970197678,
+                "type": "double"
+              },
+              "browser.web_vital.fp.value": {
+                "value": 28,
+                "type": "integer"
+              },
+              "browser.web_vital.fcp.value": {
+                "value": 28,
+                "type": "integer"
+              },
+              "browser.web_vital.ttfb.request_time": {
+                "value": 1,
+                "type": "integer"
+              },
+              "browser.performance.time_origin": {
+                "value": 1788935049.3012,
+                "type": "double"
+              },
+              "browser.performance.navigation.activation_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "/router/users/:id",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a6a46b65cd1941fd",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sentinel-2-span",
+            "span_id": "8166cf0f563fb064",
+            "trace_id": "1b306f0c97494166b1eb8c923a59caf6",
+            "start_timestamp": 1788935050.3335998,
+            "end_timestamp": 1788935050.3337,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "custom",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "sentinel-2-span",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8166cf0f563fb064",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.solid",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "url.full": {
+                "value": "http://localhost:4723/router/users/7",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

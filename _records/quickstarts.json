@@ -282,5 +282,33 @@
    "orphaned top-level-import include": "partial (as first-line import)",
    "late init (--import @sentry/node/preload)": "broken (subpath not exported)"
   }
+ },
+ {
+  "id": "QS-hapi",
+  "path": "quickstarts/hapi",
+  "runtime": "Node 26.5.0, develop 03aaf42455; @hapi/hapi 21.4.10, @hapi/boom 10.0.1",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "Every install path including a first-line import delivers route-named segments with router, handler and middleware spans, auto.function.hapi error events and logs, with or without the deprecated setupHapiErrorHandler call; the verify snippet runs as printed. Defects: the ESM tab's extensionless import never starts the app; the integration page names an OpenTelemetry package the SDK does not use, the wrong enablement rule and no option, and its table row says it captures no errors; only errors Hapi reports as 500 responses are captured; the verify text says transactions; the preload page is dead.",
+  "sdk": {
+   "name": "sentry.javascript.node",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "--import": "works",
+   "CommonJS require first line": "works",
+   "ESM tab verbatim (import \"./instrument\")": "broken (ERR_MODULE_NOT_FOUND)",
+   "first-line import \"./instrument.mjs\"": "works",
+   "first-line import without the handler": "works",
+   "NODE_OPTIONS --import": "works",
+   "--require": "works with the unsupported banner",
+   "without setupHapiErrorHandler (--import)": "works",
+   "hapiIntegration({ shouldHandleError })": "works (Boom 4xx and 503 never reach the channel)",
+   "errors only (no tracesSampleRate)": "works",
+   "errors only without the handler": "works",
+   "verify snippet verbatim": "works",
+   "late init (--import @sentry/node/preload)": "broken (subpath not exported)"
+  }
  }
 ]

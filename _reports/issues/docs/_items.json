@@ -42,10 +42,10 @@
  {
   "id": "DOC-Q25",
   "prio": "P0",
-  "heading": "The Express, Fastify and Koa guides' ESM tabs import the instrument file without its extension",
+  "heading": "The Express, Fastify, Koa and Hapi guides' ESM tabs import the instrument file without its extension",
   "type": "docs-change",
-  "title": "Fix the extensionless instrument import on the Express, Fastify and Koa guides and the esm-without-import page",
-  "body": "`platform-includes/getting-started-use/javascript.express.mdx:22` starts the ESM app with `import \"./instrument\";`, while the config step creates `instrument.mjs`. Node ESM does not probe extensions: the app never starts, `Error [ERR_MODULE_NOT_FOUND]: Cannot find module .../instrument ... Did you mean to import \"./instrument.js\"?`. With `import \"./instrument.mjs\"` the same app produces exactly the `--import` output. The same extensionless import sits at `common/install/esm-without-import.mdx:55`, and the orphaned `platform-includes/getting-started-add-top-level-import/javascript.express.mdx` imports `./instrument.js`. The Fastify tab has the same defect at `platform-includes/getting-started-use/javascript.fastify.mdx:20`, with the same `ERR_MODULE_NOT_FOUND` (QS-fastify, variant esm-tab), and so does the Koa tab at `getting-started-use/javascript.koa.mdx:20`; on Koa the corrected first-line import starts the app but loses every router and middleware span and the route names, so the Koa tab should rely on the `node --import` command instead (QS-koa, variants esm-tab and self-import).\n\nWhat to change:\n\n- Import `./instrument.mjs` in the Express and Fastify ESM tabs, drop the import from the Koa tab in favour of `--import`, matching the file the config step creates, and fix `esm-without-import.mdx:55` the same way.",
+  "title": "Fix the extensionless instrument import on the Express, Fastify, Koa and Hapi guides and the esm-without-import page",
+  "body": "`platform-includes/getting-started-use/javascript.express.mdx:22` starts the ESM app with `import \"./instrument\";`, while the config step creates `instrument.mjs`. Node ESM does not probe extensions: the app never starts, `Error [ERR_MODULE_NOT_FOUND]: Cannot find module .../instrument ... Did you mean to import \"./instrument.js\"?`. With `import \"./instrument.mjs\"` the same app produces exactly the `--import` output. The same extensionless import sits at `common/install/esm-without-import.mdx:55`, and the orphaned `platform-includes/getting-started-add-top-level-import/javascript.express.mdx` imports `./instrument.js`. The Fastify tab has the same defect at `platform-includes/getting-started-use/javascript.fastify.mdx:20`, with the same `ERR_MODULE_NOT_FOUND` (QS-fastify, variant esm-tab), and so does the Koa tab at `getting-started-use/javascript.koa.mdx:20`; on Koa the corrected first-line import starts the app but loses every router and middleware span and the route names, so the Koa tab should rely on the `node --import` command instead (QS-koa, variants esm-tab and self-import). The Hapi tab at `getting-started-use/javascript.hapi.mdx:28` fails the same way, and its corrected first-line import loses nothing (QS-hapi, variants esm-tab and self-import).\n\nWhat to change:\n\n- Import `./instrument.mjs` in the Express, Fastify and Hapi ESM tabs, drop the import from the Koa tab in favour of `--import`, matching the file the config step creates, and fix `esm-without-import.mdx:55` the same way.",
   "pos": 114,
   "file": "P0-05-DOC-Q25.md"
  },
@@ -55,7 +55,7 @@
   "heading": "The late-initialization page is built on the @sentry/node/preload entry that v11 removed",
   "type": "docs-change",
   "title": "Rewrite or remove the late-initialization install page for v11",
-  "body": "`common/install/late-initialization.mdx` (supported by the Node, Connect, Express, Fastify, Hapi, Hono and Koa guides) tells readers to run `node --require @sentry/node/preload app.js` (`:37`) or `node --import @sentry/node/preload app.js` (`:68`) and to select modules with `SENTRY_PRELOAD_INTEGRATIONS` (`:106`, `:132`).\n\nObserved on develop: `Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './preload' is not defined by \"exports\" in @sentry/node/package.json`; the package exports `.`, `./import`, `./vite`, `./rollup`, `./webpack` and `./esbuild` only. `common/migration/v10-to-v11/index.mdx:1359` records that the `init`, `preload` and `loader` entry points were removed from every server SDK, and names the replacement: `--import` the SDK and call `Sentry.init()` later. The Fastify run hit the same error; the page lists Fastify at `:9` and `:114` (QS-fastify, variant late-init), as did the Koa run, with Koa listed at `:116` (QS-koa, variant late-init).\n\nWhat to change:\n\n- Rewrite the page around the v11 shape (`--import` the SDK, call `Sentry.init()` when the DSN is known) and drop `@sentry/node/preload` and `SENTRY_PRELOAD_INTEGRATIONS`, or remove the page from the v11 docs.\n- Check the v11 docs tickets for an existing owner before filing.",
+  "body": "`common/install/late-initialization.mdx` (supported by the Node, Connect, Express, Fastify, Hapi, Hono and Koa guides) tells readers to run `node --require @sentry/node/preload app.js` (`:37`) or `node --import @sentry/node/preload app.js` (`:68`) and to select modules with `SENTRY_PRELOAD_INTEGRATIONS` (`:106`, `:132`).\n\nObserved on develop: `Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './preload' is not defined by \"exports\" in @sentry/node/package.json`; the package exports `.`, `./import`, `./vite`, `./rollup`, `./webpack` and `./esbuild` only. `common/migration/v10-to-v11/index.mdx:1359` records that the `init`, `preload` and `loader` entry points were removed from every server SDK, and names the replacement: `--import` the SDK and call `Sentry.init()` later. The Fastify run hit the same error; the page lists Fastify at `:9` and `:114` (QS-fastify, variant late-init), as did the Koa run, with Koa listed at `:116` (QS-koa, variant late-init), and the Hapi run, with Hapi listed at `:115` (QS-hapi, variant late-init).\n\nWhat to change:\n\n- Rewrite the page around the v11 shape (`--import` the SDK, call `Sentry.init()` when the DSN is known) and drop `@sentry/node/preload` and `SENTRY_PRELOAD_INTEGRATIONS`, or remove the page from the v11 docs.\n- Check the v11 docs tickets for an existing owner before filing.",
   "pos": 115,
   "file": "P0-06-DOC-Q26.md"
  },
@@ -875,7 +875,7 @@
   "heading": "The verify step of all four guides is written around the transaction envelope that v11 stops sending",
   "type": "docs-change",
   "title": "Rewrite the tracing verify step for the stream lifecycle on the Node, Bun, Deno and Cloudflare guides",
-  "body": "The tracing verify step tells the reader to wrap work in `Sentry.startSpan({ op: \"test\", name: \"My First Test Transaction\" })`: `platform-includes/getting-started-verify/javascript.node.mdx:38-53`, `guides/bun/index.mdx:156-172`, `guides/deno/index.mdx:176-190` and `guides/cloudflare/index.mdx:313-335`. The sentence that follows each one sends the reader to Sentry \"to view the collected data\" (`getting-started-node/javascript.mdx:120`, `bun/index.mdx:188`, `deno/index.mdx:207`, `cloudflare/index.mdx:364`) and expands the `quick-start-locate-data-expandable` include, which points at the Traces page. The only place the word \"Transaction\" appears is the sample name inside the snippet.\n\nObserved on `develop`, on all four runtimes with the documented wiring: no `transaction` envelope is sent at all. The manual span arrives as a child item inside a `span` envelope together with the server span, for example `[\"http.client GET 127.0.0.1\", \"test My First Test Span\", \"http.server GET\"]`, because `packages/core/src/client.ts:243` normalizes any `traceLifecycle` other than `'static'` to `'stream'`. On the released line there is no such normalization, so `'static'` is the default and a transaction is sent: the pages are correct for the version they serve today and become wrong with v11.\n\nWhat to change, in the v11 docs update:\n\n- On each of the four verify steps, describe what arrives: a trace with a server segment span and the manual span as its child, no transaction.\n- Rename the sample from \"My First Test Transaction\" to a span name.\n- Link the stream lifecycle page, and note that `traceLifecycle: \"static\"` restores the transaction envelope for readers who look for it.\n- Fix the ten `platform-includes/performance/enable-stream-mode/javascript.*.mdx` files whose closing line calls `traceLifecycle` `'static'` \"(the default)\": node `:36`, cloudflare `:62`, hono `:51`, deno `:24`, and bun, nextjs, nestjs, nitro, gcp-functions and elysia at `:25`.\n- Rewrite `guides/cloudflare/index.mdx:382-388`, which frames the static lifecycle as the current model and stream as the opt-in.\n- Apply the same rewrite to the framework verify includes: `platform-includes/getting-started-verify/javascript.express.mdx:30` and `:40` name \"My First Test Transaction\", and the Express run received the span as an `op: test` child of the `http.server` segment inside a span envelope, never a transaction envelope (QS-express, variants import and express5); `getting-started-verify/javascript.fastify.mdx:24-30` and `:40` and `guides/fastify/tracing/instrumentation/automatic-instrumentation.mdx:3` say the same and the Fastify run saw the same (QS-fastify, every variant); `getting-started-verify/javascript.koa.mdx:29` and `:35-46` and `guides/koa/tracing/instrumentation/automatic-instrumentation.mdx:3` likewise (QS-koa, every variant).",
+  "body": "The tracing verify step tells the reader to wrap work in `Sentry.startSpan({ op: \"test\", name: \"My First Test Transaction\" })`: `platform-includes/getting-started-verify/javascript.node.mdx:38-53`, `guides/bun/index.mdx:156-172`, `guides/deno/index.mdx:176-190` and `guides/cloudflare/index.mdx:313-335`. The sentence that follows each one sends the reader to Sentry \"to view the collected data\" (`getting-started-node/javascript.mdx:120`, `bun/index.mdx:188`, `deno/index.mdx:207`, `cloudflare/index.mdx:364`) and expands the `quick-start-locate-data-expandable` include, which points at the Traces page. The only place the word \"Transaction\" appears is the sample name inside the snippet.\n\nObserved on `develop`, on all four runtimes with the documented wiring: no `transaction` envelope is sent at all. The manual span arrives as a child item inside a `span` envelope together with the server span, for example `[\"http.client GET 127.0.0.1\", \"test My First Test Span\", \"http.server GET\"]`, because `packages/core/src/client.ts:243` normalizes any `traceLifecycle` other than `'static'` to `'stream'`. On the released line there is no such normalization, so `'static'` is the default and a transaction is sent: the pages are correct for the version they serve today and become wrong with v11.\n\nWhat to change, in the v11 docs update:\n\n- On each of the four verify steps, describe what arrives: a trace with a server segment span and the manual span as its child, no transaction.\n- Rename the sample from \"My First Test Transaction\" to a span name.\n- Link the stream lifecycle page, and note that `traceLifecycle: \"static\"` restores the transaction envelope for readers who look for it.\n- Fix the ten `platform-includes/performance/enable-stream-mode/javascript.*.mdx` files whose closing line calls `traceLifecycle` `'static'` \"(the default)\": node `:36`, cloudflare `:62`, hono `:51`, deno `:24`, and bun, nextjs, nestjs, nitro, gcp-functions and elysia at `:25`.\n- Rewrite `guides/cloudflare/index.mdx:382-388`, which frames the static lifecycle as the current model and stream as the opt-in.\n- Apply the same rewrite to the framework verify includes: `platform-includes/getting-started-verify/javascript.express.mdx:30` and `:40` name \"My First Test Transaction\", and the Express run received the span as an `op: test` child of the `http.server` segment inside a span envelope, never a transaction envelope (QS-express, variants import and express5); `getting-started-verify/javascript.fastify.mdx:24-30` and `:40` and `guides/fastify/tracing/instrumentation/automatic-instrumentation.mdx:3` say the same and the Fastify run saw the same (QS-fastify, every variant); `getting-started-verify/javascript.koa.mdx:29` and `:35-46` and `guides/koa/tracing/instrumentation/automatic-instrumentation.mdx:3` likewise (QS-koa, every variant), as do `getting-started-verify/javascript.hapi.mdx:34` and `:47` and `guides/hapi/tracing/instrumentation/automatic-instrumentation.mdx:3` (QS-hapi, every variant).",
   "pos": 90,
   "file": "P1-88-DOC-Q1.md"
  },
@@ -972,10 +972,10 @@
  {
   "id": "DOC-Q28",
   "prio": "P1",
-  "heading": "The esm-without-import page says a first-line import cannot instrument frameworks; Express and Fastify are fully instrumented that way",
+  "heading": "The esm-without-import page says a first-line import cannot instrument frameworks; Express, Fastify and Hapi are fully instrumented that way",
   "type": "docs-change",
   "title": "Correct the first-line import limitation on the esm-without-import page for v11",
-  "body": "`common/install/esm-without-import.mdx:28-30` says that with a direct first-line import only native Node.js APIs can be instrumented and the SDK will not capture framework-specific data. Observed on develop: `import \"./instrument.mjs\"` as the first line of the Express app produced exactly the `--import` output, with middleware and handler spans, route-named segments (`GET /users/:id`, source `route`) and `auto.http.express` error events; the Node run's Express check saw the same, and the Fastify run got the same hook and handler spans and `auto.function.fastify` events from a first-line import (QS-fastify, variant self-import). Koa is the counter-example: its first-line import produced url-named `GET` segments and no router or middleware span (QS-koa, variant self-import), so the page should name what is covered and what is not instead of a blanket warning.\n\nWhat to change:\n\n- Replace the blanket warning with what is affected on v11 (packages imported before the instrument file), and say that Express and Fastify are covered while Koa is not.",
+  "body": "`common/install/esm-without-import.mdx:28-30` says that with a direct first-line import only native Node.js APIs can be instrumented and the SDK will not capture framework-specific data. Observed on develop: `import \"./instrument.mjs\"` as the first line of the Express app produced exactly the `--import` output, with middleware and handler spans, route-named segments (`GET /users/:id`, source `route`) and `auto.http.express` error events; the Node run's Express check saw the same, and the Fastify run got the same hook and handler spans and `auto.function.fastify` events from a first-line import (QS-fastify, variant self-import). Koa is the counter-example: its first-line import produced url-named `GET` segments and no router or middleware span (QS-koa, variant self-import), so the page should name what is covered and what is not instead of a blanket warning. Hapi behaves like Fastify: the first-line import produced the same items as `--import`, every Hapi span, route name and error (QS-hapi, variant self-import).\n\nWhat to change:\n\n- Replace the blanket warning with what is affected on v11 (packages imported before the instrument file), and say that Express, Fastify and Hapi are covered while Koa is not.",
   "pos": 117,
   "file": "P1-98-DOC-Q28.md"
  },
@@ -1050,6 +1050,16 @@
   "file": "P1-105-DOC-Q46.md"
  },
  {
+  "id": "DOC-Q47",
+  "prio": "P1",
+  "heading": "The Hapi integration page names the wrong mechanism, the wrong enablement rule and no option, and its table row says it captures no errors",
+  "type": "docs-change",
+  "title": "Rewrite the Hapi integration page and its table row",
+  "body": "`common/configuration/integrations/hapi.mdx:21` says the integration captures spans using `@opentelemetry/instrumentation-hapi`; that package is not installed, and every span has origin `auto.http.hapi` from the SDK's own diagnostics-channel instrumentation of `@hapi/hapi/lib/server.js`. `:19-27` say the integration is enabled when performance monitoring is enabled and show no option; with no `tracesSampleRate` it is still installed and captured the same four errors (`auto.function.hapi`), and `hapiIntegration({ shouldHandleError(error, request) })` exists and is invoked, which neither this page nor `common/migration/v10-to-v11/index.mdx:722` (Express and Fastify only) documents. The integrations table include `platform-includes/configuration/integrations/javascript.hapi.mdx:12` leaves the Errors column empty for `hapiIntegration`, although it is what captures Hapi errors on develop.\n\nOne limit the page should state: Hapi emits its request error channel only for 500 responses (`@hapi/hapi/lib/request.js:511-515`), so `Boom.notFound` and `Boom.serverUnavailable` thrown from handlers never reach Sentry even with `shouldHandleError: () => true`; plain throws and `Boom.badImplementation` are captured.\n\nWhat to change:\n\n- Describe the diagnostics-channel mechanism, say the integration is always on and captures errors with or without tracing, add the `shouldHandleError` option and the 500-only limit, tick the Errors column in the table row, and list `hapiIntegration` at migration `:722`.",
+  "pos": 136,
+  "file": "P1-106-DOC-Q47.md"
+ },
+ {
   "id": "DOC-B4",
   "prio": "P2",
   "heading": "Guide hygiene: no Bun version requirement, npm install in the Hono guide, v7 tracing wording",
@@ -1057,7 +1067,7 @@
   "title": "Fix Bun guide hygiene: version floor, Hono install command, v7 wording",
   "body": "`guides/bun/index.mdx:12` pulls the `getting-started-prerequisites` include, but no `javascript.bun.mdx` variant of it exists, so the page falls back to `_default.mdx` and states no Bun version floor. `guides/hono/index.mdx:84-85` installs the Bun SDK with `npm install @sentry/bun`, while the Bun guide uses `bun add`. `platform-includes/performance/automatic-instrumentation-intro/javascript.bun.mdx:1` still says the SDK \"provides a `Tracing` integration\", which is v7 wording.\n\nWhat was observed: CI runs the Bun SDK against Bun 1.3.14 (`.github/workflows/build.yml:522`), which is the version the SDK is verified on.\n\nWhat to change:\n\n- Add `platform-includes/getting-started-prerequisites/javascript.bun.mdx` stating the Bun version the SDK is tested against (1.3.14), in the shape of `platform-includes/getting-started-prerequisites/javascript.deno.mdx:7` (\"Deno version >= `2.0.0`\").\n- Change the Bun install tab in `guides/hono/index.mdx:84-85` to `bun add @sentry/bun`.\n- Delete the \"provides a Tracing integration\" sentence from `platform-includes/performance/automatic-instrumentation-intro/javascript.bun.mdx`.",
   "pos": 3,
-  "file": "P2-106-DOC-B4.md"
+  "file": "P2-107-DOC-B4.md"
  },
  {
   "id": "DOC-D5",
@@ -1067,7 +1077,7 @@
   "title": "Rewrite the three Deno v7-to-v8 migration includes that are copies of the Bun ones",
   "body": "The Deno v7-to-v8 migration includes are Bun text. `platform-includes/migration/javascript-v8/important-changes/javascript.deno.mdx:9` says \"Sentry Bun SDK\" and, at `:34-48`, claims OpenTelemetry-powered auto-instrumentation with bullets for Express (`:38`), Fastify (`:39`), Hapi (`:40`) and Nest (`:46`). `platform-includes/migration/javascript-v8/integrations-package-removal/javascript.deno.mdx:3-5` names `@sentry/bun`. `platform-includes/migration/javascript-v8/other-changes/javascript.deno.mdx:3` says \"your Bun SDK\" and links `./v8-opentelemetry`, whose `supported:` list does not include `javascript.deno`, so the link renders dead on the Deno guide.\n\nWhat was observed: the v8 Deno SDK did not have the OpenTelemetry-powered framework auto-instrumentation the include describes, and the package under discussion on these pages is `@sentry/deno`.\n\nWhat to change:\n\n- In `important-changes/javascript.deno.mdx`, replace \"Sentry Bun SDK\" at `:9` with \"Sentry Deno SDK\" and delete the OpenTelemetry auto-instrumentation list at `:34-48`, including the Express (`:38`), Fastify (`:39`), Hapi (`:40`) and Nest (`:46`) bullets.\n- In `integrations-package-removal/javascript.deno.mdx:3-5`, replace `@sentry/bun` with `@sentry/deno`.\n- In `other-changes/javascript.deno.mdx:3`, replace \"your Bun SDK\" with \"your Deno SDK\" and remove the `./v8-opentelemetry` link, which is not shown for Deno.",
   "pos": 8,
-  "file": "P2-107-DOC-D5.md"
+  "file": "P2-108-DOC-D5.md"
  },
  {
   "id": "DOC-D6",
@@ -1077,7 +1087,7 @@
   "title": "Show deno add and an import map in the Deno guide's install step",
   "body": "`guides/deno/index.mdx:38-46` says to \"Import the Sentry Deno SDK directly from the npm registry\", and every snippet on the page renders `npm:@sentry/deno` from the `___SDK_PACKAGE___` placeholder (the literal specifier is not in the file). `guides/hono/index.mdx:88-89` is the only page showing `deno add npm:@sentry/deno`. The Deno `featureflags` and `enable-stream-mode` includes hardcode `@sentry/deno` and `npm:@sentry/deno` instead of the `___SDK_PACKAGE___` placeholder.\n\nWhat was observed: every Deno e2e app uses a `deno.json` import map and the bare `@sentry/deno` specifier, which is also the form the `@sentry/deno/import` hook requires. Events reported by the SDK carry `sdk.packages[0].name = \"denoland:sentry\"`.\n\nWhat to change:\n\n- In the install step at `guides/deno/index.mdx:38-46`, add `deno add npm:@sentry/deno` and show the resulting `deno.json` import map entry.\n- Use the bare `@sentry/deno` specifier in the snippets that follow, since that is the form the hook import needs, and keep `npm:@sentry/deno` documented as the no-import-map alternative.\n- Replace the hardcoded package names in the Deno `featureflags` (`:2`) and `enable-stream-mode` (`:11`) includes with `___SDK_PACKAGE___`.\n- While in `enable-stream-mode/javascript.deno.mdx`, note that `:24` calls `traceLifecycle: 'static'` \"the default\", which holds for the released line only; DOC-Q1 tracks that sentence across all ten runtime variants of the include.",
   "pos": 9,
-  "file": "P2-108-DOC-D6.md"
+  "file": "P2-109-DOC-D6.md"
  },
  {
   "id": "DOC-C3",
@@ -1087,7 +1097,7 @@
   "title": "Add the four missing Cloudflare SdkOption entries and drop the deprecated enableRpcTracePropagation block",
   "body": "Four `@sentry/cloudflare` options have no `SdkOption` entry in `common/configuration/options.mdx`: `cacheClient`, `enableOpenTelemetrySetup`, `durableObjectSqlSpanAllowlist` and `durableObjectStorageSpanAllowlist`. Three of them appear nowhere in `docs/` or `platform-includes/`; `enableOpenTelemetrySetup` appears six times, all inside `common/migration/v10-to-v11/index.mdx`, none of them an options entry.\n\nWhat was observed: the SDK declares all four in `packages/cloudflare/src/client.ts` - `enableOpenTelemetrySetup` at `:324`, `durableObjectSqlSpanAllowlist` at `:384`, `durableObjectStorageSpanAllowlist` at `:409` and `cacheClient` at `:451`, on the same lines at `6f2da7483d` and at develop head. `rpcTracePropagationBindings` is declared at `:360` and now has its own entry at `options.mdx:580-592`; the deprecated `enableRpcTracePropagation` entry at `options.mdx:594-600` documents an option v11 removes (`MIGRATION.md:1418-1431`, `:1624-1637` at develop head).\n\nWhat to change:\n\n- Add `SdkOption` entries to `common/configuration/options.mdx` for `cacheClient`, `enableOpenTelemetrySetup`, `durableObjectSqlSpanAllowlist` and `durableObjectStorageSpanAllowlist`.\n- In the v11 docs update, remove the deprecated `enableRpcTracePropagation` block at `common/configuration/options.mdx:594-600`; the `rpcTracePropagationBindings` entry at `:580-592` replaces it.",
   "pos": 12,
-  "file": "P2-109-DOC-C3.md"
+  "file": "P2-110-DOC-C3.md"
  },
  {
   "id": "DOC-C6",
@@ -1097,7 +1107,7 @@
   "title": "Add a bindings table to the Cloudflare features/index.mdx",
   "body": "No Cloudflare page lists which Worker bindings produce spans. `guides/cloudflare/features/index.mdx` is a 13-line PageGrid. `agent-tracing/workers-ai.mdx` covers Workers AI, D1 is described as a manual wrapper in `features/d1.mdx`, and `common/tracing/instrumentation/caches-module.mdx` and `queues-module.mdx` are shown for Cloudflare while describing Redis and manual spans only.\n\nWhat was observed in `instrumentEnv.ts` at `6f2da7483d`: D1 bindings are instrumented automatically with span op `db.query`; R2 is instrumented (`instrumentR2.ts:26-48`) with `object.*` ops; Queues producers are instrumented with the span name `send <binding>` (`instrumentQueueProducer.ts:20`) and the `queue.publish` op (`:28`); `env.AI.run` produces `gen_ai.*` spans; Durable Object namespaces and service bindings get trace-propagation headers and RPC metadata, with RPC instrumented and headers not; the rate limiter binding is not instrumented at that commit. Workers KV, Vectorize, Hyperdrive, Analytics Engine, the Cache API and Assets are not instrumented. The `d1`, `r2`, `queue` and `ratelimit` integration suites pin these.\n\nWhat to change:\n\n- Add a bindings table to `guides/cloudflare/features/index.mdx` with columns: binding, instrumented, span op, where it is documented, using the rows above.\n- State plainly that Workers KV, Vectorize, Hyperdrive, Analytics Engine, the Cache API and Assets produce no spans.\n- Adjust the `supported:` lists so the caches and queues common pages are not shown as Cloudflare binding documentation.",
   "pos": 15,
-  "file": "P2-110-DOC-C6.md"
+  "file": "P2-111-DOC-C6.md"
  },
  {
   "id": "DOC-C8",
@@ -1107,7 +1117,7 @@
   "title": "Fix snippet errors across the Cloudflare includes and framework pages",
   "body": "Several Cloudflare includes show code that does not match the package or the guide's own contract. `platform-includes/tracing/traces-sampler/javascript.cloudflare.mdx:4` calls `Sentry.browserTracingIntegration()`. `platform-includes/tracing/sample-rate/javascript.cloudflare.mdx:1-7` and the `capture-console` (`:1-8`) and `dedupe` (`:1-8`) configuration includes show a bare `Sentry.init(...)`. `platform-includes/configuration/contextlines/javascript.cloudflare.mdx` exists but `contextlines.mdx` lists `cloudflare` under `notSupported`, so it never renders. `guides/cloudflare/index.mdx:38-40` and `:356-360` contain a `logs` onboarding block that is not in the button list. `frameworks/nextjs.mdx:40` and `getting-started-config/javascript.cloudflare.mdx:5` state compatibility dates of 2025-08-16 and 2024-09-23 without saying which applies to whom. `frameworks/hydrogen-remix.mdx:59` contains a literal `YOUR_DSN_HERE`.\n\nWhat was observed: `@sentry/cloudflare` does not export `browserTracingIntegration` on the released line, at `6f2da7483d` or at develop head; the guide's configuration contract is `withSentry` or `sentryPagesPlugin`; the 2025-08-16 date is OpenNext's `https.request` floor. Bun and Deno have guide-local `contextlines` overrides, so only the Cloudflare include is unreachable.\n\nWhat to change:\n\n- Replace `browserTracingIntegration()` in the traces-sampler include.\n- Rewrite the bare `Sentry.init(...)` snippets as `withSentry` / `sentryPagesPlugin`.\n- Remove `cloudflare` from `notSupported` in `contextlines.mdx` or delete the unreachable Cloudflare include, leaving the Bun and Deno includes in place.\n- Add `logs` to the onboarding buttons.\n- Say on each page which compatibility date applies.\n- Replace `YOUR_DSN_HERE` with `___PUBLIC_DSN___`.",
   "pos": 17,
-  "file": "P2-111-DOC-C8.md"
+  "file": "P2-112-DOC-C8.md"
  },
  {
   "id": "X1",
@@ -1117,7 +1127,7 @@
   "title": "Fix \"Tracing is enabled by default\" in the Bun, Deno and Cloudflare enable-tracing includes",
   "body": "`platform-includes/performance/enable-tracing/javascript.bun.mdx:1`, `javascript.deno.mdx:1` and `javascript.cloudflare.mdx:1` each read \"Tracing is enabled by default in the Sentry <Runtime> SDK.\" The guides for those runtimes, and `platform-includes/performance/enable-automatic-instrumentation/javascript.bun.mdx:1` and `javascript.cloudflare.mdx:1`, tell the user to set `tracesSampleRate` or `tracesSampler`.\n\nWhat was observed: `hasSpansEnabled` in `packages/core/src/utils/hasSpansEnabled.ts:23-36` records spans only when `tracesSampleRate` or `tracesSampler` is set, on every runtime. On Bun there is a second gate on top of it: `getPerformanceIntegrations` in `packages/bun/src/sdk.ts:38-44` returns no performance integrations while `hasSpansEnabled` is false. The Deno and Cloudflare SDKs have no such gate and always install the tracing integrations, so the general reason the sentence is wrong is the sampling option, not the integration set.\n\nWhat to change:\n\n- Replace the first sentence in all three includes with a statement that tracing is enabled by setting `tracesSampleRate` or `tracesSampler` in `Sentry.init`, and that no spans are recorded when neither is set.\n- Keep the wording consistent with the `enable-automatic-instrumentation` includes for Bun and Cloudflare, which already require the option. There is no Deno variant of that include, so Deno falls back to `javascript.mdx`.",
   "pos": 18,
-  "file": "P2-112-X1.md"
+  "file": "P2-113-X1.md"
  },
  {
   "id": "DOC-F47",
@@ -1127,7 +1137,7 @@
   "title": "Confirm tested versions and database spans on the Astro on Cloudflare page",
   "body": "`docs/platforms/javascript/guides/cloudflare/frameworks/astro.mdx:1-142` already covers this combination and `docs/platforms/javascript/guides/astro/index.mdx:24-25` routes Cloudflare users to it. The substance lives in two Cloudflare-gated sections of `platform-includes/getting-started-complete/javascript.astro.mdx`, `:57-85` and `:89-174`: installing both `@sentry/astro` and `@sentry/cloudflare` at `:59-84`, the wrangler config at `:89-96`, the custom entry point with `\"main\": \"./sentry.server.config.ts\"` at `:109-114` plus `Sentry.withSentry((env) => ({...}), handler)` around `@astrojs/cloudflare/entrypoints/server` at `:127-142`, and registering `sentry()` alongside `cloudflare()` in `astro.config.mjs` at `:148-174` (the snippet itself at `:158-168`). `astro.mdx:12` requires Astro 6.0.0 or above and `:13` requires `@astrojs/cloudflare` v13 or above.\n\nVerified on the develop line: Astro 7.3.1 with `@astrojs/cloudflare` 14.3.0, `compatibility_date: \"2026-05-01\"`, `compatibility_flags: [\"nodejs_compat\"]`, `npx astro build` then `npx wrangler dev --config dist/server/wrangler.json`. Both halves of the documented wiring were required and neither worked alone, exactly as the page prescribes; no separate Cloudflare Vite plugin was added.\n\nWorks today:\n\n- Unhandled route errors (mechanism `auto.middleware.astro`), parameterized route names with `http.route` and source `route`, per-request isolation, incoming trace continuation, outgoing `fetch` spans with propagation headers, `db` spans with no configuration beyond the documented setup, `Sentry.logger` logs.\n\nKnown limits:\n\n- Only the server runtime was exercised; the client half of `@sentry/astro` was not part of this run.\n\nWhat to change on `docs/platforms/javascript/guides/cloudflare/frameworks/astro.mdx`:\n\n- Widen the tested-version statements: Astro 7.3.1 on `:12` and `@astrojs/cloudflare` 14.3.0 on `:13`, both on `compatibility_date` `2026-05-01`.\n- Add one line stating that database spans need no setup beyond registering `sentry()` in `astro.config.mjs`, rather than leaving it unmentioned.\n- Say why wrangler's `main` points at `./sentry.server.config.ts` and not at a `dist` path: `@astrojs/cloudflare` v14 runs `@cloudflare/vite-plugin` during `astro build` and resolves `main` at config time, so a `dist` path fails the build before the file exists.",
   "pos": 67,
-  "file": "P2-113-DOC-F47.md"
+  "file": "P2-114-DOC-F47.md"
  },
  {
   "id": "DOC-R7",
@@ -1137,7 +1147,7 @@
   "title": "Add Deno and Cloudflare to the OpenTelemetry overview and API pages",
   "body": "The three OpenTelemetry pages gate themselves to a `supported` allowlist that includes `javascript.bun` but neither `javascript.deno` nor `javascript.cloudflare`: `docs/platforms/javascript/common/opentelemetry/index.mdx:11`, `custom-setup.mdx:9` and `using-opentelemetry-apis.mdx:9`. Deno and Cloudflare readers never see the section.\n\nBoth runtimes support the setup on develop, with different defaults. `packages/deno/src/sdk.ts:114` calls `setupOpenTelemetryTracer()` when `options.enableOpenTelemetrySetup ?? true`, so a Deno app gets a Sentry OpenTelemetry tracer provider unless it passes `enableOpenTelemetrySetup: false`, and spans created through `@opentelemetry/api` reach Sentry with no extra configuration. `packages/cloudflare/src/sdk.ts:23` sets `options.enableOpenTelemetrySetup ??= false` and installs the tracer at `:27-29` only when the option is `true`. Bun, already on the list, is off by default too: it delegates to `@sentry/node`, where `packages/node/src/sdk/index.ts:253` applies `options.enableOpenTelemetrySetup ?? false`.\n\n`custom-setup.mdx` is the exception and should stay gated for now. Its body is written around `skipOpenTelemetrySetup` (`:35`, `:122`, `:132`), `SentryContextManager` (`:35`, `:53`), `SentrySpanProcessor` (`:53`, `:66`) and `SentrySampler` (`:53`), none of which exist on develop, and the include it pulls for JavaScript readers is written against the same removed API. There is no `javascript.deno.mdx` or `javascript.cloudflare.mdx` under `platform-includes/performance/opentelemetry-setup/`, so the two guides would fall back to `javascript.mdx` and get a page that cannot be followed.\n\nWhat to change:\n\n- Add `- javascript.deno` and `- javascript.cloudflare` to the `supported` lists in `opentelemetry/index.mdx` and `using-opentelemetry-apis.mdx`, after checking those two bodies for Node-only wording.\n- State the differing defaults: Deno sets up the tracer unless `enableOpenTelemetrySetup: false`, Cloudflare only with `enableOpenTelemetrySetup: true`, Bun off unless it is turned on.\n- Leave `custom-setup.mdx:9` as it is until that page and the `performance/opentelemetry-setup` includes are dealt with.",
   "pos": 77,
-  "file": "P2-114-DOC-R7.md"
+  "file": "P2-115-DOC-R7.md"
  },
  {
   "id": "DOC-R8",
@@ -1147,7 +1157,7 @@
   "title": "Fix removed integration names in the Bun and Deno v7 migration tables",
   "body": "The v7 deprecation tables map old class names to functions that no longer exist. `platform-includes/migration/javascript-v8/v7-deprecation/javascript.bun.mdx:5` and `javascript.deno.mdx:5` point `new InboundFilters()` at `inboundFiltersIntegration()`, and `:10` in both points `new Debug()` at `debugIntegration()`. The same tables list `sessionTimingIntegration()` at `:14` and `nativeNodeFetchIntegration()` at `:24`.\n\nOn develop, `inboundFiltersIntegration`, `debugIntegration` and `sessionTimingIntegration` appear in no `packages/*/src` at all. The filtering integration is now `eventFiltersIntegration` (`packages/bun/src/index.ts:96` on develop, `:94` at the pin; `packages/deno/src/index.ts:72`, unchanged), a rename the migration guide already records at `docs/platforms/javascript/common/migration/v10-to-v11/index.mdx:1406`.\n\n`nativeNodeFetchIntegration` is a different case. It still exists, is exported by `@sentry/node` (`packages/node/src/index.ts:2`) and is a default integration there (`packages/node/src/sdk/index.ts:63`); what is wrong is that neither `@sentry/bun` nor `@sentry/deno` re-exports it, so on these two pages the `new Undici()` row names something the reader cannot import.\n\nThe Deno table lists eight further names that `@sentry/deno` does not export: `consoleIntegration` (`:15`), `nodeContextIntegration` (`:16`), `modulesIntegration` (`:17`), `onUncaughtExceptionIntegration` (`:18`), `onUnhandledRejectionIntegration` (`:19`), `spotlightIntegration` (`:21`), `anrIntegration` (`:22`) and `httpIntegration` (`:25`). The same rows are correct in the Bun table: `@sentry/bun` re-exports all of them (`packages/bun/src/index.ts:75`, `:78`, `:79`, `:82`, `:83`, `:87`, `:89` and `:148` at the pin; `modulesIntegration` `:89`, `nodeContextIntegration` `:91` and `spotlightIntegration` `:150` on develop).\n\nWhat to change:\n\n- Point the `InboundFilters` row at `eventFiltersIntegration()` in both tables.\n- Drop the `Debug` and `SessionTiming` rows from both tables.\n- Drop the `Undici` row from both tables, or say that `nativeNodeFetchIntegration` lives in `@sentry/node` and is not re-exported by these two SDKs.\n- Prune the Deno table to what `@sentry/deno` exports: remove the `Console`, `Context`, `Modules`, `OnUncaughtException`, `OnUnhandledRejection`, `Spotlight`, `Anr` and `Http` rows. Leave the Bun table's equivalents.",
   "pos": 78,
-  "file": "P2-115-DOC-R8.md"
+  "file": "P2-116-DOC-R8.md"
  },
  {
   "id": "DOC-R16",
@@ -1157,7 +1167,7 @@
   "title": "Document the Durable Object WebSocket and alarm instrumentation",
   "body": "`docs/platforms/javascript/guides/cloudflare/features/durableobject.mdx` documents two things: storage spans at `:33-37` and RPC trace propagation at `:39-41`. The intro at `:8` says the wrapper instruments Durable Objects but never lists which handlers produce telemetry, so a reader debugging a WebSocket or alarm workload has nothing to go on.\n\nOn develop, `packages/cloudflare/src/instrumentations/instrumentDurableObjectHandlers.ts:44-129` wraps five handlers by default: `fetch` (`:44`), `alarm` (`:66`), `webSocketMessage` (`:85`), `webSocketClose` (`:102`) and `webSocketError` (`:119`), each producing one span per invocation. The last four go through `wrapMethodWithSentry` with `origin: 'auto.faas.cloudflare.durable_object'` (`:78`, `:95`, `:112`, `:129`), and that origin is used both as the span's `sentry.origin` attribute and as the `mechanism.type` of exceptions the wrapper captures (`packages/cloudflare/src/wrapMethodWithSentry.ts:72-76` and `:168-176`). `fetch` runs through the request wrapper instead: its span is an `http.server` span with origin `auto.http.cloudflare`, while errors thrown inside it carry mechanism `auto.faas.cloudflare.durable_object` (`packages/cloudflare/src/wrapRequestHandlerWithInit.ts:30-33`). The WebSocket error handed to `webSocketError` is captured with its own mechanism, `auto.faas.cloudflare.durable_object_websocket` (`:135`).\n\nThe `alarm` span is an `op: function` span named `alarm` that starts a new trace carrying `sentry.previous_trace` and a span link back to the `setAlarm` span. Two neighbouring facts belong on the page as well: `stub.fetch()` produces no `http.client` span, and under the stream lifecycle the Durable Object request span is named `GET` with the URL as an attribute.\n\nWhat to change:\n\n- Add a section listing the instrumented handlers: `fetch`, `alarm`, `webSocketMessage`, `webSocketClose`, `webSocketError`.\n- Say what each produces \u2014 one span per WebSocket message, one per close, one per alarm firing.\n- Distinguish origin from mechanism: spans from the four non-`fetch` handlers carry `sentry.origin: auto.faas.cloudflare.durable_object`, and errors thrown in them arrive with `mechanism: auto.faas.cloudflare.durable_object`.\n- Note the alarm's new trace and its link back to `setAlarm`, that `stub.fetch()` produces no `http.client` span, and that the request span is named `GET` with the URL as an attribute in stream mode.",
   "pos": 85,
-  "file": "P2-116-DOC-R16.md"
+  "file": "P2-117-DOC-R16.md"
  },
  {
   "id": "DOC-R17",
@@ -1167,7 +1177,7 @@
   "title": "Add deno serve to the Deno guide run commands",
   "body": "The Deno guide shows only two ways to start an app: `deno run --allow-net=___ORG_INGEST_DOMAIN___ index.ts` at `docs/platforms/javascript/guides/deno/index.mdx:100` and `deno run --allow-read=./src index.ts` at `:119`. The string `deno serve` appears nowhere under `docs/`, `platform-includes/` or `includes/`, so a reader using the default-export server form has no confirmation that the SDK covers it.\n\nAn `export default { fetch }` entrypoint started with `deno serve` is instrumented exactly like `Deno.serve`. The DenoServe integration proxies `Deno.serve` (`packages/deno/src/integrations/deno-serve.ts:80-93` on develop, `:75-88` at the pin), which is what `deno serve` calls internally. `--parallel` re-executes the entry module once per worker thread, so a 16-worker run performs 16 `Sentry.init` calls in one process; a recorded run of 55 requests produced exactly 55 spans, one per request, and per-request tags stayed inside their own worker in all ten checks.\n\nOne caveat belongs next to the note: an entry written as the guide shows it, without the `import \"@sentry/deno/import\"` hook line, still reports errors and `http.server` spans under `deno serve`, but produces no library spans \u2014 the module-scope mysql query lost its `db` span.\n\nWhat to change:\n\n- Add a `deno serve` note to the Deno guide alongside the existing run commands.\n- State that a default-export `fetch` handler is instrumented the same way as `Deno.serve`.\n- Note that `--parallel` initializes once per worker without duplicate events and without scope data crossing workers.\n- Say that the entry still needs `import \"@sentry/deno/import\"` for library spans.",
   "pos": 86,
-  "file": "P2-117-DOC-R17.md"
+  "file": "P2-118-DOC-R17.md"
  },
  {
   "id": "DOC-R19",
@@ -1177,7 +1187,7 @@
   "title": "Note that the root Pages middleware also spans static asset requests",
   "body": "The Cloudflare Pages setup at `docs/platforms/javascript/guides/cloudflare/index.mdx:161-205` tells the reader to register `sentryPagesPlugin` as the first entry in `onRequest` inside `functions/_middleware.js` (snippet at `:174`). `includes/cloudflare-pages-middleware-intro.mdx` instructs creating that file in the `functions` directory at the project root. Neither says which requests the middleware then handles.\n\nA root `functions/_middleware.js` runs on every Cloudflare Pages request, static asset requests included. Under the default stream lifecycle each asset fetch produces its own `http.server` span envelope alongside the app's function routes, which changes both the trace volume and what the reader sees in the performance view; the same requests become transactions only with `traceLifecycle: \"static\"`. The naming is worth stating too: the root request span is named `GET /` and every other path is named bare `GET`, with the path carried in the `url.path` attribute.\n\nWhat to change:\n\n- Add a note to the Pages setup section stating that a root middleware runs on every request, static assets included.\n- Say what arrives per request under the default stream lifecycle: one `http.server` span envelope, named `GET /` for the root and `GET` for every other path, with `url.path` as an attribute.\n- Point readers at scoping the middleware to a subdirectory, for example `functions/api/_middleware.js`, when they want only their function routes instrumented.",
   "pos": 88,
-  "file": "P2-118-DOC-R19.md"
+  "file": "P2-119-DOC-R19.md"
  },
  {
   "id": "DOC-Q4",
@@ -1187,7 +1197,7 @@
   "title": "Explain the channel-injection warnings on the Bun guide",
   "body": "Following the \"Apply Instrumentation to Your App\" step at `guides/bun/index.mdx:82-105` as written, `bun --preload ./instrument.ts app.ts` (the command at `:100`) with `debug: true` prints `No available Node API to register diagnostics-channel injection hooks; skipping.` at startup and `[Sentry] No diagnostics-channel injection detected. Channel-based integrations will not record spans. Make sure the diagnostics channels are injected via the runtime --import hook or a bundler plugin before the instrumented modules load.` after the first request. Neither line is mentioned on the Bun guide or the troubleshooting pages, and the guide names no bundler plugin (DOC-B1).\n\nObserved on `develop` with bun 1.4.2: the warnings are correct. The first comes from `packages/server-runtime-injection/src/register.ts:160` (`:201` at develop head), the second from `packages/server-utils/src/orchestrion/detect.ts:38-42`; both go through `debug.warn`, so they print only with `debug: true`. Runtime instrumentation (`Bun.serve`, fetch, errors, logs) works on the documented path, and library instrumentation needs the `Bun.build` with `sentryBunPlugin()`. A reader who sees the warning has no page that says which of the two it refers to.\n\nWhat to change:\n\n- Quote both lines on the Bun guide next to the run command at `:100`, say that they print only with `debug: true` and that runtime instrumentation is unaffected, and link the plugin build step from DOC-B1 as the fix for library spans.",
   "pos": 93,
-  "file": "P2-119-DOC-Q4.md"
+  "file": "P2-120-DOC-Q4.md"
  },
  {
   "id": "DOC-Q5",
@@ -1197,7 +1207,7 @@
   "title": "Update the Node getting-started page for --require and for first-line ESM imports",
   "body": "`platform-includes/getting-started-node/javascript.mdx:93-96` shows `node --import ./instrument.mjs app.mjs`, and `:55` warns that importing the instrument file later than first means auto-instrumentation and modules like database monitoring may not work. Nothing on the page mentions `--require`.\n\nObserved on `develop` with Node v26.5.0: `node --require ./instrument.cjs app.mjs` still delivers the same errors, spans, headers and logs, but its first stderr line is `[Sentry] Initializing the SDK via the Node --require flag is no longer supported, because Node re-runs --require preloads on its module loader thread. Use --import instead`, printed from `packages/node/src/sdk/index.ts:126-133` whenever `getEntryPointType() === 'require'`, unconditionally and not behind `debug`. A first-line `import \"./instrument.mjs\"` in the entry file gives the same telemetry as the flag, including Express route names and handler spans, because the injection hook is registered while `@sentry/node` evaluates. `NODE_OPTIONS=\"--import ./instrument.mjs\"` is identical to the flag.\n\nWhat to change:\n\n- Add one sentence that `--require` is no longer supported for initializing the SDK and prints a banner, with the `--import` replacement. Keep it narrow: `common/install/late-initialization.mdx:34,37,106,132` recommends `node --require @sentry/node/preload app.js`, which no longer resolves on develop, because the `preload` entry point was removed from every server SDK (see DOC-Q26); the warning against `--require` can therefore stand without that exception.\n- Soften the ordering warning at `:55`: a first-line ESM import of the instrument file is equivalent to `--import`; the warning applies to imports that are not first.\n- Surface `NODE_OPTIONS` as an equivalent form on this page; it is already documented at `common/install/esm.mdx:44-48`.",
   "pos": 94,
-  "file": "P2-120-DOC-Q5.md"
+  "file": "P2-121-DOC-Q5.md"
  },
  {
   "id": "DOC-Q6",
@@ -1207,7 +1217,7 @@
   "title": "Say on the Cloudflare guide that readable stack traces need the source maps step",
   "body": "`guides/cloudflare/index.mdx:240` introduces source maps as an optional improvement. The verify step at `:267-280` says the thrown error produces an issue, with no word on what the stack trace looks like; the Pages variant at `:297-301` has the same problem.\n\nObserved on develop under `wrangler dev`: the error event arrives with `hasContextLine: false`, every frame in `.wrangler/tmp/dev-*/index.js`, and no runtime version. The same app on Node, Bun and Deno ships context lines and source paths. The segment span of the throwing route also reports status `ok` although the Worker answered 500 (SDK-side, tracked separately).\n\nWhat to change:\n\n- Move the source maps step before the verify step, or state in both verify snippets (`:267-280` for Workers, `:297-301` for Pages) that the first issue shows bundle frames without source lines until source maps are uploaded.\n- Show what the issue looks like without source maps, so the reader does not take it for a broken setup.",
   "pos": 95,
-  "file": "P2-121-DOC-Q6.md"
+  "file": "P2-122-DOC-Q6.md"
  },
  {
   "id": "DOC-Q10",
@@ -1217,7 +1227,7 @@
   "title": "Say on the browser config page that the sample tracePropagationTargets matches localhost only",
   "body": "`platform-includes/getting-started-config/javascript.mdx:46` sets `tracePropagationTargets: [\"localhost\", /^https:\\/\\/yourserver\\.io\\/api/]` and presents it as the value for local development.\n\nObserved on develop: the same page served on `http://localhost` sends `sentry-trace` and `baggage` on its fetch; served on `http://127.0.0.1` it creates the `http.client` span but sends no headers, because the string `\"localhost\"` does not match the IP form.\n\nWhat to change:\n\n- Say that the sample matches the string `localhost` only, and show `127.0.0.1` or a regular expression for readers whose dev server is reached by IP.",
   "pos": 99,
-  "file": "P2-122-DOC-Q10.md"
+  "file": "P2-123-DOC-Q10.md"
  },
  {
   "id": "DOC-Q11",
@@ -1227,7 +1237,7 @@
   "title": "Tell browser readers to wait before triggering the verify error if they expect a replay",
   "body": "`platform-includes/getting-started-config/javascript.mdx:50-55` sets `replaysOnErrorSampleRate: 1.0` and says that the replay is captured for every session with an error; the verify step tells the reader to click the button.\n\nObserved on develop, clicking the button right after load: the error event carries a `replayId` tag, and the replay is dropped with `[Replay] Session duration (0s) is too short, not sending replay.` An error thrown later in the same session produced the `replay_event` with `replay_type: buffer`.\n\nWhat to change:\n\n- Add one sentence to the verify step: a replay is sent only when the session is at least five seconds old (`minReplayDuration`), so wait before clicking, and the issue will still show a replay id before the replay exists.\n- Apply the same sentence to the React guide at `guides/react/index.mdx:344-346`, where the first verify click behaved the same way (QS-react, variant base); the Angular manual-setup run saw the same drop (QS-angular, variant base).",
   "pos": 100,
-  "file": "P2-123-DOC-Q11.md"
+  "file": "P2-124-DOC-Q11.md"
  },
  {
   "id": "DOC-Q16",
@@ -1237,7 +1247,7 @@
   "title": "Move the React guide routing snippet to the version-agnostic React Router API",
   "body": "`guides/react/index.mdx:242-264` wires tracing with `Sentry.reactRouterV7BrowserTracingIntegration({ useEffect, useLocation, ... })` and `wrapCreateBrowserRouterV7`. It works (pageload and navigation segments named `/users/:userId`), but the develop build marks both, and every other `*V6` and `*V7` export, `@deprecated` in `build/types/index.d.ts` in favor of `reactRouterBrowserTracingIntegration` and `wrapCreateBrowserRouter`, which `guides/react/features/react-router/v8.mdx:7-66` documents and which behaved the same on react-router 7.18.3 and 8.3.1. There is no runtime warning. The `@sentry/react/react-router` subpath with a hook-less `reactRouterBrowserTracingIntegration()` is undocumented.\n\nWhat to change:\n\n- Switch the guide snippet to the version-agnostic API and mention the `@sentry/react/react-router` subpath.",
   "pos": 105,
-  "file": "P2-124-DOC-Q16.md"
+  "file": "P2-125-DOC-Q16.md"
  },
  {
   "id": "DOC-Q17",
@@ -1247,7 +1257,7 @@
   "title": "Rewrite the React verify step for the stream lifecycle and fix the test span",
   "body": "`guides/react/index.mdx:99` says `tracesSampleRate: 1.0` captures 100% of transactions, the verify text at `:336-338` promises page load traces and the test span, and the React Router pages promise pageload and navigation transactions (`features/react-router/index.mdx:16`, `v7.mdx:163`, `v8.mdx:165`, `features/tanstack-router.mdx:14`). Observed under the default lifecycle: only `span` envelope items, a pageload segment named `Pageload` (the route pattern once a router integration is set up) with its children, and no transaction envelope in any run.\n\nThe tracing test at `:374-389` wraps the error in `Sentry.startSpan` with a synchronous callback: the span ends at 0 ms with status `ok`, and the error fires 99 ms later from the `setTimeout` (mechanism `auto.browser.browserapierrors.setTimeout`), marking the pageload segment `error` instead.\n\nWhat to change:\n\n- Say traces and root spans instead of transactions, and that the pageload span is named `Pageload` until a router integration supplies the route.\n- Make the span callback `async` and await the delay before throwing, or say the error is captured on its own.",
   "pos": 106,
-  "file": "P2-125-DOC-Q17.md"
+  "file": "P2-126-DOC-Q17.md"
  },
  {
   "id": "DOC-Q18",
@@ -1257,7 +1267,7 @@
   "title": "Say on the React, Vue, Angular and Svelte guides that release health sessions need a release",
   "body": "`guides/react/index.mdx:73-117` presents `instrument.js` as the complete configuration. It sets no `release`, and the SDK then discards every session with `Discarded session because of missing or non-string release`: zero session envelopes in nine runs, although the `BrowserSession` integration is installed. The browser guide's config include sets a release at `platform-includes/getting-started-config/javascript.mdx:21`; the React guide renders its own snippet without one. The Vue guide's `main.js` at `guides/vue/index.mdx:71-126` has the same gap: every run logged `Discarded session because of missing or non-string release` and sent no session envelope (QS-vue, variant base). The Angular manual-setup snippet at `guides/angular/manual-setup.mdx:109-164` behaves the same (QS-angular, every variant). So does the Svelte guide's `main.js` at `guides/svelte/index.mdx:69-122` (QS-svelte, variant base).\n\nWhat to change:\n\n- Add `release` to the four snippets, or a one-line note that sessions need it.",
   "pos": 107,
-  "file": "P2-126-DOC-Q18.md"
+  "file": "P2-127-DOC-Q18.md"
  },
  {
   "id": "DOC-Q22",
@@ -1267,7 +1277,7 @@
   "title": "Rewrite the Vue guide and its feature pages for the stream lifecycle",
   "body": "`guides/vue/index.mdx:103-104`, `features/vue-router.mdx:6` and `:60`, and `features/component-tracking.mdx:7` and `:19` speak of transactions, parameterized transaction names and spans in your transactions. Observed under the default lifecycle: only `span` envelope items, pageload and navigation segments named by the route name (`user`, `home`, source `custom`) or by the parameterized path with `routeLabel: \"path\"` (`/users/:id`, source `route`), `Pageload` without a router, and no transaction envelope in any run.\n\nWhat to change:\n\n- Say root spans and traces, name the two `routeLabel` shapes, and say the data appears in the trace view.",
   "pos": 111,
-  "file": "P2-127-DOC-Q22.md"
+  "file": "P2-128-DOC-Q22.md"
  },
  {
   "id": "DOC-Q23",
@@ -1277,7 +1287,7 @@
   "title": "Fix the late-initialization and multiple-apps snippets on the Vue pages",
   "body": "`guides/vue/index.mdx:203-219` calls `createApp({ template: \"<div>hello</div>\" })` without importing `createApp`, and the `template` option renders nothing (`<!---->`, no production warning) on the default runtime-only `vue` export; it works only with the `vue/dist/vue.esm-bundler.js` alias. With those two fixes `addIntegration(vueIntegration({ app }))` adds Vue as the twelfth integration and the late app's error carries `contexts.vue`.\n\n`guides/vue/features/multiple-apps.mdx:13-21` calls `Vue.createApp(App)` with no import; a default import of `vue` fails on Vue 3, `import * as Vue from \"vue\"` works, and then all three apps report errors as `auto.function.vue.error_handler` with `contexts.vue`.\n\nWhat to change:\n\n- Import `createApp` and use a render function or an SFC root, or note the full-build alias.\n- Show the import line on the multiple-apps page.",
   "pos": 112,
-  "file": "P2-128-DOC-Q23.md"
+  "file": "P2-129-DOC-Q23.md"
  },
  {
   "id": "DOC-Q24",
@@ -1287,17 +1297,17 @@
   "title": "Say on the Vue guide that the component context of the verify error appears in production builds",
   "body": "`guides/vue/index.mdx:273-298` tells the reader to click the button and find the error. In a development build the error is captured first by `BrowserApiErrors` without `contexts.vue`, the Vue error handler's capture is dropped as already captured, and Vue prints `Unhandled error during execution of app errorHandler`. In a production build the same click is captured once as `auto.function.vue.error_handler` with the component name and props.\n\nWhat to change:\n\n- Add a sentence that the component context and the clean console appear in production builds, and that the dev-mode warning is expected.",
   "pos": 113,
-  "file": "P2-129-DOC-Q24.md"
+  "file": "P2-130-DOC-Q24.md"
  },
  {
   "id": "DOC-Q29",
   "prio": "P2",
-  "heading": "The Express, Fastify and Koa guides teach deprecated error handler calls",
+  "heading": "The Express, Fastify, Koa and Hapi guides teach deprecated error handler calls",
   "type": "docs-change",
-  "title": "Drop the deprecated setup*ErrorHandler calls from the Express, Fastify and Koa getting-started snippets",
-  "body": "`platform-includes/getting-started-use/javascript.express.mdx:15` and `:34` add `Sentry.setupExpressErrorHandler(app)` after all routes. On develop the export is marked `@deprecated` in the build (`server-utils/build/types/integrations/express/error-handler.d.ts:17-20`), takes only `app`, and prints no notice at runtime. The variants without the call captured the same events on express 4 and 5 (`auto.http.express`, `handled: false`, 5xx only), and `expressIntegration({ shouldHandleError })` is what changes the filter, as `common/migration/v10-to-v11/index.mdx:715-746` describes. The Fastify tab does the same at `platform-includes/getting-started-use/javascript.fastify.mdx:11` and `:28`: `setupFastifyErrorHandler(app)` is a deprecated empty function on develop, the variants without it captured the same events on Fastify 4 and 5, and nothing is printed at runtime (QS-fastify, variants no-handler and fastify4-no-handler). The Koa tab at `getting-started-use/javascript.koa.mdx:11` and `:28` places `setupKoaErrorHandler(app)` before `app.listen()`: the deprecated call adds an `app.on('error')` listener that pre-empts Koa's default one, so Koa's stderr error logging silently disappears while capture is identical without the call under `--import` (QS-koa, variants import and no-handler; the direct-import exception is DOC-Q45).\n\nWhat to change:\n\n- Remove the three calls from the getting-started snippets and point at `expressIntegration({ shouldHandleError })` and `fastifyIntegration({ shouldHandleError })` for filtering.",
+  "title": "Drop the deprecated setup*ErrorHandler calls from the Express, Fastify, Koa and Hapi getting-started snippets",
+  "body": "`platform-includes/getting-started-use/javascript.express.mdx:15` and `:34` add `Sentry.setupExpressErrorHandler(app)` after all routes. On develop the export is marked `@deprecated` in the build (`server-utils/build/types/integrations/express/error-handler.d.ts:17-20`), takes only `app`, and prints no notice at runtime. The variants without the call captured the same events on express 4 and 5 (`auto.http.express`, `handled: false`, 5xx only), and `expressIntegration({ shouldHandleError })` is what changes the filter, as `common/migration/v10-to-v11/index.mdx:715-746` describes. The Fastify tab does the same at `platform-includes/getting-started-use/javascript.fastify.mdx:11` and `:28`: `setupFastifyErrorHandler(app)` is a deprecated empty function on develop, the variants without it captured the same events on Fastify 4 and 5, and nothing is printed at runtime (QS-fastify, variants no-handler and fastify4-no-handler). The Koa tab at `getting-started-use/javascript.koa.mdx:11` and `:28` places `setupKoaErrorHandler(app)` before `app.listen()`: the deprecated call adds an `app.on('error')` listener that pre-empts Koa's default one, so Koa's stderr error logging silently disappears while capture is identical without the call under `--import` (QS-koa, variants import and no-handler; the direct-import exception is DOC-Q45). The Hapi tab at `getting-started-use/javascript.hapi.mdx:17` and `:42` tells readers to `await Sentry.setupHapiErrorHandler(server)` before `server.start()`; the export is deprecated and a no-op on develop, the listener is auto-registered on the start channel, and every no-handler variant captured the identical four events (QS-hapi, variants no-handler, self-import-no-handler and errors-only-no-handler).\n\nWhat to change:\n\n- Remove the four calls from the getting-started snippets and point at `expressIntegration({ shouldHandleError })` and `fastifyIntegration({ shouldHandleError })` for filtering.",
   "pos": 118,
-  "file": "P2-130-DOC-Q29.md"
+  "file": "P2-131-DOC-Q29.md"
  },
  {
   "id": "DOC-Q30",
@@ -1307,7 +1317,7 @@
   "title": "Add an expressIntegration page to the integrations directory",
   "body": "`docs/platforms/javascript/common/configuration/integrations/` documents connect, fastify, hapi, koa and nest, and nothing describes `expressIntegration` for Express users. On develop `expressIntegration({ ignoreLayers, ignoreLayersType, shouldHandleError })` exists, and `shouldHandleError` works: the migration page's callback made `/error-404` captured next to the 5xx defaults. The options are described only at `common/migration/v10-to-v11/index.mdx:722-748`.\n\nWhat to change:\n\n- Add `configuration/integrations/express.mdx` next to `fastify.mdx` and `koa.mdx`, covering the three options and the 5xx-only default.",
   "pos": 119,
-  "file": "P2-131-DOC-Q30.md"
+  "file": "P2-132-DOC-Q30.md"
  },
  {
   "id": "DOC-Q31",
@@ -1317,7 +1327,7 @@
   "title": "Fix the empty capture-errors include and the orphaned includes on the Express guide",
   "body": "`platform-includes/getting-started-node/javascript.mdx:102` renders `getting-started-capture-errors`, a directory with no `javascript.mdx` and no `_default.mdx`, so the Express, Fastify and Koa guides render nothing there. `platform-includes/getting-started-add-top-level-import/javascript.express.mdx` is referenced by no page, and so is `getting-started-add-top-level-import/javascript.fastify.mdx`, the only Fastify snippet whose import resolves; `getting-started-add-top-level-import/javascript.koa.mdx` is orphaned too, and it is the only Koa snippet that creates the router the verify step needs (DOC-Q44). The logs section of `getting-started-verify/javascript.express.mdx:56-60` is unreachable, because the guide's onboarding options (`getting-started-verify/javascript.mdx:9-11`) do not include logs, although `Sentry.logger.info` works on the guide's setup (one log item per variant).\n\nWhat to change:\n\n- Add the missing include or drop the reference; delete or wire the orphaned include; add logs to the Express onboarding options or remove the unreachable section.",
   "pos": 120,
-  "file": "P2-132-DOC-Q31.md"
+  "file": "P2-133-DOC-Q31.md"
  },
  {
   "id": "DOC-Q35",
@@ -1327,7 +1337,7 @@
   "title": "Rewrite the Angular manual-setup verify and tracing text for the stream lifecycle",
   "body": "`guides/angular/manual-setup.mdx:140-141`, `features/component-tracking.mdx:14` and `platform-includes/performance/enable-automatic-instrumentation/javascript.angular.mdx:3` speak of transactions, and `manual-setup.mdx:424-449` (and `index.mdx:77`) says the button starts a trace that measures the time until the error is thrown. Observed: only `span` envelope items, pageload and navigation segments named after the parameterized route with a trailing slash (`/users/:id/`) with a `Router` child; no transaction envelope. The example span ends after 0 ms, and the `setTimeout` throw 99 ms later is captured by `GlobalHandlers` as `auto.browser.global_handlers.onerror`, not by the Angular `ErrorHandler`, and marks the pageload segment `internal_error`; the same on zoneless Angular 22 and with zone.js loaded.\n\nWhat to change:\n\n- Say root spans and traces, show the `/users/:id/` and `Router` names, and make the verify callback async and await the timeout inside the span.",
   "pos": 124,
-  "file": "P2-133-DOC-Q35.md"
+  "file": "P2-134-DOC-Q35.md"
  },
  {
   "id": "DOC-Q36",
@@ -1337,7 +1347,7 @@
   "title": "Fix the Angular pages' deprecated bootstrap call, the missing logs onboarding option and the stray export",
   "body": "`guides/angular/features/component-tracking.mdx:139-159` and `manual-setup.mdx:166-220` bootstrap with `platformBrowserDynamic()` from `@angular/platform-browser-dynamic`; it works (`ui.angular.bootstrap`, 8 ms) but the package is deprecated on Angular 22 (`@deprecated` in its types, npm notice to use `@angular/platform-browser`). `manual-setup.mdx:84-91` offers no logs onboarding option, so the logs verify step at `:457-461` never renders although `Sentry.logger.*` delivers a log envelope. `features/error-handler.mdx:26` ends the App Config snippet with a stray `export class AppModule {}`.\n\nWhat to change:\n\n- Use `platformBrowser()` from `@angular/platform-browser`, add `logs` to the onboarding options, and drop the stray line.",
   "pos": 125,
-  "file": "P2-134-DOC-Q36.md"
+  "file": "P2-135-DOC-Q36.md"
  },
  {
   "id": "DOC-Q40",
@@ -1347,7 +1357,7 @@
   "title": "Rewrite the Fastify integration page around the diagnostics-channel instrumentation and its options",
   "body": "`common/configuration/integrations/fastify.mdx:21` says the integration captures spans using `@opentelemetry/instrumentation-fastify`; neither `@sentry/node` nor `@sentry/server-utils` depends on it, and the build subscribes to Fastify's `fastify.initialization` and `tracing:fastify.request.handler:error` diagnostics channels itself. The page (`:3`, `:17-27`) says the integration adds performance instrumentation and shows no option, while every error event in every working variant carries `auto.function.fastify` and the integration takes `shouldHandleError` with the default `reply.statusCode >= 500 || reply.statusCode <= 299`.\n\nTwo behaviours the page should name: on Fastify 4 the reply status is not yet set when the filter runs, so a thrown `{ statusCode: 404 }` error is captured on 4.29.1 and dropped on 5.12.3; and Fastify 4 prints `[FSTDEP017] DeprecationWarning` once for an unrouted request, because the instrumentation falls back to `request.routerPath`. The span tree is also undocumented: a segment `GET /users/:id`, a request handler span and a route-handler span both named `handler /users/:id`, and one middleware span per instance hook named `fastify - onRequest` and the like.\n\nWhat to change:\n\n- Replace the OpenTelemetry sentence with the diagnostics-channel mechanism, add the error capture, the `shouldHandleError` option and its default, the Fastify 4 status timing, the `FSTDEP017` note and the span tree.",
   "pos": 129,
-  "file": "P2-135-DOC-Q40.md"
+  "file": "P2-136-DOC-Q40.md"
  },
  {
   "id": "DOC-Q43",
@@ -1357,6 +1367,6 @@
   "title": "Rewrite the Svelte verify and tracing text for the stream lifecycle and fix the compilerOptions placeholder",
   "body": "`guides/svelte/index.mdx:96-97` says `tracesSampleRate` captures 100% of transactions and `features/component-tracking.mdx:6` and `:66` say component spans join the ongoing transaction; develop sends span envelope items (a pageload segment named `Pageload` with `url.path`, plus children) and no transaction item in any run. `index.mdx:247` says the updated button measures the execution of your code; the `startSpan` callback returns after scheduling a `setTimeout`, so the span lasts 0 ms and the error is thrown 99 ms later outside it (`auto.browser.browserapierrors.setTimeout`).\n\n`features/component-tracking.mdx:23` and `:40` print `compilerOptions: {...}` as a stand-in for the user's options; copied as printed it is `SyntaxError: Unexpected token '}'`.\n\nWhat to change:\n\n- Say root spans and traces, make the verify callback async and await the timer, and use the `// ...` placeholder convention of the other guides.",
   "pos": 132,
-  "file": "P2-136-DOC-Q43.md"
+  "file": "P2-137-DOC-Q43.md"
  }
 ]

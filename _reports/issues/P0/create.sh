@@ -7,7 +7,7 @@ gh issue create -R getsentry/sentry-docs --title "Fix the tracing verify snippet
 gh issue create -R getsentry/sentry-docs --title "Fix the React Router v6 and v7 page snippets that fail on React 19" --body-file 02-DOC-Q12.md
 gh issue create -R getsentry/sentry-docs --title "Add a Vue 3 example to the Vue Router instrumentation page" --body-file 03-DOC-Q19.md
 gh issue create -R getsentry/sentry-docs --title "Add the missing comma to the tracingOptions.hooks snippet on the Vue component tracking page" --body-file 04-DOC-Q20.md
-gh issue create -R getsentry/sentry-docs --title "Fix the extensionless instrument import on the Express, Fastify and Koa guides and the esm-without-import page" --body-file 05-DOC-Q25.md
+gh issue create -R getsentry/sentry-docs --title "Fix the extensionless instrument import on the Express, Fastify, Koa and Hapi guides and the esm-without-import page" --body-file 05-DOC-Q25.md
 gh issue create -R getsentry/sentry-docs --title "Rewrite or remove the late-initialization install page for v11" --body-file 06-DOC-Q26.md
 gh issue create -R getsentry/sentry-docs --title "Fix the Angular manual-setup, error handler and component tracking snippets that fail to build" --body-file 07-DOC-Q32.md
 gh issue create -R getsentry/sentry-docs --title "Fix the Fastify error handler page: @sentry/fastify does not exist and fastify() is never imported" --body-file 08-DOC-Q37.md
