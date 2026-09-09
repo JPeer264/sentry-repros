@@ -208,9 +208,9 @@ async function serverRun() {
         baggage: `sentry-trace_id=${traceId},sentry-public_key=public,sentry-sampled=true,sentry-sample_rate=1,sentry-environment=qs`,
       },
     });
-    const continued = await waitSpan('continued server span', s => s.via !== '/tunnel' && s.op === 'http.server' && s.attributes && String(s.attributes['sentry.trace_id'] ?? '') === traceId);
-    const continuedByRaw = await until('continued trace id in raw span envelope', async () => (await get('/__items')).some(i => i.type === 'span' && i.trace_id === traceId));
-    return { ...r, continuedByAttribute: continued, continuedByEnvelopeTrace: continuedByRaw };
+    // Spans carry no trace id attribute; the envelope header's `trace.trace_id` identifies the trace.
+    const continued = await until('continued trace id in span envelope', async () => (await get('/__items')).some(i => i.type === 'span' && i.trace_id === traceId && (i.raw || []).some(s => s.op === 'http.server')));
+    return { ...r, continuedByEnvelopeTrace: continued };
   });
   await step('GET /api/sentinel (sentinel-server message + span)', async () => {
     const r = await hit('/api/sentinel');
@@ -248,8 +248,18 @@ const summary = {
   sdkFromEvents: Object.fromEntries(items.filter(i => i.type === 'event' && i.sdk).map(i => [i.via, `${i.sdk} ${i.sdk_version}`])),
 };
 
+const failedWaits = waits.filter(w => !w.ok).map(w => w.label);
+const verdict = {
+  status: !run.sentinelOk ? 'broken' : failedWaits.length ? 'partial' : 'works',
+  sentinel: run.sentinelOk,
+  failedWaits,
+  spanItems: items.filter(i => i.type === 'span').length,
+  transactionItems: summary.transactions,
+  eventItems: items.filter(i => i.type === 'event').length,
+};
+
 writeFileSync(
   new URL(`./${resultName}.json`, import.meta.url),
-  JSON.stringify({ variant, mode, app, sink, meta: run.bootMeta, steps, waits, sentinelOk: run.sentinelOk, summary, console: { browser: consoleLines, pageErrors, server: serverConsole, serverLogLines: serverLog.length, build: buildLog }, items, headers, raw }, null, 2),
+  JSON.stringify({ variant, mode, app, sink, verdict, meta: run.bootMeta, steps, waits, sentinelOk: run.sentinelOk, summary, console: { browser: consoleLines, pageErrors, server: serverConsole, serverLogLines: serverLog.length, build: buildLog }, items, headers, raw }, null, 2),
 );
 console.log(`wrote ${resultName}.json (${items.length} sink items, ${pageErrors.length} page errors, sentinel=${run.sentinelOk}, failedWaits=${waits.filter(w => !w.ok).map(w => w.label).join(',') || 'none'})`);

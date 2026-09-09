@@ -1,0 +1,5013 @@
+{
+  "variant": "server-middleware",
+  "mode": "server",
+  "app": "http://127.0.0.1:4757",
+  "sink": "http://127.0.0.1:4756",
+  "steps": [
+    {
+      "label": "GET /users/42 (parameterized SSR page)",
+      "result": {
+        "status": 200,
+        "contentType": "text/html",
+        "bodyStart": "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"sentry-trace\" content=\"9c6a8d8388e448e3b3b5aff57e01fdc0-a62e03d7ff09337",
+        "metas": {
+          "sentry-trace": "9c6a8d8388e448e3b3b5aff57e01fdc0-a62e03d7ff09337a-1",
+          "baggage": "sentry-environment=production,sentry-release=8fe6959bcbee30670601c1ac257617c17ce6ea40,sentry-public_key=public,sentry-trace_id=9c6a8d8388e448e3b3b5aff57e01fdc0,sentry-transaction=GET /users/[id],sentry-sampled=true,sentry-sample_rand=0.19145739689152408,sentry-sample_rate=1",
+          "sentry-route-name": "/users/[id]"
+        },
+        "spanArrived": true
+      },
+      "itemsBefore": 0
+    },
+    {
+      "label": "GET /api/test-error (:487-491, endpoint throws)",
+      "result": {
+        "status": 500,
+        "contentType": null,
+        "bodyStart": "",
+        "metas": {},
+        "eventArrived": true
+      },
+      "itemsBefore": 2
+    },
+    {
+      "label": "GET /ssr-throw (page frontmatter throws)",
+      "result": {
+        "status": 500,
+        "contentType": null,
+        "bodyStart": "",
+        "metas": {},
+        "eventArrived": true
+      },
+      "itemsBefore": 4
+    },
+    {
+      "label": "GET /fetch-recorder (server-side fetch to the sink recorder)",
+      "result": {
+        "status": 200,
+        "contentType": "text/html",
+        "bodyStart": "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"sentry-trace\" content=\"073ba4ee4cc1468890a1c1f50099d19c-893e60568cb1cf9",
+        "metas": {
+          "sentry-trace": "073ba4ee4cc1468890a1c1f50099d19c-893e60568cb1cf94-1",
+          "baggage": "sentry-environment=production,sentry-release=8fe6959bcbee30670601c1ac257617c17ce6ea40,sentry-public_key=public,sentry-trace_id=073ba4ee4cc1468890a1c1f50099d19c,sentry-transaction=GET /fetch-recorder,sentry-sampled=true,sentry-sample_rand=0.1572744679366227,sentry-sample_rate=1",
+          "sentry-route-name": "/fetch-recorder"
+        },
+        "recorded": true,
+        "headers": [
+          {
+            "url": "/recorder?from=server",
+            "sentry-trace": "073ba4ee4cc1468890a1c1f50099d19c-8cfa3466b83bbef5-1",
+            "baggage": "sentry-environment=production,sentry-release=8fe6959bcbee30670601c1ac257617c17ce6ea40,sentry-public_key=public,sentry-trace_id=073ba4ee4cc1468890a1c1f50099d19c,sentry-transaction=GET%20%2Ffetch-recorder,sentry-sampled=true,sentry-sample_rand=0.1572744679366227,sentry-sample_rate=1",
+            "traceparent": null
+          }
+        ]
+      },
+      "itemsBefore": 5
+    },
+    {
+      "label": "GET /users/42 with incoming sentry-trace + baggage (trace continuation)",
+      "result": {
+        "status": 200,
+        "contentType": "text/html",
+        "bodyStart": "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"sentry-trace\" content=\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-96037077306bb53",
+        "metas": {
+          "sentry-trace": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-96037077306bb534-1",
+          "baggage": "sentry-trace_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,sentry-public_key=public,sentry-sampled=true,sentry-sample_rate=1,sentry-environment=qs,sentry-sample_rand=0.29668479408977555",
+          "sentry-route-name": "/users/[id]"
+        },
+        "continuedByAttribute": false,
+        "continuedByEnvelopeTrace": true
+      },
+      "itemsBefore": 5
+    },
+    {
+      "label": "GET /api/sentinel (sentinel-server message + span)",
+      "result": {
+        "status": 200,
+        "contentType": "application/json",
+        "bodyStart": "{\"ok\":true}",
+        "metas": {},
+        "sentinelOk": true,
+        "segmentArrived": true
+      },
+      "itemsBefore": 11
+    }
+  ],
+  "waits": [
+    {
+      "label": "server span for /users/42",
+      "ms": 625,
+      "ok": true
+    },
+    {
+      "label": "api route error event",
+      "ms": 162,
+      "ok": true
+    },
+    {
+      "label": "ssr page error event",
+      "ms": 155,
+      "ok": true
+    },
+    {
+      "label": "recorder hit from server",
+      "ms": 1,
+      "ok": true
+    },
+    {
+      "label": "continued server span",
+      "ms": 60076,
+      "ok": false
+    },
+    {
+      "label": "continued trace id in raw span envelope",
+      "ms": 4,
+      "ok": true
+    },
+    {
+      "label": "server sentinel",
+      "ms": 631,
+      "ok": true
+    },
+    {
+      "label": "http.server span for /api/sentinel",
+      "ms": 4,
+      "ok": true
+    }
+  ],
+  "sentinelOk": true,
+  "summary": {
+    "itemTypes": [
+      "span@/api/1/envelope/",
+      "span@/api/1/envelope/",
+      "session@/api/1/envelope/",
+      "event@/api/1/envelope/",
+      "event@/api/1/envelope/",
+      "span@/api/1/envelope/",
+      "span@/api/1/envelope/",
+      "span@/api/1/envelope/",
+      "span@/api/1/envelope/",
+      "client_report@/api/1/envelope/",
+      "sessions@/api/1/envelope/",
+      "event@/api/1/envelope/",
+      "span@/api/1/envelope/"
+    ],
+    "events": [
+      {
+        "via": "/api/1/envelope/",
+        "exception": "Error: Sentry Example API Route Error",
+        "mechanism": "auto.middleware.astro",
+        "handled": false,
+        "transaction": "GET /api/test-error",
+        "trace_id": "0dd3a5df452c47ec952619453327bc9d",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "integrations": 46,
+        "contexts": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "request": "http://127.0.0.1:4757/api/test-error",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "topFrame": {
+          "function": "Module.GET",
+          "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/test-error_KjoqIo1K.mjs",
+          "in_app": true
+        }
+      },
+      {
+        "via": "/api/1/envelope/",
+        "exception": "Error: Sentry Example SSR Page Error",
+        "mechanism": "auto.middleware.astro",
+        "handled": false,
+        "transaction": "GET /ssr-throw",
+        "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "integrations": 46,
+        "contexts": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "request": "http://127.0.0.1:4757/ssr-throw",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "topFrame": {
+          "function": "?",
+          "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/ssr-throw_JtoTFBge.mjs",
+          "in_app": true
+        }
+      },
+      {
+        "via": "/api/1/envelope/",
+        "message": "sentinel-server",
+        "exception": "undefined: sentinel-server",
+        "mechanism": "generic",
+        "handled": true,
+        "transaction": "GET /api/sentinel",
+        "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "integrations": 46,
+        "contexts": [
+          "trace",
+          "runtime",
+          "app",
+          "os",
+          "device",
+          "culture",
+          "cloud_resource"
+        ],
+        "request": "http://127.0.0.1:4757/api/sentinel",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "topFrame": {
+          "function": "Module.GET",
+          "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sentinel_C5apWhWJ.mjs",
+          "in_app": true
+        }
+      }
+    ],
+    "spans": [
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.server",
+        "name": "GET /",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.http.astro",
+        "url_path": "/",
+        "route": "/",
+        "method": "GET",
+        "status_code": 200,
+        "status": "ok"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.server",
+        "name": "GET /users/[id]",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.http.astro",
+        "url_path": "/users/42",
+        "route": "/users/[id]",
+        "method": "GET",
+        "status_code": 200,
+        "status": "ok"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.server",
+        "name": "GET /api/test-error",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.http.astro",
+        "url_path": "/api/test-error",
+        "route": "/api/test-error",
+        "method": "GET",
+        "status": "error"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.server",
+        "name": "GET /ssr-throw",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.http.astro",
+        "url_path": "/ssr-throw",
+        "route": "/ssr-throw",
+        "method": "GET",
+        "status": "error"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.client",
+        "name": "GET 127.0.0.1",
+        "is_segment": false,
+        "origin": "auto.http.node_fetch",
+        "url_path": "/recorder",
+        "method": "GET",
+        "status_code": 200,
+        "status": "ok"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.server",
+        "name": "GET /fetch-recorder",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.http.astro",
+        "url_path": "/fetch-recorder",
+        "route": "/fetch-recorder",
+        "method": "GET",
+        "status_code": 200,
+        "status": "ok"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.server",
+        "name": "GET /users/[id]",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.http.astro",
+        "url_path": "/users/42",
+        "route": "/users/[id]",
+        "method": "GET",
+        "status_code": 200,
+        "status": "ok"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "test",
+        "name": "sentinel-server-span",
+        "is_segment": false,
+        "origin": "manual",
+        "status": "ok"
+      },
+      {
+        "via": "/api/1/envelope/",
+        "op": "http.server",
+        "name": "GET /api/sentinel",
+        "is_segment": true,
+        "source": "route",
+        "origin": "auto.http.astro",
+        "url_path": "/api/sentinel",
+        "route": "/api/sentinel",
+        "method": "GET",
+        "status_code": 200,
+        "status": "ok"
+      }
+    ],
+    "spanEnvelopes": [
+      {
+        "via": "/api/1/envelope/",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "trace_id": "1d6e646543be4925afdade52b77ea158",
+        "count": 1
+      },
+      {
+        "via": "/api/1/envelope/",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "trace_id": "9c6a8d8388e448e3b3b5aff57e01fdc0",
+        "count": 1
+      },
+      {
+        "via": "/api/1/envelope/",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "trace_id": "0dd3a5df452c47ec952619453327bc9d",
+        "count": 1
+      },
+      {
+        "via": "/api/1/envelope/",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f",
+        "count": 1
+      },
+      {
+        "via": "/api/1/envelope/",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "trace_id": "073ba4ee4cc1468890a1c1f50099d19c",
+        "count": 2
+      },
+      {
+        "via": "/api/1/envelope/",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "trace_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "count": 1
+      },
+      {
+        "via": "/api/1/envelope/",
+        "sdk": "sentry.javascript.astro",
+        "sdk_version": "10.67.0",
+        "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+        "count": 2
+      }
+    ],
+    "transactions": 0,
+    "logs": [],
+    "sessions": [
+      {
+        "via": "/api/1/envelope/",
+        "status": "crashed",
+        "errors": 1,
+        "init": true
+      }
+    ],
+    "replay": 0,
+    "clientReports": [
+      [
+        {
+          "reason": "ignored",
+          "category": "span",
+          "quantity": 5
+        }
+      ]
+    ],
+    "headers": [
+      {
+        "url": "/recorder?from=server",
+        "sentry-trace": "073ba4ee4cc1468890a1c1f50099d19c-8cfa3466b83bbef5-1",
+        "baggage": "sentry-environment=production,sentry-release=8fe6959bcbee30670601c1ac257617c17ce6ea40,sentry-public_key=public,sentry-trace_id=073ba4ee4cc1468890a1c1f50099d19c,sentry-transaction=GET%20%2Ffetch-recorder,sentry-sampled=true,sentry-sample_rand=0.1572744679366227,sentry-sample_rate=1",
+        "traceparent": null
+      }
+    ],
+    "integrationsFromEvents": {
+      "/api/1/envelope/": [
+        "EventFilters",
+        "FunctionToString",
+        "LinkedErrors",
+        "RequestData",
+        "NodeSystemError",
+        "ConversationId",
+        "Console",
+        "Http",
+        "NodeFetch",
+        "OnUncaughtException",
+        "OnUnhandledRejection",
+        "ContextLines",
+        "LocalVariablesAsync",
+        "Context",
+        "ChildProcess",
+        "WorkerThreads",
+        "ProcessSession",
+        "Modules",
+        "Express",
+        "Fastify",
+        "Hapi",
+        "Koa",
+        "Graphql",
+        "Mongo",
+        "Mongoose",
+        "Mysql",
+        "Mysql2",
+        "Redis",
+        "Postgres",
+        "Prisma",
+        "Tedious",
+        "GenericPool",
+        "Kafka",
+        "Amqplib",
+        "LruMemoizer",
+        "Aws",
+        "LangChain",
+        "LangGraph",
+        "Mastra",
+        "VercelAI",
+        "OpenAI",
+        "Anthropic_AI",
+        "Google_GenAI",
+        "PostgresJs",
+        "Firebase",
+        "SpanStreaming"
+      ]
+    },
+    "sdkFromEvents": {
+      "/api/1/envelope/": "sentry.javascript.astro 10.67.0"
+    }
+  },
+  "console": {
+    "browser": [],
+    "pageErrors": [],
+    "server": [
+      "11:55:24 [@astrojs/node] Server listening on http://127.0.0.1:4757",
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 72174, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: [instrumentation:graphql] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Graphql",
+      "Sentry Logger [log]: [instrumentation:mongodb] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mongo",
+      "Sentry Logger [log]: [instrumentation:mongoose] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mongoose",
+      "Sentry Logger [log]: [instrumentation:mysql] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mysql",
+      "Sentry Logger [log]: [instrumentation:mysql2] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mysql2",
+      "Sentry Logger [log]: [instrumentation:@redis/client, redis] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: [instrumentation:@redis/client, redis] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: [instrumentation:ioredis] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Redis",
+      "Sentry Logger [log]: [instrumentation:pg, pg-pool] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Postgres",
+      "Sentry Logger [log]: Integration installed: Prisma",
+      "Sentry Logger [log]: [instrumentation:tedious] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Tedious",
+      "Sentry Logger [log]: [instrumentation:generic-pool] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: GenericPool",
+      "Sentry Logger [log]: [instrumentation:kafkajs] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Kafka",
+      "Sentry Logger [log]: [instrumentation:amqplib] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Amqplib",
+      "Sentry Logger [log]: [instrumentation:lru-memoizer] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: LruMemoizer",
+      "Sentry Logger [log]: [instrumentation:@smithy/core, @smithy/smithy-client, @aws-sdk/smithy-client] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Aws",
+      "Sentry Logger [log]: [instrumentation:@langchain/core, @langchain/openai, @langchain/google-genai, @langchain/mistralai, @langchain/google-common] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: [instrumentation:@langchain/core, @langchain/openai, @langchain/google-genai, @langchain/mistralai, @langchain/google-common] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: LangChain",
+      "Sentry Logger [log]: [instrumentation:@langchain/langgraph] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: LangGraph",
+      "Sentry Logger [log]: [instrumentation:@mastra/core] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Mastra",
+      "Sentry Logger [log]: [instrumentation:ai] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: VercelAI",
+      "Sentry Logger [log]: [instrumentation:openai] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: OpenAI",
+      "Sentry Logger [log]: [instrumentation:@anthropic-ai/sdk] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Anthropic_AI",
+      "Sentry Logger [log]: [instrumentation:@google/genai] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Google_GenAI",
+      "Sentry Logger [log]: [instrumentation:postgres] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: PostgresJs",
+      "Sentry Logger [log]: [instrumentation:@firebase/firestore, firebase-functions] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Firebase",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin ran, injected libraries=[]",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /\" with ID b1bea97ec7274df7",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Ignoring span http.server - GET because it matches `ignoreSpans`.",
+      "Sentry Logger [log]: Recording outcome: \"ignored:span\"",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /users/[id]\" with ID a62e03d7ff09337a",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Sending span envelope for trace 1d6e646543be4925afdade52b77ea158 with 1 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 9c6a8d8388e448e3b3b5aff57e01fdc0 with 1 spans",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Ignoring span http.server - GET because it matches `ignoreSpans`.",
+      "Sentry Logger [log]: Recording outcome: \"ignored:span\"",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "  name: GET /api/test-error",
+      "Sentry Logger [log]: Captured error event `Sentry Example API Route Error`",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /api/test-error\" with ID b9f896e86bbde294",
+      "11:55:25 [ERROR] Error: Sentry Example API Route Error",
+      "    at Module.GET (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/test-error_KjoqIo1K.mjs:13:8)",
+      "    at renderEndpoint (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs:494:31)",
+      "    at handlePages (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs:1335:21)",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Ignoring span http.server - GET because it matches `ignoreSpans`.",
+      "Sentry Logger [log]: Recording outcome: \"ignored:span\"",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: Captured error event `Sentry Example SSR Page Error`",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /ssr-throw\" with ID 95f1c21a0ea400f5",
+      "11:55:26 [ERROR] Error: Sentry Example SSR Page Error",
+      "    at file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/ssr-throw_JtoTFBge.mjs:19:8",
+      "    at ssr-throw (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/compiler_DAAZZPy1.mjs:24:10)",
+      "    at callComponentAsTemplateResultOrResponse (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs:2053:30)",
+      "    at renderToAsyncIterable (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs:2073:31)",
+      "    at renderPage (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs:2516:39)",
+      "    at handlePages (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs:1342:22)",
+      "    at async file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/node_modules/@sentry/astro/build/esm/server/middleware.js:139:42",
+      "    at async file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/node_modules/@sentry/astro/build/esm/server/middleware.js:132:23",
+      "    at async callMiddleware (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs:2177:9)",
+      "    at async handleMiddleware (file:///Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs:2267:14)",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Ignoring span http.server - GET because it matches `ignoreSpans`.",
+      "Sentry Logger [log]: Recording outcome: \"ignored:span\"",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET 127.0.0.1\" with ID 8cfa3466b83bbef5",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /fetch-recorder\" with ID 893e60568cb1cf94",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Ignoring span http.server - GET because it matches `ignoreSpans`.",
+      "Sentry Logger [log]: Recording outcome: \"ignored:span\"",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /users/[id]\" with ID 96037077306bb534",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Sending span envelope for trace 0dd3a5df452c47ec952619453327bc9d with 1 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 7e2811e23df64f92ad4f63ab2dccee0f with 1 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 073ba4ee4cc1468890a1c1f50099d19c with 2 spans",
+      "Sentry Logger [log]: Sending span envelope for trace aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa with 1 spans",
+      "Sentry Logger [log]: Flushing client reports based on interval.",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: Sending outcomes: [ { reason: 'ignored', category: 'span', quantity: 5 } ]",
+      "Sentry Logger [log]: Sending request session aggregate due to flushing schedule",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Ignoring span http.server - GET because it matches `ignoreSpans`.",
+      "Sentry Logger [log]: Recording outcome: \"ignored:span\"",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: Captured error event `sentinel-server`",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Finishing \"test\" span \"sentinel-server-span\" with ID 9e02cdb67fb87b54",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /api/sentinel\" with ID 8f515f9bfae34e18",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Sending span envelope for trace 3065b348cb6f4d27921c5d744b6e862e with 2 spans"
+    ],
+    "serverLogLines": 197,
+    "build": [
+      "11:55:07 [@astrojs/node] Enabling sessions with filesystem storage",
+      "11:55:07 [types] Generated 18ms",
+      "11:55:07 [build] output: \"server\"",
+      "11:55:07 [build] mode: \"server\"",
+      "11:55:07 [build] directory: /Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/",
+      "11:55:07 [build] adapter: @astrojs/node",
+      "11:55:07 [build] Collecting build info...",
+      "11:55:07 [build] ✓ Completed in 61ms.",
+      "11:55:07 [build] Building server entrypoints...",
+      "[sentry-vite-plugin] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "[sentry-vite-plugin] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "11:55:07 [vite] ✓ built in 118ms",
+      "[sentry-vite-plugin] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "[sentry-vite-plugin] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "11:55:07 [vite] ✓ built in 116ms",
+      "[sentry-vite-plugin] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "[sentry-vite-plugin] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/",
+      "11:55:07 [WARN] [vite] [plugin astro:transitions] \u001b[33m[SOURCEMAP_BROKEN] \u001b[0mSourcemap is likely to be incorrect: a plugin (astro:transitions) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help: https://rolldown.rs/guide/troubleshooting#warning-sourcemap-is-likely-to-be-incorrect",
+      "",
+      "11:55:07 [vite] ✓ built in 98ms",
+      "11:55:07 [build] Rearranging server assets...",
+      "11:55:07 [build] ✓ Completed in 346ms.",
+      "11:55:07 [build] Server built in 408ms",
+      "11:55:07 [build] Complete!",
+      ""
+    ]
+  },
+  "items": [
+    {
+      "via": "/api/1/envelope/",
+      "type": "span",
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "trace_id": "1d6e646543be4925afdade52b77ea158",
+      "items": [
+        "http.server GET /"
+      ],
+      "raw": [
+        {
+          "name": "GET /",
+          "op": "http.server",
+          "status": "ok",
+          "span_id": "b1bea97ec7274df7",
+          "is_segment": true,
+          "origin": "auto.http.astro",
+          "source": "route",
+          "url": "http://127.0.0.1:4757/",
+          "url_path": "/",
+          "route": "/",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 4,
+          "attributes": {
+            "sentry.origin": "auto.http.astro",
+            "sentry.op": "http.server",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "http.request.method": "GET",
+            "method": "GET",
+            "url.full": "http://127.0.0.1:4757/",
+            "url.path": "/",
+            "http.request.header.accept": "*/*",
+            "http.request.header.host": "127.0.0.1:4757",
+            "http.request.header.user_agent": "curl/8.7.1",
+            "http.route": "/",
+            "http.response.status_code": 200,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /",
+            "sentry.segment.id": "b1bea97ec7274df7",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "LinkedErrors",
+              "RequestData",
+              "NodeSystemError",
+              "ConversationId",
+              "Console",
+              "Http",
+              "NodeFetch",
+              "OnUncaughtException",
+              "OnUnhandledRejection",
+              "ContextLines",
+              "LocalVariablesAsync",
+              "Context",
+              "ChildProcess",
+              "WorkerThreads",
+              "ProcessSession",
+              "Modules",
+              "Express",
+              "Fastify",
+              "Hapi",
+              "Koa",
+              "Graphql",
+              "Mongo",
+              "Mongoose",
+              "Mysql",
+              "Mysql2",
+              "Redis",
+              "Postgres",
+              "Prisma",
+              "Tedious",
+              "GenericPool",
+              "Kafka",
+              "Amqplib",
+              "LruMemoizer",
+              "Aws",
+              "LangChain",
+              "LangGraph",
+              "Mastra",
+              "VercelAI",
+              "OpenAI",
+              "Anthropic_AI",
+              "Google_GenAI",
+              "PostgresJs",
+              "Firebase",
+              "SpanStreaming"
+            ],
+            "process.runtime.engine.name": "v8",
+            "process.runtime.engine.version": "14.6.202.34-node.24",
+            "app.start_time": "2026-09-09T09:55:24.856Z",
+            "device.archs": [
+              "arm64"
+            ],
+            "device.boot_time": "2026-09-07T11:23:01.160Z",
+            "device.memory_size": 68719476736,
+            "device.processor_count": 16,
+            "device.cpu_description": "Apple M4 Max",
+            "device.processor_frequency": 2400,
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "app.memory": 173850624,
+            "app.free_memory": 15782756352,
+            "device.free_memory": 757121024
+          }
+        }
+      ]
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "span",
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "trace_id": "9c6a8d8388e448e3b3b5aff57e01fdc0",
+      "items": [
+        "http.server GET /users/[id]"
+      ],
+      "raw": [
+        {
+          "name": "GET /users/[id]",
+          "op": "http.server",
+          "status": "ok",
+          "span_id": "a62e03d7ff09337a",
+          "is_segment": true,
+          "origin": "auto.http.astro",
+          "source": "route",
+          "url": "http://127.0.0.1:4757/users/42",
+          "url_path": "/users/42",
+          "route": "/users/[id]",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.http.astro",
+            "sentry.op": "http.server",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "http.request.method": "GET",
+            "method": "GET",
+            "url.full": "http://127.0.0.1:4757/users/42",
+            "url.path": "/users/42",
+            "http.request.header.accept": "*/*",
+            "http.request.header.accept_encoding": "gzip, deflate",
+            "http.request.header.accept_language": "*",
+            "http.request.header.connection": "keep-alive",
+            "http.request.header.host": "127.0.0.1:4757",
+            "http.request.header.sec_fetch_mode": "cors",
+            "http.request.header.user_agent": "node",
+            "http.route": "/users/[id]",
+            "http.response.status_code": 200,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /users/[id]",
+            "sentry.segment.id": "a62e03d7ff09337a",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "LinkedErrors",
+              "RequestData",
+              "NodeSystemError",
+              "ConversationId",
+              "Console",
+              "Http",
+              "NodeFetch",
+              "OnUncaughtException",
+              "OnUnhandledRejection",
+              "ContextLines",
+              "LocalVariablesAsync",
+              "Context",
+              "ChildProcess",
+              "WorkerThreads",
+              "ProcessSession",
+              "Modules",
+              "Express",
+              "Fastify",
+              "Hapi",
+              "Koa",
+              "Graphql",
+              "Mongo",
+              "Mongoose",
+              "Mysql",
+              "Mysql2",
+              "Redis",
+              "Postgres",
+              "Prisma",
+              "Tedious",
+              "GenericPool",
+              "Kafka",
+              "Amqplib",
+              "LruMemoizer",
+              "Aws",
+              "LangChain",
+              "LangGraph",
+              "Mastra",
+              "VercelAI",
+              "OpenAI",
+              "Anthropic_AI",
+              "Google_GenAI",
+              "PostgresJs",
+              "Firebase",
+              "SpanStreaming"
+            ],
+            "process.runtime.engine.name": "v8",
+            "process.runtime.engine.version": "14.6.202.34-node.24",
+            "app.start_time": "2026-09-09T09:55:24.856Z",
+            "device.archs": [
+              "arm64"
+            ],
+            "device.boot_time": "2026-09-07T11:23:01.160Z",
+            "device.memory_size": 68719476736,
+            "device.processor_count": 16,
+            "device.cpu_description": "Apple M4 Max",
+            "device.processor_frequency": 2400,
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "os.name": "macOS",
+            "os.version": "15.7.7",
+            "os.kernel_version": "24.6.0",
+            "os.build": "24G720",
+            "app.memory": 175423488,
+            "app.free_memory": 15782756352,
+            "device.free_memory": 757121024
+          }
+        }
+      ]
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "session",
+      "status": "crashed",
+      "errors": 1,
+      "init": true,
+      "sid": "3c98cd0a…",
+      "attrs": {
+        "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+        "environment": "production",
+        "ip_address": "127.0.0.1",
+        "user_agent": "Node.js/26"
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Example API Route Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Example API Route Error",
+          "mechanism": "auto.middleware.astro",
+          "handled": false,
+          "frames": 3
+        }
+      ],
+      "mechanism": "auto.middleware.astro",
+      "handled": false,
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/astro",
+          "version": "10.67.0"
+        },
+        {
+          "name": "npm:@sentry/node",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "LinkedErrors",
+        "RequestData",
+        "NodeSystemError",
+        "ConversationId",
+        "Console",
+        "Http",
+        "NodeFetch",
+        "OnUncaughtException",
+        "OnUnhandledRejection",
+        "ContextLines",
+        "LocalVariablesAsync",
+        "Context",
+        "ChildProcess",
+        "WorkerThreads",
+        "ProcessSession",
+        "Modules",
+        "Express",
+        "Fastify",
+        "Hapi",
+        "Koa",
+        "Graphql",
+        "Mongo",
+        "Mongoose",
+        "Mysql",
+        "Mysql2",
+        "Redis",
+        "Postgres",
+        "Prisma",
+        "Tedious",
+        "GenericPool",
+        "Kafka",
+        "Amqplib",
+        "LruMemoizer",
+        "Aws",
+        "LangChain",
+        "LangGraph",
+        "Mastra",
+        "VercelAI",
+        "OpenAI",
+        "Anthropic_AI",
+        "Google_GenAI",
+        "PostgresJs",
+        "Firebase",
+        "SpanStreaming"
+      ],
+      "contexts": [
+        "trace",
+        "runtime",
+        "app",
+        "os",
+        "device",
+        "culture",
+        "cloud_resource"
+      ],
+      "topFrame": {
+        "function": "Module.GET",
+        "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/test-error_KjoqIo1K.mjs",
+        "in_app": true
+      },
+      "transaction": "GET /api/test-error",
+      "trace_id": "0dd3a5df452c47ec952619453327bc9d",
+      "user": {
+        "ip_address": "127.0.0.1"
+      },
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://127.0.0.1:4757/api/test-error",
+        "method": "GET",
+        "hasData": false,
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "accept-language": "*",
+          "connection": "keep-alive",
+          "host": "127.0.0.1:4757",
+          "sec-fetch-mode": "cors",
+          "user-agent": "node"
+        }
+      },
+      "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+      "environment": "production"
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Example SSR Page Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Example SSR Page Error",
+          "mechanism": "auto.middleware.astro",
+          "handled": false,
+          "frames": 10
+        }
+      ],
+      "mechanism": "auto.middleware.astro",
+      "handled": false,
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/astro",
+          "version": "10.67.0"
+        },
+        {
+          "name": "npm:@sentry/node",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "LinkedErrors",
+        "RequestData",
+        "NodeSystemError",
+        "ConversationId",
+        "Console",
+        "Http",
+        "NodeFetch",
+        "OnUncaughtException",
+        "OnUnhandledRejection",
+        "ContextLines",
+        "LocalVariablesAsync",
+        "Context",
+        "ChildProcess",
+        "WorkerThreads",
+        "ProcessSession",
+        "Modules",
+        "Express",
+        "Fastify",
+        "Hapi",
+        "Koa",
+        "Graphql",
+        "Mongo",
+        "Mongoose",
+        "Mysql",
+        "Mysql2",
+        "Redis",
+        "Postgres",
+        "Prisma",
+        "Tedious",
+        "GenericPool",
+        "Kafka",
+        "Amqplib",
+        "LruMemoizer",
+        "Aws",
+        "LangChain",
+        "LangGraph",
+        "Mastra",
+        "VercelAI",
+        "OpenAI",
+        "Anthropic_AI",
+        "Google_GenAI",
+        "PostgresJs",
+        "Firebase",
+        "SpanStreaming"
+      ],
+      "contexts": [
+        "trace",
+        "runtime",
+        "app",
+        "os",
+        "device",
+        "culture",
+        "cloud_resource"
+      ],
+      "topFrame": {
+        "function": "?",
+        "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/ssr-throw_JtoTFBge.mjs",
+        "in_app": true
+      },
+      "transaction": "GET /ssr-throw",
+      "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f",
+      "user": {
+        "ip_address": "127.0.0.1"
+      },
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://127.0.0.1:4757/ssr-throw",
+        "method": "GET",
+        "hasData": false,
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "accept-language": "*",
+          "connection": "keep-alive",
+          "host": "127.0.0.1:4757",
+          "sec-fetch-mode": "cors",
+          "user-agent": "node"
+        }
+      },
+      "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+      "environment": "production"
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "span",
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "trace_id": "0dd3a5df452c47ec952619453327bc9d",
+      "items": [
+        "http.server GET /api/test-error"
+      ],
+      "raw": [
+        {
+          "name": "GET /api/test-error",
+          "op": "http.server",
+          "status": "error",
+          "span_id": "b9f896e86bbde294",
+          "is_segment": true,
+          "origin": "auto.http.astro",
+          "source": "route",
+          "url": "http://127.0.0.1:4757/api/test-error",
+          "url_path": "/api/test-error",
+          "route": "/api/test-error",
+          "method": "GET",
+          "duration_ms": 9,
+          "attributes": {
+            "sentry.status.message": "internal_error",
+            "sentry.origin": "auto.http.astro",
+            "sentry.op": "http.server",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "http.request.method": "GET",
+            "method": "GET",
+            "url.full": "http://127.0.0.1:4757/api/test-error",
+            "url.path": "/api/test-error",
+            "http.request.header.accept": "*/*",
+            "http.request.header.accept_encoding": "gzip, deflate",
+            "http.request.header.accept_language": "*",
+            "http.request.header.connection": "keep-alive",
+            "http.request.header.host": "127.0.0.1:4757",
+            "http.request.header.sec_fetch_mode": "cors",
+            "http.request.header.user_agent": "node",
+            "http.route": "/api/test-error",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /api/test-error",
+            "sentry.segment.id": "b9f896e86bbde294",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "LinkedErrors",
+              "RequestData",
+              "NodeSystemError",
+              "ConversationId",
+              "Console",
+              "Http",
+              "NodeFetch",
+              "OnUncaughtException",
+              "OnUnhandledRejection",
+              "ContextLines",
+              "LocalVariablesAsync",
+              "Context",
+              "ChildProcess",
+              "WorkerThreads",
+              "ProcessSession",
+              "Modules",
+              "Express",
+              "Fastify",
+              "Hapi",
+              "Koa",
+              "Graphql",
+              "Mongo",
+              "Mongoose",
+              "Mysql",
+              "Mysql2",
+              "Redis",
+              "Postgres",
+              "Prisma",
+              "Tedious",
+              "GenericPool",
+              "Kafka",
+              "Amqplib",
+              "LruMemoizer",
+              "Aws",
+              "LangChain",
+              "LangGraph",
+              "Mastra",
+              "VercelAI",
+              "OpenAI",
+              "Anthropic_AI",
+              "Google_GenAI",
+              "PostgresJs",
+              "Firebase",
+              "SpanStreaming"
+            ],
+            "process.runtime.engine.name": "v8",
+            "process.runtime.engine.version": "14.6.202.34-node.24",
+            "app.start_time": "2026-09-09T09:55:24.856Z",
+            "device.archs": [
+              "arm64"
+            ],
+            "device.boot_time": "2026-09-07T11:23:01.160Z",
+            "device.memory_size": 68719476736,
+            "device.processor_count": 16,
+            "device.cpu_description": "Apple M4 Max",
+            "device.processor_frequency": 2400,
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "os.name": "macOS",
+            "os.version": "15.7.7",
+            "os.kernel_version": "24.6.0",
+            "os.build": "24G720",
+            "app.memory": 177307648,
+            "app.free_memory": 15782756352,
+            "device.free_memory": 757121024
+          }
+        }
+      ]
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "span",
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f",
+      "items": [
+        "http.server GET /ssr-throw"
+      ],
+      "raw": [
+        {
+          "name": "GET /ssr-throw",
+          "op": "http.server",
+          "status": "error",
+          "span_id": "95f1c21a0ea400f5",
+          "is_segment": true,
+          "origin": "auto.http.astro",
+          "source": "route",
+          "url": "http://127.0.0.1:4757/ssr-throw",
+          "url_path": "/ssr-throw",
+          "route": "/ssr-throw",
+          "method": "GET",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.status.message": "internal_error",
+            "sentry.origin": "auto.http.astro",
+            "sentry.op": "http.server",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "http.request.method": "GET",
+            "method": "GET",
+            "url.full": "http://127.0.0.1:4757/ssr-throw",
+            "url.path": "/ssr-throw",
+            "http.request.header.accept": "*/*",
+            "http.request.header.accept_encoding": "gzip, deflate",
+            "http.request.header.accept_language": "*",
+            "http.request.header.connection": "keep-alive",
+            "http.request.header.host": "127.0.0.1:4757",
+            "http.request.header.sec_fetch_mode": "cors",
+            "http.request.header.user_agent": "node",
+            "http.route": "/ssr-throw",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /ssr-throw",
+            "sentry.segment.id": "95f1c21a0ea400f5",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "LinkedErrors",
+              "RequestData",
+              "NodeSystemError",
+              "ConversationId",
+              "Console",
+              "Http",
+              "NodeFetch",
+              "OnUncaughtException",
+              "OnUnhandledRejection",
+              "ContextLines",
+              "LocalVariablesAsync",
+              "Context",
+              "ChildProcess",
+              "WorkerThreads",
+              "ProcessSession",
+              "Modules",
+              "Express",
+              "Fastify",
+              "Hapi",
+              "Koa",
+              "Graphql",
+              "Mongo",
+              "Mongoose",
+              "Mysql",
+              "Mysql2",
+              "Redis",
+              "Postgres",
+              "Prisma",
+              "Tedious",
+              "GenericPool",
+              "Kafka",
+              "Amqplib",
+              "LruMemoizer",
+              "Aws",
+              "LangChain",
+              "LangGraph",
+              "Mastra",
+              "VercelAI",
+              "OpenAI",
+              "Anthropic_AI",
+              "Google_GenAI",
+              "PostgresJs",
+              "Firebase",
+              "SpanStreaming"
+            ],
+            "process.runtime.engine.name": "v8",
+            "process.runtime.engine.version": "14.6.202.34-node.24",
+            "app.start_time": "2026-09-09T09:55:24.856Z",
+            "device.archs": [
+              "arm64"
+            ],
+            "device.boot_time": "2026-09-07T11:23:01.160Z",
+            "device.memory_size": 68719476736,
+            "device.processor_count": 16,
+            "device.cpu_description": "Apple M4 Max",
+            "device.processor_frequency": 2400,
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "os.name": "macOS",
+            "os.version": "15.7.7",
+            "os.kernel_version": "24.6.0",
+            "os.build": "24G720",
+            "app.memory": 179077120,
+            "app.free_memory": 15782756352,
+            "device.free_memory": 757121024
+          }
+        }
+      ]
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "span",
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "trace_id": "073ba4ee4cc1468890a1c1f50099d19c",
+      "items": [
+        "http.client GET 127.0.0.1",
+        "http.server GET /fetch-recorder"
+      ],
+      "raw": [
+        {
+          "name": "GET 127.0.0.1",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "8cfa3466b83bbef5",
+          "parent_span_id": "893e60568cb1cf94",
+          "is_segment": false,
+          "origin": "auto.http.node_fetch",
+          "url": "http://127.0.0.1:4756/recorder?from=server",
+          "url_path": "/recorder",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 18,
+          "attributes": {
+            "sentry.origin": "auto.http.node_fetch",
+            "sentry.op": "http.client",
+            "sentry.kind": "client",
+            "http.request.method": "GET",
+            "http.request.method_original": "GET",
+            "url.full": "http://127.0.0.1:4756/recorder?from=server",
+            "url.domain": "127.0.0.1",
+            "url.path": "/recorder",
+            "url.query": "from=server",
+            "url.scheme": "http",
+            "server.address": "127.0.0.1",
+            "server.port": 4756,
+            "user_agent.original": "node",
+            "network.peer.address": "127.0.0.1",
+            "network.peer.port": 4756,
+            "http.response.status_code": 200,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /fetch-recorder",
+            "sentry.segment.id": "893e60568cb1cf94",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1"
+          }
+        },
+        {
+          "name": "GET /fetch-recorder",
+          "op": "http.server",
+          "status": "ok",
+          "span_id": "893e60568cb1cf94",
+          "is_segment": true,
+          "origin": "auto.http.astro",
+          "source": "route",
+          "url": "http://127.0.0.1:4757/fetch-recorder",
+          "url_path": "/fetch-recorder",
+          "route": "/fetch-recorder",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 25,
+          "attributes": {
+            "sentry.origin": "auto.http.astro",
+            "sentry.op": "http.server",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "http.request.method": "GET",
+            "method": "GET",
+            "url.full": "http://127.0.0.1:4757/fetch-recorder",
+            "url.path": "/fetch-recorder",
+            "http.request.header.accept": "*/*",
+            "http.request.header.accept_encoding": "gzip, deflate",
+            "http.request.header.accept_language": "*",
+            "http.request.header.connection": "keep-alive",
+            "http.request.header.host": "127.0.0.1:4757",
+            "http.request.header.sec_fetch_mode": "cors",
+            "http.request.header.user_agent": "node",
+            "http.route": "/fetch-recorder",
+            "http.response.status_code": 200,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /fetch-recorder",
+            "sentry.segment.id": "893e60568cb1cf94",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "LinkedErrors",
+              "RequestData",
+              "NodeSystemError",
+              "ConversationId",
+              "Console",
+              "Http",
+              "NodeFetch",
+              "OnUncaughtException",
+              "OnUnhandledRejection",
+              "ContextLines",
+              "LocalVariablesAsync",
+              "Context",
+              "ChildProcess",
+              "WorkerThreads",
+              "ProcessSession",
+              "Modules",
+              "Express",
+              "Fastify",
+              "Hapi",
+              "Koa",
+              "Graphql",
+              "Mongo",
+              "Mongoose",
+              "Mysql",
+              "Mysql2",
+              "Redis",
+              "Postgres",
+              "Prisma",
+              "Tedious",
+              "GenericPool",
+              "Kafka",
+              "Amqplib",
+              "LruMemoizer",
+              "Aws",
+              "LangChain",
+              "LangGraph",
+              "Mastra",
+              "VercelAI",
+              "OpenAI",
+              "Anthropic_AI",
+              "Google_GenAI",
+              "PostgresJs",
+              "Firebase",
+              "SpanStreaming"
+            ],
+            "process.runtime.engine.name": "v8",
+            "process.runtime.engine.version": "14.6.202.34-node.24",
+            "app.start_time": "2026-09-09T09:55:24.856Z",
+            "device.archs": [
+              "arm64"
+            ],
+            "device.boot_time": "2026-09-07T11:23:01.160Z",
+            "device.memory_size": 68719476736,
+            "device.processor_count": 16,
+            "device.cpu_description": "Apple M4 Max",
+            "device.processor_frequency": 2400,
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "os.name": "macOS",
+            "os.version": "15.7.7",
+            "os.kernel_version": "24.6.0",
+            "os.build": "24G720",
+            "app.memory": 189136896,
+            "app.free_memory": 15756247040,
+            "device.free_memory": 711868416
+          }
+        }
+      ]
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "span",
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "trace_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "items": [
+        "http.server GET /users/[id]"
+      ],
+      "raw": [
+        {
+          "name": "GET /users/[id]",
+          "op": "http.server",
+          "status": "ok",
+          "span_id": "96037077306bb534",
+          "parent_span_id": "bbbbbbbbbbbbbbbb",
+          "is_segment": true,
+          "origin": "auto.http.astro",
+          "source": "route",
+          "url": "http://127.0.0.1:4757/users/42",
+          "url_path": "/users/42",
+          "route": "/users/[id]",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.http.astro",
+            "sentry.op": "http.server",
+            "sentry.segment.name.source": "route",
+            "http.request.method": "GET",
+            "method": "GET",
+            "url.full": "http://127.0.0.1:4757/users/42",
+            "url.path": "/users/42",
+            "http.request.header.accept": "*/*",
+            "http.request.header.accept_encoding": "gzip, deflate",
+            "http.request.header.accept_language": "*",
+            "http.request.header.baggage": "sentry-trace_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,sentry-public_key=public,sentry-sampled=true,sentry-sample_rate=1,sentry-environment=qs",
+            "http.request.header.connection": "keep-alive",
+            "http.request.header.host": "127.0.0.1:4757",
+            "http.request.header.sec_fetch_mode": "cors",
+            "http.request.header.sentry_trace": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-bbbbbbbbbbbbbbbb-1",
+            "http.request.header.user_agent": "node",
+            "http.route": "/users/[id]",
+            "http.response.status_code": 200,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /users/[id]",
+            "sentry.segment.id": "96037077306bb534",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "LinkedErrors",
+              "RequestData",
+              "NodeSystemError",
+              "ConversationId",
+              "Console",
+              "Http",
+              "NodeFetch",
+              "OnUncaughtException",
+              "OnUnhandledRejection",
+              "ContextLines",
+              "LocalVariablesAsync",
+              "Context",
+              "ChildProcess",
+              "WorkerThreads",
+              "ProcessSession",
+              "Modules",
+              "Express",
+              "Fastify",
+              "Hapi",
+              "Koa",
+              "Graphql",
+              "Mongo",
+              "Mongoose",
+              "Mysql",
+              "Mysql2",
+              "Redis",
+              "Postgres",
+              "Prisma",
+              "Tedious",
+              "GenericPool",
+              "Kafka",
+              "Amqplib",
+              "LruMemoizer",
+              "Aws",
+              "LangChain",
+              "LangGraph",
+              "Mastra",
+              "VercelAI",
+              "OpenAI",
+              "Anthropic_AI",
+              "Google_GenAI",
+              "PostgresJs",
+              "Firebase",
+              "SpanStreaming"
+            ],
+            "process.runtime.engine.name": "v8",
+            "process.runtime.engine.version": "14.6.202.34-node.24",
+            "app.start_time": "2026-09-09T09:55:24.856Z",
+            "device.archs": [
+              "arm64"
+            ],
+            "device.boot_time": "2026-09-07T11:23:01.160Z",
+            "device.memory_size": 68719476736,
+            "device.processor_count": 16,
+            "device.cpu_description": "Apple M4 Max",
+            "device.processor_frequency": 2400,
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "os.name": "macOS",
+            "os.version": "15.7.7",
+            "os.kernel_version": "24.6.0",
+            "os.build": "24G720",
+            "app.memory": 189186048,
+            "app.free_memory": 15756247040,
+            "device.free_memory": 711868416
+          }
+        }
+      ]
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "client_report",
+      "discarded_events": [
+        {
+          "reason": "ignored",
+          "category": "span",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "sessions"
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "event",
+      "level": "info",
+      "message": "sentinel-server",
+      "exception": "undefined: sentinel-server",
+      "exceptions": [
+        {
+          "value": "sentinel-server",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 3
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/astro",
+          "version": "10.67.0"
+        },
+        {
+          "name": "npm:@sentry/node",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "LinkedErrors",
+        "RequestData",
+        "NodeSystemError",
+        "ConversationId",
+        "Console",
+        "Http",
+        "NodeFetch",
+        "OnUncaughtException",
+        "OnUnhandledRejection",
+        "ContextLines",
+        "LocalVariablesAsync",
+        "Context",
+        "ChildProcess",
+        "WorkerThreads",
+        "ProcessSession",
+        "Modules",
+        "Express",
+        "Fastify",
+        "Hapi",
+        "Koa",
+        "Graphql",
+        "Mongo",
+        "Mongoose",
+        "Mysql",
+        "Mysql2",
+        "Redis",
+        "Postgres",
+        "Prisma",
+        "Tedious",
+        "GenericPool",
+        "Kafka",
+        "Amqplib",
+        "LruMemoizer",
+        "Aws",
+        "LangChain",
+        "LangGraph",
+        "Mastra",
+        "VercelAI",
+        "OpenAI",
+        "Anthropic_AI",
+        "Google_GenAI",
+        "PostgresJs",
+        "Firebase",
+        "SpanStreaming"
+      ],
+      "contexts": [
+        "trace",
+        "runtime",
+        "app",
+        "os",
+        "device",
+        "culture",
+        "cloud_resource"
+      ],
+      "topFrame": {
+        "function": "Module.GET",
+        "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sentinel_C5apWhWJ.mjs",
+        "in_app": true
+      },
+      "transaction": "GET /api/sentinel",
+      "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+      "user": {
+        "ip_address": "127.0.0.1"
+      },
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://127.0.0.1:4757/api/sentinel",
+        "method": "GET",
+        "hasData": false,
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "accept-language": "*",
+          "connection": "keep-alive",
+          "host": "127.0.0.1:4757",
+          "sec-fetch-mode": "cors",
+          "user-agent": "node"
+        }
+      },
+      "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+      "environment": "production"
+    },
+    {
+      "via": "/api/1/envelope/",
+      "type": "span",
+      "sdk": "sentry.javascript.astro",
+      "sdk_version": "10.67.0",
+      "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+      "items": [
+        "test sentinel-server-span",
+        "http.server GET /api/sentinel"
+      ],
+      "raw": [
+        {
+          "name": "sentinel-server-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "9e02cdb67fb87b54",
+          "parent_span_id": "8f515f9bfae34e18",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /api/sentinel",
+            "sentry.segment.id": "8f515f9bfae34e18",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1"
+          }
+        },
+        {
+          "name": "GET /api/sentinel",
+          "op": "http.server",
+          "status": "ok",
+          "span_id": "8f515f9bfae34e18",
+          "is_segment": true,
+          "origin": "auto.http.astro",
+          "source": "route",
+          "url": "http://127.0.0.1:4757/api/sentinel",
+          "url_path": "/api/sentinel",
+          "route": "/api/sentinel",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.http.astro",
+            "sentry.op": "http.server",
+            "sentry.segment.name.source": "route",
+            "sentry.sample_rate": 1,
+            "http.request.method": "GET",
+            "method": "GET",
+            "url.full": "http://127.0.0.1:4757/api/sentinel",
+            "url.path": "/api/sentinel",
+            "http.request.header.accept": "*/*",
+            "http.request.header.accept_encoding": "gzip, deflate",
+            "http.request.header.accept_language": "*",
+            "http.request.header.connection": "keep-alive",
+            "http.request.header.host": "127.0.0.1:4757",
+            "http.request.header.sec_fetch_mode": "cors",
+            "http.request.header.user_agent": "node",
+            "http.route": "/api/sentinel",
+            "http.response.status_code": 200,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "GET /api/sentinel",
+            "sentry.segment.id": "8f515f9bfae34e18",
+            "sentry.sdk.name": "sentry.javascript.astro",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+            "sentry.environment": "production",
+            "user.ip_address": "127.0.0.1",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "LinkedErrors",
+              "RequestData",
+              "NodeSystemError",
+              "ConversationId",
+              "Console",
+              "Http",
+              "NodeFetch",
+              "OnUncaughtException",
+              "OnUnhandledRejection",
+              "ContextLines",
+              "LocalVariablesAsync",
+              "Context",
+              "ChildProcess",
+              "WorkerThreads",
+              "ProcessSession",
+              "Modules",
+              "Express",
+              "Fastify",
+              "Hapi",
+              "Koa",
+              "Graphql",
+              "Mongo",
+              "Mongoose",
+              "Mysql",
+              "Mysql2",
+              "Redis",
+              "Postgres",
+              "Prisma",
+              "Tedious",
+              "GenericPool",
+              "Kafka",
+              "Amqplib",
+              "LruMemoizer",
+              "Aws",
+              "LangChain",
+              "LangGraph",
+              "Mastra",
+              "VercelAI",
+              "OpenAI",
+              "Anthropic_AI",
+              "Google_GenAI",
+              "PostgresJs",
+              "Firebase",
+              "SpanStreaming"
+            ],
+            "process.runtime.engine.name": "v8",
+            "process.runtime.engine.version": "14.6.202.34-node.24",
+            "app.start_time": "2026-09-09T09:55:24.856Z",
+            "device.archs": [
+              "arm64"
+            ],
+            "device.boot_time": "2026-09-07T11:23:01.160Z",
+            "device.memory_size": 68719476736,
+            "device.processor_count": 16,
+            "device.cpu_description": "Apple M4 Max",
+            "device.processor_frequency": 2400,
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "os.name": "macOS",
+            "os.version": "15.7.7",
+            "os.kernel_version": "24.6.0",
+            "os.build": "24G720",
+            "app.memory": 189841408,
+            "app.free_memory": 16116662272,
+            "device.free_memory": 310247424
+          }
+        }
+      ]
+    }
+  ],
+  "headers": [
+    {
+      "url": "/recorder?from=server",
+      "sentry-trace": "073ba4ee4cc1468890a1c1f50099d19c-8cfa3466b83bbef5-1",
+      "baggage": "sentry-environment=production,sentry-release=8fe6959bcbee30670601c1ac257617c17ce6ea40,sentry-public_key=public,sentry-trace_id=073ba4ee4cc1468890a1c1f50099d19c,sentry-transaction=GET%20%2Ffetch-recorder,sentry-sampled=true,sentry-sample_rand=0.1572744679366227,sentry-sample_rate=1",
+      "traceparent": null
+    }
+  ],
+  "raw": [
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:55:25.676Z",
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "1d6e646543be4925afdade52b77ea158",
+          "transaction": "GET /",
+          "sampled": "true",
+          "sample_rand": "0.6691466876079372",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "items": [
+          {
+            "name": "GET /",
+            "span_id": "b1bea97ec7274df7",
+            "trace_id": "1d6e646543be4925afdade52b77ea158",
+            "start_timestamp": 1788947725.1690593,
+            "end_timestamp": 1788947725.1727133,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.astro",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.server",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4757/",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/",
+                "type": "string"
+              },
+              "http.request.header.accept": {
+                "value": "*/*",
+                "type": "string"
+              },
+              "http.request.header.host": {
+                "value": "127.0.0.1:4757",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "curl/8.7.1",
+                "type": "string"
+              },
+              "http.route": {
+                "value": "/",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b1bea97ec7274df7",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "LinkedErrors",
+                  "RequestData",
+                  "NodeSystemError",
+                  "ConversationId",
+                  "Console",
+                  "Http",
+                  "NodeFetch",
+                  "OnUncaughtException",
+                  "OnUnhandledRejection",
+                  "ContextLines",
+                  "LocalVariablesAsync",
+                  "Context",
+                  "ChildProcess",
+                  "WorkerThreads",
+                  "ProcessSession",
+                  "Modules",
+                  "Express",
+                  "Fastify",
+                  "Hapi",
+                  "Koa",
+                  "Graphql",
+                  "Mongo",
+                  "Mongoose",
+                  "Mysql",
+                  "Mysql2",
+                  "Redis",
+                  "Postgres",
+                  "Prisma",
+                  "Tedious",
+                  "GenericPool",
+                  "Kafka",
+                  "Amqplib",
+                  "LruMemoizer",
+                  "Aws",
+                  "LangChain",
+                  "LangGraph",
+                  "Mastra",
+                  "VercelAI",
+                  "OpenAI",
+                  "Anthropic_AI",
+                  "Google_GenAI",
+                  "PostgresJs",
+                  "Firebase",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "process.runtime.engine.name": {
+                "value": "v8",
+                "type": "string"
+              },
+              "process.runtime.engine.version": {
+                "value": "14.6.202.34-node.24",
+                "type": "string"
+              },
+              "app.start_time": {
+                "value": "2026-09-09T09:55:24.856Z",
+                "type": "string"
+              },
+              "device.archs": {
+                "value": [
+                  "arm64"
+                ],
+                "type": "array"
+              },
+              "device.boot_time": {
+                "value": "2026-09-07T11:23:01.160Z",
+                "type": "string"
+              },
+              "device.memory_size": {
+                "value": 68719476736,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "device.cpu_description": {
+                "value": "Apple M4 Max",
+                "type": "string"
+              },
+              "device.processor_frequency": {
+                "value": 2400,
+                "type": "integer"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "app.memory": {
+                "value": 173850624,
+                "type": "integer"
+              },
+              "app.free_memory": {
+                "value": 15782756352,
+                "type": "integer"
+              },
+              "device.free_memory": {
+                "value": 757121024,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:55:25.741Z",
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "9c6a8d8388e448e3b3b5aff57e01fdc0",
+          "transaction": "GET /users/[id]",
+          "sampled": "true",
+          "sample_rand": "0.19145739689152408",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "items": [
+          {
+            "name": "GET /users/[id]",
+            "span_id": "a62e03d7ff09337a",
+            "trace_id": "9c6a8d8388e448e3b3b5aff57e01fdc0",
+            "start_timestamp": 1788947725.238959,
+            "end_timestamp": 1788947725.2395043,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.astro",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.server",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4757/users/42",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/users/42",
+                "type": "string"
+              },
+              "http.request.header.accept": {
+                "value": "*/*",
+                "type": "string"
+              },
+              "http.request.header.accept_encoding": {
+                "value": "gzip, deflate",
+                "type": "string"
+              },
+              "http.request.header.accept_language": {
+                "value": "*",
+                "type": "string"
+              },
+              "http.request.header.connection": {
+                "value": "keep-alive",
+                "type": "string"
+              },
+              "http.request.header.host": {
+                "value": "127.0.0.1:4757",
+                "type": "string"
+              },
+              "http.request.header.sec_fetch_mode": {
+                "value": "cors",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "node",
+                "type": "string"
+              },
+              "http.route": {
+                "value": "/users/[id]",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /users/[id]",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a62e03d7ff09337a",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "LinkedErrors",
+                  "RequestData",
+                  "NodeSystemError",
+                  "ConversationId",
+                  "Console",
+                  "Http",
+                  "NodeFetch",
+                  "OnUncaughtException",
+                  "OnUnhandledRejection",
+                  "ContextLines",
+                  "LocalVariablesAsync",
+                  "Context",
+                  "ChildProcess",
+                  "WorkerThreads",
+                  "ProcessSession",
+                  "Modules",
+                  "Express",
+                  "Fastify",
+                  "Hapi",
+                  "Koa",
+                  "Graphql",
+                  "Mongo",
+                  "Mongoose",
+                  "Mysql",
+                  "Mysql2",
+                  "Redis",
+                  "Postgres",
+                  "Prisma",
+                  "Tedious",
+                  "GenericPool",
+                  "Kafka",
+                  "Amqplib",
+                  "LruMemoizer",
+                  "Aws",
+                  "LangChain",
+                  "LangGraph",
+                  "Mastra",
+                  "VercelAI",
+                  "OpenAI",
+                  "Anthropic_AI",
+                  "Google_GenAI",
+                  "PostgresJs",
+                  "Firebase",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "process.runtime.engine.name": {
+                "value": "v8",
+                "type": "string"
+              },
+              "process.runtime.engine.version": {
+                "value": "14.6.202.34-node.24",
+                "type": "string"
+              },
+              "app.start_time": {
+                "value": "2026-09-09T09:55:24.856Z",
+                "type": "string"
+              },
+              "device.archs": {
+                "value": [
+                  "arm64"
+                ],
+                "type": "array"
+              },
+              "device.boot_time": {
+                "value": "2026-09-07T11:23:01.160Z",
+                "type": "string"
+              },
+              "device.memory_size": {
+                "value": 68719476736,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "device.cpu_description": {
+                "value": "Apple M4 Max",
+                "type": "string"
+              },
+              "device.processor_frequency": {
+                "value": 2400,
+                "type": "integer"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "os.name": {
+                "value": "macOS",
+                "type": "string"
+              },
+              "os.version": {
+                "value": "15.7.7",
+                "type": "string"
+              },
+              "os.kernel_version": {
+                "value": "24.6.0",
+                "type": "string"
+              },
+              "os.build": {
+                "value": "24G720",
+                "type": "string"
+              },
+              "app.memory": {
+                "value": 175423488,
+                "type": "integer"
+              },
+              "app.free_memory": {
+                "value": 15782756352,
+                "type": "integer"
+              },
+              "device.free_memory": {
+                "value": 757121024,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:55:25.893Z",
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "session"
+      },
+      "payload": {
+        "sid": "3c98cd0a81f24a26a1cf0b7491dac075",
+        "init": true,
+        "started": "2026-09-09T09:55:25.164Z",
+        "timestamp": "2026-09-09T09:55:25.893Z",
+        "status": "crashed",
+        "errors": 1,
+        "duration": 0.7283289432525635,
+        "attrs": {
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "environment": "production",
+          "ip_address": "127.0.0.1",
+          "user_agent": "Node.js/26"
+        }
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "event_id": "61571aac675c485ead431ba790d4dee1",
+        "sent_at": "2026-09-09T09:55:25.893Z",
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        },
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "0dd3a5df452c47ec952619453327bc9d",
+          "transaction": "GET /api/test-error",
+          "sampled": "true",
+          "sample_rand": "0.7461971648268727",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Sentry Example API Route Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+                    "module": "entry",
+                    "function": "handlePages",
+                    "lineno": 1335,
+                    "colno": 21,
+                    "in_app": true,
+                    "pre_context": [
+                      "\tstate.resetResponseMetadata();",
+                      "\tlet response;",
+                      "\tconst componentInstance = await state.loadComponentInstance();",
+                      "\tswitch (state.routeData.type) {",
+                      "\t\tcase \"endpoint\":"
+                    ],
+                    "context_line": "\t\t\tresponse = await renderEndpoint(componentInstance, ctx, state.routeData.prerender, logger, state);",
+                    "post_context": [
+                      "\t\t\tbreak;",
+                      "\t\tcase \"page\": {",
+                      "\t\t\tconst props = await state.getProps();",
+                      "\t\t\tconst actionApiContext = state.getActionAPIContext();",
+                      "\t\t\tconst result = await state.createResult(componentInstance, actionApiContext);"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+                    "module": "chunks:sequence_BtRa-kJL",
+                    "function": "renderEndpoint",
+                    "lineno": 494,
+                    "colno": 31,
+                    "in_app": true,
+                    "pre_context": [
+                      "\t}",
+                      "\tif (typeof handler !== \"function\") {",
+                      "\t\tlogger.error(\"router\", `The route \"${url.pathname}\" exports a value for the method \"${method}\", but it is of the type ${typeof handler} in {snip}",
+                      "\t\treturn new Response(null, { status: 500 });",
+                      "\t}"
+                    ],
+                    "context_line": "\tlet response = await handler.call(mod, context);",
+                    "post_context": [
+                      "\tif (!response || response instanceof Response === false) throw new AstroError(EndpointDidNotReturnAResponse);",
+                      "\tif (state && REROUTABLE_STATUS_CODES.includes(response.status)) state.skipErrorReroute = true;",
+                      "\tif (method === \"HEAD\") return new Response(null, response);",
+                      "\treturn response;",
+                      "}"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/test-error_KjoqIo1K.mjs",
+                    "module": "chunks:test-error_KjoqIo1K",
+                    "function": "Module.GET",
+                    "lineno": 13,
+                    "colno": 8,
+                    "in_app": true,
+                    "pre_context": [
+                      "})();",
+                      "import { t as __exportAll } from \"./rolldown-runtime_D--2vLL6.mjs\";",
+                      "//#region src/pages/api/test-error.js",
+                      "var test_error_exports = /* @__PURE__ */ __exportAll({ GET: () => GET });",
+                      "async function GET() {"
+                    ],
+                    "context_line": "\tthrow new Error(\"Sentry Example API Route Error\");",
+                    "post_context": [
+                      "}",
+                      "//#endregion",
+                      "//#region \\0virtual:astro:page:src/pages/api/test-error@_@js",
+                      "var page = () => test_error_exports;",
+                      "//#endregion"
+                    ]
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.middleware.astro",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "event_id": "61571aac675c485ead431ba790d4dee1",
+        "level": "error",
+        "platform": "node",
+        "contexts": {
+          "trace": {
+            "span_id": "b9f896e86bbde294",
+            "trace_id": "0dd3a5df452c47ec952619453327bc9d"
+          },
+          "runtime": {
+            "name": "node",
+            "version": "v26.5.0"
+          },
+          "app": {
+            "app_start_time": "2026-09-09T09:55:24.856Z",
+            "app_memory": 177422336,
+            "free_memory": 15782756352
+          },
+          "os": {
+            "kernel_version": "24.6.0",
+            "name": "macOS",
+            "version": "15.7.7",
+            "build": "24G720"
+          },
+          "device": {
+            "boot_time": "2026-09-07T11:23:01.160Z",
+            "arch": "arm64",
+            "memory_size": 68719476736,
+            "free_memory": 757121024,
+            "processor_count": 16,
+            "cpu_description": "Apple M4 Max",
+            "processor_frequency": 2400
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna"
+          },
+          "cloud_resource": {}
+        },
+        "server_name": "DJ90J9R5XC.local",
+        "timestamp": 1788947725.878,
+        "environment": "production",
+        "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "LinkedErrors",
+            "RequestData",
+            "NodeSystemError",
+            "ConversationId",
+            "Console",
+            "Http",
+            "NodeFetch",
+            "OnUncaughtException",
+            "OnUnhandledRejection",
+            "ContextLines",
+            "LocalVariablesAsync",
+            "Context",
+            "ChildProcess",
+            "WorkerThreads",
+            "ProcessSession",
+            "Modules",
+            "Express",
+            "Fastify",
+            "Hapi",
+            "Koa",
+            "Graphql",
+            "Mongo",
+            "Mongoose",
+            "Mysql",
+            "Mysql2",
+            "Redis",
+            "Postgres",
+            "Prisma",
+            "Tedious",
+            "GenericPool",
+            "Kafka",
+            "Amqplib",
+            "LruMemoizer",
+            "Aws",
+            "LangChain",
+            "LangGraph",
+            "Mastra",
+            "VercelAI",
+            "OpenAI",
+            "Anthropic_AI",
+            "Google_GenAI",
+            "PostgresJs",
+            "Firebase",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/astro",
+              "version": "10.67.0"
+            },
+            {
+              "name": "npm:@sentry/node",
+              "version": "10.67.0"
+            }
+          ]
+        },
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "transaction": "GET /api/test-error",
+        "request": {
+          "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "accept-language": "*",
+            "connection": "keep-alive",
+            "host": "127.0.0.1:4757",
+            "sec-fetch-mode": "cors",
+            "user-agent": "node"
+          },
+          "method": "GET",
+          "url": "http://127.0.0.1:4757/api/test-error",
+          "cookies": {}
+        },
+        "modules": {
+          "@astrojs/node": "11",
+          "@sentry/astro": "file:../../_toolbox/pack-develop-03aaf424/sentry-astro-10.67.0.tgz",
+          "@sentry/browser": "file:../../_toolbox/pack-develop-03aaf424/sentry-browser-10.67.0.tgz",
+          "@sentry/browser-utils": "file:../../_toolbox/pack-develop-03aaf424/sentry-browser-utils-10.67.0.tgz",
+          "@sentry/bundler-plugins": "file:../../_toolbox/pack-develop-03aaf424/sentry-bundler-plugins-10.67.0.tgz",
+          "@sentry/core": "file:../../_toolbox/pack-develop-03aaf424/sentry-core-10.67.0.tgz",
+          "@sentry/feedback": "file:../../_toolbox/pack-develop-03aaf424/sentry-feedback-10.67.0.tgz",
+          "@sentry/node": "file:../../_toolbox/pack-develop-03aaf424/sentry-node-10.67.0.tgz",
+          "@sentry/opentelemetry": "file:../../_toolbox/pack-develop-03aaf424/sentry-opentelemetry-10.67.0.tgz",
+          "@sentry/replay": "file:../../_toolbox/pack-develop-03aaf424/sentry-replay-10.67.0.tgz",
+          "@sentry/replay-canvas": "file:../../_toolbox/pack-develop-03aaf424/sentry-replay-canvas-10.67.0.tgz",
+          "@sentry/server-runtime-injection": "file:../../_toolbox/pack-develop-03aaf424/sentry-server-runtime-injection-10.67.0.tgz",
+          "@sentry/server-utils": "file:../../_toolbox/pack-develop-03aaf424/sentry-server-utils-10.67.0.tgz",
+          "astro": "7",
+          "playwright-core": "1.55.0"
+        },
+        "debug_meta": {
+          "images": [
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+              "debug_id": "5abb02f2-af2a-4e6f-b169-b805d4172126"
+            },
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+              "debug_id": "eafc5d8b-4644-46ee-a8e0-546323aeb725"
+            },
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/test-error_KjoqIo1K.mjs",
+              "debug_id": "0597fddb-700d-4f97-a8b6-135af45b0e9f"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "event_id": "26389be99a0b4675ae36765738a22743",
+        "sent_at": "2026-09-09T09:55:26.078Z",
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        },
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f",
+          "transaction": "GET /ssr-throw",
+          "sampled": "true",
+          "sample_rand": "0.6366739213852819",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Sentry Example SSR Page Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+                    "module": "entry",
+                    "function": "handleMiddleware",
+                    "lineno": 2267,
+                    "colno": 14,
+                    "in_app": true,
+                    "pre_context": [
+                      "\t};",
+                      "\tlet response;",
+                      "\tif (state.skipMiddleware) response = await next(apiContext);",
+                      "\telse {",
+                      "\t\tconst middleware = await getMiddleware(state.manifest);"
+                    ],
+                    "context_line": "\t\tresponse = await callMiddleware(sequence(middleware), apiContext, next);",
+                    "post_context": [
+                      "\t}",
+                      "\tattachCookiesToResponse(response, state.cookies);",
+                      "\tstate.response = response;",
+                      "\treturn response;",
+                      "}"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+                    "module": "entry",
+                    "function": "callMiddleware",
+                    "lineno": 2177,
+                    "colno": 9,
+                    "in_app": true,
+                    "pre_context": [
+                      "\t\tnextCalled = true;",
+                      "\t\tresponseFunctionPromise = responseFunction(apiContext, payload);",
+                      "\t\treturn responseFunctionPromise;",
+                      "\t};",
+                      "\tconst middlewarePromise = onRequest(apiContext, next);"
+                    ],
+                    "context_line": "\treturn await Promise.resolve(middlewarePromise).then(async (value) => {",
+                    "post_context": [
+                      "\t\tif (nextCalled) {",
+                      "\t\t\tif (typeof value !== \"undefined\") {",
+                      "\t\t\t\tif (value instanceof Response === false) throw new AstroError(MiddlewareNotAResponse);",
+                      "\t\t\t\treturn value;",
+                      "\t\t\t} else if (responseFunctionPromise) return responseFunctionPromise;"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/node_modules/@sentry/astro/build/esm/server/middleware.js",
+                    "module": "@sentry.astro.build.esm.server:middleware",
+                    "function": "?",
+                    "lineno": 132,
+                    "colno": 23,
+                    "in_app": false,
+                    "pre_context": [
+                      "          attributes[URL_QUERY] = filterCollectedUrlQuery(getUrlQuery(ctx.url.search));",
+                      "          attributes[URL_FRAGMENT] = getUrlFragment(ctx.url.hash);",
+                      "          const transactionName = `${method} ${parametrizedRoute || ctx.url.pathname}`;",
+                      "          isolationScope.setTransactionName(transactionName);",
+                      "          const name = parametrizedRoute || !hasSpanStreamingEnabled(client) ? transactionName : method?.toUpperCase() || HTTP_SPAN_NAME_FALLBACK;"
+                    ],
+                    "context_line": "          const res = await startSpan(",
+                    "post_context": [
+                      "            {",
+                      "              attributes,",
+                      "              name",
+                      "            },",
+                      "            async (span) => {"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/node_modules/@sentry/astro/build/esm/server/middleware.js",
+                    "module": "@sentry.astro.build.esm.server:middleware",
+                    "function": "?",
+                    "lineno": 139,
+                    "colno": 42,
+                    "in_app": false,
+                    "pre_context": [
+                      "              attributes,",
+                      "              name",
+                      "            },",
+                      "            async (span) => {",
+                      "              try {"
+                    ],
+                    "context_line": "                const originalResponse = await next();",
+                    "post_context": [
+                      "                if (originalResponse.status) {",
+                      "                  setHttpStatus(span, originalResponse.status);",
+                      "                }",
+                      "                const metaTagsStr = getMetaTagsStr({ injectTraceData: true, parametrizedRoute });",
+                      "                return injectMetaTagsInResponse(originalResponse, metaTagsStr);"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+                    "module": "entry",
+                    "function": "handlePages",
+                    "lineno": 1342,
+                    "colno": 22,
+                    "in_app": true,
+                    "pre_context": [
+                      "\t\tcase \"page\": {",
+                      "\t\t\tconst props = await state.getProps();",
+                      "\t\t\tconst actionApiContext = state.getActionAPIContext();",
+                      "\t\t\tconst result = await state.createResult(componentInstance, actionApiContext);",
+                      "\t\t\ttry {"
+                    ],
+                    "context_line": "\t\t\t\tresponse = await renderPage(result, componentInstance?.default, props, state.slots ?? EMPTY_SLOTS, streaming, state.routeData);",
+                    "post_context": [
+                      "\t\t\t} catch (e) {",
+                      "\t\t\t\tresult.cancelled = true;",
+                      "\t\t\t\tthrow e;",
+                      "\t\t\t}",
+                      "\t\t\tstate.responseRouteType = \"page\";"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+                    "module": "chunks:sequence_BtRa-kJL",
+                    "function": "renderPage",
+                    "lineno": 2516,
+                    "colno": 39,
+                    "in_app": true,
+                    "pre_context": [
+                      "\tconst pageMeta = result.componentMetadata.get(componentFactory.moduleId);",
+                      "\tresult._metadata.headInTree = pageMeta?.containsHead ?? false;",
+                      "\tresult._metadata.routeHasPropagation = isPropagatingHint(pageMeta?.propagation ?? \"none\");",
+                      "\tlet body;",
+                      "\tif (streaming) {"
+                    ],
+                    "context_line": "\t\tif (isNode && !isDeno) body = await renderToAsyncIterable(result, componentFactory, props, children, true, route);",
+                    "post_context": [
+                      "\t\telse body = await renderToReadableStream(result, componentFactory, props, children, true, route);",
+                      "\t} else body = await renderToString(result, componentFactory, props, children, true, route);",
+                      "\tif (body instanceof Response) return body;",
+                      "\tconst init = result.response;",
+                      "\tconst headers = new Headers(init.headers);"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+                    "module": "chunks:sequence_BtRa-kJL",
+                    "function": "renderToAsyncIterable",
+                    "lineno": 2073,
+                    "colno": 31,
+                    "in_app": true,
+                    "pre_context": [
+                      "}",
+                      "async function bufferHeadContent(result) {",
+                      "\tawait bufferPropagatedHead(result);",
+                      "}",
+                      "async function renderToAsyncIterable(result, componentFactory, props, children, isPage = false, route) {"
+                    ],
+                    "context_line": "\tconst templateResult = await callComponentAsTemplateResultOrResponse(result, componentFactory, props, children, route);",
+                    "post_context": [
+                      "\tif (templateResult instanceof Response) return templateResult;",
+                      "\treturn await renderStreamToAsyncIterable(result, templateResult, isPage, route);",
+                      "}",
+                      "function toPromise(fn) {",
+                      "\ttry {"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+                    "module": "chunks:sequence_BtRa-kJL",
+                    "function": "callComponentAsTemplateResultOrResponse",
+                    "lineno": 2053,
+                    "colno": 30,
+                    "in_app": true,
+                    "pre_context": [
+                      "\tconst templateResult = await callComponentAsTemplateResultOrResponse(result, componentFactory, props, children, route);",
+                      "\tif (templateResult instanceof Response) return templateResult;",
+                      "\treturn await renderStreamToStream(result, templateResult, isPage, route);",
+                      "}",
+                      "async function callComponentAsTemplateResultOrResponse(result, componentFactory, props, children, route) {"
+                    ],
+                    "context_line": "\tconst factoryResult = await componentFactory(result, props, children);",
+                    "post_context": [
+                      "\tif (factoryResult instanceof Response) return factoryResult;",
+                      "\telse if (isHeadAndContent(factoryResult)) {",
+                      "\t\tif (!isRenderTemplateResult(factoryResult.content)) throw new AstroError({",
+                      "\t\t\t...OnlyResponseCanBeReturned,",
+                      "\t\t\tmessage: OnlyResponseCanBeReturned.message(route?.route, typeof factoryResult),"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/compiler_DAAZZPy1.mjs",
+                    "module": "chunks:compiler_DAAZZPy1",
+                    "function": "ssr-throw",
+                    "lineno": 24,
+                    "colno": 10,
+                    "in_app": true,
+                    "pre_context": [
+                      "\tconst fn = (...args) => {",
+                      "\t\tif (!validateArgs(args)) throw new AstroError({",
+                      "\t\t\t...InvalidComponentArgs,",
+                      "\t\t\tmessage: InvalidComponentArgs.message(name)",
+                      "\t\t});"
+                    ],
+                    "context_line": "\t\treturn cb(...args);",
+                    "post_context": [
+                      "\t};",
+                      "\tObject.defineProperty(fn, \"name\", {",
+                      "\t\tvalue: name,",
+                      "\t\twritable: false",
+                      "\t});"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/ssr-throw_JtoTFBge.mjs",
+                    "module": "chunks:ssr-throw_JtoTFBge",
+                    "function": "?",
+                    "lineno": 19,
+                    "colno": 8,
+                    "in_app": true,
+                    "pre_context": [
+                      "\tdefault: () => $$SsrThrow,",
+                      "\tfile: () => $$file,",
+                      "\turl: () => $$url",
+                      "});",
+                      "var $$SsrThrow = createComponent(($$result, $$props, $$slots) => {"
+                    ],
+                    "context_line": "\tthrow new Error(\"Sentry Example SSR Page Error\");",
+                    "post_context": [
+                      "}, \"/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/src/pages/ssr-throw.astro\", void 0);",
+                      "var $$file = \"/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/src/pages/ssr-throw.astro\";",
+                      "var $$url = \"/ssr-throw\";",
+                      "//#endregion",
+                      "//#region \\0virtual:astro:page:src/pages/ssr-throw@_@astro"
+                    ]
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.middleware.astro",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "event_id": "26389be99a0b4675ae36765738a22743",
+        "level": "error",
+        "platform": "node",
+        "contexts": {
+          "trace": {
+            "span_id": "95f1c21a0ea400f5",
+            "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f"
+          },
+          "runtime": {
+            "name": "node",
+            "version": "v26.5.0"
+          },
+          "app": {
+            "app_start_time": "2026-09-09T09:55:24.856Z",
+            "app_memory": 181551104,
+            "free_memory": 15782756352
+          },
+          "os": {
+            "kernel_version": "24.6.0",
+            "name": "macOS",
+            "version": "15.7.7",
+            "build": "24G720"
+          },
+          "device": {
+            "boot_time": "2026-09-07T11:23:01.160Z",
+            "arch": "arm64",
+            "memory_size": 68719476736,
+            "free_memory": 757121024,
+            "processor_count": 16,
+            "cpu_description": "Apple M4 Max",
+            "processor_frequency": 2400
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna"
+          },
+          "cloud_resource": {}
+        },
+        "server_name": "DJ90J9R5XC.local",
+        "timestamp": 1788947726.073,
+        "environment": "production",
+        "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "LinkedErrors",
+            "RequestData",
+            "NodeSystemError",
+            "ConversationId",
+            "Console",
+            "Http",
+            "NodeFetch",
+            "OnUncaughtException",
+            "OnUnhandledRejection",
+            "ContextLines",
+            "LocalVariablesAsync",
+            "Context",
+            "ChildProcess",
+            "WorkerThreads",
+            "ProcessSession",
+            "Modules",
+            "Express",
+            "Fastify",
+            "Hapi",
+            "Koa",
+            "Graphql",
+            "Mongo",
+            "Mongoose",
+            "Mysql",
+            "Mysql2",
+            "Redis",
+            "Postgres",
+            "Prisma",
+            "Tedious",
+            "GenericPool",
+            "Kafka",
+            "Amqplib",
+            "LruMemoizer",
+            "Aws",
+            "LangChain",
+            "LangGraph",
+            "Mastra",
+            "VercelAI",
+            "OpenAI",
+            "Anthropic_AI",
+            "Google_GenAI",
+            "PostgresJs",
+            "Firebase",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/astro",
+              "version": "10.67.0"
+            },
+            {
+              "name": "npm:@sentry/node",
+              "version": "10.67.0"
+            }
+          ]
+        },
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "transaction": "GET /ssr-throw",
+        "request": {
+          "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "accept-language": "*",
+            "connection": "keep-alive",
+            "host": "127.0.0.1:4757",
+            "sec-fetch-mode": "cors",
+            "user-agent": "node"
+          },
+          "method": "GET",
+          "url": "http://127.0.0.1:4757/ssr-throw",
+          "cookies": {}
+        },
+        "modules": {
+          "@astrojs/node": "11",
+          "@sentry/astro": "file:../../_toolbox/pack-develop-03aaf424/sentry-astro-10.67.0.tgz",
+          "@sentry/browser": "file:../../_toolbox/pack-develop-03aaf424/sentry-browser-10.67.0.tgz",
+          "@sentry/browser-utils": "file:../../_toolbox/pack-develop-03aaf424/sentry-browser-utils-10.67.0.tgz",
+          "@sentry/bundler-plugins": "file:../../_toolbox/pack-develop-03aaf424/sentry-bundler-plugins-10.67.0.tgz",
+          "@sentry/core": "file:../../_toolbox/pack-develop-03aaf424/sentry-core-10.67.0.tgz",
+          "@sentry/feedback": "file:../../_toolbox/pack-develop-03aaf424/sentry-feedback-10.67.0.tgz",
+          "@sentry/node": "file:../../_toolbox/pack-develop-03aaf424/sentry-node-10.67.0.tgz",
+          "@sentry/opentelemetry": "file:../../_toolbox/pack-develop-03aaf424/sentry-opentelemetry-10.67.0.tgz",
+          "@sentry/replay": "file:../../_toolbox/pack-develop-03aaf424/sentry-replay-10.67.0.tgz",
+          "@sentry/replay-canvas": "file:../../_toolbox/pack-develop-03aaf424/sentry-replay-canvas-10.67.0.tgz",
+          "@sentry/server-runtime-injection": "file:../../_toolbox/pack-develop-03aaf424/sentry-server-runtime-injection-10.67.0.tgz",
+          "@sentry/server-utils": "file:../../_toolbox/pack-develop-03aaf424/sentry-server-utils-10.67.0.tgz",
+          "astro": "7",
+          "playwright-core": "1.55.0"
+        },
+        "debug_meta": {
+          "images": [
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+              "debug_id": "5abb02f2-af2a-4e6f-b169-b805d4172126"
+            },
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+              "debug_id": "eafc5d8b-4644-46ee-a8e0-546323aeb725"
+            },
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/compiler_DAAZZPy1.mjs",
+              "debug_id": "72ff048d-83da-4782-bbc3-969cdedfbdad"
+            },
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/ssr-throw_JtoTFBge.mjs",
+              "debug_id": "4ef4bad1-b7c1-4527-919c-557b400cf4a5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:55:26.387Z",
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "0dd3a5df452c47ec952619453327bc9d",
+          "transaction": "GET /api/test-error",
+          "sampled": "true",
+          "sample_rand": "0.7461971648268727",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "items": [
+          {
+            "name": "GET /api/test-error",
+            "span_id": "b9f896e86bbde294",
+            "trace_id": "0dd3a5df452c47ec952619453327bc9d",
+            "start_timestamp": 1788947725.8752449,
+            "end_timestamp": 1788947725.8841128,
+            "is_segment": true,
+            "status": "error",
+            "attributes": {
+              "sentry.status.message": {
+                "value": "internal_error",
+                "type": "string"
+              },
+              "sentry.origin": {
+                "value": "auto.http.astro",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.server",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4757/api/test-error",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/api/test-error",
+                "type": "string"
+              },
+              "http.request.header.accept": {
+                "value": "*/*",
+                "type": "string"
+              },
+              "http.request.header.accept_encoding": {
+                "value": "gzip, deflate",
+                "type": "string"
+              },
+              "http.request.header.accept_language": {
+                "value": "*",
+                "type": "string"
+              },
+              "http.request.header.connection": {
+                "value": "keep-alive",
+                "type": "string"
+              },
+              "http.request.header.host": {
+                "value": "127.0.0.1:4757",
+                "type": "string"
+              },
+              "http.request.header.sec_fetch_mode": {
+                "value": "cors",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "node",
+                "type": "string"
+              },
+              "http.route": {
+                "value": "/api/test-error",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /api/test-error",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b9f896e86bbde294",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "LinkedErrors",
+                  "RequestData",
+                  "NodeSystemError",
+                  "ConversationId",
+                  "Console",
+                  "Http",
+                  "NodeFetch",
+                  "OnUncaughtException",
+                  "OnUnhandledRejection",
+                  "ContextLines",
+                  "LocalVariablesAsync",
+                  "Context",
+                  "ChildProcess",
+                  "WorkerThreads",
+                  "ProcessSession",
+                  "Modules",
+                  "Express",
+                  "Fastify",
+                  "Hapi",
+                  "Koa",
+                  "Graphql",
+                  "Mongo",
+                  "Mongoose",
+                  "Mysql",
+                  "Mysql2",
+                  "Redis",
+                  "Postgres",
+                  "Prisma",
+                  "Tedious",
+                  "GenericPool",
+                  "Kafka",
+                  "Amqplib",
+                  "LruMemoizer",
+                  "Aws",
+                  "LangChain",
+                  "LangGraph",
+                  "Mastra",
+                  "VercelAI",
+                  "OpenAI",
+                  "Anthropic_AI",
+                  "Google_GenAI",
+                  "PostgresJs",
+                  "Firebase",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "process.runtime.engine.name": {
+                "value": "v8",
+                "type": "string"
+              },
+              "process.runtime.engine.version": {
+                "value": "14.6.202.34-node.24",
+                "type": "string"
+              },
+              "app.start_time": {
+                "value": "2026-09-09T09:55:24.856Z",
+                "type": "string"
+              },
+              "device.archs": {
+                "value": [
+                  "arm64"
+                ],
+                "type": "array"
+              },
+              "device.boot_time": {
+                "value": "2026-09-07T11:23:01.160Z",
+                "type": "string"
+              },
+              "device.memory_size": {
+                "value": 68719476736,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "device.cpu_description": {
+                "value": "Apple M4 Max",
+                "type": "string"
+              },
+              "device.processor_frequency": {
+                "value": 2400,
+                "type": "integer"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "os.name": {
+                "value": "macOS",
+                "type": "string"
+              },
+              "os.version": {
+                "value": "15.7.7",
+                "type": "string"
+              },
+              "os.kernel_version": {
+                "value": "24.6.0",
+                "type": "string"
+              },
+              "os.build": {
+                "value": "24G720",
+                "type": "string"
+              },
+              "app.memory": {
+                "value": 177307648,
+                "type": "integer"
+              },
+              "app.free_memory": {
+                "value": 15782756352,
+                "type": "integer"
+              },
+              "device.free_memory": {
+                "value": 757121024,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:55:26.575Z",
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f",
+          "transaction": "GET /ssr-throw",
+          "sampled": "true",
+          "sample_rand": "0.6366739213852819",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "items": [
+          {
+            "name": "GET /ssr-throw",
+            "span_id": "95f1c21a0ea400f5",
+            "trace_id": "7e2811e23df64f92ad4f63ab2dccee0f",
+            "start_timestamp": 1788947726.0724943,
+            "end_timestamp": 1788947726.0740004,
+            "is_segment": true,
+            "status": "error",
+            "attributes": {
+              "sentry.status.message": {
+                "value": "internal_error",
+                "type": "string"
+              },
+              "sentry.origin": {
+                "value": "auto.http.astro",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.server",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4757/ssr-throw",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/ssr-throw",
+                "type": "string"
+              },
+              "http.request.header.accept": {
+                "value": "*/*",
+                "type": "string"
+              },
+              "http.request.header.accept_encoding": {
+                "value": "gzip, deflate",
+                "type": "string"
+              },
+              "http.request.header.accept_language": {
+                "value": "*",
+                "type": "string"
+              },
+              "http.request.header.connection": {
+                "value": "keep-alive",
+                "type": "string"
+              },
+              "http.request.header.host": {
+                "value": "127.0.0.1:4757",
+                "type": "string"
+              },
+              "http.request.header.sec_fetch_mode": {
+                "value": "cors",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "node",
+                "type": "string"
+              },
+              "http.route": {
+                "value": "/ssr-throw",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /ssr-throw",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "95f1c21a0ea400f5",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "LinkedErrors",
+                  "RequestData",
+                  "NodeSystemError",
+                  "ConversationId",
+                  "Console",
+                  "Http",
+                  "NodeFetch",
+                  "OnUncaughtException",
+                  "OnUnhandledRejection",
+                  "ContextLines",
+                  "LocalVariablesAsync",
+                  "Context",
+                  "ChildProcess",
+                  "WorkerThreads",
+                  "ProcessSession",
+                  "Modules",
+                  "Express",
+                  "Fastify",
+                  "Hapi",
+                  "Koa",
+                  "Graphql",
+                  "Mongo",
+                  "Mongoose",
+                  "Mysql",
+                  "Mysql2",
+                  "Redis",
+                  "Postgres",
+                  "Prisma",
+                  "Tedious",
+                  "GenericPool",
+                  "Kafka",
+                  "Amqplib",
+                  "LruMemoizer",
+                  "Aws",
+                  "LangChain",
+                  "LangGraph",
+                  "Mastra",
+                  "VercelAI",
+                  "OpenAI",
+                  "Anthropic_AI",
+                  "Google_GenAI",
+                  "PostgresJs",
+                  "Firebase",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "process.runtime.engine.name": {
+                "value": "v8",
+                "type": "string"
+              },
+              "process.runtime.engine.version": {
+                "value": "14.6.202.34-node.24",
+                "type": "string"
+              },
+              "app.start_time": {
+                "value": "2026-09-09T09:55:24.856Z",
+                "type": "string"
+              },
+              "device.archs": {
+                "value": [
+                  "arm64"
+                ],
+                "type": "array"
+              },
+              "device.boot_time": {
+                "value": "2026-09-07T11:23:01.160Z",
+                "type": "string"
+              },
+              "device.memory_size": {
+                "value": 68719476736,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "device.cpu_description": {
+                "value": "Apple M4 Max",
+                "type": "string"
+              },
+              "device.processor_frequency": {
+                "value": 2400,
+                "type": "integer"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "os.name": {
+                "value": "macOS",
+                "type": "string"
+              },
+              "os.version": {
+                "value": "15.7.7",
+                "type": "string"
+              },
+              "os.kernel_version": {
+                "value": "24.6.0",
+                "type": "string"
+              },
+              "os.build": {
+                "value": "24G720",
+                "type": "string"
+              },
+              "app.memory": {
+                "value": 179077120,
+                "type": "integer"
+              },
+              "app.free_memory": {
+                "value": 15782756352,
+                "type": "integer"
+              },
+              "device.free_memory": {
+                "value": 757121024,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:55:26.763Z",
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "073ba4ee4cc1468890a1c1f50099d19c",
+          "transaction": "GET /fetch-recorder",
+          "sampled": "true",
+          "sample_rand": "0.1572744679366227",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "span",
+        "item_count": 2,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "items": [
+          {
+            "name": "GET 127.0.0.1",
+            "span_id": "8cfa3466b83bbef5",
+            "trace_id": "073ba4ee4cc1468890a1c1f50099d19c",
+            "parent_span_id": "893e60568cb1cf94",
+            "start_timestamp": 1788947726.2441013,
+            "end_timestamp": 1788947726.2623773,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.node_fetch",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.client",
+                "type": "string"
+              },
+              "sentry.kind": {
+                "value": "client",
+                "type": "string"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "http.request.method_original": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4756/recorder?from=server",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/recorder",
+                "type": "string"
+              },
+              "url.query": {
+                "value": "from=server",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "server.port": {
+                "value": 4756,
+                "type": "integer"
+              },
+              "user_agent.original": {
+                "value": "node",
+                "type": "string"
+              },
+              "network.peer.address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "network.peer.port": {
+                "value": 4756,
+                "type": "integer"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /fetch-recorder",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "893e60568cb1cf94",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "GET /fetch-recorder",
+            "span_id": "893e60568cb1cf94",
+            "trace_id": "073ba4ee4cc1468890a1c1f50099d19c",
+            "start_timestamp": 1788947726.2382538,
+            "end_timestamp": 1788947726.2635536,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.astro",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.server",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4757/fetch-recorder",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/fetch-recorder",
+                "type": "string"
+              },
+              "http.request.header.accept": {
+                "value": "*/*",
+                "type": "string"
+              },
+              "http.request.header.accept_encoding": {
+                "value": "gzip, deflate",
+                "type": "string"
+              },
+              "http.request.header.accept_language": {
+                "value": "*",
+                "type": "string"
+              },
+              "http.request.header.connection": {
+                "value": "keep-alive",
+                "type": "string"
+              },
+              "http.request.header.host": {
+                "value": "127.0.0.1:4757",
+                "type": "string"
+              },
+              "http.request.header.sec_fetch_mode": {
+                "value": "cors",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "node",
+                "type": "string"
+              },
+              "http.route": {
+                "value": "/fetch-recorder",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /fetch-recorder",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "893e60568cb1cf94",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "LinkedErrors",
+                  "RequestData",
+                  "NodeSystemError",
+                  "ConversationId",
+                  "Console",
+                  "Http",
+                  "NodeFetch",
+                  "OnUncaughtException",
+                  "OnUnhandledRejection",
+                  "ContextLines",
+                  "LocalVariablesAsync",
+                  "Context",
+                  "ChildProcess",
+                  "WorkerThreads",
+                  "ProcessSession",
+                  "Modules",
+                  "Express",
+                  "Fastify",
+                  "Hapi",
+                  "Koa",
+                  "Graphql",
+                  "Mongo",
+                  "Mongoose",
+                  "Mysql",
+                  "Mysql2",
+                  "Redis",
+                  "Postgres",
+                  "Prisma",
+                  "Tedious",
+                  "GenericPool",
+                  "Kafka",
+                  "Amqplib",
+                  "LruMemoizer",
+                  "Aws",
+                  "LangChain",
+                  "LangGraph",
+                  "Mastra",
+                  "VercelAI",
+                  "OpenAI",
+                  "Anthropic_AI",
+                  "Google_GenAI",
+                  "PostgresJs",
+                  "Firebase",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "process.runtime.engine.name": {
+                "value": "v8",
+                "type": "string"
+              },
+              "process.runtime.engine.version": {
+                "value": "14.6.202.34-node.24",
+                "type": "string"
+              },
+              "app.start_time": {
+                "value": "2026-09-09T09:55:24.856Z",
+                "type": "string"
+              },
+              "device.archs": {
+                "value": [
+                  "arm64"
+                ],
+                "type": "array"
+              },
+              "device.boot_time": {
+                "value": "2026-09-07T11:23:01.160Z",
+                "type": "string"
+              },
+              "device.memory_size": {
+                "value": 68719476736,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "device.cpu_description": {
+                "value": "Apple M4 Max",
+                "type": "string"
+              },
+              "device.processor_frequency": {
+                "value": 2400,
+                "type": "integer"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "os.name": {
+                "value": "macOS",
+                "type": "string"
+              },
+              "os.version": {
+                "value": "15.7.7",
+                "type": "string"
+              },
+              "os.kernel_version": {
+                "value": "24.6.0",
+                "type": "string"
+              },
+              "os.build": {
+                "value": "24G720",
+                "type": "string"
+              },
+              "app.memory": {
+                "value": 189136896,
+                "type": "integer"
+              },
+              "app.free_memory": {
+                "value": 15756247040,
+                "type": "integer"
+              },
+              "device.free_memory": {
+                "value": 711868416,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:55:26.774Z",
+        "trace": {
+          "trace_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "public_key": "public",
+          "sampled": "true",
+          "sample_rate": "1",
+          "environment": "qs",
+          "sample_rand": "0.29668479408977555"
+        },
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "items": [
+          {
+            "name": "GET /users/[id]",
+            "span_id": "96037077306bb534",
+            "trace_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "parent_span_id": "bbbbbbbbbbbbbbbb",
+            "start_timestamp": 1788947726.2725902,
+            "end_timestamp": 1788947726.2729833,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.astro",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.server",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4757/users/42",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/users/42",
+                "type": "string"
+              },
+              "http.request.header.accept": {
+                "value": "*/*",
+                "type": "string"
+              },
+              "http.request.header.accept_encoding": {
+                "value": "gzip, deflate",
+                "type": "string"
+              },
+              "http.request.header.accept_language": {
+                "value": "*",
+                "type": "string"
+              },
+              "http.request.header.baggage": {
+                "value": "sentry-trace_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,sentry-public_key=public,sentry-sampled=true,sentry-sample_rate=1,sentry-environment=qs",
+                "type": "string"
+              },
+              "http.request.header.connection": {
+                "value": "keep-alive",
+                "type": "string"
+              },
+              "http.request.header.host": {
+                "value": "127.0.0.1:4757",
+                "type": "string"
+              },
+              "http.request.header.sec_fetch_mode": {
+                "value": "cors",
+                "type": "string"
+              },
+              "http.request.header.sentry_trace": {
+                "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-bbbbbbbbbbbbbbbb-1",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "node",
+                "type": "string"
+              },
+              "http.route": {
+                "value": "/users/[id]",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /users/[id]",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "96037077306bb534",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "LinkedErrors",
+                  "RequestData",
+                  "NodeSystemError",
+                  "ConversationId",
+                  "Console",
+                  "Http",
+                  "NodeFetch",
+                  "OnUncaughtException",
+                  "OnUnhandledRejection",
+                  "ContextLines",
+                  "LocalVariablesAsync",
+                  "Context",
+                  "ChildProcess",
+                  "WorkerThreads",
+                  "ProcessSession",
+                  "Modules",
+                  "Express",
+                  "Fastify",
+                  "Hapi",
+                  "Koa",
+                  "Graphql",
+                  "Mongo",
+                  "Mongoose",
+                  "Mysql",
+                  "Mysql2",
+                  "Redis",
+                  "Postgres",
+                  "Prisma",
+                  "Tedious",
+                  "GenericPool",
+                  "Kafka",
+                  "Amqplib",
+                  "LruMemoizer",
+                  "Aws",
+                  "LangChain",
+                  "LangGraph",
+                  "Mastra",
+                  "VercelAI",
+                  "OpenAI",
+                  "Anthropic_AI",
+                  "Google_GenAI",
+                  "PostgresJs",
+                  "Firebase",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "process.runtime.engine.name": {
+                "value": "v8",
+                "type": "string"
+              },
+              "process.runtime.engine.version": {
+                "value": "14.6.202.34-node.24",
+                "type": "string"
+              },
+              "app.start_time": {
+                "value": "2026-09-09T09:55:24.856Z",
+                "type": "string"
+              },
+              "device.archs": {
+                "value": [
+                  "arm64"
+                ],
+                "type": "array"
+              },
+              "device.boot_time": {
+                "value": "2026-09-07T11:23:01.160Z",
+                "type": "string"
+              },
+              "device.memory_size": {
+                "value": 68719476736,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "device.cpu_description": {
+                "value": "Apple M4 Max",
+                "type": "string"
+              },
+              "device.processor_frequency": {
+                "value": 2400,
+                "type": "integer"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "os.name": {
+                "value": "macOS",
+                "type": "string"
+              },
+              "os.version": {
+                "value": "15.7.7",
+                "type": "string"
+              },
+              "os.kernel_version": {
+                "value": "24.6.0",
+                "type": "string"
+              },
+              "os.build": {
+                "value": "24G720",
+                "type": "string"
+              },
+              "app.memory": {
+                "value": 189186048,
+                "type": "integer"
+              },
+              "app.free_memory": {
+                "value": 15756247040,
+                "type": "integer"
+              },
+              "device.free_memory": {
+                "value": 711868416,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {},
+      "header": {
+        "type": "client_report"
+      },
+      "payload": {
+        "timestamp": 1788947785.17,
+        "discarded_events": [
+          {
+            "reason": "ignored",
+            "category": "span",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:56:25.243Z",
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "sessions"
+      },
+      "payload": {
+        "aggregates": [
+          {
+            "started": "2026-09-09T09:55:00.000Z",
+            "exited": 3,
+            "errored": 0,
+            "crashed": 2
+          }
+        ],
+        "attrs": {
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "environment": "production"
+        }
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "event_id": "8b431a7e0a124d85933cdc361225ac77",
+        "sent_at": "2026-09-09T09:56:26.364Z",
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        },
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+          "transaction": "GET /api/sentinel",
+          "sampled": "true",
+          "sample_rand": "0.6161729783633737",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "event_id": "8b431a7e0a124d85933cdc361225ac77",
+        "level": "info",
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel-server",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+                    "module": "entry",
+                    "function": "handlePages",
+                    "lineno": 1335,
+                    "colno": 21,
+                    "in_app": true,
+                    "pre_context": [
+                      "\tstate.resetResponseMetadata();",
+                      "\tlet response;",
+                      "\tconst componentInstance = await state.loadComponentInstance();",
+                      "\tswitch (state.routeData.type) {",
+                      "\t\tcase \"endpoint\":"
+                    ],
+                    "context_line": "\t\t\tresponse = await renderEndpoint(componentInstance, ctx, state.routeData.prerender, logger, state);",
+                    "post_context": [
+                      "\t\t\tbreak;",
+                      "\t\tcase \"page\": {",
+                      "\t\t\tconst props = await state.getProps();",
+                      "\t\t\tconst actionApiContext = state.getActionAPIContext();",
+                      "\t\t\tconst result = await state.createResult(componentInstance, actionApiContext);"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+                    "module": "chunks:sequence_BtRa-kJL",
+                    "function": "renderEndpoint",
+                    "lineno": 494,
+                    "colno": 31,
+                    "in_app": true,
+                    "pre_context": [
+                      "\t}",
+                      "\tif (typeof handler !== \"function\") {",
+                      "\t\tlogger.error(\"router\", `The route \"${url.pathname}\" exports a value for the method \"${method}\", but it is of the type ${typeof handler} in {snip}",
+                      "\t\treturn new Response(null, { status: 500 });",
+                      "\t}"
+                    ],
+                    "context_line": "\tlet response = await handler.call(mod, context);",
+                    "post_context": [
+                      "\tif (!response || response instanceof Response === false) throw new AstroError(EndpointDidNotReturnAResponse);",
+                      "\tif (state && REROUTABLE_STATUS_CODES.includes(response.status)) state.skipErrorReroute = true;",
+                      "\tif (method === \"HEAD\") return new Response(null, response);",
+                      "\treturn response;",
+                      "}"
+                    ]
+                  },
+                  {
+                    "filename": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sentinel_C5apWhWJ.mjs",
+                    "module": "chunks:sentinel_C5apWhWJ",
+                    "function": "Module.GET",
+                    "lineno": 14,
+                    "colno": 9,
+                    "in_app": true,
+                    "pre_context": [
+                      "import { t as __exportAll } from \"./rolldown-runtime_D--2vLL6.mjs\";",
+                      "import * as Sentry from \"@sentry/astro\";",
+                      "//#region src/pages/api/sentinel.js",
+                      "var sentinel_exports = /* @__PURE__ */ __exportAll({ GET: () => GET });",
+                      "async function GET() {"
+                    ],
+                    "context_line": "\tSentry.captureMessage(\"sentinel-server\");",
+                    "post_context": [
+                      "\tawait Sentry.startSpan({",
+                      "\t\tname: \"sentinel-server-span\",",
+                      "\t\top: \"test\"",
+                      "\t}, async () => {});",
+                      "\treturn new Response(JSON.stringify({ ok: true }), { headers: { \"content-type\": \"application/json\" } });"
+                    ]
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel-server",
+        "platform": "node",
+        "contexts": {
+          "trace": {
+            "span_id": "8f515f9bfae34e18",
+            "trace_id": "3065b348cb6f4d27921c5d744b6e862e"
+          },
+          "runtime": {
+            "name": "node",
+            "version": "v26.5.0"
+          },
+          "app": {
+            "app_start_time": "2026-09-09T09:55:24.856Z",
+            "app_memory": 189857792,
+            "free_memory": 16116711424
+          },
+          "os": {
+            "kernel_version": "24.6.0",
+            "name": "macOS",
+            "version": "15.7.7",
+            "build": "24G720"
+          },
+          "device": {
+            "boot_time": "2026-09-07T11:23:01.160Z",
+            "arch": "arm64",
+            "memory_size": 68719476736,
+            "free_memory": 310296576,
+            "processor_count": 16,
+            "cpu_description": "Apple M4 Max",
+            "processor_frequency": 2400
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna"
+          },
+          "cloud_resource": {}
+        },
+        "server_name": "DJ90J9R5XC.local",
+        "timestamp": 1788947786.362,
+        "environment": "production",
+        "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "LinkedErrors",
+            "RequestData",
+            "NodeSystemError",
+            "ConversationId",
+            "Console",
+            "Http",
+            "NodeFetch",
+            "OnUncaughtException",
+            "OnUnhandledRejection",
+            "ContextLines",
+            "LocalVariablesAsync",
+            "Context",
+            "ChildProcess",
+            "WorkerThreads",
+            "ProcessSession",
+            "Modules",
+            "Express",
+            "Fastify",
+            "Hapi",
+            "Koa",
+            "Graphql",
+            "Mongo",
+            "Mongoose",
+            "Mysql",
+            "Mysql2",
+            "Redis",
+            "Postgres",
+            "Prisma",
+            "Tedious",
+            "GenericPool",
+            "Kafka",
+            "Amqplib",
+            "LruMemoizer",
+            "Aws",
+            "LangChain",
+            "LangGraph",
+            "Mastra",
+            "VercelAI",
+            "OpenAI",
+            "Anthropic_AI",
+            "Google_GenAI",
+            "PostgresJs",
+            "Firebase",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/astro",
+              "version": "10.67.0"
+            },
+            {
+              "name": "npm:@sentry/node",
+              "version": "10.67.0"
+            }
+          ]
+        },
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "transaction": "GET /api/sentinel",
+        "request": {
+          "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "accept-language": "*",
+            "connection": "keep-alive",
+            "host": "127.0.0.1:4757",
+            "sec-fetch-mode": "cors",
+            "user-agent": "node"
+          },
+          "method": "GET",
+          "url": "http://127.0.0.1:4757/api/sentinel",
+          "cookies": {}
+        },
+        "modules": {
+          "@astrojs/node": "11",
+          "@sentry/astro": "file:../../_toolbox/pack-develop-03aaf424/sentry-astro-10.67.0.tgz",
+          "@sentry/browser": "file:../../_toolbox/pack-develop-03aaf424/sentry-browser-10.67.0.tgz",
+          "@sentry/browser-utils": "file:../../_toolbox/pack-develop-03aaf424/sentry-browser-utils-10.67.0.tgz",
+          "@sentry/bundler-plugins": "file:../../_toolbox/pack-develop-03aaf424/sentry-bundler-plugins-10.67.0.tgz",
+          "@sentry/core": "file:../../_toolbox/pack-develop-03aaf424/sentry-core-10.67.0.tgz",
+          "@sentry/feedback": "file:../../_toolbox/pack-develop-03aaf424/sentry-feedback-10.67.0.tgz",
+          "@sentry/node": "file:../../_toolbox/pack-develop-03aaf424/sentry-node-10.67.0.tgz",
+          "@sentry/opentelemetry": "file:../../_toolbox/pack-develop-03aaf424/sentry-opentelemetry-10.67.0.tgz",
+          "@sentry/replay": "file:../../_toolbox/pack-develop-03aaf424/sentry-replay-10.67.0.tgz",
+          "@sentry/replay-canvas": "file:../../_toolbox/pack-develop-03aaf424/sentry-replay-canvas-10.67.0.tgz",
+          "@sentry/server-runtime-injection": "file:../../_toolbox/pack-develop-03aaf424/sentry-server-runtime-injection-10.67.0.tgz",
+          "@sentry/server-utils": "file:../../_toolbox/pack-develop-03aaf424/sentry-server-utils-10.67.0.tgz",
+          "astro": "7",
+          "playwright-core": "1.55.0"
+        },
+        "debug_meta": {
+          "images": [
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/entry.mjs",
+              "debug_id": "5abb02f2-af2a-4e6f-b169-b805d4172126"
+            },
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sequence_BtRa-kJL.mjs",
+              "debug_id": "eafc5d8b-4644-46ee-a8e0-546323aeb725"
+            },
+            {
+              "type": "sourcemap",
+              "code_file": "/Users/janpeer/dev/sentry-runtime-audit-repros/quickstarts/astro/dist-middleware/server/chunks/sentinel_C5apWhWJ.mjs",
+              "debug_id": "9774e2bd-cda9-4750-91c9-16df93e68c4d"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "via": "/api/1/envelope/",
+      "envHeader": {
+        "sent_at": "2026-09-09T09:56:26.864Z",
+        "trace": {
+          "environment": "production",
+          "release": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+          "public_key": "public",
+          "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+          "transaction": "GET /api/sentinel",
+          "sampled": "true",
+          "sample_rand": "0.6161729783633737",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.astro",
+          "version": "10.67.0"
+        }
+      },
+      "header": {
+        "type": "span",
+        "item_count": 2,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "items": [
+          {
+            "name": "sentinel-server-span",
+            "span_id": "9e02cdb67fb87b54",
+            "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+            "parent_span_id": "8f515f9bfae34e18",
+            "start_timestamp": 1788947786.3623724,
+            "end_timestamp": 1788947786.3624663,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /api/sentinel",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8f515f9bfae34e18",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "GET /api/sentinel",
+            "span_id": "8f515f9bfae34e18",
+            "trace_id": "3065b348cb6f4d27921c5d744b6e862e",
+            "start_timestamp": 1788947786.3612173,
+            "end_timestamp": 1788947786.3627279,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.astro",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.server",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "route",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://127.0.0.1:4757/api/sentinel",
+                "type": "string"
+              },
+              "url.path": {
+                "value": "/api/sentinel",
+                "type": "string"
+              },
+              "http.request.header.accept": {
+                "value": "*/*",
+                "type": "string"
+              },
+              "http.request.header.accept_encoding": {
+                "value": "gzip, deflate",
+                "type": "string"
+              },
+              "http.request.header.accept_language": {
+                "value": "*",
+                "type": "string"
+              },
+              "http.request.header.connection": {
+                "value": "keep-alive",
+                "type": "string"
+              },
+              "http.request.header.host": {
+                "value": "127.0.0.1:4757",
+                "type": "string"
+              },
+              "http.request.header.sec_fetch_mode": {
+                "value": "cors",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "node",
+                "type": "string"
+              },
+              "http.route": {
+                "value": "/api/sentinel",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "GET /api/sentinel",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "8f515f9bfae34e18",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.astro",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.release": {
+                "value": "8fe6959bcbee30670601c1ac257617c17ce6ea40",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "user.ip_address": {
+                "value": "127.0.0.1",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "LinkedErrors",
+                  "RequestData",
+                  "NodeSystemError",
+                  "ConversationId",
+                  "Console",
+                  "Http",
+                  "NodeFetch",
+                  "OnUncaughtException",
+                  "OnUnhandledRejection",
+                  "ContextLines",
+                  "LocalVariablesAsync",
+                  "Context",
+                  "ChildProcess",
+                  "WorkerThreads",
+                  "ProcessSession",
+                  "Modules",
+                  "Express",
+                  "Fastify",
+                  "Hapi",
+                  "Koa",
+                  "Graphql",
+                  "Mongo",
+                  "Mongoose",
+                  "Mysql",
+                  "Mysql2",
+                  "Redis",
+                  "Postgres",
+                  "Prisma",
+                  "Tedious",
+                  "GenericPool",
+                  "Kafka",
+                  "Amqplib",
+                  "LruMemoizer",
+                  "Aws",
+                  "LangChain",
+                  "LangGraph",
+                  "Mastra",
+                  "VercelAI",
+                  "OpenAI",
+                  "Anthropic_AI",
+                  "Google_GenAI",
+                  "PostgresJs",
+                  "Firebase",
+                  "SpanStreaming"
+                ],
+                "type": "array"
+              },
+              "process.runtime.engine.name": {
+                "value": "v8",
+                "type": "string"
+              },
+              "process.runtime.engine.version": {
+                "value": "14.6.202.34-node.24",
+                "type": "string"
+              },
+              "app.start_time": {
+                "value": "2026-09-09T09:55:24.856Z",
+                "type": "string"
+              },
+              "device.archs": {
+                "value": [
+                  "arm64"
+                ],
+                "type": "array"
+              },
+              "device.boot_time": {
+                "value": "2026-09-07T11:23:01.160Z",
+                "type": "string"
+              },
+              "device.memory_size": {
+                "value": 68719476736,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "device.cpu_description": {
+                "value": "Apple M4 Max",
+                "type": "string"
+              },
+              "device.processor_frequency": {
+                "value": 2400,
+                "type": "integer"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "os.name": {
+                "value": "macOS",
+                "type": "string"
+              },
+              "os.version": {
+                "value": "15.7.7",
+                "type": "string"
+              },
+              "os.kernel_version": {
+                "value": "24.6.0",
+                "type": "string"
+              },
+              "os.build": {
+                "value": "24G720",
+                "type": "string"
+              },
+              "app.memory": {
+                "value": 189841408,
+                "type": "integer"
+              },
+              "app.free_memory": {
+                "value": 16116662272,
+                "type": "integer"
+              },
+              "device.free_memory": {
+                "value": 310247424,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

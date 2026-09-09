@@ -51,7 +51,7 @@ for m in re.finditer(r'<h3 id="([^"]+)">((?:(?!<h3 ).)*?)</h3>\s*<div class="iss
         fw,rt,v=m2.groups(); rt2={'Cloudflare':'Cloudflare Workers'}.get(rt,rt)
         heading={'no':'No page documents %s on %s','wrong':'The page for %s on %s contradicts the verified run','partial':'The page for %s on %s misses the wiring or the limits','yes':'The page for %s on %s is correct'}[v] % (fw,rt2)
     items.append(dict(id=hid,prio=prio,heading=heading,type=typ,title=title,body=body))
-P0_ORDER=['DOC-Q7','DOC-Q12','DOC-Q19','DOC-Q20','DOC-Q25','DOC-Q26','DOC-Q32','DOC-Q37','DOC-Q41','DOC-Q44','DOC-Q48','DOC-Q52','DOC-Q57','DOC-Q58','DOC-Q69','DOC-Q71','DOC-Q75','DOC-Q78','DOC-Q83','DOC-Q86','DOC-Q87','DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
+P0_ORDER=['DOC-Q7','DOC-Q12','DOC-Q19','DOC-Q20','DOC-Q25','DOC-Q26','DOC-Q32','DOC-Q37','DOC-Q41','DOC-Q44','DOC-Q48','DOC-Q52','DOC-Q57','DOC-Q58','DOC-Q69','DOC-Q71','DOC-Q75','DOC-Q78','DOC-Q83','DOC-Q86','DOC-Q87','DOC-Q92','DOC-B1','DOC-R1','DOC-R2','DOC-R20','DOC-R13','DOC-F50','DOC-F36','DOC-F19','DOC-F11','DOC-F28','DOC-F13','DOC-F30','DOC-F29']
 for pos,i in enumerate(items): i['pos']=pos
 def key(i): return (['P0','P1','P2'].index(i['prio']), P0_ORDER.index(i['id']) if i['id'] in P0_ORDER else 99, i['pos'])
 items.sort(key=key)

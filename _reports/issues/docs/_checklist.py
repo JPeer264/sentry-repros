@@ -25,6 +25,11 @@ PLAN=[
    ('should','DOC-Q88','the pages misattribute which errors the error components capture'),
    ('later','DOC-Q89','SaaS-only tunnelRoute, deleted source maps, an undeclared function, a 10% verify sample, plugin telemetry'),
  ]),
+ ('SvelteKit', [
+   ('must','DOC-Q92','every vite.config snippet imports sentrySvelteKit from an entry that no longer exports it'),
+   ('should','DOC-Q93','the custom handleErrorWithSentry handler marks every server error handled'),
+   ('later','DOC-Q94','unknown-route spans, segment status on 500, an outdated load rationale, a stale Vite prerequisite'),
+ ]),
  ('Nuxt', [
    ('should','DOC-Q90','the pages still make --import the crucial step; the server config is bundled into the Nitro build'),
    ('later','DOC-Q91','deprecated inject modes documented as current, Nuxt 4 missing, a verify button that creates a second issue'),

@@ -25,6 +25,21 @@ if [ "$CMD" = "build" ]; then
     *) echo "unknown build variant $V"; exit 1 ;;
   esac
   echo "build $V exit $S (build-$V.log)"
+  V="$V" S="$S" node -e '
+    const fs = require("fs");
+    const v = process.env.V, exit = Number(process.env.S);
+    const build = fs.readFileSync(`build-${v}.log`, "utf8").split("\n");
+    const dist = v === "base" ? "dist" : `dist-${v}`;
+    const maps = fs.existsSync(dist) ? fs.readdirSync(dist, { recursive: true }).filter(f => String(f).endsWith(".map")).length : null;
+    const out = {
+      variant: v, kind: "build", exit,
+      steps: [{ label: `ASTRO_TELEMETRY_DISABLED=1 QS_VARIANT=${v} astro build`, result: { exit, distExists: fs.existsSync(`${dist}/server/entry.mjs`), sourceMapFilesInDist: maps } }],
+      console: { build },
+      envelopes: null,
+      verdict: { status: exit === 0 ? "build succeeded" : "build failed", sentryWarnings: build.filter(l => /sentry/i.test(l) && /warn/i.test(l)), errors: build.filter(l => /error/i.test(l) && !/sentry-vite-plugin/.test(l)).slice(0, 12) },
+    };
+    fs.writeFileSync(`results-${v}.json`, JSON.stringify(out, null, 2));
+  '
   exit $S
 fi
 

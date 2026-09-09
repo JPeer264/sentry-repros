@@ -25,7 +25,9 @@ const sentryOptions = {
 };
 
 export default defineConfig({
-  ...(process.env.QS_OUTPUT === "static" ? {} : { output: "server" }),
+  // `QS_OUTPUT=static`: Astro's default output with only the two docs verify files (test.astro and
+  // api/test-error.js, verbatim) in `variants/src-static/`, no repro pages, no `output` option.
+  ...(process.env.QS_OUTPUT === "static" ? { srcDir: "./variants/src-static" } : { output: "server" }),
   outDir: variant === "base" ? "./dist" : `./dist-${variant}`,
   adapter: node({ mode: "standalone" }),
   integrations: [sentry(sentryOptions)],

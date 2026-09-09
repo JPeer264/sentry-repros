@@ -31,7 +31,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-mastra](mastra/) | node framework | mastra | npm, manual setup | done | Node 26.5.0 with the develop tarballs and a mock model endpoint; six variants across the exporter shapes and the built-in integration |
 | [QS-nextjs](nextjs/) | meta-framework | nextjs | wizard is out of scope, manual setup, install variants | done | next build with Turbopack, next start on Node plus Chrome; App Router end to end, Pages Router client init and instrumentation step; resumed once after a rate limit |
 | [QS-nuxt](nuxt/) | meta-framework | nuxt | wizard is out of scope, manual setup, install variants | done | nuxt build plus node .output/server/index.mjs and Chrome; four variants across the start command and the deprecated inject modes; resumed once after a rate limit |
-| QS-sveltekit | meta-framework | sveltekit | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
+| [QS-sveltekit](sveltekit/) | meta-framework | sveltekit | wizard is out of scope, manual setup, install variants | done | vite build with adapter-node, node build on Node plus Chrome; two variants; resumed once after a rate limit |
 | QS-astro | meta-framework | astro | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-remix | meta-framework | remix | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | QS-react-router | meta-framework | react-router | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 28 done, 8 planned, 4 not measurable.
+Totals: 29 done, 7 planned, 4 not measurable.
