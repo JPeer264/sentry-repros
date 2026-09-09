@@ -35,7 +35,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-astro](astro/) | meta-framework | astro | wizard is out of scope, manual setup, install variants | done | astro build with the Node adapter plus Chrome; seven variants; resumed once after a rate limit |
 | [QS-remix](remix/) | meta-framework | remix | wizard is out of scope, manual setup, install variants | done | remix vite:build, remix-serve and Express on Node plus Chrome; seven variants; resumed once after a rate limit |
 | QS-react-router | meta-framework | react-router | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
-| QS-tanstackstart-react | meta-framework | tanstackstart-react | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
+| [QS-tanstackstart-react](tanstackstart-react/) | meta-framework | tanstackstart-react | wizard is out of scope, manual setup, install variants | done | vite build with nitro, node --import on Node plus Chrome; three variants |
 | QS-solidstart | meta-framework | solidstart | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | [QS-aws-lambda](aws-lambda/) | serverless | aws-lambda | npm, layer, container-image, esm-npm, cjs-npm | done | npm path invoked locally with a fake event, fourteen variants; the layer and container paths need AWS and stay unmeasured |
 | [QS-gcp-functions](gcp-functions/) | serverless | gcp-functions | npm | done | functions-framework locally with the develop tarballs; thirteen variants across the HTTP, Background and CloudEvent tabs and the instrumentation page |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 31 done, 5 planned, 4 not measurable.
+Totals: 32 done, 4 planned, 4 not measurable.
