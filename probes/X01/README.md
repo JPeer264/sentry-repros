@@ -171,7 +171,7 @@ Differences from the record, none of them behavioural:
 - `build-ext.ts` - `Bun.build` with `external: ["@sentry/*", "hono"]` into `dist-ext/`
 - `drive.mjs` - plain-node driver; hits the five routes, waits for the sentinel, dumps the sink
 - `run.sh` - per-mode runner
-- `sink.mjs` - unmodified `_toolbox/qs/sink.mjs`
+- `sink.mjs` - unmodified `_toolbox/sink.mjs`
 - `drive-{unbundled,inline,ext}.log`, `run-{unbundled,inline,ext}.log`, `sink.log` - output of the run above
 - `dist-inline/`, `dist-ext/` - the two bundles from the run above (they still need `node_modules`
   for the external `@sentry/*`, so reinstall before rerunning)

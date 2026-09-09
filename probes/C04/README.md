@@ -56,7 +56,7 @@ curl -s 'http://localhost:41238/__scheduled?cron=*+*+*+*+*'
 curl -s 'http://localhost:41238/sentinel?n=2'
 ```
 
-`sink.mjs` is `_toolbox/qs/sink.mjs` extended to keep the full `check_in` payload
+`sink.mjs` is `_toolbox/sink.mjs` extended to keep the full `check_in` payload
 (`check_in_id`, `monitor_slug`, `status`, `duration`, `monitor_config`, `contexts`), the per-span
 `op`, `trace_id` and full attribute map, and the event's `contexts.cloud_resource`/`contexts.runtime`.
 

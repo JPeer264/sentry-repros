@@ -67,7 +67,7 @@ kill $mpid; kill $spid; wait $mpid; wait $spid
 Run the three `wrangler dev` processes one after another, never two at once in this directory: the
 recorded run noted that two simultaneous `wrangler dev` processes in the same directory crash one of
 them. `drive.mjs` clears the sink, calls `/ai` twice, `/injected` and `/sentinel`, then polls the sink
-until the sentinel event is there and prints the whole sink. `sink.mjs` is `_toolbox/qs/sink.mjs` with
+until the sentinel event is there and prints the whole sink. `sink.mjs` is `_toolbox/sink.mjs` with
 the span mapping extended to keep, per span, `name`, `op`, whether it has a parent, `status` and every
 `sentry.origin` / `sentry.op` / `gen_ai.*` attribute.
 

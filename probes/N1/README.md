@@ -64,7 +64,7 @@ kill $spid; wait $spid
 its `LISTENING <port>` line, drives it from a separate `curl` process (`GET /boom`, then
 `GET /sentinel`), polls `/__items` until the sentinel envelope has arrived, and writes
 `out2/<label>/{app.log,items.json}`. `run2.sh` is the same runner pinned to `main.ts`. `sink.mjs` is
-`_toolbox/qs/sink.mjs` with the event mapping extended to keep `server_name`, `contexts.os`,
+`_toolbox/sink.mjs` with the event mapping extended to keep `server_name`, `contexts.os`,
 `contexts.runtime`, `contexts.device`, `contexts.app` and every frame's filename, line, `in_app`,
 context-line presence and pre-context count, plus the release/environment/os attributes on span
 envelopes.

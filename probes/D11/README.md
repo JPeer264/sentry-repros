@@ -73,7 +73,7 @@ kill $spid; wait $spid
 ```
 
 `./run.sh 39117 [path-to-deno]` runs the three `cron.ts`/`desc-probe.ts` legs for one Deno binary
-against an already-listening sink. `sink.mjs` is `_toolbox/qs/sink.mjs` with the compact mapping
+against an already-listening sink. `sink.mjs` is `_toolbox/sink.mjs` with the compact mapping
 extended to keep the `check_in` fields (`check_in_id`, `monitor_slug`, `status`, `duration`,
 `monitor_config`, `contexts`).
 

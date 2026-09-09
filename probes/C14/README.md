@@ -63,7 +63,7 @@ chunks and curl's ttfb/total, curls `/after`, sleeps 1 s (the "after" span only 
 the response, so an immediate sentinel would give a false negative), curls `/sentinel` with a
 `sentinel-$RANDOM` message (a repeated identical message is dropped by Dedupe, because
 `wrangler dev` reuses the isolate), polls until that message is in the sink, prints every item, and
-after 3 more seconds prints the final item count. `sink.mjs` is `_toolbox/qs/sink.mjs` with an
+after 3 more seconds prints the final item count. `sink.mjs` is `_toolbox/sink.mjs` with an
 `arrived` wall-clock timestamp on every item and start/end/duration, `span_id`, `parent`,
 `is_segment` and `http.response.status_code` kept for spans and transactions.
 

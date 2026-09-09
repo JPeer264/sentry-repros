@@ -42,10 +42,10 @@ the `SINK_URL` var; change it in both if the port is taken. From this directory:
 ```
 PORT=53821 node sink2.mjs > sink2.log 2>&1 & spid=$!
 
-./run.sh "$PWD" n3_dev   44320 devA vite.config.ts                # sentryCloudflareVitePlugin()
-./run.sh "$PWD" n3_dev   44321 devB vite.noauto.config.ts         # { autoInstrumentation: false }
-./run.sh "$PWD" n3_dev   44322 devC vite.nobuildtime.config.ts    # { buildTimeInstrumentation: false }
-./run.sh "$PWD" n3_agent 44323 devD vite.agent.config.ts          # configPath + wranglerConfigPath
+./run.sh "$PWD" n3_dev   44330 devA vite.config.ts                # sentryCloudflareVitePlugin()
+./run.sh "$PWD" n3_dev   44331 devB vite.noauto.config.ts         # { autoInstrumentation: false }
+./run.sh "$PWD" n3_dev   44332 devC vite.nobuildtime.config.ts    # { buildTimeInstrumentation: false }
+./run.sh "$PWD" n3_agent 44333 devD vite.agent.config.ts          # configPath + wranglerConfigPath
 
 npx vite build --config vite.agent-nopath.config.ts               # devE, build only
 npx vite build --config vite.experimental.config.ts               # devF, build only
@@ -115,7 +115,10 @@ warning is emitted.
 
 ## Observed on 2026-09-07
 
-Matches the recorded verdict. Verbatim, trimmed:
+Rebuilt from scratch and rerun once (ports 44330-44333 because 44320 was taken by another agent).
+**Matches** the recorded verdict: `sentryCloudflareVitePlugin()` with no options wraps everything,
+the options are top-level `autoInstrumentation` / `buildTimeInstrumentation`, and the documented
+`_experimental.*` names do not exist. Verbatim, trimmed:
 
 devA - `sentryCloudflareVitePlugin()`, no options:
 
@@ -127,7 +130,10 @@ devA - `sentryCloudflareVitePlugin()`, no options:
   rpcTracePropagationBindings              3
   __SENTRY_ORCHESTRION__                   7
 injected into the bundle (dist/n3_dev/index.js:66370-66414):
-  var __SENTRY_OPTIONS__ = (env) => { const opts = instrument_server_default(env); return { ...opts, rpcTracePropagationBindings: ["COUNTER", "SELF", ...
+  var __SENTRY_OPTIONS__ = (env) => {
+  	const opts = instrument_server_default(env);
+  	return { ...opts, rpcTracePropagationBindings: [ "COUNTER", "SELF", ...opts?.rpcTracePropagationBindings ?? [] ] };
+  };
   var Counter = instrumentDurableObjectWithSentry(__SENTRY_OPTIONS__, __SENTRY_ORIGINAL_Counter__);
   var MyWorkflow = instrumentWorkflowWithSentry(__SENTRY_OPTIONS__, __SENTRY_ORIGINAL_MyWorkflow__);
   var Api = withSentry(__SENTRY_OPTIONS__, __SENTRY_ORIGINAL_Api__);
@@ -140,14 +146,17 @@ injected into the bundle (dist/n3_dev/index.js:66370-66414):
   /error     Error: route boom
   /sentinel  {"sentinel":true}
 == sink ==
-  {"type": "span", "items": [{"n": "SELECT users", "trace": "1ff3618df7f74563ad81d00b9d35b871", "id": "8e75e0e4b970d929", "parent": "802e58f79edc5b00", "origin": "auto.db.mysql"}, {"n": "GET", "trace": "1ff3618df7f74563ad81d00b9d35b871", "id": "802e58f79edc5b00", "origin": "auto.http.cloudflare"}]}
-  {"type": "span", "items": [{"n": "bump", "trace": "213cba3c7de9469f98546cdfef63f120", "id": "a657d4c87c1d5c18", "parent": "b7fa9215d2378350", "origin": "auto.faas.cloudflare.durable_object"}]}
-  {"type": "span", "items": [{"n": "GET", "trace": "213cba3c7de9469f98546cdfef63f120", "id": "b7fa9215d2378350", "origin": "auto.http.cloudflare"}]}
-  {"type": "span", "items": [{"n": "ping", "trace": "1fa646871c424776b496e7d3743b23a7", "id": "b711851de2e14926", "parent": "aaf94f1b8a0a481e", "origin": "auto.faas.cloudflare.worker_entrypoint"}]}
-  {"type": "span", "items": [{"n": "GET", "trace": "1fa646871c424776b496e7d3743b23a7", "id": "aaf94f1b8a0a481e", "origin": "auto.http.cloudflare"}]}
-  {"type": "event", "exception": "route boom", "mechanism": "auto.http.cloudflare", "handled": false, "trace": "1cdafa9ed47c4fc887d0a7b0cc370d0a"}
-  {"type": "span", "items": [{"n": "GET", "trace": "1cdafa9ed47c4fc887d0a7b0cc370d0a", "id": "8e882f39417d3ca9", "origin": "auto.http.cloudflare"}]}
+  {"type": "span", "items": [{"n": "SELECT users", "trace": "fa365ef92fb4401c846635fa215d07a7", "id": "aee946266bb385f7", "parent": "9999d6a3eb04651b", "origin": "auto.db.mysql"}, {"n": "GET", "trace": "fa365ef92fb4401c846635fa215d07a7", "id": "9999d6a3eb04651b", "origin": "auto.http.cloudflare"}]}
+  {"type": "span", "items": [{"n": "bump", "trace": "564a1bfe60234b3797ad4ab136c8dade", "id": "973cafcbbff5e7dd", "parent": "a90c4afa0901535b", "origin": "auto.faas.cloudflare.durable_object"}]}
+  {"type": "span", "items": [{"n": "GET", "trace": "564a1bfe60234b3797ad4ab136c8dade", "id": "a90c4afa0901535b", "origin": "auto.http.cloudflare"}]}
+  {"type": "span", "items": [{"n": "ping", "trace": "8a45bbd9bf224887b4b5e93ca27ef73b", "id": "ab09cbe0507a4bcc", "parent": "a6c8db91baf5ab78", "origin": "auto.faas.cloudflare.worker_entrypoint"}]}
+  {"type": "span", "items": [{"n": "GET", "trace": "8a45bbd9bf224887b4b5e93ca27ef73b", "id": "a6c8db91baf5ab78", "origin": "auto.http.cloudflare"}]}
+  {"type": "event", "exception": "route boom", "mechanism": "auto.http.cloudflare", "handled": false, "trace": "2dbaed8e81c443bd89ff82e01b2bd6fa"}
+  {"type": "span", "items": [{"n": "GET", "trace": "2dbaed8e81c443bd89ff82e01b2bd6fa", "id": "9648221f87bf0d4e", "origin": "auto.http.cloudflare"}]}
 ```
+
+The `bump` and `ping` spans carry the request span's `id` as `parent` and its `trace` - the
+auto-populated `rpcTracePropagationBindings: ["COUNTER", "SELF"]` propagate.
 
 devB - `{ autoInstrumentation: false }`:
 
@@ -171,12 +180,13 @@ devC - `{ buildTimeInstrumentation: false }`:
   instrumentDurableObjectWithSentry        2
   instrumentWorkflowWithSentry             2
   rpcTracePropagationBindings              3
+  __SENTRY_ORCHESTRION__                   3
   /injected  {"integrations":[],"bundler":null}
 == sink ==
-  {"type": "span", "items": [{"n": "GET", "trace": "2a1488c7dcfc4cadb99d69bfadcad11a", "id": "83db4220518f452e", "origin": "auto.http.cloudflare"}]}
-  {"type": "span", "items": [{"n": "bump", "trace": "d27a33fd352f418ea52169e861d0b21a", "id": "912e4216c68df2d0", "parent": "a03541e10279aeff", "origin": "auto.faas.cloudflare.durable_object"}]}
-  {"type": "span", "items": [{"n": "ping", "trace": "e6ffd2b90f6140a28a1f58954385cdc1", "id": "aee48ccced5a8edd", "parent": "a8a6f213d25b4b2c", "origin": "auto.faas.cloudflare.worker_entrypoint"}]}
-  {"type": "event", "exception": "route boom", "mechanism": "auto.http.cloudflare", "handled": false, "trace": "3956a4b055dd44a595ac597851eb1dc0"}
+  {"type": "span", "items": [{"n": "GET", "trace": "f2a594b3f818407192dc42eb982768a7", "id": "bcd9c485ecebfe49", "origin": "auto.http.cloudflare"}]}
+  {"type": "span", "items": [{"n": "bump", "trace": "06a48b5086a642b2b7e926ab05084ac4", "id": "9da01b1d7206de13", "parent": "bc3b27d48ac3197c", "origin": "auto.faas.cloudflare.durable_object"}]}
+  {"type": "span", "items": [{"n": "ping", "trace": "73b395be2f8c46a5b7738eb37edfb210", "id": "9f093f0eb5ba7cbb", "parent": "8a7dc89256312f49", "origin": "auto.faas.cloudflare.worker_entrypoint"}]}
+  {"type": "event", "exception": "route boom", "mechanism": "auto.http.cloudflare", "handled": false, "trace": "e1dc7e3a39c44b5c83540edd3dd82901"}
   (no auto.db.mysql span anywhere)
 ```
 
@@ -211,8 +221,9 @@ $ npx vite build --config vite.experimental.config.ts   # exit=0, options silent
 
 Shipped option names (`node_modules/@sentry/cloudflare/build/types/vite/index.d.ts`): `wranglerConfigPath?`
 (:15), `buildTimeInstrumentation?` (:29), `autoInstrumentation?` (:46), and nothing else. The JSDoc/basename
-mismatch is still there on develop: `packages/cloudflare/src/vite/index.ts:42` says `instrument.*`,
-`packages/cloudflare/src/vite/instrumentFile.ts:15` is `const INSTRUMENT_FILE_BASENAME = 'instrument.server';`.
+mismatch is still there on develop: `packages/cloudflare/src/vite/index.ts:41` says options come from a
+co-located `instrument.*` file, while `packages/cloudflare/src/vite/instrumentFile.ts:15` is
+`const INSTRUMENT_FILE_BASENAME = 'instrument.server';`.
 
 Differences from the record, all cosmetic:
 
@@ -222,9 +233,9 @@ Differences from the record, all cosmetic:
   `auto.faas.cloudflare.durable_object`.
 - The record's MariaDB had no `app` database, so it queried `SELECT 1 + 1 AS two` on port 3306. Here
   `127.0.0.1:3307` has `app.users`, so `/db` runs `SELECT * FROM users` and returns the two rows.
-- `rpcTracePropagationBindings` greps 3 rather than 2 (the SDK bundle now contains one more textual
-  occurrence); the injected value is the same `["COUNTER", "SELF", ...]`.
-- The recorded devD line was truncated mid-word in the record; the full warning is quoted above.
+- `rpcTracePropagationBindings` greps 3 rather than 2 (one more textual occurrence in the SDK bundle);
+  the injected value is the same `["COUNTER", "SELF", ...]`.
+- The record's devD line was truncated mid-word; the full warning is quoted above.
 
 ## Files
 

@@ -63,7 +63,7 @@ grep -E '^(ENV|OPTS) ' app-run1.log app-run2.log app-run3.log
 SINK_URL:http://127.0.0.1:<sink-port>/`, waits for the `Ready on http://localhost:<app-port>` line,
 runs `drive.mjs`, and kills the wrangler process it started. `drive.mjs` clears the sink, GETs
 `/env`, `/opts`, `/hello`, `/error`, `/sentinel`, polls the sink until the `sentinel` event is in it,
-then prints every sink item. `sink.mjs` is `_toolbox/qs/sink.mjs` with the event mapping trimmed to
+then prints every sink item. `sink.mjs` is `_toolbox/sink.mjs` with the event mapping trimmed to
 `message`/`exception`/`sdk`/`release`/`environment` plus the envelope-header `trace` (the DSC), and
 the span mapping changed to emit, per span, `{name, release, environment, sample_rate}` from the
 span attributes plus the same DSC; `RAW=<file>` also appends every raw envelope item.

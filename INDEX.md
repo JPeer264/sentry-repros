@@ -25,7 +25,7 @@ Every entry is a directory with a README (Install, Run, Expected, Observed). Reb
 | [B18](probes/B18/) | node:http server on Bun (no framework) | partial | yes | yes | No behavioral difference; the recorded "partial" verdict reproduces in all four variants (stream spans per request with  |
 | [B19](probes/B19/) | OpenAI SDK on Bun via the plugin build (mock server) | works | yes | yes | None material. Cosmetic only: fresh ports (mock server on 51872 instead of the recorded 47312), a fresh gen_ai span id,  |
 | [C01](probes/C01/) | Handler errors and enrichment on Workers | partial | yes | yes | None that changes the verdict. Cosmetic only: ports 44871/44872 instead of the recorded 41871/41872; file paths point at |
-| [C02](probes/C02/) | Request isolation under concurrency on Workers | see record | yes | yes | None on the develop line: both variants returned the recorded verdict object byte for byte, and the recorded side observ |
+| [C02](probes/C02/) | Request isolation under concurrency on Workers | works | yes | yes | None on the develop line: both variants returned the recorded verdict object byte for byte, and the recorded side observ |
 | [C03](probes/C03/) | Incoming trace continuation on Workers | works | yes | yes | None that affects the verdict. Every assertion in the record reproduced: the http.server segment keeps trace_id aaaaaaaa |
 | [C04](probes/C04/) | Scheduled handler and cron monitors on Workers | works | yes | yes | None behavioural; the recorded verdict "works" reproduced in full. Only per-run values and cosmetics differ: ids, timest |
 | [C05](probes/C05/) | Queues producer and consumer locally | works | yes | yes | None behavioral. Every recorded element reproduced: `queue.publish` spans named `send Q` (binding key, not queue name) a |
@@ -40,7 +40,7 @@ Every entry is a directory with a README (Install, Run, Expected, Observed). Reb
 | [C14](probes/C14/) | Streaming responses and work after the response on Workers | works | yes | yes | None that changes the verdict. Cosmetic only: ports 47141 (sink) / 47142 (app) instead of the recorded 41477/41478; this |
 | [C15](probes/C15/) | Hono on Workers with @sentry/hono/cloudflare | works | yes | yes | No behavioural difference; the recorded verdict "works" reproduced element for element (route-named http.server span env |
 | [C16](probes/C16/) | OpenAI SDK on Workers via the Vite plugin (mock server) | works | yes | yes | No behavioral difference: verdict "works" reproduces in all three variants, with every recorded gen_ai.* attribute prese |
-| [C18](probes/C18/) | Astro on Cloudflare Workers | see record | yes | yes | All three recorded evidence lines reproduce with the recorded values, so the verdict "works" holds. Deviations, none of  |
+| [C18](probes/C18/) | Astro on Cloudflare Workers | works | yes | yes | All three recorded evidence lines reproduce with the recorded values, so the verdict "works" holds. Deviations, none of  |
 | [C25](probes/C25/) | WorkerEntrypoint RPC via a self service binding | works | yes | yes | Nothing that contradicts the record. The recorded verdict "works" reproduced on the first run: `rpc hello` span parented |
 | [C26](probes/C26/) | Workflows locally | partial | yes | yes | None behaviorally. The recorded verdict "partial" holds in every part: `function` segment spans per `step.do` with code. |
 | [D01](probes/D01/) | Process-level errors in a Deno script | works | yes | yes | No behavioral difference. Every recorded field reproduced: level=fatal, handled=false, mechanism auto.deno.global_handle |

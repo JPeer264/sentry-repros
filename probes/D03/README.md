@@ -51,7 +51,7 @@ APP_PORT=<app port> SINK_PORT=<sink port> \
 
 waits for it to answer, runs `node drive.mjs <app port> <sink port> > <mode>-result-<label>.json`,
 renders it with `node verify.mjs <mode>-result-<label>.json`, and kills the app. `sink.mjs` is
-`_toolbox/qs/sink.mjs` with the span mapping extended to keep each span's `op`, `trace_id`,
+`_toolbox/sink.mjs` with the span mapping extended to keep each span's `op`, `trace_id`,
 `parent_span_id`, `url.full` and its `reqtag` attribute instead of the default `"<op> <name>"`
 string.
 

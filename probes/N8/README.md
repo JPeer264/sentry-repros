@@ -75,7 +75,7 @@ kill $spid
 `drive.mjs <appPort> <sinkPort> <sentinelCount>` clears the sink, then sends 1 `/ok`, 1 `/db`, 10
 concurrent `/tag?id=r0..r9`, 3 `/boom` and `<sentinelCount>` `/sentinel` requests, waits for a
 sentinel event to land in the sink, and prints envelope counts, the span lines, an event tally and
-how many `tagged:*` events carry their own `req` tag. `sink.mjs` is `_toolbox/qs/sink.mjs` with the
+how many `tagged:*` events carry their own `req` tag. `sink.mjs` is `_toolbox/sink.mjs` with the
 span mapping rendered as `<op> <name> [origin=…] [src=…] [trace=…]` and the event mapping trimmed to
 message / tags / trace / request url.
 

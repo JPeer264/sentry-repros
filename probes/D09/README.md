@@ -20,7 +20,7 @@ The probe varies three knobs through env vars so a single app covers the whole m
 | `MAXSIZE` | unset (default), `none`, `small`, `always` | `denoServeIntegration({ maxRequestBodySize })` |
 | `BODYSIZE` | driver-side; `2000` produces a 2010-byte JSON body | |
 
-`sink-d09.mjs` is an extended copy of `_toolbox/qs/sink.mjs`: it keeps `request.data` (plus its
+`sink-d09.mjs` is an extended copy of `_toolbox/sink.mjs`: it keeps `request.data` (plus its
 length) on events and transactions, the `http.request.body.*` attributes on stream-lifecycle
 spans, and the same attributes in the static transaction's `contexts.trace.data`.
 

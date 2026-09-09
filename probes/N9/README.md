@@ -242,7 +242,7 @@ Differences from the record, none affecting the verdict:
   `_fresh/server/server-entry.js` (1,490.95 kB) rather than `server-entry.mjs` (1,490.70 kB).
 - The try/catch workaround is behind `N9_WORKAROUND=1` in `main.ts` instead of being pasted in by
   hand, so one build covers both runs.
-- `sink.mjs` is the current `_toolbox/qs/sink.mjs`, which keeps more per-item fields (`trace_id`,
+- `sink.mjs` is the current `_toolbox/sink.mjs`, which keeps more per-item fields (`trace_id`,
   `raw`, `request`, `environment`) than the version the record was written against, and renders a
   `captureMessage` event's `exception` as `undefined: sentinel`.
 - Envelope arrival order differs: the recorded items list put the sentinel event first, here it

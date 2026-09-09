@@ -41,7 +41,7 @@ kill $spid; wait $spid
 python3 -m json.tool items.json
 ```
 
-`sink.mjs` is `_toolbox/qs/sink.mjs` extended to keep `user`, `tags`, non-default `contexts`,
+`sink.mjs` is `_toolbox/sink.mjs` extended to keep `user`, `tags`, non-default `contexts`,
 `extra`, `breadcrumbs`, `os`, `server_name` and per-frame `filename`/`in_app`/`context_line`/
 pre+post context; `RAW=<file>` also appends the raw envelope bodies.
 

@@ -45,7 +45,7 @@ grep -a -E '^(==|exit=|init done|about to|\{)' all.log | sed 's/\x1b\[[0-9;]*m//
 `run.sh` clears the sink, runs one script with
 `SINK_PORT=<port> deno run --no-prompt --allow-net --allow-env --allow-read --allow-sys <script>`,
 prints its exit code and stdout/stderr (also saved to `<script>.out`), and prints the sink items.
-`sink.mjs` is `_toolbox/qs/sink.mjs` with the event mapping extended to keep `level`, the exception
+`sink.mjs` is `_toolbox/sink.mjs` with the event mapping extended to keep `level`, the exception
 type and value separately, the SDK version and the full `contexts.runtime`.
 
 ## Expected

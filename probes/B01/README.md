@@ -43,7 +43,7 @@ cases and writes `results.log`; `run-baseline.sh` runs the same scripts without 
 
 The arguments are the sink port and the bun binary. Pick a port nothing else is listening on
 (`lsof -nP -iTCP:<port>`): `run.sh` does not check, and if the port is taken the cases post into the
-other listener and the results come back missing fields. `sink.mjs` is `_toolbox/qs/sink.mjs` with `level`
+other listener and the results come back missing fields. `sink.mjs` is `_toolbox/sink.mjs` with `level`
 and `extra` added to the compacted `event` shape. To run one case by hand:
 
 ```

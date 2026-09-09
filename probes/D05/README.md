@@ -113,5 +113,5 @@ waited 10000ms; session envelopes: 0
 - `main-d05.ts` — Deno app with a `Deno.serve` server (`/ok`, `/error`, `/sentinel`) and a `node:http` server (`/ok`, `/error-catch`, `/error-throw`)
 - `drive.mjs` — drives both servers, sends the sentinel, waits for a `sessions` envelope
 - `drive-serve-only.mjs` — drives `Deno.serve` only, waits a fixed time, reports the session count
-- `sink.mjs` — envelope sink, extended over `_toolbox/qs/sink.mjs` to keep `sessions` attrs and aggregates
+- `sink.mjs` — envelope sink, extended over `_toolbox/sink.mjs` to keep `sessions` attrs and aggregates
 - `deno.json` — `nodeModulesDir: "manual"`

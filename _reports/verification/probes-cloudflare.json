@@ -1,0 +1,607 @@
+[
+  {
+    "id": "C01",
+    "tests_what_it_claims": "yes",
+    "code_notes": "src/index.ts exercises the three cases the summary names. /enriched-throw sets user/tag/context/breadcrumb, writes console.log and console.warn, then throws out of `fetch` at line 22 (`sed -n '22p' src/index.ts` is the throw, matching the `src/index.ts:22:15` frame in drive.out). /waituntil-throw hands ctx.waitUntil a throwing async function and /waituntil-reject a rejected promise, both answering 200. /sentinel is the sink sentinel and drive.sh polls until it arrives, so the waitUntil absence is an absence and not a race. wrangler.jsonc carries nodejs_compat, so this is the withSentry path, not /request.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "drive.out: 'HTTP/1.1 500' with 'at Object.fetch (file://$REPRO/probes/C01/src/index.ts:22:15)'; /waituntil-throw and /waituntil-reject both 'HTTP/1.1 200 OK'. `grep -c 'waitUntil boom|waitUntil reject' raw.log` = 0. raw.log spans parsed: /enriched-throw status ok with http.response.status_code absent, the three 200 routes status ok with 200. items.json event: user.ip_address 127.0.0.1, tags.c01_tag, contexts.runtime {name: cloudflare}, cloud_resource, culture, three breadcrumbs, request.query_string 'q=1', cookies {c01:1}, frameCount 10, hasContextLine false. app.log:27 '[wrangler:error] Error: c01 handler boom', app.log:38 'GET /enriched-throw 500 Internal Server Error', app.log:39 and :85 'Uncaught Error: c01 waitUntil boom' / 'c01 waitUntil reject'.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "The develop half of both matrix cells and of F28 is in items.json and raw.log. The record's stated cause holds in the SDK: packages/cloudflare/src/wrapRequestHandlerWithInit.ts:169 is `span.end();` inside the catch, before captureException, with no error status set. F28's '10.73.0 do not await Sentry.flush() inside that task, it deadlocks the flush lock' is a 10.73.0 statement the develop-only rebuild does not carry.",
+    "rerun": "not run",
+    "corrections": [
+      "README's Run and Files notes call the sink `_toolbox/qs/sink.mjs`. That directory does not exist in the repository; `_toolbox/sink.mjs` is the file meant (C04, C10, C11, C14, C16 and N10 repeat the same stale path)."
+    ],
+    "report_sentences": [
+      "Matrix, Handler error captured with request context, Cloudflare: 'works / works; errors in ctx.waitUntil() lost on both [C01]' - develop half supported by drive.out + raw.log; the 10.73.0 half is record-only.",
+      "Matrix, Enrichment: 'works / works, no context lines on workerd [C01]' - supported ('hasContextLine': false in items.json).",
+      "F28 'Errors inside ctx.waitUntil() are lost on both versions [C01; confirmed four times]. workerd logs Uncaught Error, nothing reaches Sentry, and no option changes it.' - the develop half is supported; 'no option changes it' and the 10.73.0 flush-deadlock clause are not exercised by the shipped probe."
+    ]
+  },
+  {
+    "id": "C02",
+    "tests_what_it_claims": "yes",
+    "code_notes": "src/index.ts sets a per-request tag and user, then awaits a 300 ms timer before capturing, which is what makes the five requests overlap in one isolate; drive.mjs fires all five with Promise.all and only then the sentinel, and its assertion requires exactly one tag key per event, five distinct trace ids and one http.server span per error trace. run.sh runs the same app twice, the second time with --var UNCACHED:1, which flips `cacheClient: false` in the options callback, so the isolate-wide cached client and the per-invocation client are both covered.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "logs-cached-run4/drive.out and logs-uncached-run4/drive.out both end in `verdict {\"isolated\":true,\"sentinelClean\":true,\"errors\":5,\"distinctErrorTraces\":5,\"httpServerForErrorTraces\":5}`; every trace id quoted in the README's Observed block is present in the matching drive.out, and each file holds 6 span envelopes. logs-*-run4/sink.log say `sink listening 41733` / `41735`, the check the README itself asks for.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "Matrix 'Per-request isolation under concurrency: works / works [C02]' - the develop half is supported twice over (cached and uncached); the 10.73.0 half is record-only and the README says so. The report also lists C02 under 'Behaviors with no page at all', which is a docs claim and outside this check.",
+    "rerun": "not run",
+    "corrections": [
+      "_records/probes.json gives C02 the verdict 'see record' while its own README says 'Recorded verdict: works (develop, both variants)' and INDEX.md prints the same 'see record'. Normalise to 'works', as the Bun verifier asked for B01.",
+      "The Observed section's last block quotes two lines from `node_modules/@sentry/cloudflare/build/esm/dev/baseSdk.js:40` and `.../client.js:33`. node_modules is not shipped, so those two lines cannot be checked in the directory. Both are correct against the SDK source at the pin (packages/cloudflare/src/baseSdk.ts:95 `const cacheEnabled = options.cacheClient !== false;`, packages/cloudflare/src/client.ts:64 `this.isCachedClient = options.cacheClient === true;`); cite the source rather than a build file that is not there."
+    ],
+    "report_sentences": [
+      "Matrix, Per-request isolation under concurrency, Cloudflare: 'works / works [C02]' - supported for develop by both variants' verdict objects."
+    ]
+  },
+  {
+    "id": "C03",
+    "tests_what_it_claims": "yes",
+    "code_notes": "src/index.ts does an outgoing `fetch` to the downstream server from inside the handler, which is the only way to observe both the continued incoming trace and the propagated outgoing headers in one request. downstream.mjs records the trace headers it received and probe.mjs prints them next to every sink item, so the span id in the outgoing header can be compared with the recorded http.client span. wrangler-noprop is the same source with `tracePropagationTargets: []`, which isolates outgoing suppression from incoming continuation.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "probe-default.out:3 `downstream saw: [{\"path\":\"/downstream\",\"sentry-trace\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab-87e3c996c966db50-1\",\"baggage\":\"...sentry-environment=upstream-env,sentry-release=upstream%402.0.0...\",\"traceparent\":null}]`; probe-default.out:4 the span envelope with `\"dsc\":{...\"environment\":\"upstream-env\",\"release\":\"upstream@2.0.0\"...}` and http.server `\"span_id\":\"8559db419830cafa\",\"parent_span_id\":\"bbbbbbbbbbbbbbbb\"` with http.client `\"span_id\":\"87e3c996c966db50\"` - the same id the downstream server saw. probe-noprop.out:3 `downstream saw: [{...\"sentry-trace\":null,\"baggage\":null,\"traceparent\":null}]` while the http.client span (span_id b933aaa2995e500e, parent b9da4667ada5898d) is still recorded.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "Matrix 'Incoming sentry-trace continued: works / works [C03]' and the first clause of 'Outgoing fetch span and headers: works / works [C03, C08, C25]' are both directly in probe-default.out. The second clause of that cell (binding and DO stub fetch inject headers but create no span) rests on C08 and C25, not on C03.",
+    "rerun": "not run",
+    "corrections": [
+      "In the Observed section the `[tracePropagationTargets: []] sink: http.server GET trace_id ... ; http.client ...` line is a hand-written summary prefixed 'sink:', not a line that appears in probe-noprop.out. Every id in it does appear in the file's JSON; the prefix just reads as verbatim when it is not."
+    ],
+    "report_sentences": [
+      "Matrix, Incoming sentry-trace continued, Cloudflare: 'works / works [C03]' - supported.",
+      "Matrix, Outgoing fetch span and headers, Cloudflare: 'works / works; service binding and DO stub fetch inject headers but create no span [C03, C08, C25]' - the first clause is C03's; the binding clause belongs to C08 and C25 only."
+    ]
+  },
+  {
+    "id": "C04",
+    "tests_what_it_claims": "yes",
+    "code_notes": "A module-scope run counter makes the second invocation of a warm isolate throw, which is what separates 'per-invocation trace' from 'per-isolate trace' and gives the ok/error check-in pair in one run. The body runs inside Sentry.withMonitor with an explicit crontab schedule, and wrangler.jsonc declares the cron trigger, so `--test-scheduled` drives the real scheduled handler. The optional runs 3+4 block re-drives the same warm isolate, which is exactly the case F29 is about.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "items.json holds check_in 7693153e87244093b64843ae6887180d in_progress then ok on trace faa4b4ab4918410c8f3025bc90a65e10, check_in 95f93392d95240abb88f8d545b7e304f in_progress then error on trace 4ffbe77baf944a799b9b447c94c28071, the `Scheduled Cron * * * * *` span with op function / source task / origin auto.faas.cloudflare.scheduled / faas.cron / faas.time / faas.trigger, the same span at status error with `sentry.status.message: internal_error`, and the unhandled event with mechanism auto.faas.cloudflare.scheduled. app.log:19 'GET /__scheduled 200 OK', :20 'Uncaught Error: cron boom run 2', :70 'GET /__scheduled 500 Internal Server Error'. items-runs34.json: check-in 84750819d8f14ac1b57986285aadf398 on trace 98aea691ccac4b25bae7f4613e539dfe and 0766ee8a9b064e7b9f804814483e0ec4 on trace 467a4f65d15d4456817a1dafae9a44ab - four invocations, four trace ids, and the ok-before-in_progress ordering the README flags.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "The develop half of the matrix cell ('works / works with withMonitor in scheduled') is fully supported. F29's actual subject - '10.73.0 shares one trace id across all scheduled and queue invocations of an isolate' - is the opposite of what the shipped probe shows (develop gives one trace per invocation), so C04 is cited as the control, not as the evidence; the failing leg and its two workarounds (fresh propagation context in the withSentry options callback, Sentry.startNewTrace around the queue handler) exist only in the record.",
+    "rerun": "not run",
+    "corrections": [
+      "README's Run note calls the sink `_toolbox/qs/sink.mjs`; that directory does not exist (see C01)."
+    ],
+    "report_sentences": [
+      "Matrix, Cron monitors, Cloudflare: 'works / works with withMonitor in scheduled; 10.73.0 shares one trace id across runs [C04]' - the develop half is supported; the 10.73.0 half is record-only.",
+      "F29 '10.73.0 shares one trace id across all scheduled and queue invocations of an isolate [C04, C05; confirmed]' - neither shipped probe contains a 10.73.0 run; C04 and C05 show the fixed develop behaviour and the workarounds are record-only."
+    ]
+  },
+  {
+    "id": "C05",
+    "tests_what_it_claims": "yes",
+    "code_notes": "The producer routes use both `send` and `sendBatch` on the same binding, which is what separates the per-message publish span from the batch one, and the consumer throws only for `n === 99` so workerd's retry is exercised with max_retries 1 in wrangler.jsonc. drive.mjs spaces the three publishes 3 s apart so each lands in its own consumer batch, and waits for the `sentinel-queue` event captured from inside the consumer, so the read is deterministic on both sides.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "result.json holds four `send Q` spans (op queue.publish, messaging.destination.name 'Q' - the binding key, not the queue name 'probe-q'; the sendBatch one carries messaging.batch.message_count 2 and body size 14) and four `process probe-q` segment spans (op queue.process, faas.trigger pubsub, messaging.batch.message_count 3 / 1 / 1 / 1). The consumer throw appears twice, `consumer boom n=99 attempt=1` on trace 71a4261cb6c24827a46a003031561c3d with messaging.message.retry.count 0 and `attempt=2` on trace d4402c928f5d45788217a194ca9a3505 with retry.count 1, both mechanism auto.faas.cloudflare.queue / handled false, both segments status error with sentry.status.message internal_error. Producer trace 1c21228852a84398aad9607519326803 shares no id with any consumer trace.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "F35's second sentence ('Queue publish spans are named after the binding, process spans after the queue') is exactly what result.json shows. F29's 10.73.0 queue clause is record-only, as for C04.",
+    "rerun": "not run",
+    "corrections": [
+      "The Observed section quotes two of the four `send Q` spans; result.json holds four (send, sendBatch, /send-bad, /send-sentinel). That is trimming, not a mismatch, but the block reads as complete."
+    ],
+    "report_sentences": [
+      "F35 'KV produces no spans; R2, Queues, D1, DO storage do ... Queue publish spans are named after the binding, process spans after the queue [C05 to C08]' - the queue half is supported by result.json.",
+      "Matrix, Native runtime APIs, Cloudflare: 'D1, R2, Queues, DO storage and alarms, RPC, Workflows: spans; KV none [C05 to C08, C25, C26]' - the Queues element is supported here."
+    ]
+  },
+  {
+    "id": "C06",
+    "tests_what_it_claims": "yes",
+    "code_notes": "One request drives every D1 call shape - exec, prepare().bind().run(), .all(), .first() and batch() - against the plain `env.DB` binding with no manual wrapper, which is what makes the automatic env instrumentation the only possible source of the spans. The TRACE_LIFECYCLE var runs the same source under both lifecycles, so the span-envelope and transaction shapes are compared on identical work. drive.mjs waits for a `sentinel` event before reading.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "run-stream.json: five db.query spans with origin auto.db.cloudflare.d1 and db.system.name cloudflare-d1, names 'CREATE TABLE users' / 'INSERT users' / 'SELECT users' (all) / 'SELECT users' (first) / 'D1 batch', with cloudflare.d1.duration + rows_read + rows_written only on run and all, and db.operation.batch.size 2 on the batch. run-static.json: one transaction 'GET /d1' with the same five child spans carrying the full SQL as `description`.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "The 'env.DB is already instrumented automatically inside withSentry' and 'on develop instrumentD1WithSentry is no longer exported' halves of the docs-coverage line for C06 are both supported - packages/cloudflare/src/index.ts exports no instrumentD1* (grep exits 1), and instrumentEnv.ts:64-66 wraps a D1 binding automatically.",
+    "rerun": "not run",
+    "corrections": [
+      "The docs-coverage line for C06 also says 'wrapping it again does not duplicate spans'. The shipped probe cannot show that and says so in its Expected section: '@sentry/cloudflare on develop exports no instrumentD1 / instrumentD1WithSentry'. That clause comes from the record's 10.73.0 run; mark it record-only.",
+      "The `grep -o \"instrumentD1[A-Za-z]*\" node_modules/...` line in the Observed section points into node_modules, which is not shipped. The same fact is checkable in packages/cloudflare/src/index.ts."
+    ],
+    "report_sentences": [
+      "Docs coverage, C06: 'the page says to wrap the binding with instrumentD1WithSentry, but env.DB is already instrumented automatically inside withSentry on both versions (wrapping it again does not duplicate spans), and on develop instrumentD1WithSentry is no longer exported' - first and third clauses supported; the middle clause is record-only."
+    ]
+  },
+  {
+    "id": "C07",
+    "tests_what_it_claims": "yes",
+    "code_notes": "The two routes are deliberately symmetric - five R2 operations against `env.BUCKET`, four KV operations against `env.KV`, in the same Worker, same isolate, same request shape - so 'KV produces no spans' is a controlled comparison and not an absence of traffic. Both lifecycles are run so the KV negative shows up as `spans: []` in the transaction shape too. wrangler.jsonc binds the bucket as BUCKET while naming it 'probe', which is what makes the cloudflare.r2.bucket=BUCKET evidence meaningful.",
+    "observed_faithful": "partly",
+    "verdict_supported": "yes",
+    "decisive_lines": "items-b.jsonl line 0 is one span envelope with object.put/get/head/list/delete named r2_put..r2_delete plus the http.server segment; line 1 is the /kv request with only `http.server GET`. Attribute values present: cloudflare.r2.operation PutObject/GetObject/HeadObject/ListObjects/DeleteObject, cloudflare.r2.bucket 'BUCKET', cloudflare.r2.request.key 'probe/k1', cloudflare.r2.request.prefix 'probe/'. items-c-static.jsonl: transaction 'GET /r2' with the five nested spans, transaction 'GET /kv' with `spans: []`.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "F35's 'KV produces no spans; R2 ... do' is supported by the side-by-side /r2 and /kv envelopes. The SDK side agrees: packages/cloudflare/src/instrumentations/worker/instrumentEnv.ts has branches for D1 (:64), Queue (:70), R2 (:77) and the AI binding (:94) and none for KV.",
+    "rerun": "not run",
+    "corrections": [
+      "The Observed section opens with 'HTTP responses, identical to the record: /r2 -> {\"text\":\"hello r2\",...}'. Those three lines exist in no shipped file - the Run block curls them to the terminal - so only README.md and src/index.ts contain the string 'hello r2'. Persist the driver output, or mark the block as reconstructed."
+    ],
+    "report_sentences": [
+      "F35 'KV produces no spans; R2, Queues, D1, DO storage do, and none of those four is documented [C05 to C08]' - the R2/KV half is supported by items-b.jsonl and items-c-static.jsonl."
+    ]
+  },
+  {
+    "id": "C08",
+    "tests_what_it_claims": "yes",
+    "code_notes": "One Durable Object covers every path the summary names: stub.fetch for the storage route and for a throwing route, an RPC method that returns and one that throws, and an alarm armed by setAlarm inside the same handler so the link back to the setAlarm span can be checked. withSentry passes rpcTracePropagationBindings: ['DO'], which is the option under test; the DO class itself is wrapped with instrumentDurableObjectWithSentry. drive.mjs waits 4 s for the alarm and then uses a sentinel.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "raw.json: worker GET /do-fetch span bf97f674334d06cc on trace 0666947e7f8241dd8a308f792a72f78f; DO fetch span a9d342c0fb810bb4 with parent bf97f674334d06cc on the same trace and url.full https://do/storage; four durable_object_storage_* spans parented on a9d342c0fb810bb4; `rpc hello` on the caller's trace; both DO errors with mechanism auto.faas.cloudflare.durable_object and handled false; the throwing DO fetch span still status ok; the alarm span on a new trace carrying `\"sentry.previous_trace\":{\"value\":\"0666947e7f8241dd8a308f792a72f78f-8acc67c37df2059a-1\"}` and a link to span 8acc67c37df2059a, which is the setAlarm span.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "F40's SDK claim checks out: packages/cloudflare/src/instrumentations/worker/instrumentFetcher.ts:5-6 says 'Wraps a fetch-like function to create a span and propagate trace headers', while the body only merges tracing headers into the init and calls through - no span is started. The 'no caller-side span exists for RPC calls' clause is consistent with the shipped envelopes: the rpc span carries origin auto.faas.cloudflare.durable_object and is_segment true, i.e. it is produced on the receiver.",
+    "rerun": "not run",
+    "corrections": [],
+    "report_sentences": [
+      "F40 'Service binding and Durable Object stub fetch inject headers but create no http.client span, and no caller-side span exists for RPC calls [C08, C25]; instrumentFetcher's JSDoc says otherwise.' - supported by raw.json and by instrumentFetcher.ts:5-6 vs its body.",
+      "Matrix, Native runtime APIs: 'DO storage and alarms ... spans [C05 to C08, C25, C26]' - the DO storage and alarm elements are supported here (and again in N5)."
+    ]
+  },
+  {
+    "id": "C09",
+    "tests_what_it_claims": "yes",
+    "code_notes": "src/index.ts is the /request entry point under test (wrapRequestHandler from @sentry/cloudflare/request) and src/index-als.ts is the same routes behind the one-line fix, so the two legs differ in exactly the module-scope setAsyncLocalStorageAsyncContextStrategy() call. Three wrangler configs give nodejs_als, nodejs_als + ALS strategy and no compatibility flags at all, which covers both claims (boots without nodejs_compat, and the missing context strategy). /hello is the no-I/O route the defect needs and /integrations reads the live client's integration list.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "drive-cold2.log: `/integrations 200 {\"integrations\":[...,\"SpanStreaming\"],\"hasClient\":true}` and a `transaction` envelope for /hello next to `span` envelopes for the rest. app.log:82 `at AsyncContextStack.withScope (file://$REPRO/probes/C09/node_modules/@sentry/core/src/asyncContext/stackStrategy.ts:50:28)`. curl-hello-sentinel.log: two `transaction` items and, under `--- raw envelope headers ---`, `\"trace\": {}` on both, with no sentinel event. als-drive.log: every request a span envelope, the http.client and http.server in one envelope, sentinel delivered. drive-noflags.log: identical shape with compatibility_flags [].",
+    "record_consistent": "partly",
+    "report_claims_supported": "partly",
+    "report_notes": "The SDK side of F32 is exact: packages/cloudflare/src/withSentry.ts:40, pages-plugin.ts:78, durableobject.ts:54 and instrumentations/instrumentWorkerEntrypoint.ts:153 all call setAsyncLocalStorageAsyncContextStrategy(); packages/cloudflare/src/request.ts does not.",
+    "rerun": "not run",
+    "corrections": [
+      "_records/results.json records C09 as `matches: partial` - the ALS control did not deliver the sentinel in the bare curl /hello + /sentinel sequence, across three timed runs (als-curl.log, als-curl2.log, als-curl3.log). The report calls F32 '[C09; confirmed twice]' with no hint that the rebuild disagreed on that sub-claim. Say which half was confirmed.",
+      "F32's remedy clause \"traceLifecycle: 'static' (what the Hydrogen apps and the repo suite pass) ... fixes it\" is not in the shipped probe: neither wrangler.jsonc, wrangler-als.jsonc nor wrangler-noflags.jsonc passes traceLifecycle, and src/index.ts does not either. That leg comes from a verification run under $SCRATCH; mark it record-only."
+    ],
+    "report_sentences": [
+      "F32 'develop: @sentry/cloudflare/request runs without the AsyncLocalStorage strategy [C09; confirmed twice]. Under the stream lifecycle a request without I/O is sent as a legacy transaction envelope and a following event was dropped' - supported by curl-hello-sentinel.log and app.log:82.",
+      "F32 continuation: \"traceLifecycle: 'static' ... or calling setAsyncLocalStorageAsyncContextStrategy() at module scope fixes it\" - only the second fix is in the shipped probe; the static-lifecycle fix is record-only.",
+      "Header prose above the matrix: 'the @sentry/cloudflare/request entry runs without an async-context strategy, which under the new stream lifecycle turns some requests into legacy transaction envelopes and drops events' - supported."
+    ]
+  },
+  {
+    "id": "C10",
+    "tests_what_it_claims": "yes",
+    "code_notes": "functions/_middleware.js is the root Pages middleware exporting Sentry.sentryPagesPlugin with debug: true, which is what makes the static assets index.html and app.js pass through the wrapper and what puts the Dedupe warning into app.log. The dedupe leg is driven as two identical /api/error requests followed by a sentinel, then a second, separate /api/sentinel run against the same warm isolate - the shape the finding needs, since one request could not show cross-request dedupe.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "raw.json is 5 span envelopes and 2 events - every request, including / and /app.js, produced a span. drive.log: `GET /` named `GET /` with source route, every other path bare `GET` with source url; the /api/error span ends status ok with no http.response.status_code while the four 200 routes carry 200. dedupe.log holds exactly two events for the two identical /api/error requests plus the sentinel. sentinel-again.log is a single span envelope and no event. app.log:85 and :105 'Sentry Logger [log]: Captured error event `C10 pages function error`', :106 and :139 'Sentry Logger [warn]: Event dropped due to being a duplicate of previously captured event.', :138 'Captured error event `sentinel`'.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "F31's observation half is fully supported here. Its remedy half is not: neither functions/_middleware.js nor any other file in the probe passes cacheClient: false or drops the Dedupe integration, so 'cacheClient: false or removing the Dedupe integration restores per-request delivery' is record-only for Cloudflare (C02 shows cacheClient: false takes a different client path, but for isolation, not dedupe).",
+    "rerun": "not run",
+    "corrections": [
+      "F33 says 'GET /app.js produces a transaction'. On develop, which is what the shipped probe runs, /app.js produces a `span` envelope named bare `GET` with url.path as an attribute - raw.json holds 5 span envelopes and no transaction. 'Transaction' is the 10.73.0 (static lifecycle) wording.",
+      "README's Run note calls the sink `_toolbox/qs/sink.mjs`; that directory does not exist. sink.mjs here is byte-identical to `_toolbox/sink.mjs`."
+    ],
+    "report_sentences": [
+      "F31 'develop: the cached client makes Dedupe drop repeated errors across requests [C10, C14; confirmed twice]. Two identical errors from two requests yield one event; a repeated captureMessage is dropped until a different event intervenes.' - supported by dedupe.log, sentinel-again.log and app.log, for C10.",
+      "F31 remedy 'cacheClient: false or removing the Dedupe integration restores per-request delivery' - not exercised by C10; record-only.",
+      "F33 'Pages middleware spans static assets too [C10]. GET /app.js produces a transaction' - the spanning claim is supported; 'transaction' is wrong for the develop run shipped here."
+    ]
+  },
+  {
+    "id": "C11",
+    "tests_what_it_claims": "yes",
+    "code_notes": "The withSentry options callback passes only `tunnel`, so DSN, environment, release and sample rate can come from nowhere but the Worker env - that is what makes the claim testable at all. /env dumps the raw env and /opts the resolved client options, and the three wrangler configs vary exactly one input each (release present, release absent with a version_metadata binding, sample rate 0). The rate-0 run is a real control: the sentinel event arrives, so the absence of span envelopes is an absence.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "app-run1.log `OPTS {\"dsn\":\"https://public@o1.ingest.sentry.io/1\",\"environment\":\"qa\",\"release\":\"r1\",\"tracesSampleRate\":1,...}`; app-run2.log `ENV {...\"CF_VERSION_METADATA\":{\"id\":\"72a22150-3ac6-411c-b10b-7aa4a5640b16\",...}}` with `OPTS {...\"release\":\"72a22150-3ac6-411c-b10b-7aa4a5640b16\"...}`; app-run3.log `OPTS {...\"tracesSampleRate\":0,...}`. drive-run3.out holds only two event items, both with dsc `\"sampled\":\"false\",\"sample_rate\":\"0\"` and no span envelope; drive-run1.out and drive-run2.out hold 7 items each with `sampled\":\"true\"`.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "Matrix 'Config from environment: works / works: SENTRY_* vars, CF_VERSION_METADATA release [C11]' - both halves are in app-run1.log / app-run2.log. The 10.73.0 column is record-only as everywhere in this set.",
+    "rerun": "not run",
+    "corrections": [
+      "README's Run note calls the sink `_toolbox/qs/sink.mjs`; that directory does not exist."
+    ],
+    "report_sentences": [
+      "Matrix, Config from environment, Cloudflare: 'works / works: SENTRY_* vars, CF_VERSION_METADATA release [C11]' - supported."
+    ]
+  },
+  {
+    "id": "C12",
+    "tests_what_it_claims": "partly",
+    "code_notes": "The metrics and logs half is exact: /telemetry emits a counter, a gauge, a Sentry.logger.info and console.log/console.warn behind consoleLoggingIntegration, and the driver reads the sink at t+2/4/6/8 s to show the envelopes are drained at the end of the producing request rather than by a timer; /flush repeats it with ctx.waitUntil(Sentry.flush(2000)) as the control. The sessions half is only a negative: three requests with a release set and a scan for session envelopes. Nothing in the probe imports startSession/captureSession/endSession from @sentry/core, so the positive path the report attributes to C12 is not exercised anywhere in the directory.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "raw.log envelope item types over the whole run are exactly event 4, log 3, span 13, trace_metric 3 - no `session` or `sessions` item, and `grep -c session raw.log` is 0. The log envelope carries `sentry.origin: auto.log.console`, `sentry.message.template` and `sentry.message.parameter.0`; the trace_metric envelope carries `counter c12.requests=1` and `gauge c12.gauge=42 millisecond`. packages/cloudflare/src/index.ts exports no startSession/captureSession/endSession (grep finds none).",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "The 'none automatically on either' half of the matrix cell and F36's first sentence are supported. The rest of F36 - that startSession, captureSession and endSession imported from @sentry/core work inside the withSentry handler and produce valid session envelopes - comes from the refutation run recorded in the report's own C12 card ('$SCRATCH/qs/cloudflare-v11pack template'), not from probes/C12.",
+    "rerun": "not run",
+    "corrections": [
+      "F36 and the matrix cell 'startSession / endSession from @sentry/core work inside the handler [C12]' name a configuration the shipped probe does not contain: no file in probes/C12 imports the session API. Mark it record-only, the way the Bun verifier marked the same clause for B05.",
+      "The Observed section's `grep -c \"startSession|captureSession|endSession\" node_modules/@sentry/cloudflare/build/types/index.d.ts -> 0` reads out of node_modules, which is not shipped. The same check on packages/cloudflare/src/index.ts at the pin gives the same answer."
+    ],
+    "report_sentences": [
+      "Matrix, Release health sessions, Cloudflare: 'none automatically on either; startSession / endSession from @sentry/core work inside the handler [C12]' - first clause supported, second record-only.",
+      "Matrix, Logs: 'works / works, flushed per request [C12]' and Metrics: 'works / works [C12]' - both supported by raw.log and the t+2/4/6/8 s reads.",
+      "F36 'No automatic sessions on Workers [C12; refuted as \"impossible\"]. @sentry/cloudflare does not re-export the session API, but startSession, captureSession and endSession from @sentry/core (a dependency) work inside the withSentry handler on both versions and produce valid session envelopes.' - first sentence supported; the working path is record-only."
+    ]
+  },
+  {
+    "id": "C13",
+    "tests_what_it_claims": "yes",
+    "code_notes": "One source file configured by the MODE and LIFECYCLE vars gives four variants off identical code: default dataCollection, httpServerIntegration({ maxRequestBodySize: 'none' }), dataCollection: { httpBodies: [] }, and the default config under the stream lifecycle. That is the right shape for the claim, because the two disable switches are then compared against the same baseline. drive.mjs POSTs the same JSON to a throwing and a non-throwing route, which is what shows body capture is not error-only.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "run-dc.txt: transaction and event for POST /throw both carry `\"data\":\"{\\\"user\\\":\\\"jan\\\",\\\"secret\\\":\\\"hunter2\\\",\\\"n\\\":42}\",\"hasData\":true`, and POST /ok carries it too. run-none.txt and run-dcoff.txt: the same two items with `\"data\":null,\"hasData\":false`. run-dc-stream.txt: two span envelopes with `\"bodyAttr\":\"{...}\"` on the POST segments and `\"bodyAttr\":null` on the GET. run-types.txt: `16: * @default 'medium'`, `18: maxRequestBodySize?: MaxRequestBodySize;`, `35: ignoreRequestBody?: ...`.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "The develop half - both switches work - is supported four ways. The record's cause for the 10.73.0 defect is checkable at the pin: packages/cloudflare/src/integrations/httpServer.ts:88-91 in captureIncomingRequestBody falls back to the dataCollection setting only when maxRequestBodySize is undefined.",
+    "rerun": "not run",
+    "corrections": [
+      "F30 and the matrix cell are about 10.73.0 ('httpBodies: [] ignored on 10.73.0'), which the develop-only rebuild does not contain. C13 as shipped is the control that shows develop fixed it; the failing leg is record-only."
+    ],
+    "report_sentences": [
+      "Matrix, Request body capture, Cloudflare: 'works / partial (httpBodies: [] ignored on 10.73.0) [C13]' - the develop half is supported; the 10.73.0 half is record-only.",
+      "F30 '10.73.0 ignores dataCollection: { httpBodies: [] } for incoming bodies [C13; confirmed twice, by design in 10.x source]; httpServerIntegration({ maxRequestBodySize: \\'none\\' }) works.' - the second clause is supported on develop by run-none.txt; the first is record-only."
+    ]
+  },
+  {
+    "id": "C14",
+    "tests_what_it_claims": "yes",
+    "code_notes": "The /stream route enqueues three chunks 300 ms apart, each stamped with Date.now(), so the request span's end timestamp can be compared with the last chunk rather than with the response headers - that is what turns 'the span covers the stream' into a measurement. /after puts a 500 ms span inside ctx.waitUntil, i.e. work that finishes after the response. drive.sh sleeps 1 s before the sentinel so the after-span has time to arrive, uses a `sentinel-$RANDOM` message to dodge Dedupe, and recounts the items 3 s later, so the static-mode loss is an absence and not a race.",
+    "observed_faithful": "partly",
+    "verdict_supported": "yes",
+    "decisive_lines": "run-stream.txt: `chunk-3 1788771573520` and the segment span `\"start\": \"1788771572.917\", \"end\": \"1788771573.520\", \"duration_ms\": 603` against `[curl ttfb=0.008423s]`; the `after` span arrives 500 ms later as its own non-segment envelope with `\"parent\": \"9e1a41ece9896fcb\"`; `--- item count after 3 more seconds: 5`. run-static.txt: `GET /stream` transaction 603 ms, `GET /after` transaction 1 ms with `\"spans\": []`, and `--- item count after 3 more seconds: 4`. app-static-debug.log lines 35-50: 'Finishing \"http.server\" root span \"GET /after\" with ID 95f2ee56503a1ad2' precedes 'Finishing \"< unknown op >\" span \"after\" with ID b241beec43a541c9', with no discard line.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "The matrix cell 'works under stream lifecycle; static lifecycle loses work after the response' is supported item for item.",
+    "rerun": "not run",
+    "corrections": [
+      "The last line of the Observed section, `sink: {\"type\": \"transaction\", \"arrived\": \"1788771624.720\", \"name\": \"GET /after\", ..., \"spans\": []}`, appears in no shipped file - `grep -c 1788771624.720 app-static-debug.log` is 0, and the debug run's sink dump went to the terminal. Persist it or mark it as terminal output (same class as B07/B18 in the Bun pass).",
+      "F31 cites C14 as one of the two probes that confirm the cached-client Dedupe drop. C14 produces no dedupe evidence: drive.sh deliberately sends a unique `sentinel-$RANDOM` each run precisely to avoid Dedupe, and the behaviour appears only as note 1 of the C14 record. Cite C10 (Pages) for the observation and drop C14, or say the Workers half rests on a record note.",
+      "README's Run note calls the sink `_toolbox/qs/sink.mjs`; that directory does not exist."
+    ],
+    "report_sentences": [
+      "Matrix, Streaming responses, Cloudflare: 'works under stream lifecycle; static lifecycle loses work after the response, as documented [C14]' - supported.",
+      "F31 '... [C10, C14; confirmed twice]' - C14 is the wrong second citation; its shipped run avoids Dedupe by construction."
+    ]
+  },
+  {
+    "id": "C15",
+    "tests_what_it_claims": "yes",
+    "code_notes": "The only Sentry wiring is `app.use(sentry(app, env => ({...})))` from @sentry/hono/cloudflare, which is the documented shape, and the four routes cover a parametrized route, a throw, an outgoing fetch and a sentinel. api.mjs logs the trace headers it actually received, and inspect.mjs re-reads raw.log to print span ids, so the outgoing header can be matched against the recorded http.client span rather than assumed.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "inspect.out: `SPAN {\"name\":\"GET /user/:id\",...,\"route\":\"/user/:id\",\"source\":\"route\",\"code\":200}`; `EVENT {\"value\":\"boom from /error\",\"trace\":\"b4226ed99a85440195bf018c088bb565\",\"span\":\"acbae668b6d7dd20\",\"mechanism\":{\"type\":\"auto.http.hono.context_error\",\"handled\":false}}` next to `SPAN {\"name\":\"GET /error\",\"trace\":\"b4226ed9...\",\"span\":\"acbae668b6d7dd20\",\"status\":\"error\",\"code\":500}`; `SPAN {\"name\":\"GET 127.0.0.1\",\"trace\":\"989b848e6c3e44e2b453d2bb748130e1\",\"span\":\"ad962814977b640f\",\"parent\":\"98f6cac710f04f59\"}`. api.log: `API HIT /api {\"sentry-trace\":\"989b848e6c3e44e2b453d2bb748130e1-ad962814977b640f-1\",...}` - the same trace and span id.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "C15 supports the 'Hono gives route names' clause of the server-span-naming cell and the 'Hono works as documented' clause of F38. It does not support the rest of that cell.",
+    "rerun": "not run",
+    "corrections": [
+      "The matrix cell 'Server span naming, Cloudflare: method only under stream, URL under static; Hono gives route names [C15]' cites only C15, which never produces a method-only or URL-named span - every one of its segments is route-named. The method-only-under-stream evidence is C10 (bare `GET`, source url) and C06/C07/C14; the URL-under-static evidence is C13 (`POST /throw`), C06 (`GET /d1`) and C07 (`GET /r2`). Same class of mis-citation as [B03] on the Bun row."
+    ],
+    "report_sentences": [
+      "Matrix, Server span naming, Cloudflare: 'method only under stream, URL under static; Hono gives route names [C15]' - only the last clause is C15's.",
+      "F38 '... and Hono work as documented [C17, C19, C22, C15]' - the Hono half is supported by C15."
+    ]
+  },
+  {
+    "id": "C16",
+    "tests_what_it_claims": "yes",
+    "code_notes": "Three variants off one Worker isolate the source of the gen_ai span exactly: the Vite plugin build, the same source with no plugin at all, and the same source with Sentry.instrumentOpenAiClient around the client. The /injected route reads globalThis.__SENTRY_ORCHESTRION__ so the channel registration is observable from inside the Worker, and mock-openai.mjs makes the token counts deterministic. The client is built at module scope, which is what produces the recorded side finding that no http.client span exists for the mock call.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "`grep -c 'tracingChannel(\"orchestrion:openai:chat\")' dist/c16_develop/index.js` = 1. result-vite.json holds two `chat gpt-4o-mini` spans (op gen_ai.chat, origin auto.ai.openai, gen_ai.provider.name openai, 12/7/19 tokens, parent true) plus `GET /injected -> {\"integrations\":[\"OpenAI\"],\"bundler\":[\"openai\"]}`. result-plain.json contains no `gen_ai` string at all (grep count 0) and reports `{\"integrations\":[],\"bundler\":[]}`. result-manual.json has 26 gen_ai hits with the same attribute values. mock.log holds six identical POST lines, one per /ai call.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "F39 ('the Vite plugin instruments an unwrapped client') is supported by the vite-vs-plain pair. The 'develop also via instrumentOpenAiClient' clause of the OpenAI matrix row is supported by result-manual.json.",
+    "rerun": "not run",
+    "corrections": [
+      "The matrix row 'Library spans: database driver' gives the Cloudflare cell as 'works / works with the Vite plugin (10.73.0 needs the experimental flag) [C16, quick start C-vite]'. C16 is the OpenAI probe - it installs no database driver - and quickstarts/cloudflare has no driver either (no mysql dependency, no db span in results-vite.json). The database-driver-under-the-Vite-plugin evidence is N3: out-devA.sink.json has `{\"n\": \"SELECT users\", ..., \"origin\": \"auto.db.mysql\"}` and out-devC.sink.json (buildTimeInstrumentation: false) has none.",
+      "README's Run note calls the sink `_toolbox/qs/sink.mjs`; that directory does not exist."
+    ],
+    "report_sentences": [
+      "Matrix, Library spans: database driver, Cloudflare: 'works / works with the Vite plugin (10.73.0 needs the experimental flag) [C16, quick start C-vite]' - wrong citation; neither source contains a database driver.",
+      "Matrix, Library spans: OpenAI SDK, Cloudflare: 'works / works with the Vite plugin; develop also via instrumentOpenAiClient [C16]' - supported by result-vite.json and result-manual.json.",
+      "F39 'OpenAI on Workers: the Vite plugin instruments an unwrapped client [C16]. The OpenAI page says unwrapped clients produce no spans on Cloudflare; with the plugin they do, on both versions.' - the develop half is supported; 'on both versions' is record-only."
+    ]
+  },
+  {
+    "id": "C18",
+    "tests_what_it_claims": "partly",
+    "code_notes": "The probe builds and runs one setup only: wrangler `main` pointing at a hand-written sentry.server.config.ts that wraps @astrojs/cloudflare's server entrypoint in Sentry.withSentry. That is the working path, and it is tested properly - the /api/sentinel route calls captureMessage from @sentry/cloudflare, which proves from inside the app which client is live. The two failing variants the record carries (runB1, a @sentry/astro Sentry.init server config with no custom main; runB3, wrangler SENTRY_* vars alone) are named in the README as 'not rebuilt here', so the probe cannot show the defect that F37 is about. sentry.server.config.ts also passes traceLifecycle: 'static' so the envelopes come out in the recorded 10.73.0 shape.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "result.json: `{\"type\":\"transaction\",\"name\":\"GET /api/hello\",\"source\":\"route\",\"status\":\"ok\",\"sdk\":\"sentry.javascript.cloudflare\"}`, `{\"type\":\"event\",\"exception\":\"Error: C18 api error route\",\"mechanism\":\"auto.middleware.astro\",\"handled\":false,\"sdk\":\"sentry.javascript.cloudflare\"}`, `{\"type\":\"transaction\",\"name\":\"GET /api/error\",\"status\":\"internal_error\"}`. wrangler.log:64-66,73-74 give the 200/500/200 sequence and the `[ERROR] Error: C18 api error route` line. `grep -rl withSentry dist/server` returns dist/server/entry.mjs; `grep -c 'BrowserApiErrors|browserSessionIntegration' wrangler.log` is 0.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "F37's last sentence ('The documented main: sentry.server.config.ts + withSentry setup works') is exactly what the probe shows. Its first two sentences are not reproducible from the directory.",
+    "rerun": "not run",
+    "corrections": [
+      "F37's subject - \"the docs' 'Astro 3-5 auto-wrap via env vars' path is dead on adapter 14 ... a Sentry.init server config on adapter 13+ silently boots the browser SDK inside the Worker and loses the first requests\" - has no shipped variant. probes/C18 rebuilds only the working setup and its README says the runB1 and runB3 legs 'are not rebuilt here'. Mark the failing half record-only.",
+      "_records/probes.json gives C18 the verdict 'see record' while its README says 'Recorded verdict: works (recorded against 10.73.0)'. Same field inconsistency as C02 and B01."
+    ],
+    "report_sentences": [
+      "F37 'The docs\\' \"Astro 3-5 auto-wrap via env vars\" path is dead on adapter 14 [C18]. The @sentry/astro Cloudflare plugin regex targets the old virtual entry; a Sentry.init server config on adapter 13+ silently boots the browser SDK inside the Worker and loses the first requests. The documented main: sentry.server.config.ts + withSentry setup works.' - only the last sentence is supported by the shipped probe."
+    ]
+  },
+  {
+    "id": "C25",
+    "tests_what_it_claims": "yes",
+    "code_notes": "One Worker exports both a default fetch handler and a WorkerEntrypoint bound back to itself, so caller and callee are the same code and the trace relationship is unambiguous. Three routes separate the RPC method call, the RPC throw and the service-binding fetch. wrangler-control.jsonc flips RPC_PROPAGATION=off, which drops rpcTracePropagationBindings from the options object - a real negative control off the same source.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "run-develop.log: `rpc hello trace=4932b3c606a64a8d8f64f9c6037bda36 span=a8e86ddbbaa81446 parent=85b8e284c6be46e5 status=ok origin=auto.faas.cloudflare.worker_entrypoint` with the caller `http.server GET` at span 85b8e284c6be46e5 on the same trace; `{\"type\":\"event\",\"exception\":\"rpc boom\",\"mechanism\":\"auto.faas.cloudflare.worker_entrypoint\",\"handled\":false,\"trace_id\":\"92363b76071c4c86a488141e3dced25b\"}` with `rpc fail ... status=error` on that trace; `/svc-fetch 200 api fetch /inner sentry-trace=0ab71f6d5f034e78b48c496b22f8a885-8f8480acc58f40ae-1` matching the two http.server spans on trace 0ab71f6d.... run-control.log: no `rpc` span anywhere, and the RPC error on trace 37416a77484c4aa89679724ee45a7cbe against a caller span on trace 53fc2add3f3a4f33a78d20fa8e3cba4d.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "F40 is supported jointly with C08: no http.client span for env.SELF.fetch(), and the only rpc span is the receiver-side one. The report's C25 docs-coverage line about enableRpcTracePropagation is checkable at the pin - grep finds no `enableRpcTracePropagation` anywhere in packages/cloudflare/src, while rpcTracePropagationBindings is declared at packages/cloudflare/src/client.ts:360 - but the probe itself never passes the removed option; N4's tsc check and --var RPC_PROP:1 run are what exercise it.",
+    "rerun": "not run",
+    "corrections": [
+      "The Observed section's negative-control block omits the two `/svc-fetch` http.server spans and the sentinel that run-control.log carries, then describes the svc-fetch behaviour in prose below. Quote the full block or say it is trimmed - as printed it looks like the control produced three items when it produced seven."
+    ],
+    "report_sentences": [
+      "F40 'Service binding and Durable Object stub fetch inject headers but create no http.client span, and no caller-side span exists for RPC calls [C08, C25]' - supported.",
+      "Matrix, Outgoing fetch span and headers: 'service binding and DO stub fetch inject headers but create no span [C03, C08, C25]' - supported by run-develop.log and run-control.log.",
+      "Docs coverage, C25: 'on 10.73.0 that option is deprecated in favor of rpcTracePropagationBindings ... and on develop it no longer exists' - the develop half holds against the SDK source; C25 itself never passes the removed option (N4 does)."
+    ]
+  },
+  {
+    "id": "C26",
+    "tests_what_it_claims": "yes",
+    "code_notes": "Three workflow instances cover the three cases the summary names in one run: a UUID id whose step throws once and then succeeds under retries.limit 3, the same shape with a non-UUID id so the SHA-1 trace-id derivation is exercised, and a UUID id whose step always throws under limit 1. The step callback logs its own ctx, which is what makes the final-attempt gating visible rather than inferred. PlainWorkflow is an unwrapped control for the workerd 'hung request' artifact.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "drive.out prints `expected trace ids: { A: 'ff5055641a8242eab0a3741d8d65e445', B: '52262895dec878fb9cad5c287784f619', C: '02aaa15f67bb421fbc7a674e1538ff42' }` and every span carries the matching trace id; the `function` segments carry code.function.name, workflow.step.name, cloudflare.workflow.attempt 1 then 2 and cloudflare.workflow.retries.limit. Exactly two events reach the sink for three instances - one `step-two boom 02aaa15f-...` with mechanism auto.faas.cloudflare.workflow, plus the sentinel - so the step that failed then succeeded produced nothing. app.log holds 12 `step-two ctx:` lines showing `attempt` and `config.retries.limit`, and 6 'hung' lines.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "F34's observation is supported and its cause is in the SDK at the pin: packages/cloudflare/src/workflows.ts:115-120 computes `const isFinalAttempt = !hasStepContext || attempt > retryLimit;` and :151 gates the capture on it.",
+    "rerun": "not run",
+    "corrections": [
+      "F31's parenthetical 'and inside Workflows (C26)' and its remedy 'cacheClient: false ... restores per-request delivery' are not in probes/C26: the string cacheClient appears nowhere in the directory, and the C26 record's own note 1 says 'Dedupe-off could not be exercised as intended here because at most one event per instance can be emitted'. The cacheClient workflow leg is from the verification run in the report's C26 card; mark it record-only."
+    ],
+    "report_sentences": [
+      "F34 'Workflows capture step errors only on the final attempt [C26; confirmed]. A step that throws once and then succeeds produces no event' - supported by drive.out and app.log, and by workflows.ts:115-120,151.",
+      "F31 '... Seen on Pages and Workers, and inside Workflows (C26). cacheClient: false or removing the Dedupe integration restores per-request delivery.' - the Workflows citation and the remedy are record-only.",
+      "Matrix, Native runtime APIs: 'Workflows: spans [C05 to C08, C25, C26]' - supported."
+    ]
+  },
+  {
+    "id": "N2",
+    "tests_what_it_claims": "yes",
+    "code_notes": "Three separate entries and three wrangler configs give one leg per claim: src/n2-entrypoint.ts imports @sentry/cloudflare/nodejs_compat and is expected not to build, src/n2-prisma.ts uses prismaIntegration() from the main entry with the adapter built lazily inside the handler, and src/n2-prisma-nosentry.ts is the same query with the adapter at module scope and no Sentry at all - the control that shows the wasm hang is not the SDK's. All three carry nodejs_compat, so the failure in step 1 is a resolution failure and not a runtime one.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "run-entrypoint.txt: `X [ERROR] Could not resolve \"@sentry/cloudflare/nodejs_compat\"` with `The path \"./nodejs_compat\" is not exported by package \"@sentry/cloudflare\"`, then `HTTP=000` and the exports map `[\"./package.json\",\".\",\"./request\",\"./vite\"]`. run-prisma-sink.txt: the `GET /users` transaction with the 14-span Prisma tree, `db SELECT ...` and `db prisma:engine:js:query:sql` among them. run-prisma-raw-spans.txt: `{\"op\":\"db\",\"desc\":\"SELECT ...\",\"attrs\":{\"sentry.origin\":\"auto.db.prisma\",\"sentry.op\":\"db\",...}}`. run-prisma-nosentry.txt: `pool timeout: failed to retrieve a connection from pool after 10002ms` plus `Uncaught RuntimeError: unreachable at wasm://wasm/008a260a:wasm-function[647]:0x13cd18`. The exports map matches the package at the pin exactly: packages/cloudflare/package.json exports are ['./package.json', '.', './request', './vite'], and prismaIntegration is re-exported from packages/cloudflare/src/index.ts:125.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "F42's two halves are the probe's two steps. The 10.73.0 sentence ('the subpath boots and prismaIntegration from it instruments Prisma end to end') is record-only under the develop-only rule.",
+    "rerun": "not run",
+    "corrections": [
+      "The Observed section quotes the sentinel as `{\"type\":\"event\",\"message\":\"n2-prisma-sentinel\",...,\"runtime\":{\"name\":\"cloudflare\"}}`; run-prisma-sink.txt has `\"runtime\": \"cloudflare\"` (a string). The line was copied from the record rather than from the shipped file."
+    ],
+    "report_sentences": [
+      "F42 'The @sentry/cloudflare/nodejs_compat entrypoint works on 10.73.0 and is gone on develop [N2; the develop \"broken\" verdict was refuted as an intentional v11 change]. On develop the subpath does not exist and prismaIntegration lives on the main entry, so every sample on the nodejs-compat and Cloudflare Prisma pages fails at bundle time once v11 ships.' - the develop half is supported by run-entrypoint.txt and the package exports at the pin; the 10.73.0 half is record-only."
+    ]
+  },
+  {
+    "id": "N3",
+    "tests_what_it_claims": "yes",
+    "code_notes": "The entry contains no Sentry import at all, which is the only way to attribute the wrapping to the plugin. Six builds off that one entry pin down the option surface: no options, autoInstrumentation: false, buildTimeInstrumentation: false, a non-default wrangler config passed to both plugins, the same config passed only to cloudflare(), and the documented _experimental.* names with a tsc check next to them. devD deliberately re-exports the Durable Object from another module, which is the case the plugin warns about, and devE is the no-wranglerConfigPath control. A module-scope mysql connection makes the buildTimeInstrumentation leg observable as a db span.",
+    "observed_faithful": "no",
+    "verdict_supported": "yes",
+    "decisive_lines": "out-devA.sink.json: `{\"n\": \"SELECT users\", \"trace\": \"fa365ef92fb4401c846635fa215d07a7\", ..., \"origin\": \"auto.db.mysql\"}` plus `bump` / `ping` spans parented on the request span. out-devB.sink.json is `[]`. out-devC.sink.json holds `GET`, `bump`, `ping` and the `route boom` event and no auto.db.mysql span. out-devD.build.log:3 `[plugin sentry-cloudflare-auto-instrument] [sentry] Could not auto-instrument class(es) Counter: no matching exported class declaration found in the worker entry`. out-devE.build.log has no sentry line at all. run-tscheck.txt-equivalent in the README: `_experimental' does not exist in type 'SentryCloudflareVitePluginOptions'`, and out-devF.build.log exits clean with the option silently ignored. Both SDK line references hold at the pin: packages/cloudflare/src/vite/index.ts:42 is the `instrument.*` JSDoc line and packages/cloudflare/src/vite/instrumentFile.ts:15 is `const INSTRUMENT_FILE_BASENAME = 'instrument.server';`.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "F43's develop half - top-level autoInstrumentation and buildTimeInstrumentation, both default true, a bare plugin call wrapping entry, Durable Object and WorkerEntrypoint and auto-populating rpcTracePropagationBindings - is supported by devA's bundle grep and injected code. The SDK agrees: withSentry.ts:35-37 routes a WorkerEntrypoint class to instrumentWorkerEntrypoint, and vite/index.ts:48-50 documents the rpcTracePropagationBindings population.",
+    "rerun": "not run",
+    "corrections": [
+      "The shipped README.md is a stale draft. Its Observed section quotes ports 44320-44323 and sink trace ids (1ff3618df7f74563ad81d00b9d35b871, 213cba3c7de9469f98546cdfef63f120, 1fa646871c424776b496e7d3743b23a7, 1cdafa9ed47c4fc887d0a7b0cc370d0a, 2a1488c7dcfc4cadb99d69bfadcad11a, d27a33fd352f418ea52169e861d0b21a, e6ffd2b90f6140a28a1f58954385cdc1, 3956a4b055dd44a595ac597851eb1dc0) that appear in no file in the directory. The shipped out-dev*.sink.json and out-devA.app.log are from the ports 44330-44333 run, whose text is sitting unused in README.new. The substance is identical in both; only the ids and ports differ. Ship README.new as README.md and drop README.head / README.new / README.observed / README.files / sink.pid.",
+      "N3 is the only probe in this set that ships a node_modules directory - 349 MB, 57 top-level entries. Every other C and N probe has it removed."
+    ],
+    "report_sentences": [
+      "F43 'The Vite plugin page matches 10.73.0 exactly and describes a different API than develop [N3; confirmed twice]. On develop they are top-level autoInstrumentation and buildTimeInstrumentation, both default true, so sentryCloudflareVitePlugin() alone wraps the entry, the Durable Object, the WorkerEntrypoint and injects channels. Two things no version of the page says: the plugin also wraps WorkerEntrypoint classes, and it auto-populates rpcTracePropagationBindings.' - the develop half is supported by devA/devB/devC/devF; the 10.73.0 half is record-only.",
+      "Matrix, Library spans: database driver, Cloudflare - N3, not C16, is the probe that shows a driver span appearing only with buildTimeInstrumentation on."
+    ]
+  },
+  {
+    "id": "N4",
+    "tests_what_it_claims": "yes",
+    "code_notes": "Three Durable Object classes in one Worker separate the three paths the summary needs: an Agent wrapped with instrumentAgentWithSentry, the same shape wrapped with instrumentDurableObjectWithSentry plus a hand-set setConversationId (the pre-10.69 docs path), and an AIChatAgent driven through the real client protocol frames, including cf_agent_chat_clear, so the rotation is not simulated. The five @callable() methods cover the RPC span shape, writeKeys puts one user key and three reserved-prefix keys so the storage filter is a controlled comparison, and the docs sample is type-checked verbatim next to a copy with the one offending line removed.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "run-agent.txt: six rpc spans, all `\"gen_ai.agent.name\":\"MyAgentBase\"` with origin auto.faas.cloudflare.agents and no instance-name attribute; conversation id c1d29ca2b86441289bcf69e5d65c2da2 on the HTTP turn and inside the callable, rotating to c01b3e18f232443ba6424101e3c70e22 after clearChat; exactly one durable_object_storage_put span for four written keys; `conv_abc123` honoured on the legacy path, which gets no rpc span over WebSocket. run-chat.txt: MyChatAgentBase rpc span between two different conversation ids. run-tscheck.txt: `tscheck/docs-sample.ts(16,3): error TS2345 ... Type 'boolean' is not assignable to type 'never'.` run-tsc-src.txt is empty; run-rpcprop.txt still shows the rpc span with the removed option passed. The SDK agrees: getAgentAttributes at packages/cloudflare/src/instrumentations/agents/types.ts:61-70 sets only GEN_AI_AGENT_NAME from `instance._ParentClass?.name`, while the JSDoc at types.ts:39 still describes `name` as 'reported as the cloudflare.agent.name span attribute'; instrumentChatAgentConversation.ts:35 stores `uuid4()`.",
+    "record_consistent": "yes",
+    "report_claims_supported": "yes",
+    "report_notes": "All four of F44's clauses are in the shipped run: agent class only, base class name, uuid4 conversation id rotating on message:clear, and the develop type error. The 'as the same page recommends further down' clause is a docs statement, outside this check.",
+    "rerun": "not run",
+    "corrections": [
+      "The README lists drive-n4b.mjs, run-agent-rpcprop.txt, tscheck/docs-sample-fixed.ts, tscheck/tsconfig.fixed.json and tscheck/run-types*.txt as leftovers from an abandoned attempt. They are still shipped; either delete them or the note has to stay, because a reader running the Run block will not touch them."
+    ],
+    "report_sentences": [
+      "F44 'The Agents SDK page describes attributes the SDK does not set [N4; confirmed three times]. The callable RPC span carries the agent class only, and that class is the base class name, not the exported wrapped class; there is no instance-name attribute. The automatic conversation ID is a fresh uuid4 that rotates on message:clear ... On develop the page\\'s enableRpcTracePropagation sample is a type error.' - every clause is supported by run-agent.txt, run-chat.txt and run-tscheck.txt."
+    ]
+  },
+  {
+    "id": "N5",
+    "tests_what_it_claims": "yes",
+    "code_notes": "Two concurrent hibernatable WebSocket connections with interleaved messages are what make the tag-isolation claim testable, and each handler writes the same five keys - one user key and four reserved prefixes - so 'one storage span per invocation' is a controlled result rather than a count. /onlyfw and /onlymine isolate the key filter from the handler path entirely, covering get, put, delete and list. A second driver run against the same live isolate is what turns the trace-pinning observation into a claim.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "raw.json parsed: 6 webSocketMessage spans, 2 webSocketClose spans, 4 alarm spans, 11 durable_object_storage_put, 1 each of get/delete/list, 1 setAlarm. Every webSocketMessage and webSocketClose is on trace 1b28741a3f1e4d049674dcf6f143d16e, and raw2.json's 2 webSocketMessage and 2 webSocketClose spans from a fresh pair of sockets are on the same trace id. All four alarm spans link to span 8e4a12621dd427b0, which is the setAlarm span. drive.out item 27/28 is /onlyfw with only `http.server GET`, item 29 is /onlymine with put+get+delete+list; items 14 and 18/25 are the ws and alarm throws with mechanism auto.faas.cloudflare.durable_object / handled false; tags stay `{\"conn\":\"A\",...}` and `{\"conn\":\"B\",...}` per invocation.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "Every element F45 lists is in raw.json / drive.out.",
+    "rerun": "not run",
+    "corrections": [
+      "F45 lists the good news and drops the caveat the probe and the record both make prominent: every websocket handler invocation shares one trace id for the lifetime of the Durable Object isolate, across both connections and across a later, unrelated pair of connections (raw.json and raw2.json both on 1b28741a3f1e4d049674dcf6f143d16e). A finding about websocket spans being 'real and undocumented' should carry it."
+    ],
+    "report_sentences": [
+      "F45 'Durable Object websocket and alarm spans are real and undocumented [N5; confirmed twice]. One span per webSocketMessage and per webSocketClose, one function alarm span per alarm with the throw captured as auto.faas.cloudflare.durable_object, tags isolated per connection, and the documented cf_, cf:, __ps_, / key filtering holds for get, put, delete and list.' - supported; the isolate-lifetime trace pinning is missing from the sentence."
+    ]
+  },
+  {
+    "id": "N6",
+    "tests_what_it_claims": "partly",
+    "code_notes": "The behavioural half runs on Bun only: app6.ts is a Bun.serve app on @sentry/bun, and one request drives console.log, an outgoing fetch, addFeatureFlag, console.error, a throw with own properties, captureException twice, captureMessage and an explicit flush - a clean sequence for six integrations at once, with a sentinel plus flush so the read is deterministic. For Cloudflare and Deno the probe only runs exports.mjs, a static export-surface check over the built index.js of each package. So the shipped probe proves the Cloudflare export gap but does not run the five working integrations on Cloudflare or Deno.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "exports-rerun.log, cloudflare section: `no contextLinesIntegration` with dedupe / extraErrorData / rewriteFrames / captureConsole / featureFlags all YES and `no addFeatureFlag`. items-verify.json holds 6 items, 4 of them events, with `nested boom` present once while probe-response-verify.json shows two distinct ids (id1 5359774d4d35400db596fe320008f18d, id2 36d6e540afa94e3d823665df9390e1ea) - dedupe dropped the second envelope. The raw event carries `contexts.Error = {\"detailCode\": \"N6-detail\", \"payload\": {...}}` with `extra` unset, and every app frame is `app:///...` with pre/post of exactly 3. The SDK confirms the Cloudflare gap: grep for contextLinesIntegration over packages/cloudflare/src returns nothing.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "F46's first sentence and both smaller corrections about extraErrorDataIntegration and the Bun fetch breadcrumb are supported by the shipped artefacts (the fetch-breadcrumb one on Bun).",
+    "rerun": "not run",
+    "corrections": [
+      "F46's clause 'The other five documented optional integrations work on all three runtimes' is not shipped for Cloudflare or Deno. The N6 record's own method note describes 'one app per runtime per version under $REPRO/probes/N6/{develop,v10730}/{bun,deno,cf}'; the rebuild flattened that to a single Bun app plus an export check, and only the Bun leg was run. Say the runtime evidence is Bun plus an export surface for the other two.",
+      "The N6 record's probePath still points at `$REPRO/probes/N6/develop/bun` and `raw-bun-dev.ndjson`, neither of which exists; the shipped files are at probes/N6/ and raw.ndjson."
+    ],
+    "report_sentences": [
+      "F46 'contextLinesIntegration is not exported by @sentry/cloudflare on either version [N6; confirmed twice]. The Cloudflare contextlines include shows a call that cannot run' - supported by exports-rerun.log and by the absence of contextLinesIntegration in packages/cloudflare/src.",
+      "F46 'The other five documented optional integrations work on all three runtimes' - shipped only for Bun; Cloudflare and Deno are covered by an export check, not a run.",
+      "F46 'extraErrorDataIntegration puts its data under contexts.<ErrorName>, not under extra' - supported by raw-verify.ndjson."
+    ]
+  },
+  {
+    "id": "N10",
+    "tests_what_it_claims": "yes",
+    "code_notes": "Seven legs cover the documented source-map flow end to end without a Sentry account: two Cloudflare builds (vite build with build.sourcemap: true plus the plugin, and plain wrangler with upload_source_maps: true), two Bun builds, two Deno shapes, plus a hand-injected _sentryDebugIds control on the already-built Worker bundle. That control is what separates 'the runtime SDK cannot emit debug meta' from 'nothing injects a debug ID', and it is the right design for the claim. resolve.mjs applies the emitted .map by hand, which is how the map is shown to be correct even without a debug ID. The claim about the plugins themselves is declared as a source grep, not a runtime observation, and the README says so.",
+    "observed_faithful": "yes",
+    "verdict_supported": "yes",
+    "decisive_lines": "`grep -c '_sentryDebugIds\\[' dist/n10_cf/index.js` = 0, `dryrun/index.js` = 0, `bun/dist-n10/n10.js` = 0, `dist-control/index.js` = 1. result-cf-vite.json: both events carry `debug_meta_images: []` and no frame has a debug_id key. result-cf-control.json: `\"debug_meta_images\":[{\"type\":\"sourcemap\",\"code_file\":\"$REPRO/probes/N10/dist-control/index.js\",\"debug_id\":\"1234abcd-0000-4000-8000-0000deadbeef\"}]`. `node resolve.mjs dist/n10_cf/index.js.map 10029:8` -> `../../src/boom.ts:2:8`. The source grep reproduces at the pin: the debug-id pattern over packages/cloudflare/src/vite/ returns 0 hits, and packages/bun/src/plugin.ts is a single re-export of sentryOrchestrionPlugin.",
+    "record_consistent": "yes",
+    "report_claims_supported": "partly",
+    "report_notes": "The 'sentryCloudflareVitePlugin is an instrumentation plugin and has nothing to do with source maps' half of F50 is supported by the grep and by the vite-build leg; the Bun half is supported by the bundle and compiled-binary legs.",
+    "rerun": "not run",
+    "corrections": [
+      "F50's second clause - 'the documented flow (@sentry/vite-plugin, or the wizard, or sentry-cli sourcemaps inject) does produce debug IDs' - is not exercised by the shipped probe. package.json installs no @sentry/vite-plugin and no sentry-cli, and vite.config.ts uses cloudflare() plus sentryCloudflareVitePlugin() only. The Cloudflare refutation is record-only; the shipped positive control is a hand-appended _sentryDebugIds snippet, not the documented flow.",
+      "README's Run note calls the sink `_toolbox/qs/sink.mjs`; that directory does not exist."
+    ],
+    "report_sentences": [
+      "F50 'Debug IDs: the Cloudflare claim was wrong, the Bun one holds [N10; refuted for Cloudflare, confirmed for Bun]. sentryCloudflareVitePlugin is an instrumentation plugin and has nothing to do with source maps' - supported by the source grep and result-cf-vite.json.",
+      "F50 'the documented flow (@sentry/vite-plugin, or the wizard, or sentry-cli sourcemaps inject) does produce debug IDs' - record-only; nothing in probes/N10 runs it.",
+      "F50 'On Bun, sentryBunPlugin injects none either, so the explicit sentry-cli sourcemaps inject step is required' - the first half is supported by result-bun-bundle.json and the plugin.ts grep."
+    ]
+  },
+  {
+    "id": "C17",
+    "tests_what_it_claims": "n.a. - no probe directory",
+    "code_notes": "probes/C17 does not exist, _records/probes.json has no C17 entry, and INDEX.md does not list it. The report nevertheless prints a full probe record for it (SvelteKit on Cloudflare Workers, 10.73.0: works) whose Repro block names files in `$REPRO/probes/C17/10.73.0`.",
+    "observed_faithful": "n.a.",
+    "verdict_supported": "no",
+    "decisive_lines": "`ls probes/` lists C01-C16, C18, C25, C26 and no C17. `grep -c 'C17' INDEX.md` is 0. The report's own note says the run was 10.73.0-only, which under the develop-only rebuild rule (_toolbox/TOOLBOX.md:18-20, 'Test develop ONLY') is why nothing was rebuilt.",
+    "record_consistent": "no",
+    "report_claims_supported": "no",
+    "report_notes": "F38 cites [C17, C19, C22, C15] for 'SvelteKit, Nuxt, Next.js (OpenNext) and Hono work as documented'. Only the C15 (Hono) leg has a shipped probe.",
+    "rerun": "not run",
+    "corrections": [
+      "The report's C17 record points at `$REPRO/probes/C17/10.73.0`, a path that does not exist in the shipped repository. Either say in the record that C17 was a 10.73.0-only run that the develop-only rebuild did not carry, or drop the $REPRO path."
+    ],
+    "report_sentences": [
+      "F38 'SvelteKit, Nuxt, Next.js (OpenNext) and Hono work as documented [C17, C19, C22, C15]' - three of the four cited probes have no directory and no record."
+    ]
+  },
+  {
+    "id": "C19",
+    "tests_what_it_claims": "n.a. - no probe directory",
+    "code_notes": "probes/C19 does not exist and _records/probes.json has no C19 entry. The report prints a record (Nuxt on Cloudflare, nitro cloudflare_module, 10.73.0: works) whose Repro block names files in `$REPRO/probes/C19/10.73.0`.",
+    "observed_faithful": "n.a.",
+    "verdict_supported": "no",
+    "decisive_lines": "`ls probes/` has no C19; `grep -c C19 INDEX.md` is 0.",
+    "record_consistent": "no",
+    "report_claims_supported": "no",
+    "report_notes": "Same as C17: cited by F38, no shipped artefact.",
+    "rerun": "not run",
+    "corrections": [
+      "The report's C19 record points at `$REPRO/probes/C19/10.73.0`, which does not exist."
+    ],
+    "report_sentences": [
+      "F38 '... [C17, C19, C22, C15]' - the C19 leg has no shipped probe."
+    ]
+  },
+  {
+    "id": "C20",
+    "tests_what_it_claims": "n.a. - no probe directory",
+    "code_notes": "probes/C20 does not exist and _records/probes.json has no C20 entry. The report prints a record (React Router framework mode on Cloudflare Workers, 10.73.0: works) whose Repro block names files in `$REPRO/probes/C20/10.73.0/app`, and whose own notes say 'Only 10.73.0 was requested, so no develop run.'",
+    "observed_faithful": "n.a.",
+    "verdict_supported": "no",
+    "decisive_lines": "`ls probes/` has no C20; `grep -c C20 INDEX.md` is 0. The report's 'Behaviors with no page at all' line lists C20 among the ids a reader is told to look up.",
+    "record_consistent": "no",
+    "report_claims_supported": "no",
+    "report_notes": "F38's first sentence ('React Router 7 and TanStack Start work on Workers with 10.73.0 and have no Cloudflare docs [C20, C21]') rests entirely on records with no shipped directory.",
+    "rerun": "not run",
+    "corrections": [
+      "The report's C20 record points at `$REPRO/probes/C20/10.73.0/app`, which does not exist, and the 'Behaviors with no page at all' list sends readers to C20 as if it were a directory."
+    ],
+    "report_sentences": [
+      "F38 'React Router 7 and TanStack Start work on Workers with 10.73.0 and have no Cloudflare docs [C20, C21]' - neither probe is shipped.",
+      "'Behaviors with no page at all: B10, B12, B14, B15, B16, C02, C05, C07, C20, ...' - C20 has no directory."
+    ]
+  },
+  {
+    "id": "C21",
+    "tests_what_it_claims": "n.a. - no probe directory",
+    "code_notes": "probes/C21 does not exist and _records/probes.json has no C21 entry. The report prints a record (TanStack Start on Cloudflare Workers) whose Repro block names `$REPRO/probes/C21/10.73.0`.",
+    "observed_faithful": "n.a.",
+    "verdict_supported": "no",
+    "decisive_lines": "`ls probes/` has no C21; `grep -c C21 INDEX.md` is 0.",
+    "record_consistent": "no",
+    "report_claims_supported": "no",
+    "report_notes": "Cited by F38 together with C20.",
+    "rerun": "not run",
+    "corrections": [
+      "The report's C21 record points at `$REPRO/probes/C21/10.73.0`, which does not exist."
+    ],
+    "report_sentences": [
+      "F38 '... [C20, C21]' - the C21 leg has no shipped probe."
+    ]
+  },
+  {
+    "id": "C22",
+    "tests_what_it_claims": "n.a. - no probe directory",
+    "code_notes": "probes/C22 does not exist and _records/probes.json has no C22 entry. The report prints a record (Next.js on Cloudflare via OpenNext) whose Repro block names `$REPRO/probes/C22/10.73.0`.",
+    "observed_faithful": "n.a.",
+    "verdict_supported": "no",
+    "decisive_lines": "`ls probes/` has no C22; `grep -c C22 INDEX.md` is 0.",
+    "record_consistent": "no",
+    "report_claims_supported": "no",
+    "report_notes": "Cited by F38 with C17 and C19.",
+    "rerun": "not run",
+    "corrections": [
+      "The report's C22 record points at `$REPRO/probes/C22/10.73.0`, which does not exist."
+    ],
+    "report_sentences": [
+      "F38 '... [C17, C19, C22, C15]' - the C22 leg has no shipped probe."
+    ]
+  },
+  {
+    "id": "C23",
+    "tests_what_it_claims": "n.a. - no probe directory and no citation",
+    "code_notes": "probes/C23 does not exist, _records/probes.json has no C23 entry, and the deep report never mentions C23 (grep count 0). The id is simply unused; nothing depends on it.",
+    "observed_faithful": "n.a.",
+    "verdict_supported": "n.a.",
+    "decisive_lines": "`grep -c 'C23|C24' _reports/deep-probe-report.html` is 0.",
+    "record_consistent": "n.a.",
+    "report_claims_supported": "n.a.",
+    "report_notes": "No report sentence cites C23.",
+    "rerun": "not run",
+    "corrections": [],
+    "report_sentences": []
+  },
+  {
+    "id": "C24",
+    "tests_what_it_claims": "n.a. - no probe directory and no citation",
+    "code_notes": "probes/C24 does not exist, _records/probes.json has no C24 entry, and the deep report never mentions C24. Unused id.",
+    "observed_faithful": "n.a.",
+    "verdict_supported": "n.a.",
+    "decisive_lines": "`grep -c 'C23|C24' _reports/deep-probe-report.html` is 0.",
+    "record_consistent": "n.a.",
+    "report_claims_supported": "n.a.",
+    "report_notes": "No report sentence cites C24.",
+    "rerun": "not run",
+    "corrections": [],
+    "report_sentences": []
+  }
+]

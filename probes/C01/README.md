@@ -46,7 +46,7 @@ kill $spid; kill $apid
 
 `drive.sh` clears the sink, curls `/enriched-throw?q=1` (with `x-c01-header` and `cookie: c01=1`),
 `/waituntil-throw`, `/waituntil-reject`, `/sentinel?n=1`, then polls the sink until `sentinel 1` is
-there. `sink.mjs` is `_toolbox/qs/sink.mjs` with the event mapping extended to keep `user`, `tags`,
+there. `sink.mjs` is `_toolbox/sink.mjs` with the event mapping extended to keep `user`, `tags`,
 all `contexts`, `breadcrumbs`, `request` (header keys, `query_string`, `cookies`), frame count and
 last frame; `RAW=<file>` also appends every raw envelope item.
 

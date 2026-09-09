@@ -119,7 +119,7 @@ kill $spid; wait $spid
 
 `drive.mjs <appPort> <sinkPort>` clears the sink, calls `/error`, then `/sentinel`, polls the sink
 until the sentinel event has arrived and prints every sink item as one JSON line each. `sink.mjs` is
-`_toolbox/qs/sink.mjs` with the event mapping extended to keep `debug_meta.images` and, per stack
+`_toolbox/sink.mjs` with the event mapping extended to keep `debug_meta.images` and, per stack
 frame, `fn` / `abs_path` / `filename` / `module` / `lineno` / `colno` / `in_app` / `debug_id` /
 `context_line`.
 

@@ -60,7 +60,7 @@ waits for it to answer, waits 2 s so the readiness request's span envelope flush
 is cleared, runs `node drive.mjs <app port> <sink port> > <label>.items.json` (GET `/user/42`,
 `/error`, `/sentinel`; waits for the sentinel event plus 2.5 s for the 500 ms span-stream flush),
 renders it with `node verify.mjs <label>.items.json`, and kills the app. `sink.mjs` is
-`_toolbox/qs/sink.mjs` with the span mapping extended to keep each span's `op`, `status`, `trace_id`,
+`_toolbox/sink.mjs` with the span mapping extended to keep each span's `op`, `status`, `trace_id`,
 `http.response.status_code`, `url.full`, `http.route`, `sentry.source` and `sentry.origin`.
 
 ## Expected

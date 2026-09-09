@@ -91,3 +91,70 @@ all record-only for the same develop-only reason.
 - D14 ships `main-http-hook.ts` that no Run line invokes; D09 keeps eleven stale result files whose names embed env arguments.
 
 The full per-probe check is in `verification/probes-deno.md` and `probes-deno.json`.
+
+## Cloudflare column and findings
+
+1. Matrix, *Library spans: database driver*, Cloudflare - replace `[C16, quick start C-vite]` with
+   N3 (devA vs devC).
+2. Matrix, *Server span naming*, Cloudflare - `[C15]` supports only "Hono gives route names"; add
+   C10 for method-only under stream and C13/C06/C07 for URL under static.
+3. F31 - drop C14 from the citation or say the Workers half rests on a record note; and mark
+   "`cacheClient: false` or removing the Dedupe integration restores per-request delivery" and the
+   "(C26)" workflow leg as record-only.
+4. F32 - mark "`traceLifecycle: 'static'` ... fixes it" record-only, and note that the rebuild's ALS
+   control leg did not reproduce the sentinel delivery ("confirmed twice" overstates it).
+5. F33 - "produces a transaction" should be "produces a span envelope" for develop.
+6. F36 - mark the `@sentry/core` session path record-only for Cloudflare, as already done for B05.
+7. F37 - the dead auto-wrap path and the browser-SDK-in-the-Worker symptom are record-only; C18
+   ships only the working setup.
+8. F38 - `[C17, C19, C22, C15]` and `[C20, C21]`: only C15 has a shipped probe.
+9. F45 - add the isolate-lifetime trace pinning.
+10. F46 - "work on all three runtimes" is shipped for Bun plus an export surface for the other two.
+11. F50 - the "documented flow does produce debug IDs" refutation is record-only.
+12. Docs coverage, C06 - "wrapping it again does not duplicate spans" is record-only; the shipped
+    probe says the wrapper is not exported on develop.
+13. "Behaviors with no page at all: ... C20 ..." - C20 has no directory.
+
+## SDK claims spot-checked at the audit pin (6f2da7483d)
+
+Every SDK-level cause the records name holds, by file and line:
+
+- `packages/cloudflare/src/wrapRequestHandlerWithInit.ts:169` - `span.end();` inside the catch, with
+  no error status, before `captureException`. This is C01/F28's missing `http.response.status_code`.
+- `packages/cloudflare/src/request.ts` - `wrapRequestHandler` never calls
+  `setAsyncLocalStorageAsyncContextStrategy()`, while `withSentry.ts:40`, `pages-plugin.ts:78`,
+  `durableobject.ts:54` and `instrumentations/instrumentWorkerEntrypoint.ts:153` all do. C09/F32.
+- `packages/cloudflare/src/instrumentations/worker/instrumentFetcher.ts:5-6` - JSDoc says "create a
+  span and propagate trace headers"; the body only merges headers. C08/C25/F40.
+- `packages/cloudflare/src/instrumentations/worker/instrumentEnv.ts` - branches for D1 (:64),
+  Queue (:70), R2 (:77) and the AI binding (:94); none for KV. F35 and the Native-runtime-APIs cell.
+- `packages/cloudflare/src/workflows.ts:115-120,151` -
+  `const isFinalAttempt = !hasStepContext || attempt > retryLimit;` gates the capture. C26/F34.
+- `packages/cloudflare/src/integrations/httpServer.ts:88-91` - `maxRequestBodySize` wins and the
+  `dataCollection.httpBodies` check is the fallback. C13/F30.
+- `packages/cloudflare/package.json` exports are exactly `["./package.json", ".", "./request",
+  "./vite"]`, and `prismaIntegration` is re-exported at `src/index.ts:125`. N2/F42.
+- `packages/cloudflare/src/index.ts` exports no `instrumentD1*` and no session API; no
+  `contextLinesIntegration` exists anywhere under `packages/cloudflare/src`. C06, C12/F36, N6/F46.
+- `enableRpcTracePropagation` appears nowhere in `packages/cloudflare/src`;
+  `rpcTracePropagationBindings` is declared at `src/client.ts:360`. C25, N4/F44.
+- `packages/cloudflare/src/instrumentations/agents/types.ts:61-70` - `getAgentAttributes` sets only
+  `GEN_AI_AGENT_NAME` from `instance._ParentClass?.name`, while the JSDoc at `types.ts:39` still
+  describes `name` as "reported as the `cloudflare.agent.name` span attribute";
+  `instrumentChatAgentConversation.ts:35` stores `uuid4()`. N4/F44.
+- `packages/cloudflare/src/vite/index.ts:42` says options come from a co-located `instrument.*` file
+  while `vite/instrumentFile.ts:15` hardcodes `'instrument.server'`; `withSentry.ts:35-37` routes a
+  `WorkerEntrypoint` class to `instrumentWorkerEntrypoint`. N3/F43.
+- The debug-id grep over `packages/cloudflare/src/vite/` returns 0 hits and
+  `packages/bun/src/plugin.ts` is a single re-export of `sentryOrchestrionPlugin`. N10/F50.
+
+## Cloudflare probes whose output was not persisted or not rebuilt
+
+- C17, C19, C20, C21 and C22 have report records with `$REPRO/probes/C<n>/10.73.0` paths, but no directory and no entry in `_records/probes.json`: they were 10.73.0-only runs that the develop-only rebuild did not carry. F38 (SvelteKit, Nuxt, Next.js on Workers, React Router 7 and TanStack Start) therefore rests on C15 and on records only; the framework cells `cells/M-*-cf/` are the shipped evidence for those frameworks.
+- C07: the three HTTP responses quoted in the README went to the terminal; C14: the last `sink:` line of the debug run is in no shipped file; C03: the `[tracePropagationTargets: []] sink:` line is a hand-written summary; C25: the negative-control block is trimmed to three of seven items; N2: the quoted sentinel line was copied from the record (`runtime` is a string in the shipped file).
+- N3: the shipped README was a stale draft quoting ids and ports from an earlier run; replaced by the draft that matches the shipped `out-dev*.sink.json` (2026-09-08). N3 still holds an untracked 349 MB `node_modules`, which the README's Install line restores.
+- N6: the runtime evidence for the five optional integrations is Bun plus an export-surface check for Cloudflare and Deno; the record's `probePath` (`probes/N6/develop/bun`, `raw-bun-dev.ndjson`) does not exist, the shipped files are `probes/N6/` and `raw.ndjson`.
+- N4 ships the leftovers of an abandoned attempt (`drive-n4b.mjs`, `run-agent-rpcprop.txt`, `tscheck/docs-sample-fixed.ts`, `tscheck/tsconfig.fixed.json`, `tscheck/run-types*.txt`), as its README says.
+- C02 and C18 carried the verdict `see record` in `_records/probes.json`; normalized to `works` (2026-09-08). Nineteen READMEs named the sink as `_toolbox/qs/sink.mjs`; corrected to `_toolbox/sink.mjs`.
+
+The full per-probe check is in `verification/probes-cloudflare.md` and `probes-cloudflare.json`.

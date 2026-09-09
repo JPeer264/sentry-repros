@@ -59,7 +59,7 @@ kill $apid; kill $spid
 ```
 
 `drive.mjs` hits the five paths and then polls `/__items` until the `sentinel` event is there, so
-everything sent before it has arrived. `sink.mjs` is the unmodified `_toolbox/qs/sink.mjs`.
+everything sent before it has arrived. `sink.mjs` is the unmodified `_toolbox/sink.mjs`.
 
 ## Expected
 
@@ -178,7 +178,7 @@ trimmed it to `"sentinel"`.
 - `functions/api/hello.js`, `functions/api/error.js`, `functions/api/sentinel.js` - the three functions
 - `index.html`, `app.js` - static assets, to show that they get a span too
 - `.dev.vars` - `SINK_PORT=41537`, read by the middleware for the `tunnel` option
-- `sink.mjs` - unmodified `_toolbox/qs/sink.mjs`
+- `sink.mjs` - unmodified `_toolbox/sink.mjs`
 - `drive.mjs` - hits the five paths, waits for the `sentinel` event, prints `/__items`
 - `drive.log`, `raw.json`, `dedupe.log`, `sentinel-again.log` - sink output from the run above
 - `app.log`, `sink.log` - wrangler (with SDK debug logs) and sink output from the run above
