@@ -9,6 +9,7 @@ Docs changes for the Node guide that a new user hits between install and the fir
   - An alternative page documents `--import @sentry/node/import` with a later `Sentry.init()`, replacing the late-initialization page that still rests on the removed `@sentry/node/preload` entry (DOC-Q26).
   - The CommonJS install option is dropped; the pages assume ESM.
   - Meta-frameworks are documented without `--import`, with an alternative that uses it and says when (for example when some packages are not bundled). Nuxt no longer emits the server config into the build, so it cannot be `--import`ed at all (DOC-F11).
+
   **Change:** Rework `common/install/index.mdx`, `esm.mdx`, `esm-without-import.mdx`, `commonjs.mdx` and `late-initialization.mdx` to the three methods above, record the decision on the pages rather than in a chat thread, and align the in-product onboarding snippets with it.
   Draft: [Restructure the Node install methods for v11: --import as the main path, bundler plus top-level import and --import @sentry/node/import as the alternatives, no CommonJS option](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#107-restructure-the-node-install-methods-for-v11---import-as-the-main-path-bundler-plus-top-level-import-and---import-sentrynodeimport-as-the-alternatives-no-commonjs-option>)
 - [ ] **P0** · DOC-Q25 · The Express, Fastify, Koa, Hapi and Connect ESM tabs import the instrument file without its extension

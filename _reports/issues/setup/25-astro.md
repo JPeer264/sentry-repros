@@ -18,6 +18,7 @@ Docs changes for the Astro guide that a new user hits between install and the fi
   - `contexts.runtime` reports `node` on Bun, so Bun events cannot be told apart from Node ones in Sentry.
   - ContextLines prints `Failed to read file: native` once per captured event on Bun.
   - Errors thrown while an `.astro` page renders were not exercised; the error probe is an endpoint. Browser-side capture was not exercised either, because the run used `enabled: { client: false, server: true }`.
+
   **Change:** `guides/astro/index.mdx:21-29`: amend the alert to name Bun as working on the Node adapter output. Add a "Running on Bun" section to that page with the `bun --preload ./sentry.server.config.mjs dist/server/entry.mjs` start command, the `astro.config.mjs` options above, the runtime-gated `fetchIntegration()`, the channel pin and the capability list.
   Draft: [Name Bun in the Astro runtime alert and add a Running on Bun section](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#37-name-bun-in-the-astro-runtime-alert-and-add-a-running-on-bun-section>)
 - [ ] **P0** · DOC-F30 · Astro on Deno: the runtime alert says not supported
@@ -33,6 +34,7 @@ Docs changes for the Astro guide that a new user hits between install and the fi
   Known limits:
   - Outgoing `fetch()` is not instrumented on Deno: no `http.client` span and no `sentry-trace`/`baggage` headers, so the downstream service starts a new trace. Adding `fetchIntegration` from `@sentry/cloudflare` in `sentry.server.config.js` restores both, but `@sentry/astro` does not depend on `@sentry/cloudflare`, so that package has to be installed on purpose. Calls made with `node:http`/`node:https` are traced without it, and a call wrapped in `Sentry.startSpan` with headers taken from `Sentry.getTraceData()` also works.
   - A route that only exists as a `.ts`/`.js` endpoint is uninstrumented unless `src/middleware.ts` imports the server config.
+
   **Change:** `guides/astro/index.mdx:21-29`: amend the Alert to name Deno as a supported runtime and link out. Add a Deno framework page for Astro with the `@deno/astro-adapter` setup, the mandatory middleware import, the `npm install @sentry/cloudflare` step and the `fetchIntegration` snippet. `common/configuration/integrations/fetchIntegration.mdx:10`: it says the integration "only works inside the Cloudflare Workers runtime", which this run disproves.
   Draft: [Correct the Astro runtime note: Deno with @deno/astro-adapter works](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#38-correct-the-astro-runtime-note-deno-with-denoastro-adapter-works>)
 

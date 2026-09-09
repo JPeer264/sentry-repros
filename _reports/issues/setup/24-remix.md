@@ -19,6 +19,7 @@ Docs changes for the Remix guide that a new user hits between install and the fi
   - A route with no loader or action stays method-only.
   - With `instrumentBuild` alone the event's `transaction` field is unset, because nothing calls `isolationScope.setTransactionName`, so error grouping loses the route.
   - Without `sentryCloudflareVitePlugin()` there are no database spans and no warning; `mysql2` is unusable on workerd.
+
   **Change:** Rewrite `guides/cloudflare/frameworks/remix.mdx`: add `@sentry/cloudflare` to the install at `:39-49`, add a Workers entry section, point `handleError` at `@sentry/remix/cloudflare`, and add a database-spans section. Correct `guides/cloudflare/features/vite-plugin.mdx` to the shipped top-level options `buildTimeInstrumentation` and `autoInstrumentation`, both defaulting to `true`: the prose at `:30`, the snippets at `:40-47` and the `SdkOption` blocks at `:150-166`, which still document `_experimental.autoInstrumentation` and `_experimental.useDiagnosticsChannelInjection` as defaulting to `false`. Add the `wrapRequestHandler` isolation warning to the two Hydrogen pages that document exactly that shape, `guides/cloudflare/frameworks/hydrogen-remix.mdx` and `guides/cloudflare/frameworks/hydrogen-react-router.mdx`.
   Draft: [Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#32-rewrite-the-remix-on-cloudflare-page-for-workers-and-fix-the-vite-plugin-options>)
 

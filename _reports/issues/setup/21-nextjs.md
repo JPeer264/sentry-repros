@@ -23,5 +23,6 @@ Docs changes for the Next.js guide that a new user hits between install and the 
   Known limits:
   - Only drivers that publish their own diagnostics channels produce database spans; `mysql` 2.x produces none on Workers. The visible symptom at init is the SDK logging "Failed to register diagnostics-channel injection hooks, so channel-based integrations will not record spans" with `TypeError: port1.on is not a function`. Listing the driver in `serverExternalPackages` is not an escape hatch: it produces spans but breaks the driver with `PROTOCOL_INCORRECT_PACKET_SEQUENCE`.
   - `sendDefaultPii` is gone on the v11 line; leaving it in `sentry.server.config.ts` fails the `next build` type check.
+
   **Change:** On `docs/platforms/javascript/guides/cloudflare/frameworks/nextjs.mdx`: Add an "Instrument Outgoing HTTP Requests" section after `:54` with the `@sentry/cloudflare` install and the `fetchIntegration()` snippet. Add a "Database Spans" section covering `disableEval: true` and the driver limit.
   Draft: [Document outgoing fetch and database spans for Next.js on Cloudflare Workers](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#89-document-outgoing-fetch-and-database-spans-for-nextjs-on-cloudflare-workers>)

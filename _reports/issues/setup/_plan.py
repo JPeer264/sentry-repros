@@ -70,6 +70,8 @@ def entry(tier, iid, why):
     change=re.sub(r'^What to change[^:]*:\s*', '', change)
     head=why[0].upper()+why[1:] if re.match(r'^[a-z]+\b', why) and not re.match(r'^[a-z]+[A-Z._/]', why) else why
     lines=['- [ ] **%s** · %s · %s' % (i['prio'], iid, head), '  '+obs]
+    # A nested list at the end of the observation would swallow the next line; a blank line hands it back to the checkbox item.
+    if obs.split('\n')[-1].lstrip().startswith('- '): lines.append('')
     if change: lines.append('  **Change:** '+change)
     if iid in OWNER: lines.append('  Note: %s.' % OWNER[iid])
     lines.append('  Draft: [%s](<%s>)' % (i['title'], anchor(i)))

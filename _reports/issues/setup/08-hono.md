@@ -28,6 +28,7 @@ None.
   Known limits:
   - Drivers that do not publish `node:diagnostics_channel` events themselves, such as `mysql`@2, produce spans only in the `Bun.build` bundle.
   - Do not pass `external: ["@sentry/*"]` to `Bun.build` for a Hono app. Externalizing `@sentry/*` while `hono` is inlined gives two copies of hono's `GET_MATCH_RESULT` symbol and every request 500s inside `@sentry/hono`'s `requestHandler`. Either pass no `external` at all (the verified recipe), or externalize `hono` together with `@sentry/*`, which then behaves exactly like the unbundled run.
+
   **Change:** `guides/hono/index.mdx`: add a "Run your app" step with a Bun tab showing `bun app.ts` and the `Bun.build` + `sentryBunPlugin()` variant, state that the `--preload` step is not needed here, and name the span names a reader will see under the `stream` default and under `static`. `guides/bun/index.mdx:90-94`: rewrite the alert so it describes the plugin build as the supported way to instrument bundled code. `packages/hono/README.md:172-190`: the Bun section ends in the Node recipe (`serve` from `@hono/node-server`); replace it with the `export default app` form the docs page shows.
   Draft: [Document Hono on Bun: unbundled run and the Bun.build plugin variant](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#53-document-hono-on-bun-unbundled-run-and-the-bunbuild-plugin-variant>)
 - [ ] **P1** · DOC-F18 · Hono on Deno
@@ -44,6 +45,7 @@ None.
   - Outgoing `fetch()` is not instrumented on Deno: no `http.client` span and no `sentry-trace`/`baggage` headers, so the downstream service starts a new trace. The default integrations of `@sentry/deno` carry `denoHttpIntegration()` for `node:http`/`node:https` and nothing that traces `fetch`; the breadcrumb integration patches `fetch`, so the call is still breadcrumbed while no span is started and no header is injected.
   - `node:http`/`node:https` clients are traced normally.
   - Without the import hook line, database and library spans are silently missing.
+
   **Change:** `guides/hono/index.mdx:88-89`: show the `deno.json` and the npm-based install, not `deno add` alone. `guides/hono/index.mdx` near `:302-324`: note the optional `@sentry/deno/import` first line and the permission flags. `guides/hono/index.mdx` near `:360`: add a Deno-only caveat for outgoing `fetch`, naming `node:http`/`node:https` as the clients that are traced. `guides/deno/index.mdx`: add an "Outgoing fetch requests" section stating the same limit.
   Draft: [Document the verified Hono on Deno setup and its outgoing fetch limit](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#68-document-the-verified-hono-on-deno-setup-and-its-outgoing-fetch-limit>)
 - [ ] **P1** · DOC-F35 · Hono on Workers
@@ -55,5 +57,6 @@ None.
   Known limits:
   - A Worker bundled by `wrangler dev`/`wrangler deploy` alone emits no database spans and logs no warning.
   - No `middleware.hono` spans on Workers: the transaction's `spans[]` holds only the `db` and `http.client` children.
+
   **Change:** On `docs/platforms/javascript/guides/hono/index.mdx`: Extend the Expandable at `:129-144` to set `compatibility_date` alongside `nodejs_compat`, matching `platform-includes/getting-started-config/javascript.cloudflare.mdx:5`. Add a "Database spans on Cloudflare Workers" subsection after the "Add the Sentry Middleware" section (`:227-359`), before "### Report Unhandled Exceptions" at `:360`, stating that database instrumentation on Workers is build-time only, showing the Vite config above, and linking to `/platforms/javascript/guides/cloudflare/features/vite-plugin/`. Say in the same subsection that a Workers transaction carries no `middleware.hono` spans, so readers do not go looking for them. Link that subsection from `docs/platforms/javascript/guides/cloudflare/frameworks/hono.mdx`, the 8-line stub that today only redirects to the Hono guide, so a reader who starts on the Cloudflare side reaches the database note too.
   Draft: [Document Hono on Cloudflare Workers: compatibility_date and build-time database spans](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#81-document-hono-on-cloudflare-workers-compatibility_date-and-build-time-database-spans>)
