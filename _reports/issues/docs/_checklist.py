@@ -36,6 +36,10 @@ PLAN=[
    ('should','DOC-Q97','the captureActionFormDataKeys claim describes data that never appears on errored actions'),
    ('later','DOC-Q98','transactions wording, a missing import, served source maps, the sanitized boundary event, no release'),
  ]),
+ ('Astro', [
+   ('should','DOC-Q99','the verify endpoint kills the build on the default static output'),
+   ('later','DOC-Q100','the trackClientIp default, Astro 4 as the minimum, view-transition naming, the delete glob, a missing token'),
+ ]),
  ('Nuxt', [
    ('should','DOC-Q90','the pages still make --import the crucial step; the server config is bundled into the Nitro build'),
    ('later','DOC-Q91','deprecated inject modes documented as current, Nuxt 4 missing, a verify button that creates a second issue'),

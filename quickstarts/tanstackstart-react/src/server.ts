@@ -1,4 +1,5 @@
-// manual-setup/index.mdx:299-310 verbatim (the `--import` variant). run.sh copies it to src/server.ts.
+// manual-setup/index.mdx:390-402 verbatim (the "Without --import Flag" variant). run.sh copies it to src/server.ts.
+import "../instrument.server.mjs";
 import { wrapFetchWithSentry } from "@sentry/tanstackstart-react";
 import handler, { createServerEntry } from "@tanstack/react-start/server-entry";
 

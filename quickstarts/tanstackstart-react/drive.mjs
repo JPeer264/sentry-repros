@@ -116,7 +116,7 @@ await step('goto /loader-error (SSR, loader throws on the server)', async () => 
 });
 const sentinel2 = await sentinel(page, 'sentinel-2');
 await page.evaluate(() => window.Sentry && window.Sentry.flush(5000)).catch(() => {});
-const pageload2 = sdkUp && (await until('second pageload span', async () => spansOf(await get('/__items'), 'client').filter(s => s.op === 'pageload').length >= 3, 120, 250));
+const pageload2 = sdkUp && (await until('second pageload span', async () => spansOf(await get('/__items'), 'client').filter(s => s.op === "pageload").length >= 2, 120, 250));
 
 const [items, raw, headers] = await Promise.all([get('/__items'), get('/__items?raw=1'), get('/__headers')]);
 const summary = {
