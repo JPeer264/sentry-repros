@@ -91,14 +91,14 @@ for k,title in enumerate(ORDER,1):
     prio='High' if must else 'Medium'
     fn='%02d-%s.md' % (k, slug(title))
     open(os.path.join(OUT,fn),'w').write(md+'\n')
-    plan.append(dict(n=k,title=title,file=fn,priority=prio,must=[r[1] for r in must],should=[r[1] for r in should],existing=EXISTING.get(title),body=md))
+    plan.append(dict(n=k,title=title,linear_title='%s (Getting started / Manual setup)' % title,file=fn,priority=prio,must=[r[1] for r in must],should=[r[1] for r in should],existing=EXISTING.get(title),body=md))
 json.dump(plan, open(os.path.join(OUT,'plan.json'),'w'), indent=1)
 
 PROPS='team SDKs · project Major Release: 11.0 [JavaScript] · milestone stable · labels Task, Type: Documentation · parent %s · not synced with GitHub' % PARENT
-idx=['# Linear sub-issue plan for the setup doc changes','','%d sub-issues under %s, one per framework or runtime, each with the must and should items of the v11 checklist as checkboxes. %s. Nothing has been created; `plan.json` and the `.md` files are the bodies.' % (len(plan), PARENT, PROPS[0].upper()+PROPS[1:]),'',
+idx=['# Linear sub-issue plan for the setup doc changes','','%d sub-issues under %s, one per framework or runtime, titled `<name> (Getting started / Manual setup)`, each with the must and should items of the v11 checklist as checkboxes. %s. `plan.json` and the `.md` files are the bodies.' % (len(plan), PARENT, PROPS[0].upper()+PROPS[1:]),'',
      '| # | Sub-issue | Priority | Must | Should | Existing ticket | File |','| --- | --- | --- | --- | --- | --- | --- |']
 for p in plan:
-    idx.append('| %d | %s | %s | %s | %s | %s | `%s` |' % (p['n'],p['title'],p['priority'],', '.join(p['must']) or '–',', '.join(p['should']) or '–',(p['existing'][0] if p['existing'] else '–'),p['file']))
+    idx.append('| %d | %s | %s | %s | %s | %s | `%s` |' % (p['n'],p['linear_title'],p['priority'],', '.join(p['must']) or '–',', '.join(p['should']) or '–',(p['existing'][0] if p['existing'] else '–'),p['file']))
 idx+=['','## Not in a sub-issue','']+['- %s (%s)%s' % (iid, group, ': '+own if own else '') for iid,group,own in skipped]+['','Counts: %d must, %d should across %d sub-issues.' % (sum(len(p['must']) for p in plan), sum(len(p['should']) for p in plan), len(plan))]
 open(os.path.join(OUT,'README.md'),'w').write('\n'.join(idx)+'\n')
 
@@ -144,19 +144,19 @@ for p in plan:
     ex=('<p class="existing"><strong>Use the existing ticket %s.</strong> %s.</p>' % (p['existing'][0], H.escape(p['existing'][1]))) if p['existing'] else ''
     cards.append('''<article class="ticket" id="s-%(n)d">
 <p class="props"><span class="chip status">Planned</span><span class="chip %(pc)s">Priority: %(prio)s</span><span class="chip ms">stable</span><span class="chip">Task</span><span class="chip">Type: Documentation</span><span class="chip">parent %(parent)s</span><span class="n">#%(n)d of %(total)d · %(m)d must · %(s)d should</span></p>
-<h3>%(title)s</h3>%(ex)s
+<h3>%(ltitle)s</h3>%(ex)s
 <div class="body">%(body)s</div>
 <div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy description</button><span class="file">%(file)s</span></div>
 <details><summary>Markdown source</summary><pre data-role="body">%(md)s</pre></details>
-<pre class="hidden" data-role="title">%(title)s</pre>
-</article>''' % dict(n=p['n'],total=len(plan),pc='p-high' if p['priority']=='High' else 'p-med',prio=p['priority'],parent=PARENT,m=len(p['must']),s=len(p['should']),title=H.escape(p['title']),ex=ex,body=md2html(p['body']),file=p['file'],md=H.escape(p['body'])))
+<pre class="hidden" data-role="title">%(ltitle)s</pre>
+</article>''' % dict(n=p['n'],total=len(plan),pc='p-high' if p['priority']=='High' else 'p-med',prio=p['priority'],parent=PARENT,m=len(p['must']),s=len(p['should']),title=H.escape(p['title']),ltitle=H.escape(p['linear_title']),ex=ex,body=md2html(p['body']),file=p['file'],md=H.escape(p['body'])))
 skip_html=''.join('<li><code>%s</code> from %s%s</li>' % (iid,H.escape(group),(': '+H.escape(own)) if own else '') for iid,group,own in skipped)
 page='''<title>v11 Setup Doc Tickets</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 '''+style.replace('</style>','.checks{list-style:none;padding-left:0}.checks li{border-top:1px solid var(--line);padding:8px 0;margin:0}.checks li:first-child{border-top:0}.checks label{display:block}.checks input{margin-right:6px}h4{font-family:var(--serif);font-size:16px;margin:14px 0 6px}.existing{border-left:3px solid var(--warn);background:var(--panel);padding:8px 12px;margin:0 0 12px;border-radius:0 4px 4px 0;font-size:14px}nav .cnt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted)}</style>')+'''
 <div class="wrap"><nav><p>Sub-issues · must/should</p><ul>'''+nav+'''</ul></nav><main>
 <h1>Linear sub-issues for the setup doc changes</h1>
-<p class="lede">'''+str(len(plan))+''' planned sub-issues under '''+PARENT+''' (v11 SDK docs updates), one per framework or runtime. Every card is a ready description: the must and should items of the v11 checklist, each with the finding, the change and the draft link. Nothing has been created.</p>
+<p class="lede">'''+str(len(plan))+''' planned sub-issues under '''+PARENT+''' (v11 SDK docs updates), one per framework or runtime, titled <code>&lt;name&gt; (Getting started / Manual setup)</code>. Every card is a ready description: the must and should items of the v11 checklist, each with the finding, the change and the draft link. Nothing has been created.</p>
 <div class="alert"><p><strong>Properties for every sub-issue.</strong> '''+H.escape(PROPS)+'''. Priority High where a must item exists, Medium otherwise. Four audit findings covered by existing tickets (DOC-Q29 and DOC-Q38 by SDK-1482, DOC-Q62 by SDK-1461, DOC-Q86 by SDK-1483) are not listed; items that overlap an existing ticket carry a note.</p>
 <p><strong>Not in a sub-issue.</strong></p><ul>'''+skip_html+'''</ul></div>
 '''+'\n'.join(cards)+'''
