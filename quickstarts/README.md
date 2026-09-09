@@ -17,7 +17,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-bun](bun/) | plain runtime | bun | documented, manual variants | done | bun 1.4.2 |
 | [QS-deno](deno/) | plain runtime | deno | documented, manual variants | done | deno 2.9.0 |
 | [QS-cloudflare](cloudflare/) | plain runtime | cloudflare | documented, manual variants | done | wrangler local |
-| QS-cloudflare-pages | plain runtime | cloudflare (Pages functions middleware) | sentryPagesPlugin | planned | wrangler pages dev |
+| [QS-cloudflare-pages](cloudflare-pages/) | plain runtime | cloudflare (Pages functions middleware) | sentryPagesPlugin | done | wrangler pages dev with the develop tarballs; five variants across the middleware placement and the compatibility flags |
 | [QS-express](express/) | node framework | express | npm, manual setup | done | Node 26.5.0 with the develop tarballs; eleven variants across the install variants, the error handler, the integration options and express 4 and 5 |
 | [QS-fastify](fastify/) | node framework | fastify | npm, manual setup | done | Node 26.5.0 with the develop tarballs; thirteen variants across the install variants, the error handler page, the integration options and fastify 4 and 5 |
 | [QS-koa](koa/) | node framework | koa | npm, manual setup | done | Node 26.5.0 with the develop tarballs; fourteen variants across the install variants, the error handler, the integration options and the verify snippet |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 25 done, 11 planned, 4 not measurable.
+Totals: 26 done, 10 planned, 4 not measurable.

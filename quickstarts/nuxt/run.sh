@@ -49,8 +49,10 @@ for p in "$SINK_PORT" "$APP_PORT"; do
   if lsof -nP -iTCP:"$p" -sTCP:LISTEN >/dev/null 2>&1; then echo "port $p is busy"; exit 1; fi
 done
 
+APP_PID=
 PORT="$SINK_PORT" node sink.mjs > "sink-$VARIANT.log" 2>&1 &
 SINK_PID=$!
+trap 'kill $APP_PID $SINK_PID 2>/dev/null; lsof -ti tcp:$APP_PORT 2>/dev/null | xargs kill -9 2>/dev/null' EXIT
 for _ in $(seq 1 100); do curl -sf "$SINK/__items" >/dev/null && break; sleep 0.1; done
 
 PORT="$APP_PORT" $CMD > "app-$VARIANT.log" 2>&1 &

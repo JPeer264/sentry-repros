@@ -604,5 +604,25 @@
    "normalizedRequest (repro-only)": "works",
    "v4 programming model (repro-only)": "partial (no request data)"
   }
+ },
+ {
+  "id": "QS-cloudflare-pages",
+  "path": "quickstarts/cloudflare-pages",
+  "runtime": "wrangler 4.130.0 pages dev, develop 03aaf42455",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The root middleware works: every request including static assets yields an http.server span, errors arrive with auto.http.cloudflare, fetch propagates, logs and waitUntil spans arrive. Defects: the Pages tracing verify snippet never imports the SDK; the root middleware spans static assets and the scoped alternative drops the guide's verify route; the config include's nodejs_compat requirement depends on the compatibility date; Pages request spans are method-named with no route; waitUntil rejections are not captured on Pages either.",
+  "sdk": {
+   "name": "sentry.javascript.cloudflare",
+   "version": "10.67.0",
+   "integrations": 10
+  },
+  "variants": {
+   "root middleware verbatim": "works (verify snippet ReferenceError)",
+   "scoped functions/api/_middleware.js": "works (verify route dropped)",
+   "include's wrangler.jsonc verbatim": "works",
+   "no flags at compatibility date 2026-09-01": "works",
+   "no flags at 2024-09-23": "broken (No such module node:async_hooks)"
+  }
  }
 ]

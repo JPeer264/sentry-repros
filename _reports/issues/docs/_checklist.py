@@ -19,6 +19,10 @@ PLAN=[
    ('must','DOC-R20','the Bun OpenTelemetry setup includes import a package and exports that no longer exist'),
    ('later','DOC-R8','v7 migration tables name removed integrations'),
  ]),
+ ('Cloudflare Pages', [
+   ('must','DOC-Q83','the Pages tracing verify snippet uses Sentry without importing it'),
+   ('later','DOC-Q84','the nodejs_compat requirement depends on the date, method-named spans, waitUntil on Pages'),
+ ]),
  ('Browser', [
    ('must','DOC-Q7','the tracing verify snippet is a SyntaxError: await in a non-async function'),
    ('should','DOC-Q8','the CDN tab names the tracing bundle and adds replayIntegration(), which records nothing'),
