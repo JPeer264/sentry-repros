@@ -26,6 +26,11 @@ ORDER=['All runtime guides','Node','Express','Fastify','Koa','Hapi','Connect','H
        'Next.js','Nuxt','SvelteKit','Remix','Astro','TanStack Start','SolidStart','React Router','Nitro','AWS Lambda','Google Cloud Functions','Azure Functions','Effect','Mastra']
 # Existing tickets that take the place of a new sub-issue.
 EXISTING={'Cloudflare':('SDK-1426','Adjust docs for Cloudflare, assigned, milestone stable, body still tbd: fill it with the list below instead of creating a new sub-issue')}
+# Created in Linear on 2026-09-09 with the must items only; sub-issues without a must item were not created.
+CREATED={'All runtime guides':'SDK-1495','Node':'SDK-1494','Fastify':'SDK-1496','Koa':'SDK-1497','Connect':'SDK-1498','NestJS':'SDK-1499','Elysia':'SDK-1500','Bun':'SDK-1501','Deno':'SDK-1502',
+ 'Browser':'SDK-1503','React':'SDK-1504','Vue':'SDK-1505','Angular':'SDK-1506','Svelte':'SDK-1507','Solid':'SDK-1508','Ember':'SDK-1509','Next.js':'SDK-1493','Nuxt':'SDK-1510','SvelteKit':'SDK-1511',
+ 'Remix':'SDK-1512','Astro':'SDK-1513','TanStack Start':'SDK-1514','SolidStart':'SDK-1515','React Router':'SDK-1516','Nitro':'SDK-1517','AWS Lambda':'SDK-1518','Google Cloud Functions':'SDK-1519','Effect':'SDK-1520'}
+LINEAR='https://linear.app/getsentry/issue/'
 GUIDE={'All runtime guides':'the Node, Bun, Deno and Cloudflare','Node':'the Node','Browser':'the browser and WebAssembly','Cloudflare':'the Cloudflare Workers and Pages','Elysia':'the Elysia'}
 
 subs={}
@@ -91,14 +96,14 @@ for k,title in enumerate(ORDER,1):
     prio='High' if must else 'Medium'
     fn='%02d-%s.md' % (k, slug(title))
     open(os.path.join(OUT,fn),'w').write(md+'\n')
-    plan.append(dict(n=k,title=title,linear_title='%s (Getting started / Manual setup)' % title,file=fn,priority=prio,must=[r[1] for r in must],should=[r[1] for r in should],existing=EXISTING.get(title),body=md))
+    plan.append(dict(n=k,title=title,linear_title='%s (Getting started / Manual setup)' % title,created=CREATED.get(title),file=fn,priority=prio,must=[r[1] for r in must],should=[r[1] for r in should],existing=EXISTING.get(title),body=md))
 json.dump(plan, open(os.path.join(OUT,'plan.json'),'w'), indent=1)
 
 PROPS='team SDKs · project Major Release: 11.0 [JavaScript] · milestone stable · labels Task, Type: Documentation · parent %s · not synced with GitHub' % PARENT
 idx=['# Linear sub-issue plan for the setup doc changes','','%d sub-issues under %s, one per framework or runtime, titled `<name> (Getting started / Manual setup)`, each with the must and should items of the v11 checklist as checkboxes. %s. `plan.json` and the `.md` files are the bodies.' % (len(plan), PARENT, PROPS[0].upper()+PROPS[1:]),'',
-     '| # | Sub-issue | Priority | Must | Should | Existing ticket | File |','| --- | --- | --- | --- | --- | --- | --- |']
+     '| # | Sub-issue | Linear | Priority | Must | Should | Existing ticket | File |','| --- | --- | --- | --- | --- | --- | --- | --- |']
 for p in plan:
-    idx.append('| %d | %s | %s | %s | %s | %s | `%s` |' % (p['n'],p['linear_title'],p['priority'],', '.join(p['must']) or '–',', '.join(p['should']) or '–',(p['existing'][0] if p['existing'] else '–'),p['file']))
+    idx.append('| %d | %s | %s | %s | %s | %s | %s | `%s` |' % (p['n'],p['linear_title'],(p['created'] or ('SDK-1426, pending' if p['existing'] else 'not created, no must item')),p['priority'],', '.join(p['must']) or '–',', '.join(p['should']) or '–',(p['existing'][0] if p['existing'] else '–'),p['file']))
 idx+=['','## Not in a sub-issue','']+['- %s (%s)%s' % (iid, group, ': '+own if own else '') for iid,group,own in skipped]+['','Counts: %d must, %d should across %d sub-issues.' % (sum(len(p['must']) for p in plan), sum(len(p['should']) for p in plan), len(plan))]
 open(os.path.join(OUT,'README.md'),'w').write('\n'.join(idx)+'\n')
 
@@ -142,21 +147,22 @@ nav=''.join('<li><a href="#s-%d">%s</a><span class="cnt">%d/%d</span></li>' % (p
 cards=[]
 for p in plan:
     ex=('<p class="existing"><strong>Use the existing ticket %s.</strong> %s.</p>' % (p['existing'][0], H.escape(p['existing'][1]))) if p['existing'] else ''
+    st=('<a class="chip status" href="%s%s">Created %s, must items</a>' % (LINEAR,p['created'],p['created'])) if p['created'] else ('<span class="chip status">SDK-1426, update pending</span>' if p['existing'] else '<span class="chip status">Not created, no must item</span>')
     cards.append('''<article class="ticket" id="s-%(n)d">
-<p class="props"><span class="chip status">Planned</span><span class="chip %(pc)s">Priority: %(prio)s</span><span class="chip ms">stable</span><span class="chip">Task</span><span class="chip">Type: Documentation</span><span class="chip">parent %(parent)s</span><span class="n">#%(n)d of %(total)d · %(m)d must · %(s)d should</span></p>
+<p class="props">%(st)s<span class="chip %(pc)s">Priority: %(prio)s</span><span class="chip ms">stable</span><span class="chip">Task</span><span class="chip">Type: Documentation</span><span class="chip">parent %(parent)s</span><span class="n">#%(n)d of %(total)d · %(m)d must · %(s)d should</span></p>
 <h3>%(ltitle)s</h3>%(ex)s
 <div class="body">%(body)s</div>
 <div class="bar"><button type="button" class="btn" data-copy="title">Copy title</button><button type="button" class="btn" data-copy="body">Copy description</button><span class="file">%(file)s</span></div>
 <details><summary>Markdown source</summary><pre data-role="body">%(md)s</pre></details>
 <pre class="hidden" data-role="title">%(ltitle)s</pre>
-</article>''' % dict(n=p['n'],total=len(plan),pc='p-high' if p['priority']=='High' else 'p-med',prio=p['priority'],parent=PARENT,m=len(p['must']),s=len(p['should']),title=H.escape(p['title']),ltitle=H.escape(p['linear_title']),ex=ex,body=md2html(p['body']),file=p['file'],md=H.escape(p['body'])))
+</article>''' % dict(st=st,n=p['n'],total=len(plan),pc='p-high' if p['priority']=='High' else 'p-med',prio=p['priority'],parent=PARENT,m=len(p['must']),s=len(p['should']),title=H.escape(p['title']),ltitle=H.escape(p['linear_title']),ex=ex,body=md2html(p['body']),file=p['file'],md=H.escape(p['body'])))
 skip_html=''.join('<li><code>%s</code> from %s%s</li>' % (iid,H.escape(group),(': '+H.escape(own)) if own else '') for iid,group,own in skipped)
 page='''<title>v11 Setup Doc Tickets</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 '''+style.replace('</style>','.checks{list-style:none;padding-left:0}.checks li{border-top:1px solid var(--line);padding:8px 0;margin:0}.checks li:first-child{border-top:0}.checks label{display:block}.checks input{margin-right:6px}h4{font-family:var(--serif);font-size:16px;margin:14px 0 6px}.existing{border-left:3px solid var(--warn);background:var(--panel);padding:8px 12px;margin:0 0 12px;border-radius:0 4px 4px 0;font-size:14px}nav .cnt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted)}</style>')+'''
 <div class="wrap"><nav><p>Sub-issues · must/should</p><ul>'''+nav+'''</ul></nav><main>
 <h1>Linear sub-issues for the setup doc changes</h1>
-<p class="lede">'''+str(len(plan))+''' planned sub-issues under '''+PARENT+''' (v11 SDK docs updates), one per framework or runtime, titled <code>&lt;name&gt; (Getting started / Manual setup)</code>. Every card is a ready description: the must and should items of the v11 checklist, each with the finding, the change and the draft link. Nothing has been created.</p>
+<p class="lede">'''+str(len(plan))+''' sub-issues under '''+PARENT+''' (v11 SDK docs updates), one per framework or runtime, titled <code>&lt;name&gt; (Getting started / Manual setup)</code>. Every card is the full description with the must and should items of the v11 checklist. On 2026-09-09 the sub-issues with a must item were created in Linear with the must section only; the should section is kept here for a later pass.</p>
 <div class="alert"><p><strong>Properties for every sub-issue.</strong> '''+H.escape(PROPS)+'''. Priority High where a must item exists, Medium otherwise. Four audit findings covered by existing tickets (DOC-Q29 and DOC-Q38 by SDK-1482, DOC-Q62 by SDK-1461, DOC-Q86 by SDK-1483) are not listed; items that overlap an existing ticket carry a note.</p>
 <p><strong>Not in a sub-issue.</strong></p><ul>'''+skip_html+'''</ul></div>
 '''+'\n'.join(cards)+'''
