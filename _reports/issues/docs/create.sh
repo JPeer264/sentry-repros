@@ -202,3 +202,4 @@ gh issue create -R getsentry/sentry-docs --title "Add the missing details to the
 gh issue create -R getsentry/sentry-docs --title "Add the missing details to the TanStack Start manual-setup page" --body-file P2-197-DOC-Q102.md
 gh issue create -R getsentry/sentry-docs --title "Add the missing SolidStart 2 details to the guide" --body-file P2-198-DOC-Q106.md
 gh issue create -R getsentry/sentry-docs --title "Add the missing details to the Ember pages" --body-file P2-199-DOC-Q109.md
+gh issue create -R getsentry/sentry-docs --title "Add the missing details to the Gatsby guide" --body-file P2-200-DOC-Q110.md

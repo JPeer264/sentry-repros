@@ -6,7 +6,7 @@ Ninety-six proposed GitHub issues for `getsentry/sentry-docs` from the audit of 
 | --- | --- | --- |
 | [P0](#file-p0-md) | a page that loses data for a common setup | 39 |
 | [P1](#file-p1-md) | a page that is wrong or missing for something users will hit | 110 |
-| [P2](#file-p2-md) | consistency and hygiene | 50 |
+| [P2](#file-p2-md) | consistency and hygiene | 51 |
 
 **Start with [01-V11-CHECKLIST.md](#file-01-v11-checklist-md):** the getting-started and manual-setup changes that must land with v11, grouped by runtime, each linked to its draft.
 

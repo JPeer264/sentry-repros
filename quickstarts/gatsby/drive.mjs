@@ -116,15 +116,35 @@ if (appUp && variant === 'base') {
 }
 
 if (appUp && variant === 'client-route') {
-  await step('click #nav-home (Link from /users/42/ to /)', async () => {
+  await step('click #nav-home (first navigation, from /users/42/ to /, a prefix of the starting URL)', async () => {
     await page.click('#nav-home');
     const home = await until('home page', () => page.evaluate(() => location.pathname === '/' && document.querySelector('#nav-about') !== null), 40, 100);
-    const navSpan = await until('navigation span', async () => spansOf(await get('/__items'), 'navigation').length >= 1, 120, 250);
+    const navSpan = await until('navigation span', async () => spansOf(await get('/__items'), 'navigation').length >= 1, 60, 250);
     return { home, navSpan };
+  });
+  await step('window.___navigate("/about/") (second navigation on the same document)', async () => {
+    await page.evaluate(() => window.___navigate('/about/'));
+    const about = await until('about page', () => page.evaluate(() => document.querySelector('#about-title') !== null), 40, 100);
+    const navSpan = await until('navigation span', async () => spansOf(await get('/__items'), 'navigation').length >= 1, 60, 250);
+    return { about, navSpan, navigations: spansOf(await get('/__items'), 'navigation').map(s => ({ name: s.name, url: s.url })) };
   });
   const sentinel2 = await sentinel(page, 'sentinel-2');
   await page.evaluate(() => window.Sentry && window.Sentry.flush(5000));
   steps.push({ label: 'after sentinel-2', result: { sentinel2 } });
+
+  // Control: a fresh load of /users/42/ whose first navigation goes to a URL that is not a prefix.
+  await step('reload /users/42/ then window.___navigate("/about/") as the first navigation', async () => {
+    await page.goto(`${site}/users/42/`, { waitUntil: 'load' });
+    const up = await until('SDK init after reload', () => page.evaluate(() => !!(window.Sentry && window.Sentry.getClient && window.Sentry.getClient() && document.body.getAttribute('data-wired') === '1')), 60);
+    const before = spansOf(await get('/__items'), 'navigation').length;
+    await page.evaluate(() => window.___navigate('/about/'));
+    const about = await until('about page', () => page.evaluate(() => document.querySelector('#about-title') !== null), 40, 100);
+    const navSpan = await until('navigation span after reload', async () => spansOf(await get('/__items'), 'navigation').length > before, 60, 250);
+    return { up, about, navSpan, navigations: spansOf(await get('/__items'), 'navigation').map(s => ({ name: s.name, url: s.url })) };
+  });
+  const sentinel3 = await sentinel(page, 'sentinel-3');
+  await page.evaluate(() => window.Sentry && window.Sentry.flush(5000));
+  steps.push({ label: 'after sentinel-3', result: { sentinel3 } });
 }
 
 if (appUp && variant === 'base') {

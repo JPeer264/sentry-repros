@@ -107,6 +107,10 @@ The docs changes a new user hits on the way from install to the first event, on 
 - [ ] **Should land with v11** · P1 · DOC-Q108. The tracing pages document options that do not exist and omit the initializer tracing needs: [Rewrite the Ember tracing setup around the instance initializer and its real options](#149-rewrite-the-ember-tracing-setup-around-the-instance-initializer-and-its-real-options)
 - [ ] **After the release** · P2 · DOC-Q109. A broken anchor, an empty instrumentation page, a .gjs template, no Glimmer component spans, no release: [Add the missing details to the Ember pages](#199-add-the-missing-details-to-the-ember-pages)
 
+## Gatsby
+
+- [ ] **After the release** · P2 · DOC-Q110. A TypeScript tab labelled .js, transactions, a hidden logs option, a config file that also runs in Node, an undocumented webpack plugin: [Add the missing details to the Gatsby guide](#200-add-the-missing-details-to-the-gatsby-guide)
+
 ## Vue
 
 - [ ] **Must land with v11** · P0 · DOC-Q19. The Vue Router page's only full example is Vue 2 code that fails on Vue 3: [Add a Vue 3 example to the Vue Router instrumentation page](#3-add-a-vue-3-example-to-the-vue-router-instrumentation-page)
@@ -244,4 +248,4 @@ The docs changes a new user hits on the way from install to the first event, on 
 
 The 34 framework pages that do not exist yet (DOC-F3 to DOC-F10, DOC-F12, DOC-F14 to DOC-F17, DOC-F20 to DOC-F27, DOC-F31 to DOC-F34, DOC-F37 to DOC-F43, DOC-F48, DOC-F51), the generated integrations tables and the runtime matrix (X3, DOC-R6), the feature pages (D1, bindings, Durable Objects, Workflows, Agents SDK), and the remaining completeness items. They improve coverage after the release and do not block a first setup.
 
-Counts: 47 must, 62 should, 36 later.
+Counts: 47 must, 62 should, 37 later.

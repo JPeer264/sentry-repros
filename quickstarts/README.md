@@ -11,7 +11,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-svelte](svelte/) | browser framework | svelte | npm, manual setup | done | esbuild-svelte + headless Chrome; five variants across the guide and the component tracking page; the Svelte 3-4 tabs and the source-maps wizard not run |
 | [QS-solid](solid/) | browser framework | solid | npm, manual setup | done | esbuild-plugin-solid + headless Chrome; seven variants across the guide, the router pages and the error boundary; the TanStack Router page not runnable as printed |
 | [QS-ember](ember/) | browser framework | ember | npm, manual setup | done | ember-cli 7 Vite blueprint, production build served by the sink, Chrome; three variants |
-| QS-gatsby | browser framework | gatsby | npm, manual setup | planned | build plus headless Chrome |
+| [QS-gatsby](gatsby/) | browser framework | gatsby | npm, manual setup | done | gatsby build and serve on Node 22 plus Chrome; two variants; resumed once after waiting on a background install |
 | [QS-wasm](wasm/) | browser | wasm | npm | done | headless Chrome with a wabt-assembled module; four variants with and without a build_id section |
 | [QS-node](node/) | plain runtime | node | documented, manual variants | done |  |
 | [QS-bun](bun/) | plain runtime | bun | documented, manual variants | done | bun 1.4.2 |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 34 done, 4 not measurable, 2 planned.
+Totals: 35 done, 4 not measurable, 1 planned.

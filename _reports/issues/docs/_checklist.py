@@ -97,6 +97,9 @@ PLAN=[
    ('should','DOC-Q108','the tracing pages document options that do not exist and omit the initializer tracing needs'),
    ('later','DOC-Q109','a broken anchor, an empty instrumentation page, a .gjs template, no Glimmer component spans, no release'),
  ]),
+ ('Gatsby', [
+   ('later','DOC-Q110','a TypeScript tab labelled .js, transactions, a hidden logs option, a config file that also runs in Node, an undocumented webpack plugin'),
+ ]),
  ('Vue', [
    ('must','DOC-Q19','the Vue Router page\'s only full example is Vue 2 code that fails on Vue 3'),
    ('must','DOC-Q20','the tracingOptions.hooks snippet is a syntax error'),

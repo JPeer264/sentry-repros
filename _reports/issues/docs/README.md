@@ -1,6 +1,6 @@
 # Docs issue drafts, P0 to P2
 
-199 drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit. P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.
+200 drafts for `getsentry/sentry-docs`, one per finding of the runtime docs audit. P0 is in the suggested filing order; P1 and P2 follow the audit page. Each `.md` is an issue body, the title is in the table. `create.sh` files them with the GitHub CLI and was not run.
 
 | # | Prio | Item | Type | Title | File |
 | --- | --- | --- | --- | --- | --- |
@@ -203,3 +203,4 @@
 | 197 | P2 | DOC-Q102 | docs-change | Add the missing details to the TanStack Start manual-setup page | `P2-197-DOC-Q102.md` |
 | 198 | P2 | DOC-Q106 | docs-change | Add the missing SolidStart 2 details to the guide | `P2-198-DOC-Q106.md` |
 | 199 | P2 | DOC-Q109 | docs-change | Add the missing details to the Ember pages | `P2-199-DOC-Q109.md` |
+| 200 | P2 | DOC-Q110 | docs-change | Add the missing details to the Gatsby guide | `P2-200-DOC-Q110.md` |
