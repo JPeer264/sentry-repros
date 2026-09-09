@@ -298,6 +298,8 @@ Route names are recoverable too, but only through a helper the framework package
 
 **Work item.** A SolidStart middleware in `@sentry/solidstart` that names the span from the route manifest and captures API-route errors.
 
+Generalized by "Server segments keep a method-only name although the framework knows the route", which records the same symptom on TanStack Start and Nuxt with a cause of its own on each.
+
 ''' + cells('M-solidstart-bun','M-solidstart-deno','M-solidstart-cf'))
 
 t(XP, 'Package READMEs show wiring that does not resolve', ['JavaScript','Task'], 'Low', '''
@@ -339,6 +341,8 @@ Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runt
 
 def qs(*rts):
     return '**Evidence.** Getting-started reproduction%s %s, run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.' % ('s' if len(rts)>1 else '', ', '.join('[`quickstarts/%s/`](%s/quickstarts/%s)' % (r, REPRO, r) for r in rts))
+def gs(*apps):
+    return '**Evidence.** Getting-started reproduction%s %s, run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.' % ('s' if len(apps)>1 else '', ', '.join('[`quickstarts/%s/`](%s/quickstarts/%s)' % (a, REPRO, a) for a in apps))
 
 t(CFG, 'Cloudflare Vite plugin: a wrangler config resolved to the wrong default-named file instruments nothing, silently', ['JavaScript','Cloudflare Workers','Bug'], 'High', '''
 `sentryCloudflareVitePlugin()` already warns through the Vite logger when no wrangler config parses at all (`packages/cloudflare/src/vite/autoInstrument.ts:34-40`). The case that warning does not cover is a project holding more than one wrangler file: the plugin resolves the first default-named `wrangler.json`, `wrangler.jsonc` or `wrangler.toml` at the Vite root, reads the entry point and classes from that file, and instruments nothing for the Worker actually being built. A config was found, so nothing is logged. The recorded run produced an empty sink, an uncaught error in the worker log and `{"sentry-trace":null,"baggage":null}` at the recorder, with the build reporting success throughout.
@@ -353,6 +357,8 @@ t(CFG, 'Cloudflare segment span reports status ok on a 500 response', ['JavaScri
 A `withSentry` route that throws answers 500 through wrangler, and the error event arrives with mechanism `auto.http.cloudflare`, but the segment span of that request is emitted with `status: "ok"` and no `http.response.status_code` attribute, which the 200 routes do carry. `wrapRequestHandlerWithInit` calls `span.end()` in its catch without setting an error status. Node, Bun and Deno mark the same route `internal_error`. The Oak on Workers cell and the Pages middleware probe record the same span.
 
 **Work item.** Set the span status from the thrown error in the Cloudflare request wrapper, the way the other runtimes do.
+
+Generalized by "A server segment with no response keeps status ok", which records the same defect on Connect, SvelteKit and Cloudflare Pages.
 
 ''' + qs('cloudflare') + ' Also probe records C01 and C10 in the deep probe report.')
 
@@ -376,6 +382,131 @@ With `debug: true`, Node prints `Initializing Sentry: process: <pid>, thread: ma
 **Work item.** Print one line at init with SDK name, version, runtime name and version, on every runtime.
 
 ''' + qs('node','bun','deno','cloudflare'))
+
+t(XP, 'Source maps are deleted after a build that uploaded nothing', ['JavaScript','Bug'], 'High', '''
+Without an auth token the bundler plugin logs `Will not upload source maps` and then deletes the maps the framework plugin had just told it to generate, so a build that reads as green ships with no source maps and nothing says so. SolidStart deleted 3,543 `*.map` files (DOC-Q104, `results-import-src.json`), Nitro left no `*.map` anywhere under `.output` (DOC-Q80, `results-start.json`), the Next.js Turbopack path left `.next/static` with zero maps and no `sourceMappingURL` (DOC-Q89, `results-app-router.json`), and Astro deleted the hidden maps it had switched on itself (DOC-Q100, `results-build-base.json`).
+
+Each framework plugin fills `sourcemaps.filesToDeleteAfterUpload` on the user's behalf, and the deletion runs whether or not an upload happened: `packages/solidstart/src/vite/sourceMaps.ts:117-124`, `packages/astro/src/integration/index.ts:71-75`, `packages/nitro/src/sourceMaps.ts:89-90`, `packages/nextjs/src/config/getBuildPluginOptions.ts:301-310`.
+
+**Work item.** Skip the automatic deletion when no upload was attempted, and say once at build time that the maps were kept.
+
+''' + gs('solidstart','nitro','nextjs','astro'))
+
+t(XP, 'The automatic delete glob does not match the build output directory', ['JavaScript','Bug'], 'Medium', '''
+Two of the automatic `filesToDeleteAfterUpload` defaults point somewhere other than the directory the build wrote to. `packages/solidstart/src/vite/sourceMaps.ts:124` sets `["./**/*.map"]`, the whole project root: one SolidStart build deleted 3,543 maps, 3,519 of them under `node_modules/` and 24 under `.output/` (DOC-Q104, `results-import-src.json`). `packages/astro/src/integration/index.ts:75` hardcodes `["./dist/**/client/**/*.map", "./dist/**/server/**/*.map"]` and never reads `outDir`, so builds with `outDir: ./dist-middleware` and `./dist-removed-option` kept 27 and 26 hidden maps and shipped them with the app (DOC-Q100, `results-build-middleware.json`, `results-build-removed-option.json`). The Nitro default is derived from the output directory and is not affected.
+
+**Work item.** Scope the SolidStart glob to the build output, and read `outDir` for the Astro one.
+
+''' + gs('solidstart','astro'))
+
+t(XP, '`@sentry/elysia` on Node reports the Bun SDK name and a `bun` runtime', ['JavaScript','Bug'], 'Medium', '''
+Elysia with `@elysiajs/node` on Node 26.5.0, initialized from `@sentry/elysia` as the guide prints it, sends every event and span with `sdk.name: sentry.javascript.bun` and `contexts.runtime: { name: "bun", version: "unknown" }`, in all eight variants of the run (DOC-Q66, `results-guide.json`). The init delegates to `@sentry/bun` on both runtimes, and `@sentry/elysia` applies its own SDK metadata before the Bun SDK stamps its. Issues and spans from Node deployments are filed against the wrong platform, and the runtime version is never reported.
+
+**Work item.** Pick the base SDK and the reported metadata by runtime in `@sentry/elysia`. Same root as the Elysia on Deno ticket in the Deno milestone, and as JS-3582 and JS-3583.
+
+''' + gs('elysia'))
+
+t(XP, 'The Lambda `_HANDLER` shim wraps the handler again, so `wrapHandler` options never apply', ['JavaScript','Bug'], 'Medium', '''
+`awsLambdaIntegration` rewrites `_HANDLER` to a shim that loads the user's export and passes it through `instrumentHandler`, which ends in `wrapHandler(patched)` with no options (`packages/aws-serverless/src/instrumentHandler.ts:53` and `:56`). Nothing checks whether the export is already a `wrapHandler` result, so the user's options sit inside a second wrapper that runs with defaults. With `Sentry.wrapHandler(handler, { flushTimeout: 1000, captureTimeoutWarning: false })` in the handler file a `Possible function timeout: qs-aws-lambda` warning event still arrived (DOC-Q73, `results-manual-esm-wrap-options.json`); `flushTimeout` and `timeoutWarningLimit` are unreachable the same way.
+
+**Work item.** Mark handlers produced by `wrapHandler` and let the shim reuse the inner wrapper instead of adding a default outer one.
+
+''' + gs('aws-lambda'))
+
+t(XP, 'Google Cloud Functions: an HTTP invocation splits into two root spans, and the callback wrappers never end the function span', ['JavaScript','Bug'], 'Medium', '''
+`wrapHttpFunction` calls `continueTrace` before `startSpanManual` (`packages/google-cloud-serverless/src/gcpfunction/http.ts:48-52`). With no incoming headers that starts a fresh trace, so every HTTP invocation produced two segments in two traces, `Serverless function execution` (`function.gcp`) and the framework's `http.server GET`, with the error linked to the function trace only; with `sentry-trace` and `baggage` present the two share a trace but stay siblings, never nested. The event and cloud-event wrappers do not call `continueTrace` and their span is a child of the `http.server` segment (DOC-Q70, `results-http-config.json`, `results-event-tracing.json`).
+
+The callback wrappers have a second defect. For a three-parameter handler `wrapEventFunction` takes the callback branch (`packages/google-cloud-serverless/src/gcpfunction/events.ts:69-76`), where `span.end()` only runs inside the callback. A handler that throws synchronously is captured by `handleCallbackErrors` and rethrown, the callback never runs, and no `function.gcp` span is sent at all, which is the shape both config snippets print (`results-event-config.json`, `results-cloudevent-config.json`).
+
+**Work item.** Start the function span first and continue the trace inside it; end the span on the error path of the callback wrappers.
+
+''' + gs('gcp-functions'))
+
+t(XP, 'Server segments keep a method-only name although the framework knows the route', ['JavaScript','Bug'], 'High', '''
+Under the default stream lifecycle the segment span of a server request is named `GET` with source `url` on stacks whose own instrumentation holds the route pattern. TanStack Start names every segment `GET`, `/users/42` and `/api/sentry-example` included, with no `http.route`, and the server log carries `[Tracing] Ignoring name source on a child span: this attribute is only valid on the root span.` once per request: the request middleware renames a child rather than the segment. The SDK's own e2e test expects `GET /users/$userId` under `traceLifecycle: 'static'` (DOC-Q102, `results-nitro.json`).
+
+Nuxt names static routes `GET` and gives a route name only to parameterized routes and to requests with a query string, because `packages/nuxt/src/runtime/hooks/updateRouteBeforeResponse.ts:27` sets the route only when `matchedRoutePath !== requestPath` (DOC-Q91, `results-plain.json`). SolidStart names every segment `GET` or `POST` with the path in `url.path` (DOC-Q106, `results-import-src.json`), the stream-lifecycle case of the SolidStart naming ticket in this milestone.
+
+**Work item.** Rename the segment span, not the active child, in the TanStack Start request middleware, and drop the path-inequality guard in the Nuxt hook.
+
+''' + gs('tanstackstart-react','nuxt','solidstart'))
+
+t(CFG, 'Cloudflare Pages: the file route never reaches the segment span', ['JavaScript','Cloudflare Workers','Bug'], 'Medium', '''
+Every Pages function route arrives as a segment named `GET` with source `url` and no `http.route`, the parameterized `functions/api/users/[id].js` included, so Pages file routes are invisible as routes (DOC-Q84, `results-base.json`). `sentryPagesPlugin` (`packages/cloudflare/src/pages-plugin.ts:78-93`) hands the request straight to `wrapRequestHandlerWithInit` and reads neither `context.params` nor the function path, which is the only place the route pattern exists.
+
+**Work item.** Derive the route from the Pages function path and set it on the segment span, next to the Nuxt and SvelteKit renaming work in this milestone.
+
+''' + gs('cloudflare-pages'))
+
+t(XP, 'A server segment with no response keeps status ok', ['JavaScript','Bug'], 'Medium', '''
+A request that never produced a response still ends its segment span as a success. A Connect request the client aborted arrived with `status: ok` and `http.response.status_code: 200` after 3 s although nothing had been written (DOC-Q53, `results-no-handler.json`). The SvelteKit segment of a throwing route is `ok` with no status code at all, and only the `sveltekit.resolve` child carries the 500 (DOC-Q94, `results-base.json`); the three throwing routes of the Cloudflare Pages run behave the same (DOC-Q84, `results-base.json`). Alerts and failure rates built on segment status miss every one of these.
+
+**Work item.** Set the segment status from the response, and from the thrown error where there is no response, in the Node HTTP server span and in the SvelteKit and Cloudflare request wrappers.
+
+''' + gs('connect','sveltekit','cloudflare-pages'))
+
+t(XP, 'The `@sentry/nitro` peer range rejects every Nitro beta after `3.0.260415-beta`', ['JavaScript','Bug'], 'High', '''
+`packages/nitro/package.json` peers `nitro: ">=3.0.0-0 <4.0.0 || 3.0.260311-beta || 3.0.260415-beta"`. npm lets a prerelease satisfy a comparator only when it carries the same `major.minor.patch`, so the range accepts exactly `3.0.0`, `3.0.260311-beta` and `3.0.260415-beta` and rejects every beta published since, the registry's `latest` included. `npm install` ends in `ERESOLVE` for a plain Nitro app (DOC-Q78, `results-latest-nitro.json`, which needed `--legacy-peer-deps`) and for `npm install @sentry/solidstart`, because SolidStart 2 pulls a newer beta (`results-import-src.json`). Two getting-started guides cannot be followed with npm as printed.
+
+**Work item.** Widen the range so Nitro 3 prereleases resolve, and pin a recent beta in CI so it stays true.
+
+''' + gs('nitro','solidstart'))
+
+t(XP, '`@sentry/nitro`: `enableNitroErrorHandler` is untyped, and the dev server initializes the SDK twice', ['JavaScript','Bug'], 'Medium', '''
+`packages/nitro/src/runtime/hooks/captureErrorHook.ts:38` reads `enableNitroErrorHandler` off the client options with an `in` check, and it works at runtime, but no shipped type declares it for a plain Nitro app: `@sentry/nuxt` carries it on `SentryNuxtServerOptions` (`packages/nuxt/src/common/types.ts:20`) and `@sentry/nitro` has no equivalent, so the TypeScript instrument file the guide prints gets an excess-property error (DOC-Q80, `results-no-error-handler.json`).
+
+Under `nitro dev` with the documented `--import` flag the SDK initializes twice, in the main thread and in the worker, with 92 `Integration installed` lines, and every request sends two segments: a main-thread dev-proxy `GET` with source `url` and the worker's route-named one (`results-dev.json`).
+
+**Work item.** Declare the option on the Nitro server options type, and skip the init in the dev proxy thread.
+
+''' + gs('nitro'))
+
+t(XP, 'Mastra: the built-in integration doubles tool spans, and the exporter marks non-streaming calls as streamed', ['JavaScript','Bug'], 'Low', '''
+On the built-in `mastraIntegration` route one tool call produces two `gen_ai.execute_tool` spans, `execute_tool get-weather` under the agent span from Mastra's `client_tool_call` and `execute_tool weatherTool` under the chat span, so tool counts double (DOC-Q68, `results-sdk-only.json`). Mapping `client_tool_call` to `gen_ai.execute_tool` is the cause; the community exporter maps it to `ai.span` and does not double.
+
+On the exporter route the `gen_ai.chat` span carries `gen_ai.request.stream: true` and `gen_ai.response.streaming: true` although both model calls went out with `stream=false` (`results-guide.json`). That half lives in `@mastra/sentry`, so it needs an upstream change or an override on our side.
+
+**Work item.** Map `client_tool_call` to something other than `gen_ai.execute_tool` in `mastraIntegration`, and take the streaming flag from the request in the exporter.
+
+''' + gs('mastra'))
+
+t(XP, 'The injection diagnostics report a state the build is not in', ['JavaScript','Improvement'], 'Medium', '''
+A user cannot tell from the SDK's own output whether instrumentation is active, and the output points both ways. A Remix server built with `sentryRemixVitePlugin`, whose SSR bundle holds ten `diagnostics_channel` injection sites, still logs `[Sentry] Runtime hook registered, injected libraries=[]` and `[Sentry] Bundler plugin did not run` at start-up (DOC-Q98, `results-vite-plugin.json`). Nuxt on Deno logs `Bundler plugin ran, injected libraries=[]` on a build that is instrumented, because that list is only filled during the build (DOC-F28). In the other direction, Koa on Deno prints `[instrumentation:koa] subscribing to channels` and `Integration installed: Koa` on a run where nothing Koa-specific is instrumented (DOC-F22), and Koa on Node prints `Integration installed: Koa` next to an `[instrumentation:koa] not injected yet` that never resolves (`results-self-import.json`).
+
+**Work item.** Make one line at init state what actually happened, build-time injection and runtime injection separately, and stop reporting an integration as installed when its channels never bound. Next to the workerd warning ticket in the Cloudflare milestone and the silent-hook ticket in the Deno milestone.
+
+''' + gs('remix','koa') + ' Also cell records M-nuxt-deno and M-koa-deno in the deep probe report.')
+
+t(XP, '`SentryEffectMetricsLayer` fails to build on Effect v3', ['JavaScript','Bug'], 'High', '''
+`packages/effect/src/metrics.ts:183-193` builds the layer with `Layer.effectDiscard` around `Effect.acquireRelease` and `Effect.forkScoped`, neither of which gets a scope from `effectDiscard`. On `effect@3.22.2` merging the layer fails with `Service not found: effect/Scope`, the program never runs and nothing is sent, so the option takes down the whole app rather than only its metrics; on `effect@4.0.0-rc.112` the same layer builds (DOC-Q75, `results-metrics.json` against `results-v4.json`). The guide prints the layer in its Effect v3 tab.
+
+**Work item.** Give the layer a scope so it works on both majors, and run the Effect suite against v3 and v4 in CI.
+
+''' + gs('effect'))
+
+t(XP, '`@sentry/effect` captures no failed effect and turns the Node defaults off', ['JavaScript','Bug'], 'Medium', '''
+Nothing in `packages/effect/src` calls `captureException`, `captureMessage` or `captureEvent`, so a failed effect is never reported: `yield* Effect.fail(new Error("Sentry Test Error"))`, the guide's own verify step, produced no error event in any variant that ran it (DOC-Q76, `results-issues.json`, `results-launch.json`, `results-v4.json`). `packages/effect/src/server/sdk.ts:17` sets `defaultIntegrations: options.defaultIntegrations ?? false`, so the global handlers that would otherwise catch the crash are off as well and only `SpanStreaming` is installed (DOC-Q77). The SDK's own e2e app captures failures by hand with `captureException(Cause.squash(cause))`.
+
+**Work item.** Capture failed effects from the layer, and either keep the Node default integrations or say at init which ones were dropped.
+
+''' + gs('effect'))
+
+t(XP, 'React 19: the `reactErrorHandler` root hooks dedupe the ErrorBoundary event away', ['JavaScript','Bug'], 'Medium', '''
+With `onCaughtError: Sentry.reactErrorHandler()` on the root and `Sentry.ErrorBoundary` around the tree, two APIs the SDK ships and the page wires together, the root hook captures first (`auto.function.react.error_handler`, `handled: false`) and the boundary's own event is dropped: five `Not capturing exception because it's already been captured.` lines in one run, and with them the `beforeCapture` tags and the linked component stack of `captureReactException`. On a plain `createRoot` the boundary path works as documented (DOC-Q13, `results-error-boundary.json` against `results-error-boundary-plain.json`).
+
+`reactErrorHandler` also derives `handled` from whether a callback was passed, so `onUncaughtError: Sentry.reactErrorHandler(cb)` reports an error that unmounted the whole root as `handled: true`.
+
+**Work item.** Let the boundary's richer event replace the root hook's, or skip the root hook for an error a Sentry boundary will report. Derive `handled` from the hook rather than from the callback.
+
+''' + gs('react'))
+
+t(XP, 'Svelte 5 runes-mode components get no update spans', ['JavaScript','Bug'], 'Low', '''
+`trackUpdates` is implemented with `beforeUpdate` and `afterUpdate`, which throw in a Svelte 5 runes-mode component. The SDK swallows the throw and warns `Cannot track component updates. This is likely because you're using Svelte 5 in Runes mode.` only under `debug: true`, so a runes app with `trackUpdates: true` records the `ui.mount` span, no `ui.update` span ever, and nothing at the default log level says why; the legacy-mode component in the same run got its update spans (DOC-Q42, `results-track-component.json`). Runes are what a new Svelte 5 app is written in.
+
+**Work item.** Track updates through a runes-compatible hook, or warn at the default log level and state the limit in the option's JSDoc.
+
+''' + gs('svelte'))
+
 
 # files
 order=[BUN,DENO,CF,BUNG,DENOG,CFG,XP,BUNT,DENOT,CFT,DOCS]

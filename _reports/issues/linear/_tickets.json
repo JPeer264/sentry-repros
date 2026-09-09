@@ -451,9 +451,22 @@
    "Bug"
   ],
   "priority": "Medium",
-  "body": "A `withSentry` route that throws answers 500 through wrangler, and the error event arrives with mechanism `auto.http.cloudflare`, but the segment span of that request is emitted with `status: \"ok\"` and no `http.response.status_code` attribute, which the 200 routes do carry. `wrapRequestHandlerWithInit` calls `span.end()` in its catch without setting an error status. Node, Bun and Deno mark the same route `internal_error`. The Oak on Workers cell and the Pages middleware probe record the same span.\n\n**Work item.** Set the span status from the thrown error in the Cloudflare request wrapper, the way the other runtimes do.\n\n**Evidence.** Getting-started reproduction [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory. Also probe records C01 and C10 in the deep probe report.",
+  "body": "A `withSentry` route that throws answers 500 through wrangler, and the error event arrives with mechanism `auto.http.cloudflare`, but the segment span of that request is emitted with `status: \"ok\"` and no `http.response.status_code` attribute, which the 200 routes do carry. `wrapRequestHandlerWithInit` calls `span.end()` in its catch without setting an error status. Node, Bun and Deno mark the same route `internal_error`. The Oak on Workers cell and the Pages middleware probe record the same span.\n\n**Work item.** Set the span status from the thrown error in the Cloudflare request wrapper, the way the other runtimes do.\n\nGeneralized by \"A server segment with no response keeps status ok\", which records the same defect on Connect, SvelteKit and Cloudflare Pages.\n\n**Evidence.** Getting-started reproduction [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory. Also probe records C01 and C10 in the deep probe report.",
   "file": "35-cloudflare-segment-span-reports-status-ok-on-a-500-response.md",
   "n": 35
+ },
+ {
+  "milestone": "CF Functionality Gaps",
+  "title": "Cloudflare Pages: the file route never reaches the segment span",
+  "labels": [
+   "JavaScript",
+   "Cloudflare Workers",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Every Pages function route arrives as a segment named `GET` with source `url` and no `http.route`, the parameterized `functions/api/users/[id].js` included, so Pages file routes are invisible as routes (DOC-Q84, `results-base.json`). `sentryPagesPlugin` (`packages/cloudflare/src/pages-plugin.ts:78-93`) hands the request straight to `wrapRequestHandlerWithInit` and reads neither `context.params` nor the function path, which is the only place the route pattern exists.\n\n**Work item.** Derive the route from the Pages function path and set it on the segment span, next to the Nuxt and SvelteKit renaming work in this milestone.\n\n**Evidence.** Getting-started reproduction [`quickstarts/cloudflare-pages/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare-pages), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "36-cloudflare-pages-the-file-route-never-reaches-the-segment-sp.md",
+  "n": 36
  },
  {
   "milestone": "XPlatform Functionality Gaps",
@@ -463,9 +476,9 @@
    "Bug"
   ],
   "priority": "Medium",
-  "body": "SolidStart mounts the whole app as one Nitro catch-all handler, so the SDK's Nitro route parameterization never fires: server transactions arrive as `GET /users/456` with source `url` on Node, Bun, Deno and Workers, and collapse to a bare `GET` under the stream lifecycle. Errors thrown in a file API route (`src/routes/api/*.ts`) or during page render are turned into a 500 by SolidStart's internal h3 app before Nitro's error hook, so no event is sent, and the guide's own verification snippet is exactly that unreported case. API-route errors are recoverable from user land, with a try/catch h3 middleware registered first in the array form of `createMiddleware` and spreading the nested `sentryBeforeResponseMiddleware()`, and server functions are already covered by `withServerActionInstrumentation`; page-render errors stay dark on every runtime, and on Workers the Nitro error plugin cannot reach them either, because the render is streamed through a detached pipe.\n\nRoute names are recoverable too, but only through a helper the framework package does not re-export: `setHttpServerSpanRouteAttribute` from `@sentry/server-utils` names API routes from `event.params` in `onBeforeResponse` and SSR pages from `useCurrentMatches`, and renames the segment span only.\n\n**Work item.** A SolidStart middleware in `@sentry/solidstart` that names the span from the route manifest and captures API-route errors.\n\n**Evidence.** Cell records M-solidstart-bun, M-solidstart-deno, M-solidstart-cf in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproductions [`cells/M-solidstart-bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-bun), [`cells/M-solidstart-deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-deno), [`cells/M-solidstart-cf/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-cf), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
-  "file": "36-solidstart-names-transactions-by-url-and-swallows-api-route-.md",
-  "n": 36
+  "body": "SolidStart mounts the whole app as one Nitro catch-all handler, so the SDK's Nitro route parameterization never fires: server transactions arrive as `GET /users/456` with source `url` on Node, Bun, Deno and Workers, and collapse to a bare `GET` under the stream lifecycle. Errors thrown in a file API route (`src/routes/api/*.ts`) or during page render are turned into a 500 by SolidStart's internal h3 app before Nitro's error hook, so no event is sent, and the guide's own verification snippet is exactly that unreported case. API-route errors are recoverable from user land, with a try/catch h3 middleware registered first in the array form of `createMiddleware` and spreading the nested `sentryBeforeResponseMiddleware()`, and server functions are already covered by `withServerActionInstrumentation`; page-render errors stay dark on every runtime, and on Workers the Nitro error plugin cannot reach them either, because the render is streamed through a detached pipe.\n\nRoute names are recoverable too, but only through a helper the framework package does not re-export: `setHttpServerSpanRouteAttribute` from `@sentry/server-utils` names API routes from `event.params` in `onBeforeResponse` and SSR pages from `useCurrentMatches`, and renames the segment span only.\n\n**Work item.** A SolidStart middleware in `@sentry/solidstart` that names the span from the route manifest and captures API-route errors.\n\nGeneralized by \"Server segments keep a method-only name although the framework knows the route\", which records the same symptom on TanStack Start and Nuxt with a cause of its own on each.\n\n**Evidence.** Cell records M-solidstart-bun, M-solidstart-deno, M-solidstart-cf in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html); reproductions [`cells/M-solidstart-bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-bun), [`cells/M-solidstart-deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-deno), [`cells/M-solidstart-cf/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells/M-solidstart-cf), each with a README (Install, Run, Expected, Observed). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
+  "file": "37-solidstart-names-transactions-by-url-and-swallows-api-route-.md",
+  "n": 37
  },
  {
   "milestone": "XPlatform Functionality Gaps",
@@ -476,8 +489,8 @@
   ],
   "priority": "Low",
   "body": "`packages/deno/README.md:70` and `src/import.mjs:10` show `--import=@sentry/deno/import`, which Deno resolves as a file path and rejects with `Module not found`. `packages/cloudflare/README.md:88` and `:99` import `wrapRequestHandler` from the main entry, which develop no longer exports (`packages/cloudflare/src/index.ts:117` exports only `_INTERNAL_wrapRequestHandler`); it lives on `@sentry/cloudflare/request`.\n\n**Work item.** Fix both READMEs in one PR.\n\n**Evidence.** First-round probes D-HOOK, CF-EXPORTS, see the code-defects table in the [docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html). Runtime docs audit, September 2026, develop `6f2da7483d` (package 10.67.0).",
-  "file": "37-package-readmes-show-wiring-that-does-not-resolve.md",
-  "n": 37
+  "file": "38-package-readmes-show-wiring-that-does-not-resolve.md",
+  "n": 38
  },
  {
   "milestone": "XPlatform Functionality Gaps",
@@ -490,8 +503,8 @@
   ],
   "priority": "Medium",
   "body": "The same throwing route produces an error event with `transaction: \"GET /debug-sentry\"` on Node and no `transaction` key at all on Bun (`Bun.serve`, even with a `routes` map that names the server span `GET /users/:id`) and on Cloudflare (`withSentry`). Deno sets none either. Issues from those runtimes have no transaction to group or filter by.\n\n**Work item.** Set `event.transaction` from the active segment span name in the Bun, Deno and Cloudflare request wrappers, as the Node request integration does.\n\n**Evidence.** Getting-started reproductions [`quickstarts/node/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/node), [`quickstarts/bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/bun), [`quickstarts/deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/deno), [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.",
-  "file": "38-error-events-on-bun-and-cloudflare-carry-no-transaction-fiel.md",
-  "n": 38
+  "file": "39-error-events-on-bun-and-cloudflare-carry-no-transaction-fiel.md",
+  "n": 39
  },
  {
   "milestone": "XPlatform Functionality Gaps",
@@ -502,8 +515,188 @@
   ],
   "priority": "Low",
   "body": "With `debug: true`, Node prints `Initializing Sentry: process: <pid>, thread: main.` and the list of installed integrations; Bun prints the same banner; Deno and Cloudflare print no banner at all. None of the four prints the SDK name, the SDK version, or the runtime name and version. In every reproduction those had to be read off the envelopes. A support thread that starts with \"enable debug and paste the output\" gets no identity line.\n\n**Work item.** Print one line at init with SDK name, version, runtime name and version, on every runtime.\n\n**Evidence.** Getting-started reproductions [`quickstarts/node/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/node), [`quickstarts/bun/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/bun), [`quickstarts/deno/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/deno), [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory.",
-  "file": "39-debug-true-prints-no-sdk-name-version-or-runtime-on-any-runt.md",
-  "n": 39
+  "file": "40-debug-true-prints-no-sdk-name-version-or-runtime-on-any-runt.md",
+  "n": 40
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "Source maps are deleted after a build that uploaded nothing",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Without an auth token the bundler plugin logs `Will not upload source maps` and then deletes the maps the framework plugin had just told it to generate, so a build that reads as green ships with no source maps and nothing says so. SolidStart deleted 3,543 `*.map` files (DOC-Q104, `results-import-src.json`), Nitro left no `*.map` anywhere under `.output` (DOC-Q80, `results-start.json`), the Next.js Turbopack path left `.next/static` with zero maps and no `sourceMappingURL` (DOC-Q89, `results-app-router.json`), and Astro deleted the hidden maps it had switched on itself (DOC-Q100, `results-build-base.json`).\n\nEach framework plugin fills `sourcemaps.filesToDeleteAfterUpload` on the user's behalf, and the deletion runs whether or not an upload happened: `packages/solidstart/src/vite/sourceMaps.ts:117-124`, `packages/astro/src/integration/index.ts:71-75`, `packages/nitro/src/sourceMaps.ts:89-90`, `packages/nextjs/src/config/getBuildPluginOptions.ts:301-310`.\n\n**Work item.** Skip the automatic deletion when no upload was attempted, and say once at build time that the maps were kept.\n\n**Evidence.** Getting-started reproductions [`quickstarts/solidstart/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/solidstart), [`quickstarts/nitro/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/nitro), [`quickstarts/nextjs/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/nextjs), [`quickstarts/astro/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/astro), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "41-source-maps-are-deleted-after-a-build-that-uploaded-nothing.md",
+  "n": 41
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "The automatic delete glob does not match the build output directory",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Two of the automatic `filesToDeleteAfterUpload` defaults point somewhere other than the directory the build wrote to. `packages/solidstart/src/vite/sourceMaps.ts:124` sets `[\"./**/*.map\"]`, the whole project root: one SolidStart build deleted 3,543 maps, 3,519 of them under `node_modules/` and 24 under `.output/` (DOC-Q104, `results-import-src.json`). `packages/astro/src/integration/index.ts:75` hardcodes `[\"./dist/**/client/**/*.map\", \"./dist/**/server/**/*.map\"]` and never reads `outDir`, so builds with `outDir: ./dist-middleware` and `./dist-removed-option` kept 27 and 26 hidden maps and shipped them with the app (DOC-Q100, `results-build-middleware.json`, `results-build-removed-option.json`). The Nitro default is derived from the output directory and is not affected.\n\n**Work item.** Scope the SolidStart glob to the build output, and read `outDir` for the Astro one.\n\n**Evidence.** Getting-started reproductions [`quickstarts/solidstart/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/solidstart), [`quickstarts/astro/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/astro), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "42-the-automatic-delete-glob-does-not-match-the-build-output-di.md",
+  "n": 42
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "`@sentry/elysia` on Node reports the Bun SDK name and a `bun` runtime",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Elysia with `@elysiajs/node` on Node 26.5.0, initialized from `@sentry/elysia` as the guide prints it, sends every event and span with `sdk.name: sentry.javascript.bun` and `contexts.runtime: { name: \"bun\", version: \"unknown\" }`, in all eight variants of the run (DOC-Q66, `results-guide.json`). The init delegates to `@sentry/bun` on both runtimes, and `@sentry/elysia` applies its own SDK metadata before the Bun SDK stamps its. Issues and spans from Node deployments are filed against the wrong platform, and the runtime version is never reported.\n\n**Work item.** Pick the base SDK and the reported metadata by runtime in `@sentry/elysia`. Same root as the Elysia on Deno ticket in the Deno milestone, and as JS-3582 and JS-3583.\n\n**Evidence.** Getting-started reproduction [`quickstarts/elysia/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/elysia), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "43-sentry-elysia-on-node-reports-the-bun-sdk-name-and-a-bun-run.md",
+  "n": 43
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "The Lambda `_HANDLER` shim wraps the handler again, so `wrapHandler` options never apply",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "`awsLambdaIntegration` rewrites `_HANDLER` to a shim that loads the user's export and passes it through `instrumentHandler`, which ends in `wrapHandler(patched)` with no options (`packages/aws-serverless/src/instrumentHandler.ts:53` and `:56`). Nothing checks whether the export is already a `wrapHandler` result, so the user's options sit inside a second wrapper that runs with defaults. With `Sentry.wrapHandler(handler, { flushTimeout: 1000, captureTimeoutWarning: false })` in the handler file a `Possible function timeout: qs-aws-lambda` warning event still arrived (DOC-Q73, `results-manual-esm-wrap-options.json`); `flushTimeout` and `timeoutWarningLimit` are unreachable the same way.\n\n**Work item.** Mark handlers produced by `wrapHandler` and let the shim reuse the inner wrapper instead of adding a default outer one.\n\n**Evidence.** Getting-started reproduction [`quickstarts/aws-lambda/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/aws-lambda), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "44-the-lambda-handler-shim-wraps-the-handler-again-so-wraphandl.md",
+  "n": 44
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "Google Cloud Functions: an HTTP invocation splits into two root spans, and the callback wrappers never end the function span",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "`wrapHttpFunction` calls `continueTrace` before `startSpanManual` (`packages/google-cloud-serverless/src/gcpfunction/http.ts:48-52`). With no incoming headers that starts a fresh trace, so every HTTP invocation produced two segments in two traces, `Serverless function execution` (`function.gcp`) and the framework's `http.server GET`, with the error linked to the function trace only; with `sentry-trace` and `baggage` present the two share a trace but stay siblings, never nested. The event and cloud-event wrappers do not call `continueTrace` and their span is a child of the `http.server` segment (DOC-Q70, `results-http-config.json`, `results-event-tracing.json`).\n\nThe callback wrappers have a second defect. For a three-parameter handler `wrapEventFunction` takes the callback branch (`packages/google-cloud-serverless/src/gcpfunction/events.ts:69-76`), where `span.end()` only runs inside the callback. A handler that throws synchronously is captured by `handleCallbackErrors` and rethrown, the callback never runs, and no `function.gcp` span is sent at all, which is the shape both config snippets print (`results-event-config.json`, `results-cloudevent-config.json`).\n\n**Work item.** Start the function span first and continue the trace inside it; end the span on the error path of the callback wrappers.\n\n**Evidence.** Getting-started reproduction [`quickstarts/gcp-functions/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/gcp-functions), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "45-google-cloud-functions-an-http-invocation-splits-into-two-ro.md",
+  "n": 45
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "Server segments keep a method-only name although the framework knows the route",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "Under the default stream lifecycle the segment span of a server request is named `GET` with source `url` on stacks whose own instrumentation holds the route pattern. TanStack Start names every segment `GET`, `/users/42` and `/api/sentry-example` included, with no `http.route`, and the server log carries `[Tracing] Ignoring name source on a child span: this attribute is only valid on the root span.` once per request: the request middleware renames a child rather than the segment. The SDK's own e2e test expects `GET /users/$userId` under `traceLifecycle: 'static'` (DOC-Q102, `results-nitro.json`).\n\nNuxt names static routes `GET` and gives a route name only to parameterized routes and to requests with a query string, because `packages/nuxt/src/runtime/hooks/updateRouteBeforeResponse.ts:27` sets the route only when `matchedRoutePath !== requestPath` (DOC-Q91, `results-plain.json`). SolidStart names every segment `GET` or `POST` with the path in `url.path` (DOC-Q106, `results-import-src.json`), the stream-lifecycle case of the SolidStart naming ticket in this milestone.\n\n**Work item.** Rename the segment span, not the active child, in the TanStack Start request middleware, and drop the path-inequality guard in the Nuxt hook.\n\n**Evidence.** Getting-started reproductions [`quickstarts/tanstackstart-react/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/tanstackstart-react), [`quickstarts/nuxt/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/nuxt), [`quickstarts/solidstart/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/solidstart), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "46-server-segments-keep-a-method-only-name-although-the-framewo.md",
+  "n": 46
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "A server segment with no response keeps status ok",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "A request that never produced a response still ends its segment span as a success. A Connect request the client aborted arrived with `status: ok` and `http.response.status_code: 200` after 3 s although nothing had been written (DOC-Q53, `results-no-handler.json`). The SvelteKit segment of a throwing route is `ok` with no status code at all, and only the `sveltekit.resolve` child carries the 500 (DOC-Q94, `results-base.json`); the three throwing routes of the Cloudflare Pages run behave the same (DOC-Q84, `results-base.json`). Alerts and failure rates built on segment status miss every one of these.\n\n**Work item.** Set the segment status from the response, and from the thrown error where there is no response, in the Node HTTP server span and in the SvelteKit and Cloudflare request wrappers.\n\n**Evidence.** Getting-started reproductions [`quickstarts/connect/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/connect), [`quickstarts/sveltekit/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/sveltekit), [`quickstarts/cloudflare-pages/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare-pages), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "47-a-server-segment-with-no-response-keeps-status-ok.md",
+  "n": 47
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "The `@sentry/nitro` peer range rejects every Nitro beta after `3.0.260415-beta`",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "`packages/nitro/package.json` peers `nitro: \">=3.0.0-0 <4.0.0 || 3.0.260311-beta || 3.0.260415-beta\"`. npm lets a prerelease satisfy a comparator only when it carries the same `major.minor.patch`, so the range accepts exactly `3.0.0`, `3.0.260311-beta` and `3.0.260415-beta` and rejects every beta published since, the registry's `latest` included. `npm install` ends in `ERESOLVE` for a plain Nitro app (DOC-Q78, `results-latest-nitro.json`, which needed `--legacy-peer-deps`) and for `npm install @sentry/solidstart`, because SolidStart 2 pulls a newer beta (`results-import-src.json`). Two getting-started guides cannot be followed with npm as printed.\n\n**Work item.** Widen the range so Nitro 3 prereleases resolve, and pin a recent beta in CI so it stays true.\n\n**Evidence.** Getting-started reproductions [`quickstarts/nitro/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/nitro), [`quickstarts/solidstart/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/solidstart), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "48-the-sentry-nitro-peer-range-rejects-every-nitro-beta-after-3.md",
+  "n": 48
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "`@sentry/nitro`: `enableNitroErrorHandler` is untyped, and the dev server initializes the SDK twice",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "`packages/nitro/src/runtime/hooks/captureErrorHook.ts:38` reads `enableNitroErrorHandler` off the client options with an `in` check, and it works at runtime, but no shipped type declares it for a plain Nitro app: `@sentry/nuxt` carries it on `SentryNuxtServerOptions` (`packages/nuxt/src/common/types.ts:20`) and `@sentry/nitro` has no equivalent, so the TypeScript instrument file the guide prints gets an excess-property error (DOC-Q80, `results-no-error-handler.json`).\n\nUnder `nitro dev` with the documented `--import` flag the SDK initializes twice, in the main thread and in the worker, with 92 `Integration installed` lines, and every request sends two segments: a main-thread dev-proxy `GET` with source `url` and the worker's route-named one (`results-dev.json`).\n\n**Work item.** Declare the option on the Nitro server options type, and skip the init in the dev proxy thread.\n\n**Evidence.** Getting-started reproduction [`quickstarts/nitro/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/nitro), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "49-sentry-nitro-enablenitroerrorhandler-is-untyped-and-the-dev-.md",
+  "n": 49
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "Mastra: the built-in integration doubles tool spans, and the exporter marks non-streaming calls as streamed",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Low",
+  "body": "On the built-in `mastraIntegration` route one tool call produces two `gen_ai.execute_tool` spans, `execute_tool get-weather` under the agent span from Mastra's `client_tool_call` and `execute_tool weatherTool` under the chat span, so tool counts double (DOC-Q68, `results-sdk-only.json`). Mapping `client_tool_call` to `gen_ai.execute_tool` is the cause; the community exporter maps it to `ai.span` and does not double.\n\nOn the exporter route the `gen_ai.chat` span carries `gen_ai.request.stream: true` and `gen_ai.response.streaming: true` although both model calls went out with `stream=false` (`results-guide.json`). That half lives in `@mastra/sentry`, so it needs an upstream change or an override on our side.\n\n**Work item.** Map `client_tool_call` to something other than `gen_ai.execute_tool` in `mastraIntegration`, and take the streaming flag from the request in the exporter.\n\n**Evidence.** Getting-started reproduction [`quickstarts/mastra/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/mastra), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "50-mastra-the-built-in-integration-doubles-tool-spans-and-the-e.md",
+  "n": 50
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "The injection diagnostics report a state the build is not in",
+  "labels": [
+   "JavaScript",
+   "Improvement"
+  ],
+  "priority": "Medium",
+  "body": "A user cannot tell from the SDK's own output whether instrumentation is active, and the output points both ways. A Remix server built with `sentryRemixVitePlugin`, whose SSR bundle holds ten `diagnostics_channel` injection sites, still logs `[Sentry] Runtime hook registered, injected libraries=[]` and `[Sentry] Bundler plugin did not run` at start-up (DOC-Q98, `results-vite-plugin.json`). Nuxt on Deno logs `Bundler plugin ran, injected libraries=[]` on a build that is instrumented, because that list is only filled during the build (DOC-F28). In the other direction, Koa on Deno prints `[instrumentation:koa] subscribing to channels` and `Integration installed: Koa` on a run where nothing Koa-specific is instrumented (DOC-F22), and Koa on Node prints `Integration installed: Koa` next to an `[instrumentation:koa] not injected yet` that never resolves (`results-self-import.json`).\n\n**Work item.** Make one line at init state what actually happened, build-time injection and runtime injection separately, and stop reporting an integration as installed when its channels never bound. Next to the workerd warning ticket in the Cloudflare milestone and the silent-hook ticket in the Deno milestone.\n\n**Evidence.** Getting-started reproductions [`quickstarts/remix/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/remix), [`quickstarts/koa/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/koa), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory. Also cell records M-nuxt-deno and M-koa-deno in the deep probe report.",
+  "file": "51-the-injection-diagnostics-report-a-state-the-build-is-not-in.md",
+  "n": 51
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "`SentryEffectMetricsLayer` fails to build on Effect v3",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "High",
+  "body": "`packages/effect/src/metrics.ts:183-193` builds the layer with `Layer.effectDiscard` around `Effect.acquireRelease` and `Effect.forkScoped`, neither of which gets a scope from `effectDiscard`. On `effect@3.22.2` merging the layer fails with `Service not found: effect/Scope`, the program never runs and nothing is sent, so the option takes down the whole app rather than only its metrics; on `effect@4.0.0-rc.112` the same layer builds (DOC-Q75, `results-metrics.json` against `results-v4.json`). The guide prints the layer in its Effect v3 tab.\n\n**Work item.** Give the layer a scope so it works on both majors, and run the Effect suite against v3 and v4 in CI.\n\n**Evidence.** Getting-started reproduction [`quickstarts/effect/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/effect), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "52-sentryeffectmetricslayer-fails-to-build-on-effect-v3.md",
+  "n": 52
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "`@sentry/effect` captures no failed effect and turns the Node defaults off",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "Nothing in `packages/effect/src` calls `captureException`, `captureMessage` or `captureEvent`, so a failed effect is never reported: `yield* Effect.fail(new Error(\"Sentry Test Error\"))`, the guide's own verify step, produced no error event in any variant that ran it (DOC-Q76, `results-issues.json`, `results-launch.json`, `results-v4.json`). `packages/effect/src/server/sdk.ts:17` sets `defaultIntegrations: options.defaultIntegrations ?? false`, so the global handlers that would otherwise catch the crash are off as well and only `SpanStreaming` is installed (DOC-Q77). The SDK's own e2e app captures failures by hand with `captureException(Cause.squash(cause))`.\n\n**Work item.** Capture failed effects from the layer, and either keep the Node default integrations or say at init which ones were dropped.\n\n**Evidence.** Getting-started reproduction [`quickstarts/effect/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/effect), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "53-sentry-effect-captures-no-failed-effect-and-turns-the-node-d.md",
+  "n": 53
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "React 19: the `reactErrorHandler` root hooks dedupe the ErrorBoundary event away",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Medium",
+  "body": "With `onCaughtError: Sentry.reactErrorHandler()` on the root and `Sentry.ErrorBoundary` around the tree, two APIs the SDK ships and the page wires together, the root hook captures first (`auto.function.react.error_handler`, `handled: false`) and the boundary's own event is dropped: five `Not capturing exception because it's already been captured.` lines in one run, and with them the `beforeCapture` tags and the linked component stack of `captureReactException`. On a plain `createRoot` the boundary path works as documented (DOC-Q13, `results-error-boundary.json` against `results-error-boundary-plain.json`).\n\n`reactErrorHandler` also derives `handled` from whether a callback was passed, so `onUncaughtError: Sentry.reactErrorHandler(cb)` reports an error that unmounted the whole root as `handled: true`.\n\n**Work item.** Let the boundary's richer event replace the root hook's, or skip the root hook for an error a Sentry boundary will report. Derive `handled` from the hook rather than from the callback.\n\n**Evidence.** Getting-started reproduction [`quickstarts/react/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/react), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "54-react-19-the-reacterrorhandler-root-hooks-dedupe-the-errorbo.md",
+  "n": 54
+ },
+ {
+  "milestone": "XPlatform Functionality Gaps",
+  "title": "Svelte 5 runes-mode components get no update spans",
+  "labels": [
+   "JavaScript",
+   "Bug"
+  ],
+  "priority": "Low",
+  "body": "`trackUpdates` is implemented with `beforeUpdate` and `afterUpdate`, which throw in a Svelte 5 runes-mode component. The SDK swallows the throw and warns `Cannot track component updates. This is likely because you're using Svelte 5 in Runes mode.` only under `debug: true`, so a runes app with `trackUpdates: true` records the `ui.mount` span, no `ui.update` span ever, and nothing at the default log level says why; the legacy-mode component in the same run got its update spans (DOC-Q42, `results-track-component.json`). Runes are what a new Svelte 5 app is written in.\n\n**Work item.** Track updates through a runes-compatible hook, or warn at the default log level and state the limit in the option's JSDoc.\n\n**Evidence.** Getting-started reproduction [`quickstarts/svelte/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/svelte), run in September 2026 against develop `03aaf42455` (package 10.67.0); results in `results-*.json` and the README of each directory.",
+  "file": "55-svelte-5-runes-mode-components-get-no-update-spans.md",
+  "n": 55
  },
  {
   "milestone": "Bun Test Coverage",
@@ -515,8 +708,8 @@
   ],
   "priority": "Medium",
   "body": "Bun has e2e apps for Elysia, Next.js and mysql, and integration suites for Hono and two drivers. No Bun app runs Express, Koa, Hapi, Fastify, Oak, Fresh, NestJS, Remix, SolidStart, SvelteKit, Astro, React Router, TanStack Start or Nuxt, although all fourteen were exercised with the wiring in the cell records, thirteen of them across every capability the cell drove. TanStack Start is the exception: isolation, incoming trace and outgoing fetch are recorded broken there, so its app would be a regression test for those, not a green one. Each cell in the reproduction folder is a runnable app with a README that lists install, run and expected output.\n\n**Work item.** Port the cells into `dev-packages/e2e-tests/test-applications/`, one per framework, starting with the four Node HTTP frameworks on the plugin build.\n\n**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-bun` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).",
-  "file": "40-add-e2e-apps-for-the-verified-bun-framework-cells.md",
-  "n": 40
+  "file": "56-add-e2e-apps-for-the-verified-bun-framework-cells.md",
+  "n": 56
  },
  {
   "milestone": "Deno Test Coverage",
@@ -528,8 +721,8 @@
   ],
   "priority": "Medium",
   "body": "Only `hono-4 (deno)` runs a real framework on Deno in CI; the Deno orchestrion suites publish channels by hand (JS-3523). Sixteen framework cells were verified on Deno 2.9, with the wiring in their records. Fastify works with no hook at all, SvelteKit and Astro need one fetch integration added, Next.js needs `enableRuntimeChannelInjection: false` next to that integration, Nuxt has to keep the `node-server` output, and the rest need the JSON load hook or the esbuild build.\n\n**Work item.** Port the cells into e2e apps, starting with Fastify, Next.js, Nuxt, SvelteKit and Astro, and add Deno 2.9 to the runner (JS-3524).\n\n**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-deno` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).",
-  "file": "41-add-e2e-apps-for-the-verified-deno-framework-cells.md",
-  "n": 41
+  "file": "57-add-e2e-apps-for-the-verified-deno-framework-cells.md",
+  "n": 57
  },
  {
   "milestone": "CF Test Coverage",
@@ -541,8 +734,8 @@
   ],
   "priority": "Medium",
   "body": "`react-router-8-cloudflare`, `tanstackstart-react-cloudflare` and `sveltekit-3-cloudflare-workers` are `optional` in CI (`.github/workflows/build.yml:1131`), so the wiring the Cloudflare framework pages describe does not run on pull requests. No app covers Express, Koa or Hapi behind `httpServerHandler` with the Vite plugin, NestJS or Fresh on the esbuild orchestrion build, Elysia with `aot: false`, Oak, Remix through `@sentry/remix/cloudflare`, or SolidStart.\n\n**Work item.** Promote the three apps to required and port the nine missing cells.\n\n**Evidence.** [`cells/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/cells) (the `M-*-cf` directories), and the framework grid in the [deep probe report](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/deep-probe-report.html).",
-  "file": "42-make-the-cloudflare-framework-e2e-apps-required-and-add-the-.md",
-  "n": 42
+  "file": "58-make-the-cloudflare-framework-e2e-apps-required-and-add-the-.md",
+  "n": 58
  },
  {
   "milestone": "Documentation Correctness",
@@ -553,8 +746,8 @@
   ],
   "priority": "Medium",
   "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Bun. Items: DOC-B1, DOC-B2, DOC-B3, DOC-B4, DOC-Q4, DOC-R1 (Bun include), DOC-R8, DOC-R11, DOC-R12, DOC-F1 to DOC-F17. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here, and neither are DOC-Q1 and DOC-Q3, which land with the v11 docs update on all four guides at once. DOC-Q5 is a Node getting-started item and belongs to none of the three runtime lists.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** [Docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) with the proposed issue text per item",
-  "file": "43-track-the-bun-docs-issues-from-the-runtime-docs-audit.md",
-  "n": 43
+  "file": "59-track-the-bun-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 59
  },
  {
   "milestone": "Documentation Correctness",
@@ -565,8 +758,8 @@
   ],
   "priority": "Medium",
   "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Deno. Items: DOC-D1 to DOC-D6, DOC-R2, DOC-R5, DOC-R6, DOC-R7, DOC-R8, DOC-R11, DOC-R17, DOC-F18 to DOC-F34. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here, and neither are DOC-Q1 and DOC-Q3, which land with the v11 docs update on all four guides at once. DOC-Q5 is a Node getting-started item and belongs to none of the three runtime lists.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** [Docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) with the proposed issue text per item",
-  "file": "44-track-the-deno-docs-issues-from-the-runtime-docs-audit.md",
-  "n": 44
+  "file": "60-track-the-deno-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 60
  },
  {
   "milestone": "Documentation Correctness",
@@ -577,7 +770,7 @@
   ],
   "priority": "Medium",
   "body": "Tracking ticket for the `getsentry/sentry-docs` issues that come out of the runtime docs audit for Cloudflare. Items: DOC-C6, DOC-C7, DOC-C8, DOC-Q2, DOC-Q6, DOC-R4, DOC-R7, DOC-R10, DOC-R11, DOC-R13 to DOC-R16, DOC-R18, DOC-R19, DOC-F35 to DOC-F51. The v11-gated Cloudflare items (DOC-C1 to DOC-C5), X2 and DOC-R20 are owned by the Major Release 11.0 project and are not listed here, and neither are DOC-Q1 and DOC-Q3, which land with the v11 docs update on all four guides at once. DOC-Q5 is a Node getting-started item and belongs to none of the three runtime lists.\n\n**Work item.** Link each GitHub issue as it is filed; close when the last one is merged.\n\n**Evidence.** [Docs audit](https://github.com/JPeer264/sentry-repros/blob/issue-linear-runtime-improvements/_reports/docs-audit.html) with the proposed issue text per item",
-  "file": "45-track-the-cloudflare-docs-issues-from-the-runtime-docs-audit.md",
-  "n": 45
+  "file": "61-track-the-cloudflare-docs-issues-from-the-runtime-docs-audit.md",
+  "n": 61
  }
 ]

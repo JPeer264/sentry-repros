@@ -8,4 +8,6 @@ A `withSentry` route that throws answers 500 through wrangler, and the error eve
 
 **Work item.** Set the span status from the thrown error in the Cloudflare request wrapper, the way the other runtimes do.
 
+Generalized by "A server segment with no response keeps status ok", which records the same defect on Connect, SvelteKit and Cloudflare Pages.
+
 **Evidence.** Getting-started reproduction [`quickstarts/cloudflare/`](https://github.com/JPeer264/sentry-repros/tree/issue-linear-runtime-improvements/quickstarts/cloudflare), run on 2026-09-08 against develop `6f2da7483d` (package 10.67.0); results in `results-*.json` and the README of each directory. Also probe records C01 and C10 in the deep probe report.

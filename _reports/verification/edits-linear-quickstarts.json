@@ -1,0 +1,149 @@
+[
+ {
+  "ticket": "Source maps are deleted after a build that uploaded nothing",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q104", "DOC-Q80", "DOC-Q89", "DOC-Q100"],
+  "status": "added",
+  "reason": "Verified on four guides: with no auth token the plugin logs \"Will not upload source maps\" and still deletes them (SolidStart 3,543 files, Nitro all of .output, Next.js all of .next/static, Astro the hidden maps it enabled)."
+ },
+ {
+  "ticket": "The automatic delete glob does not match the build output directory",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q104", "DOC-Q100"],
+  "status": "added",
+  "reason": "Separate defect from the delete-without-upload one: SolidStart's default is ./**/*.map and reached 3,519 files under node_modules, Astro's is hardcoded to ./dist and left 27 and 26 maps in custom outDirs."
+ },
+ {
+  "ticket": "`@sentry/elysia` on Node reports the Bun SDK name and a `bun` runtime",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q66"],
+  "status": "added",
+  "reason": "All eight Elysia-on-Node variants carry sdk.name sentry.javascript.bun and contexts.runtime bun/unknown; cross-referenced to the existing Elysia on Deno ticket, which names the same root."
+ },
+ {
+  "ticket": "The Lambda `_HANDLER` shim wraps the handler again, so `wrapHandler` options never apply",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q73"],
+  "status": "added",
+  "reason": "instrumentHandler.ts:53,56 calls wrapHandler(patched) with no options and no already-wrapped check; captureTimeoutWarning:false on the user's wrapHandler still produced a timeout warning event."
+ },
+ {
+  "ticket": "Google Cloud Functions: an HTTP invocation splits into two root spans, and the callback wrappers never end the function span",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q70"],
+  "status": "added",
+  "reason": "http.ts:48-52 continues the trace before startSpanManual, giving two sibling root segments; events.ts:69-76 ends the span only inside the callback, so a synchronous throw sends no function.gcp span."
+ },
+ {
+  "ticket": "Server segments keep a method-only name although the framework knows the route",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q102", "DOC-Q91", "DOC-Q106"],
+  "status": "added",
+  "reason": "TanStack Start (name source ignored on a child span), Nuxt static routes (updateRouteBeforeResponse.ts:27 guard) and SolidStart; a cross-reference was added to the existing SolidStart naming ticket, which this generalizes."
+ },
+ {
+  "ticket": "Server segments keep a method-only name although the framework knows the route (Koa and Nitro halves)",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q46", "DOC-Q80"],
+  "status": "skipped",
+  "reason": "Not reproduced as the same defect: the Koa first-line import loses names because the SDK loads after koa, a documented limit of that install method, and the Nitro run gives route-named segments for static routes, only the unmatched probe is GET."
+ },
+ {
+  "ticket": "Cloudflare Pages: the file route never reaches the segment span",
+  "milestone": "CF Functionality Gaps",
+  "items_cited": ["DOC-Q84"],
+  "status": "added",
+  "reason": "Every Pages function route is GET with source url and no http.route; sentryPagesPlugin never reads context.params or the function path, a Cloudflare-package cause distinct from the Node naming ticket."
+ },
+ {
+  "ticket": "A server segment with no response keeps status ok",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q53", "DOC-Q94", "DOC-Q84"],
+  "status": "added",
+  "reason": "Connect client-abort is ok with status code 200, SvelteKit and Cloudflare Pages throwing routes are ok with no status code; a cross-reference was added to the existing Cloudflare status-ok ticket, which this generalizes."
+ },
+ {
+  "ticket": "The `@sentry/nitro` peer range rejects every Nitro beta after `3.0.260415-beta`",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q78"],
+  "status": "added",
+  "reason": "The shipped peer range accepts only 3.0.0 and two named betas, so npm install ends in ERESOLVE for both the Nitro and the SolidStart getting-started paths."
+ },
+ {
+  "ticket": "`@sentry/nitro`: `enableNitroErrorHandler` is untyped, and the dev server initializes the SDK twice",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q80"],
+  "status": "added",
+  "reason": "captureErrorHook.ts:38 reads the option at runtime while only @sentry/nuxt declares it in a type; nitro dev initializes in main thread and worker and sends two segments per request."
+ },
+ {
+  "ticket": "Mastra: the built-in integration doubles tool spans, and the exporter marks non-streaming calls as streamed",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q68"],
+  "status": "added",
+  "reason": "mastraIntegration emits two gen_ai.execute_tool spans per tool call from client_tool_call; the stream flag half is recorded as living in the community @mastra/sentry exporter."
+ },
+ {
+  "ticket": "The injection diagnostics report a state the build is not in",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q98", "DOC-F22", "DOC-F28"],
+  "status": "added",
+  "reason": "Remix logs \"Bundler plugin did not run\" and injected libraries=[] on an instrumented SSR bundle, Nuxt on Deno the same false negative, Koa the opposite false positive; points at the existing Cloudflare and Deno silence tickets."
+ },
+ {
+  "ticket": "`SentryEffectMetricsLayer` fails to build on Effect v3",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q75"],
+  "status": "added",
+  "reason": "metrics.ts:183-193 wraps acquireRelease and forkScoped in Layer.effectDiscard, which supplies no Scope, so the whole program fails to build on effect 3.22.2 and works on 4.0.0-rc.112."
+ },
+ {
+  "ticket": "`@sentry/effect` captures no failed effect and turns the Node defaults off",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q76", "DOC-Q77"],
+  "status": "added",
+  "reason": "No capture call exists anywhere in packages/effect/src and server/sdk.ts:17 forces defaultIntegrations to false, so the guide's own verify failure sent nothing in any variant."
+ },
+ {
+  "ticket": "React 19: the `reactErrorHandler` root hooks dedupe the ErrorBoundary event away",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q13"],
+  "status": "added",
+  "reason": "With the page's own root hooks the boundary's capture, beforeCapture tags and captureReactException are dropped five times as duplicates; handled is derived from whether a callback was passed."
+ },
+ {
+  "ticket": "Svelte 5 runes-mode components get no update spans",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q42"],
+  "status": "added",
+  "reason": "trackUpdates is built on beforeUpdate/afterUpdate, which throw in runes mode; the throw is swallowed and the warning only appears under debug:true, while the legacy component in the same run got its spans."
+ },
+ {
+  "ticket": "Framework and runtime packages do not re-export sentryBeforeResponseMiddleware, setupExpressErrorHandler, attachHapiErrorHandler, setHttpServerSpanRouteAttribute and setupKoaErrorHandler",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q45", "DOC-F20", "DOC-F23", "DOC-F24"],
+  "status": "merged-into-existing",
+  "reason": "Already the work item of the existing Deno framework and Oak tickets (re-export the error handlers and the route helper from @sentry/deno) and of the SolidStart naming ticket; setupKoaErrorHandler, setupExpressErrorHandler and sentryBeforeResponseMiddleware are exported from @sentry/node and @sentry/solidstart today, so DOC-Q45 is a docs claim, not a packaging gap."
+ },
+ {
+  "ticket": "SolidStart 2: no instrument.server.mjs and no @sentry/solidstart/middleware subpath",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q103"],
+  "status": "skipped",
+  "reason": "Docs only: the SolidStart 2 path already ships as sentrySolidStart from @sentry/solidstart/vite, the middleware is exported from the package root, and the run classifies all three findings as docs wrong with docs-side fixes."
+ },
+ {
+  "ticket": "Angular TraceService and component-tracking ops",
+  "milestone": "XPlatform Functionality Gaps",
+  "items_cited": ["DOC-Q34"],
+  "status": "skipped",
+  "reason": "Only the documented op names are wrong (ui.angular.init against the shipped ui.mount and function); the observed behaviour matches the v10-to-v11 migration page, so no SDK change is implied."
+ },
+ {
+  "ticket": "Node prerequisite and engines mismatch",
+  "milestone": "Documentation Correctness",
+  "items_cited": ["DOC-Q62"],
+  "status": "skipped",
+  "reason": "Docs only, excluded by the task."
+ }
+]
