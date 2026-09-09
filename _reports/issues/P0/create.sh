@@ -15,16 +15,18 @@ gh issue create -R getsentry/sentry-docs --title "Change onClick to onclick in t
 gh issue create -R getsentry/sentry-docs --title "Add the router to the Koa getting-started snippets that the verify step relies on" --body-file 10-DOC-Q44.md
 gh issue create -R getsentry/sentry-docs --title "State on the Solid guide that the tracing snippet requires @solidjs/router" --body-file 11-DOC-Q48.md
 gh issue create -R getsentry/sentry-docs --title "Rewrite the Connect guide and integration page for v11, whose SDK has no Connect instrumentation" --body-file 12-DOC-Q52.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the Bun guide's instrumentation step around @sentry/bun/plugin" --body-file 13-DOC-B1.md
-gh issue create -R getsentry/sentry-docs --title "Fix inverted traceLifecycle default in the stream mode includes" --body-file 14-DOC-R1.md
-gh issue create -R getsentry/sentry-docs --title "Stop recommending denoCronIntegration() on the Deno crons page" --body-file 15-DOC-R2.md
-gh issue create -R getsentry/sentry-docs --title "Delete the Bun OpenTelemetry setup includes and drop Bun from custom-setup" --body-file 16-DOC-R20.md
-gh issue create -R getsentry/sentry-docs --title "Correct the Agents SDK span attribute and conversation ID claims" --body-file 17-DOC-R13.md
-gh issue create -R getsentry/sentry-docs --title "Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options" --body-file 18-DOC-F50.md
-gh issue create -R getsentry/sentry-docs --title "Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim" --body-file 19-DOC-F36.md
-gh issue create -R getsentry/sentry-docs --title "Document Elysia on Deno: init from @sentry/deno, or add denoServeIntegration" --body-file 20-DOC-F19.md
-gh issue create -R getsentry/sentry-docs --title "Add a Bun section to the Nuxt Nitro deployment presets page" --body-file 21-DOC-F11.md
-gh issue create -R getsentry/sentry-docs --title "Correct the Nuxt Nitro preset page for Deno: keep the node-server preset" --body-file 22-DOC-F28.md
-gh issue create -R getsentry/sentry-docs --title "Name Bun in the Astro runtime alert and add a Running on Bun section" --body-file 23-DOC-F13.md
-gh issue create -R getsentry/sentry-docs --title "Correct the Astro runtime note: Deno with @deno/astro-adapter works" --body-file 24-DOC-F30.md
-gh issue create -R getsentry/sentry-docs --title "Correct the SvelteKit adapter note: adapter-node runs on Deno" --body-file 25-DOC-F29.md
+gh issue create -R getsentry/sentry-docs --title "Fix the NestJS tracing verify snippet: its delayed throw is an uncaught exception that exits the app" --body-file 13-DOC-Q57.md
+gh issue create -R getsentry/sentry-docs --title "Replace the NestJS ESM start script with a command that runs" --body-file 14-DOC-Q58.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the Bun guide's instrumentation step around @sentry/bun/plugin" --body-file 15-DOC-B1.md
+gh issue create -R getsentry/sentry-docs --title "Fix inverted traceLifecycle default in the stream mode includes" --body-file 16-DOC-R1.md
+gh issue create -R getsentry/sentry-docs --title "Stop recommending denoCronIntegration() on the Deno crons page" --body-file 17-DOC-R2.md
+gh issue create -R getsentry/sentry-docs --title "Delete the Bun OpenTelemetry setup includes and drop Bun from custom-setup" --body-file 18-DOC-R20.md
+gh issue create -R getsentry/sentry-docs --title "Correct the Agents SDK span attribute and conversation ID claims" --body-file 19-DOC-R13.md
+gh issue create -R getsentry/sentry-docs --title "Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options" --body-file 20-DOC-F50.md
+gh issue create -R getsentry/sentry-docs --title "Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim" --body-file 21-DOC-F36.md
+gh issue create -R getsentry/sentry-docs --title "Document Elysia on Deno: init from @sentry/deno, or add denoServeIntegration" --body-file 22-DOC-F19.md
+gh issue create -R getsentry/sentry-docs --title "Add a Bun section to the Nuxt Nitro deployment presets page" --body-file 23-DOC-F11.md
+gh issue create -R getsentry/sentry-docs --title "Correct the Nuxt Nitro preset page for Deno: keep the node-server preset" --body-file 24-DOC-F28.md
+gh issue create -R getsentry/sentry-docs --title "Name Bun in the Astro runtime alert and add a Running on Bun section" --body-file 25-DOC-F13.md
+gh issue create -R getsentry/sentry-docs --title "Correct the Astro runtime note: Deno with @deno/astro-adapter works" --body-file 26-DOC-F30.md
+gh issue create -R getsentry/sentry-docs --title "Correct the SvelteKit adapter note: adapter-node runs on Deno" --body-file 27-DOC-F29.md

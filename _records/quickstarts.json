@@ -361,5 +361,100 @@
    "--require without the handler line": "partial with the banner",
    "errors only": "partial (verify route not captured)"
   }
+ },
+ {
+  "id": "QS-hono",
+  "path": "quickstarts/hono",
+  "runtime": "Node 26.5.0, develop 03aaf42455; hono 4.13.7, @hono/node-server 2.1.1",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's Node path works under --import, NODE_OPTIONS, CommonJS and a first-line import: route-named segments with middleware spans, auto.http.hono.context_error events with request data, logs, sentry.javascript.hono. Defects: the tracing verify snippet uses Sentry without importing it and the package root exports nothing; the install pages' Hono config snippets initialize from @sentry/node, which the guide forbids, and the build warns; the orphaned capture-errors include names the removed honoIntegration; the verify text says transactions; unmatched requests are grouped under GET /*; the 'no options' sentence and the filter semantics are wrong; @hono/node-server is required but never installed.",
+  "sdk": {
+   "name": "sentry.javascript.hono",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "--import (guide, @sentry/hono/node)": "works",
+   "NODE_OPTIONS": "works",
+   "CommonJS install page (@sentry/node)": "partial (wrong SDK name, warning)",
+   "CommonJS with @sentry/hono/node": "works",
+   "ESM install page (@sentry/node)": "partial (wrong SDK name, warning)",
+   "first-line import": "works",
+   "esm-without-import tab verbatim": "broken (ERR_MODULE_NOT_FOUND)",
+   "sentry(app, { shouldHandleError })": "works",
+   "verify snippet verbatim": "partial (Sentry is not defined)",
+   "import from the package root": "partial (exports nothing)",
+   "user onError": "works",
+   "errors only": "works",
+   "late init (--import @sentry/node/preload)": "broken (subpath not exported)"
+  }
+ },
+ {
+  "id": "QS-nestjs",
+  "path": "quickstarts/nestjs",
+  "runtime": "Node 26.5.0, develop 03aaf42455; @nestjs/core 12.0.1 on platform-express, TypeScript 7.0.2, no Nest CLI",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's CommonJS path with SentryGlobalFilter delivers route-named segments with Nest and Express spans, auto.http.nestjs.global_filter events with request data, @SentryTraced spans, @SentryCron check-ins and logs. Defects: the tracing verify snippet's delayed throw exits the process; the ESM start script is not a runnable command; without SentryGlobalFilter no error reaches Sentry although the capture-errors include says otherwise; the Nest integration page names an OpenTelemetry package the SDK does not use, the wrong enablement rule and Nest 4; SentryModule.forRoot() adds nothing observable; the Node prerequisite says 18 while the package declares 20.19+; HttpExceptions including 5xx are never captured and there is no option.",
+  "sdk": {
+   "name": "sentry.javascript.nestjs",
+   "version": "10.67.0",
+   "integrations": 47
+  },
+  "variants": {
+   "CommonJS guide path with SentryGlobalFilter": "works",
+   "SentryModule.forRoot() only": "partial (no error captured)",
+   "SentryGlobalFilter without the module": "works (identical)",
+   "@SentryExceptionCaptured custom filter": "works",
+   "--import on the CJS build": "works",
+   "NODE_OPTIONS": "works",
+   "errors only": "works",
+   "tracing verify snippet verbatim": "broken (process exits)",
+   "ESM build with import \"./instrument\"": "broken (ERR_MODULE_NOT_FOUND)",
+   "ESM start script from install/esm.mdx": "broken (sh: --: invalid option)"
+  }
+ },
+ {
+  "id": "QS-wasm",
+  "path": "quickstarts/wasm",
+  "runtime": "Chrome 153 headless, develop 03aaf42455; wabt-assembled module, no Rust toolchain",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's init with wasmIntegration works: wasm frames with function, instruction_addr and platform native arrive for every trap. Defects: the promised debug IDs and images need a build_id custom section the guide never mentions (nothing in its steps adds one) and a loader that keeps the module URL; no sessions without a release.",
+  "sdk": {
+   "name": "sentry.javascript.browser",
+   "version": "10.67.0",
+   "integrations": 15
+  },
+  "variants": {
+   "guide verbatim, module without build_id": "partial (no addr_mode, no debug_meta)",
+   "module with build_id, streaming loader": "works",
+   "module with build_id, instantiate(bytes)": "partial (no image match)",
+   "errors only": "works"
+  }
+ },
+ {
+  "id": "QS-elysia",
+  "path": "quickstarts/elysia",
+  "runtime": "Node 26.5.0, develop 03aaf42455; elysia with @elysiajs/node",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The Node tab works once the routes are chained before .listen(): route-named segments from Node's HTTP instrumentation with Elysia lifecycle spans, auto.http.elysia.on_error events with request data, logs. Defects: the verify route is added after listen() and never served; the guide says client errors are not captured by default while unmatched routes and status() throws are; the instrumentation include carries a browser paragraph, old ops and a function-name claim Node does not fulfil; no run command; the stream-mode include calls static the default; events report sentry.javascript.bun on Node.",
+  "sdk": {
+   "name": "sentry.javascript.bun (reported)",
+   "version": "10.67.0",
+   "integrations": 42
+  },
+  "variants": {
+   "Node tab with routes before listen": "works",
+   "verify route after listen (as sequenced)": "partial (404, never served)",
+   "shouldHandleError snippet": "works",
+   "Bun tab under Node": "broken (WebStandard does not support listen)",
+   "traceLifecycle static": "works (transactions)",
+   "errors only": "works",
+   "--import (extra)": "works",
+   "CommonJS (extra)": "works"
+  }
  }
 ]

@@ -33,7 +33,7 @@ PLAN=[
    ('should','DOC-Q15','the Profiler span ops are named wrong'),
    ('later','DOC-Q16','the routing snippet uses the deprecated V7 API'),
    ('later','DOC-Q17','the verify step says transactions and its test span ends before the error'),
-   ('later','DOC-Q18','sessions need a release, on the Vue, Angular, Svelte and Solid guides too'),
+   ('later','DOC-Q18','sessions need a release, on the Vue, Angular, Svelte, Solid and WebAssembly guides too'),
  ]),
  ('Angular', [
    ('must','DOC-Q32','three snippets do not compile under the tsconfig ng new generates'),
@@ -61,12 +61,20 @@ PLAN=[
    ('later','DOC-Q23','the late-init and multiple-apps snippets miss their imports'),
    ('later','DOC-Q24','the dev build reports the verify error without component context'),
  ]),
- ('Node, Express, Fastify, Koa, Hapi and Connect', [
+ ('Browser WebAssembly', [
+   ('should','DOC-Q63','debug IDs need a build_id section and a streaming loader the guide never mentions'),
+ ]),
+ ('Elysia', [
+   ('should','DOC-Q64','the verify route is added after listen() and is never served'),
+   ('should','DOC-Q65','unmatched routes and status() throws are captured by default, the guide says otherwise'),
+   ('later','DOC-Q66','a browser paragraph, old ops, a function-name claim and no run command'),
+ ]),
+ ('Node, Express, Fastify, Koa, Hapi, Connect, Hono and NestJS', [
    ('should','DOC-Q5','--require banner, and a first-line ESM import equals --import'),
    ('must','DOC-Q25','the Express, Fastify, Koa, Hapi and Connect ESM tabs import the instrument file without its extension'),
    ('must','DOC-Q26','the late-initialization page rests on the removed @sentry/node/preload entry'),
    ('should','DOC-Q27','the Express and Connect async verify snippets hang on Express 4 and Connect 3'),
-   ('should','DOC-Q28','the esm-without-import page says a first-line import cannot instrument frameworks; Express and Fastify are'),
+   ('should','DOC-Q28','the esm-without-import page says a first-line import cannot instrument frameworks; Express, Fastify, Hapi and Hono are'),
    ('later','DOC-Q29','the Express, Fastify, Koa and Hapi guides teach deprecated error handler calls'),
    ('later','DOC-Q30','no expressIntegration page'),
    ('later','DOC-Q31','empty, orphaned and unreachable includes on the Express, Fastify, Koa and Connect guides'),
@@ -80,6 +88,15 @@ PLAN=[
    ('should','DOC-Q47','the Hapi integration page names the wrong mechanism and no option, and its table row says no errors'),
    ('must','DOC-Q52','the Connect guide and integration page describe a removed instrumentation; every printed app crashes'),
    ('should','DOC-Q53','the Connect verify route never reaches Sentry without an error middleware'),
+   ('should','DOC-Q54','the Hono tracing verify snippet uses Sentry without importing it, and the package root exports nothing'),
+   ('should','DOC-Q55','the install pages initialize Hono from @sentry/node, which the guide forbids'),
+   ('later','DOC-Q56','Hono guide details: GET /* grouping, options sentence, filter semantics, node-server dependency'),
+   ('must','DOC-Q57','the NestJS tracing verify snippet kills the process'),
+   ('must','DOC-Q58','the NestJS ESM start script is not a runnable command'),
+   ('should','DOC-Q59','no NestJS error reaches Sentry without SentryGlobalFilter; the guide says otherwise'),
+   ('should','DOC-Q60','the Nest integration page names the wrong mechanism, enablement rule and Nest 4'),
+   ('should','DOC-Q62','the Node prerequisites include says Node 18 while the v11 packages declare 20.19 and later'),
+   ('later','DOC-Q61','NestJS details: the module adds nothing observable, transactions wording, doubled Express spans'),
  ]),
  ('Bun', [
    ('must','DOC-B1','the instrumentation step is backwards and never names the plugin'),

@@ -12,7 +12,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-solid](solid/) | browser framework | solid | npm, manual setup | done | esbuild-plugin-solid + headless Chrome; seven variants across the guide, the router pages and the error boundary; the TanStack Router page not runnable as printed |
 | QS-ember | browser framework | ember | npm, manual setup | planned | build plus headless Chrome |
 | QS-gatsby | browser framework | gatsby | npm, manual setup | planned | build plus headless Chrome |
-| QS-wasm | browser | wasm | npm | planned | headless Chrome with a wasm module |
+| [QS-wasm](wasm/) | browser | wasm | npm | done | headless Chrome with a wabt-assembled module; four variants with and without a build_id section |
 | [QS-node](node/) | plain runtime | node | documented, manual variants | done |  |
 | [QS-bun](bun/) | plain runtime | bun | documented, manual variants | done | bun 1.4.2 |
 | [QS-deno](deno/) | plain runtime | deno | documented, manual variants | done | deno 2.9.0 |
@@ -22,10 +22,10 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-fastify](fastify/) | node framework | fastify | npm, manual setup | done | Node 26.5.0 with the develop tarballs; thirteen variants across the install variants, the error handler page, the integration options and fastify 4 and 5 |
 | [QS-koa](koa/) | node framework | koa | npm, manual setup | done | Node 26.5.0 with the develop tarballs; fourteen variants across the install variants, the error handler, the integration options and the verify snippet |
 | [QS-hapi](hapi/) | node framework | hapi | npm, manual setup | done | Node 26.5.0 with the develop tarballs; thirteen variants across the install variants, the error handler, the integration options and the verify snippet |
-| QS-nestjs | node framework | nestjs | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
+| [QS-nestjs](nestjs/) | node framework | nestjs | npm, manual setup | done | tsc build + Node with the develop tarballs; ten variants across the guide, the filters, the decorators and the install pages |
 | [QS-connect](connect/) | node framework | connect | npm, manual setup | done | Node 26.5.0 with the develop tarballs; fourteen variants; no printed app starts because the Connect helper and integration no longer exist |
-| QS-hono | node framework | hono | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
-| QS-elysia | node framework | elysia | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
+| [QS-hono](hono/) | node framework | hono | npm, manual setup | done | Node tab only (Bun, Deno and Cloudflare are in the cells); thirteen variants across the install pages, the error handler page and the verify snippets |
+| [QS-elysia](elysia/) | node framework | elysia | npm, manual setup | done | Node tab only (Bun and Deno are in the cells); eight variants |
 | QS-nitro | node framework | nitro | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-effect | node framework | effect | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-mastra | node framework | mastra | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 21 planned, 15 done, 4 not measurable.
+Totals: 19 done, 17 planned, 4 not measurable.
