@@ -50,6 +50,11 @@ PLAN=[
    ('should','DOC-Q105','the verify button promises an API-route error that is never sent; server functions undocumented'),
    ('later','DOC-Q106','header-based continuation, method-named server spans, transactions, a phantom build log line'),
  ]),
+ ('React Router', [
+   ('must','DOC-Q111','three snippets do not build: root-entry imports and an unresolvable instrument path'),
+   ('should','DOC-Q112','the start script answers 500 without NODE_ENV, and the Node-range expandable is inverted'),
+   ('later','DOC-Q113','transactions wording, captured 404s, a duplicate client event, unparameterized document requests'),
+ ]),
  ('Nuxt', [
    ('should','DOC-Q90','the pages still make --import the crucial step; the server config is bundled into the Nitro build'),
    ('later','DOC-Q91','deprecated inject modes documented as current, Nuxt 4 missing, a verify button that creates a second issue'),

@@ -1,7 +1,7 @@
-// manual-setup.mdx:422-428 with the import path corrected to where the page told the user to create
-// the file (the project root, manual-setup.mdx:203): `../instrument.server` instead of
-// `./instrument.server`. run.sh copies this file to app/entry.server.tsx for the `top-import` variant.
-import '../instrument.server';
+// manual-setup.mdx:252-276 verbatim: the revealed entry.server.tsx with its handleRequest and
+// handleError replaced by Sentry's, plus the `instrumentations` export. `streamTimeout` is the only
+// line kept from the revealed file ("// ... rest of your server entry"). run.sh copies this file to
+// app/entry.server.tsx for the `import-flag` variant.
 import * as Sentry from '@sentry/react-router';
 import { createReadableStreamFromReadable } from '@react-router/node';
 import { renderToPipeableStream } from 'react-dom/server';
