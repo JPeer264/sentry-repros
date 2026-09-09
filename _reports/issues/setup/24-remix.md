@@ -12,13 +12,13 @@ Docs changes for the Remix guide that a new user hits between install and the fi
   This item prescribes `sentryCloudflareVitePlugin()` because that is what was run. The Remix Vite plugin's own Cloudflare behavior, `sentryRemixVitePlugin` from `@sentry/remix/vite`, which on the v11 line applies the build-time instrumentation transform itself, was not exercised in this audit.
   Works today:
   - Loader, action and resource-route errors, parameterized route names with `http.route`, incoming trace continuation, outgoing `fetch` spans with propagation headers, `db` spans from `mysql`, `Sentry.logger` logs.
-- Per-request isolation, with the `withSentry` plus `instrumentBuild` entry above.
+  - Per-request isolation, with the `withSentry` plus `instrumentBuild` entry above.
   Known limits:
   - Importing from bare `@sentry/remix` in a `webworker` SSR build leaves `handleError` undefined and captures nothing.
-- `wrapRequestHandler` from `@sentry/cloudflare/request` establishes no request isolation on Workers: it is the one Cloudflare wrapper that never calls `setAsyncLocalStorageAsyncContextStrategy`, so under concurrency every `setTag`, `setUser` and request-data write is global to the isolate and bleeds into unrelated later requests, and no event carries request data at all. It exists for runtimes that cannot enable `nodejs_compat`, such as Shopify Oxygen.
-- A route with no loader or action stays method-only.
-- With `instrumentBuild` alone the event's `transaction` field is unset, because nothing calls `isolationScope.setTransactionName`, so error grouping loses the route.
-- Without `sentryCloudflareVitePlugin()` there are no database spans and no warning; `mysql2` is unusable on workerd.
+  - `wrapRequestHandler` from `@sentry/cloudflare/request` establishes no request isolation on Workers: it is the one Cloudflare wrapper that never calls `setAsyncLocalStorageAsyncContextStrategy`, so under concurrency every `setTag`, `setUser` and request-data write is global to the isolate and bleeds into unrelated later requests, and no event carries request data at all. It exists for runtimes that cannot enable `nodejs_compat`, such as Shopify Oxygen.
+  - A route with no loader or action stays method-only.
+  - With `instrumentBuild` alone the event's `transaction` field is unset, because nothing calls `isolationScope.setTransactionName`, so error grouping loses the route.
+  - Without `sentryCloudflareVitePlugin()` there are no database spans and no warning; `mysql2` is unusable on workerd.
   **Change:** Rewrite `guides/cloudflare/frameworks/remix.mdx`: add `@sentry/cloudflare` to the install at `:39-49`, add a Workers entry section, point `handleError` at `@sentry/remix/cloudflare`, and add a database-spans section. Correct `guides/cloudflare/features/vite-plugin.mdx` to the shipped top-level options `buildTimeInstrumentation` and `autoInstrumentation`, both defaulting to `true`: the prose at `:30`, the snippets at `:40-47` and the `SdkOption` blocks at `:150-166`, which still document `_experimental.autoInstrumentation` and `_experimental.useDiagnosticsChannelInjection` as defaulting to `false`. Add the `wrapRequestHandler` isolation warning to the two Hydrogen pages that document exactly that shape, `guides/cloudflare/frameworks/hydrogen-remix.mdx` and `guides/cloudflare/frameworks/hydrogen-react-router.mdx`.
   Draft: [Rewrite the Remix on Cloudflare page for Workers and fix the Vite plugin options](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#32-rewrite-the-remix-on-cloudflare-page-for-workers-and-fix-the-vite-plugin-options>)
 

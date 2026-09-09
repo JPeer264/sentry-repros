@@ -12,15 +12,15 @@ Docs changes for the SvelteKit guide that a new user hits between install and th
   Verified on SvelteKit with adapter-node and `@sentry/sveltekit` 10.67.0 on Deno 2.9.0: build with `vite build` under Node, using `sentrySvelteKit()` imported from `@sentry/sveltekit/vite`, then start the adapter output with `HOST=<host> PORT=<port> deno run --allow-net --allow-env --allow-read --allow-sys --allow-ffi build/index.js`. For outgoing requests, register `fetchIntegration` from `@sentry/cloudflare`, already installed as a dependency of `@sentry/sveltekit`, in `src/hooks.server.js`, gated on Deno so Node builds are not double-instrumented. For `mysql2`, prime its `package.json` in the CJS require cache before the SDK installs its module hooks, either with a preload file (`createRequire(import.meta.url)('mysql2/package.json')` started through `deno run --preload ./prewarm-json.mjs`) or with the same two lines at the very top of `src/hooks.server.js`.
   Works today:
   - Errors from `+server.js` handlers, mechanism `auto.function.sveltekit.handle_error`.
-- `GET /users/[id]` with source `route`.
-- Per-request isolation and incoming trace continuation.
-- `http.client` spans plus `sentry-trace`/`baggage`, with `fetchIntegration()`.
-- Database spans for `mysql` with no extra flags, and for `mysql2` with the prewarm above, parented under the SvelteKit `http.server` span in both trace lifecycles.
-- Logs.
+  - `GET /users/[id]` with source `route`.
+  - Per-request isolation and incoming trace continuation.
+  - `http.client` spans plus `sentry-trace`/`baggage`, with `fetchIntegration()`.
+  - Database spans for `mysql` with no extra flags, and for `mysql2` with the prewarm above, parented under the SvelteKit `http.server` span in both trace lifecycles.
+  - Logs.
   Known limits:
   - Without `fetchIntegration()`, neither a global `fetch()` nor SvelteKit's `event.fetch` produces an `http.client` span or carries trace headers on Deno.
-- `mysql2` fails on first use unless its `package.json` is in the require cache before `Sentry.init`: Deno compiles `require('*.json')` as JavaScript while a module hook is registered (denoland/deno#36240), and the route throws `SyntaxError: Unexpected token ':'`. The prewarm above is the fix; `mysql` needs nothing.
-- The "@sentry/server-runtime-injection was bundled into your application" warning can fire on Deno while instrumentation is working, so it is no signal of a broken setup.
+  - `mysql2` fails on first use unless its `package.json` is in the require cache before `Sentry.init`: Deno compiles `require('*.json')` as JavaScript while a module hook is registered (denoland/deno#36240), and the route throws `SyntaxError: Unexpected token ':'`. The prewarm above is the fix; `mysql` needs nothing.
+  - The "@sentry/server-runtime-injection was bundled into your application" warning can fire on Deno while instrumentation is working, so it is no signal of a broken setup.
   **Change:** Fix `manual-setup__v10.7.0.mdx:21-36` to name Deno with adapter-node as supported. Restore an adapter-and-runtime section in `manual-setup.mdx` and add a Deno framework page with the run command and the `fetchIntegration` snippet. `common/configuration/integrations/fetchIntegration.mdx:10`: it says the integration "only works inside the Cloudflare Workers runtime", which this run disproves.
   Draft: [Correct the SvelteKit adapter note: adapter-node runs on Deno](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#39-correct-the-sveltekit-adapter-note-adapter-node-runs-on-deno>)
 
@@ -35,10 +35,10 @@ Docs changes for the SvelteKit guide that a new user hits between install and th
   Verified on the develop line: SvelteKit 2.70 with `@sveltejs/adapter-cloudflare` 5, `compatibility_date: "2026-05-01"`, `compatibility_flags: ["nodejs_compat"]`, `sentrySvelteKit()` from `@sentry/sveltekit/vite` before `sveltekit()`, and `src/hooks.server.ts` exactly as the include shows. `vite build`, then `wrangler dev`.
   Works today:
   - Unhandled errors through `handleErrorWithSentry` (mechanism `auto.function.sveltekit.handle_error`), per-request isolation, incoming trace continuation, outgoing `fetch` spans with propagation headers, `Sentry.logger` logs.
-- `db` spans from the build-time transform `sentrySvelteKit()` already installs, with no extra configuration on a pnpm install.
+  - `db` spans from the build-time transform `sentrySvelteKit()` already installs, with no extra configuration on a pnpm install.
   Known limits:
   - The transaction/segment span is named from the raw URL under `traceLifecycle: 'static'` and by HTTP method alone under the default `'stream'`; the SvelteKit route id and `http.route` only reach a child span. This hits every route except `/`, not just parameterized ones, because the Cloudflare wrapper keeps only a name whose source is already `route`.
-- SvelteKit's native tracing (`kit.experimental.tracing.server`) makes this worse rather than better: on Cloudflare it removes the route-named `http.server` span entirely, leaving the route only as an attribute on a `function` span.
-- On a flat `node_modules` (npm or Yarn) the build fails until `ssr: { noExternal: ['@sentry/core', '@sentry/conventions', '@opentelemetry/api'] }` is added to `vite.config.js`.
+  - SvelteKit's native tracing (`kit.experimental.tracing.server`) makes this worse rather than better: on Cloudflare it removes the route-named `http.server` span entirely, leaving the route only as an attribute on a `function` span.
+  - On a flat `node_modules` (npm or Yarn) the build fails until `ssr: { noExternal: ['@sentry/core', '@sentry/conventions', '@opentelemetry/api'] }` is added to `vite.config.js`.
   **Change:** On `docs/platforms/javascript/guides/cloudflare/frameworks/sveltekit.mdx`: Keep the include and add a "Route Names on Cloudflare Workers" section stating the naming limit above and showing the verified fix: one user-land `handle` inserted between `initCloudflareSentryHandle` and `sentryHandle` in the `sequence`, which takes `getRootSpan(getActiveSpan())` from `@sentry/sveltekit`, calls `updateName` on it with ``${event.request.method} ${event.route.id}`` and sets `sentry.segment.name.source` to `route` plus `http.route`. Use `updateName` and the source attribute, not `Sentry.updateSpanName`, which stamps the source `custom`. It works in both trace lifecycles. Add a "Database Spans" section stating that no extra setup is needed on pnpm and giving the `ssr.noExternal` entry for npm and Yarn installs.
   Draft: [Document route naming and database-span setup for SvelteKit on Cloudflare Workers](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#91-document-route-naming-and-database-span-setup-for-sveltekit-on-cloudflare-workers>)

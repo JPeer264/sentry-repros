@@ -9,9 +9,9 @@ Docs changes for the Elysia guide that a new user hits between install and the f
   - Unhandled errors via Elysia's global error hook, parameterized route names, per-request isolation, incoming trace continuation, outgoing `fetch` spans with headers, `Sentry.logger` logs, and `db` spans through the Vite build.
   Known limits:
   - A `wrangler`-bundled Worker emits no database spans.
-- No Elysia lifecycle spans on Workers: every transaction comes back with `spans: []`, because the `app.trace()` handler that creates them depends on `rootSpanForRequest`, which only the Bun branch of `app.wrap` populates.
-- `withElysia` must wrap the instance before routes are registered, or only the error path gets the route name.
-- `mysql2` on workerd needs `disableEval: true` in the connection options, and the pool must be created at module scope.
+  - No Elysia lifecycle spans on Workers: every transaction comes back with `spans: []`, because the `app.trace()` handler that creates them depends on `rootSpanForRequest`, which only the Bun branch of `app.wrap` populates.
+  - `withElysia` must wrap the instance before routes are registered, or only the error path gets the route name.
+  - `mysql2` on workerd needs `disableEval: true` in the connection options, and the pool must be created at module scope.
   **Change:** Add `docs/platforms/javascript/guides/cloudflare/frameworks/elysia.mdx` with the wiring above and list it at `guides/cloudflare/index.mdx:16-23`. Add a Cloudflare Workers entry to `guides/elysia/index.mdx:25`, add a Cloudflare bullet to the Runtime Behavior list at `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:9-12`, and scope the lifecycle-span promise at `:3-5` to Bun and Node so it no longer reads as universal.
   Draft: [Add an Elysia on Cloudflare Workers page and drop the Bun/Node-only runtime claim](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#33-add-an-elysia-on-cloudflare-workers-page-and-drop-the-bunnode-only-runtime-claim>)
 - [ ] **P0** · DOC-F19 · Elysia on Deno: the documented init loses isolation and route names
@@ -19,14 +19,14 @@ Docs changes for the Elysia guide that a new user hits between install and the f
   Verified on Elysia 1.4.30 and Deno 2.9.0: install the packages with npm into a real `node_modules`, set `{"nodeModulesDir": "manual"}` in `deno.json`, and pick one of two wirings. (1) Call `Sentry.init()` from `@sentry/deno` before `Deno.serve` and import only `withElysia` (and `fetchIntegration`) from `@sentry/elysia`. (2) Keep `Sentry.init()` from `@sentry/elysia` and pass `integrations: [denoServeIntegration()]`, imported from `@sentry/deno`. Both need `@sentry/deno` installed alongside `@sentry/elysia`; both were exercised in the `static` and `stream` trace lifecycles. Mount with `Deno.serve({ port }, withElysia(new Elysia()).get(...).fetch)`. Add `import "@sentry/deno/import";` as the first line for database spans, and pass `integrations: [fetchIntegration()]` for outgoing requests.
   Works today:
   - Route errors, mechanism `auto.http.elysia.on_error`.
-- `GET /users/:id` with op `http.server` and source `route`, with the Elysia lifecycle phases as child spans.
-- Per-request isolation and incoming trace continuation, with either wiring.
-- Outgoing `http.client` spans plus `sentry-trace`/`baggage`, with `fetchIntegration()`, which `@sentry/elysia` exports (it re-exports the `@sentry/bun` integration).
-- Database spans for `mysql`, and logs.
+  - `GET /users/:id` with op `http.server` and source `route`, with the Elysia lifecycle phases as child spans.
+  - Per-request isolation and incoming trace continuation, with either wiring.
+  - Outgoing `http.client` spans plus `sentry-trace`/`baggage`, with `fetchIntegration()`, which `@sentry/elysia` exports (it re-exports the `@sentry/bun` integration).
+  - Database spans for `mysql`, and logs.
   Known limits:
   - `@sentry/elysia`'s own `init()` on its own delegates to `@sentry/bun` and does not instrument `Deno.serve`: there is no `http.server` span, every Elysia lifecycle phase becomes its own root transaction on one process-wide trace, incoming trace headers are ignored and the isolation scope carries the previous request's route into the next event. An outgoing `fetch` still produces an `http.client` span under the default `stream` lifecycle, but as a parentless segment; under `static` it is dropped for having no active span.
-- The wiring decides the reported SDK: with `Sentry.init` from `@sentry/deno` events carry `sdk.name: sentry.javascript.deno`; with the `denoServeIntegration()` variant they keep `sentry.javascript.bun` and `contexts.runtime.name: bun`, and sessions are emitted.
-- `mysql2` cannot be imported while the Deno import hook is active: Deno compiles `require('*.json')` as JavaScript (denoland/deno#36240) and the import throws `SyntaxError: Unexpected token ':'`. Use `mysql@2`.
+  - The wiring decides the reported SDK: with `Sentry.init` from `@sentry/deno` events carry `sdk.name: sentry.javascript.deno`; with the `denoServeIntegration()` variant they keep `sentry.javascript.bun` and `contexts.runtime.name: bun`, and sessions are emitted.
+  - `mysql2` cannot be imported while the Deno import hook is active: Deno compiles `require('*.json')` as JavaScript (denoland/deno#36240) and the import throws `SyntaxError: Unexpected token ':'`. Use `mysql@2`.
   **Change:** `guides/elysia/index.mdx:25` and the snippets at `:52-70`, `:78-120`: add Deno tabs with both wirings described above. `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:6,9-12`: add a Deno bullet and qualify the route-name claim. `common/configuration/integrations/fetchIntegration.mdx:10`: it states the integration "only works inside the Cloudflare Workers runtime", which the Deno runs disprove.
   Draft: [Document Elysia on Deno: init from @sentry/deno, or add denoServeIntegration](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#34-document-elysia-on-deno-init-from-sentrydeno-or-add-denoserveintegration>)
 
@@ -45,16 +45,16 @@ Docs changes for the Elysia guide that a new user hits between install and the f
   Verified on Elysia 1.4 with `@sentry/elysia` 10.67.0 (develop, 6f2da7483d) on Bun 1.4.0: `Sentry.init` either inline in the entry or in an `instrument.ts` imported first, `Sentry.withElysia(new Elysia())` wrapping the fresh instance before any route is chained, then `bun app.ts`. No `--preload`, no `@elysiajs/opentelemetry`, and no build step for the base capabilities. For libraries that need the plugin build, build with `Bun.build({ entrypoints: ['./app.ts'], outdir: './dist', target: 'bun', sourcemap: 'external', plugins: [sentryBunPlugin()] })` from `@sentry/bun/plugin` and run `bun dist/app.js`. Pass no `external` at all, and no `packages: 'external'` or `packages: '*'`: the follow-up run recorded that any of those puts the instrumented packages back outside the bundle and the spans disappear again. `sentryBunPlugin()` is build-only; calling `Bun.plugin(sentryBunPlugin())` from a `--preload` file crashes the app at import.
   Works today:
   - Unhandled handler errors via the SDK's global `onError` hook
-- Route names `GET /users/:id` with source `route`, on the success and error paths
-- Per-request isolation across concurrent requests
-- Incoming `sentry-trace`/`baggage` continuation, plus response trace headers
-- Outgoing `fetch` spans with propagation headers
-- `mysql2` database spans under a plain `bun app.ts`; database instrumentation as a whole is recorded partial, and this is the half that works
-- `Sentry.logger` log envelopes
+  - Route names `GET /users/:id` with source `route`, on the success and error paths
+  - Per-request isolation across concurrent requests
+  - Incoming `sentry-trace`/`baggage` continuation, plus response trace headers
+  - Outgoing `fetch` spans with propagation headers
+  - `mysql2` database spans under a plain `bun app.ts`; database instrumentation as a whole is recorded partial, and this is the half that works
+  - `Sentry.logger` log envelopes
   Known limits:
   - On Bun only libraries that publish `node:diagnostics_channel` events themselves are instrumented under a plain `bun app.ts`; every other instrumented library needs the plugin build above. The failure is silent: with `debug: true` the SDK logs "No available Node API to register diagnostics-channel injection hooks; skipping" and still reports "Integration installed: Mysql", and without `debug` there is no output at all.
-- Every event, transaction and span reports `sdk.name: "sentry.javascript.bun"`, never `sentry.javascript.elysia`, under both init placements and both lifecycles.
-- Events captured inside a handler carry no transaction name, because the name is set after the handler runs.
-- The SDK's own hooks are visible in every trace as `sentryOnRequest`, `sentryOnAfterHandle` and `sentryOnError` spans, and the first pool use adds `db mysql2.pool.connect` and `db mysql2.connect`.
+  - Every event, transaction and span reports `sdk.name: "sentry.javascript.bun"`, never `sentry.javascript.elysia`, under both init placements and both lifecycles.
+  - Events captured inside a handler carry no transaction name, because the name is set after the handler runs.
+  - The SDK's own hooks are visible in every trace as `sentryOnRequest`, `sentryOnAfterHandle` and `sentryOnError` spans, and the first pool use adds `db mysql2.pool.connect` and `db mysql2.connect`.
   **Change:** `guides/elysia/index.mdx`: add a "Database and library instrumentation on Bun" section after Configure with the bundle recipe and the "no `external`" rule. Leave the alert at `:47-50` as it is; the run confirms it. `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:11`: qualify "No additional runtime instrumentation needed" for the database and library case. `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:1`: drop the `BrowserTracing` paragraph from this server guide. `platform-includes/performance/what-instrumentation-provides/javascript.elysia.mdx:5`: the observed ops are `handler` and `middleware`, not `request_handler.elysia` and `middleware.elysia`. `platform-includes/performance/enable-stream-mode/javascript.elysia.mdx:25`: the `traceLifecycle` default is `'stream'`, not `'static'`. DOC-R1 covers javascript.bun.mdx, javascript.deno.mdx and javascript.cloudflare.mdx, not this file.
   Draft: [Add a Bun database instrumentation section to the Elysia guide and fix four include statements](<https://gist.github.com/JPeer264/6d973a8266700d0cecbca9ed27cf8b21#54-add-a-bun-database-instrumentation-section-to-the-elysia-guide-and-fix-four-include-statements>)

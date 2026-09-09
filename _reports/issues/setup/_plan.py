@@ -64,7 +64,7 @@ def entry(tier, iid, why):
             obs='\n\n'.join(blocks[:k]); change='\n\n'.join(blocks[k:])
         else:
             obs=body; change=''; NOCHANGE.append(iid)
-    obs=obs.strip().replace('\n\n','\n  ')
+    obs=re.sub(r'\n+', '\n  ', obs.strip())
     change=re.sub(r'^- ','',change.strip(), flags=re.M).strip().replace('\n\n',' ').replace('\n',' ')
     change=re.sub(r'^What to change on (`[^`]+`):\s*', r'On \1: ', change)
     change=re.sub(r'^What to change[^:]*:\s*', '', change)
