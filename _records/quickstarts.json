@@ -253,5 +253,34 @@
    "trackComponent snippet": "partial (runes-mode components get no update spans)",
    "Svelte 3-4 tabs": "not run"
   }
+ },
+ {
+  "id": "QS-koa",
+  "path": "quickstarts/koa",
+  "runtime": "Node 26.5.0, develop 03aaf42455; koa 3.2.1, @koa/router 15.7.0",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "Under --import, NODE_OPTIONS, --require and CommonJS the guide delivers route-named segments with router and middleware spans, auto.middleware.koa error events and logs, with or without the deprecated setupKoaErrorHandler call. Defects: the ESM tab's extensionless import never starts the app, and a corrected first-line import loses every Koa span and, without the deprecated handler, error capture too; the verify snippet references a router the guide never creates; the integration page names an OpenTelemetry package the SDK does not use, the wrong enablement rule and koa ^2 only; the handler call placed before app.listen() silently replaces Koa's default error logging; the verify text says transactions; the preload page is dead.",
+  "sdk": {
+   "name": "sentry.javascript.node",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "--import": "works",
+   "CommonJS require first line": "works",
+   "ESM tab verbatim (import \"./instrument\")": "broken (ERR_MODULE_NOT_FOUND)",
+   "first-line import \"./instrument.mjs\"": "partial (no Koa spans, url-named segments)",
+   "first-line import without the handler": "partial (no error capture)",
+   "NODE_OPTIONS --import": "works",
+   "--require": "works with the unsupported banner",
+   "without setupKoaErrorHandler (--import)": "works",
+   "koaIntegration({ ignoreLayersType })": "works",
+   "errors only (no tracesSampleRate)": "works",
+   "errors only without the handler": "works",
+   "verify snippet verbatim": "broken (router is not defined)",
+   "orphaned top-level-import include": "partial (as first-line import)",
+   "late init (--import @sentry/node/preload)": "broken (subpath not exported)"
+  }
  }
 ]
