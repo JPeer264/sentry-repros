@@ -1,0 +1,971 @@
+{
+  "variant": "errors-only",
+  "pagePath": "/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+  "expectSpans": false,
+  "docs": {
+    "install": "docs/platforms/javascript/guides/wasm/index.mdx:43-53",
+    "configure": "docs/platforms/javascript/guides/wasm/index.mdx:70-100",
+    "verifyIssues": "docs/platforms/javascript/guides/wasm/index.mdx:127-184",
+    "verifyTracing": "docs/platforms/javascript/guides/wasm/index.mdx:202-259"
+  },
+  "steps": [
+    {
+      "t_ms": 464,
+      "name": "goto",
+      "detail": "/errors-only.html?wasm=divide-buildid.wasm&load=streaming"
+    },
+    {
+      "t_ms": 494,
+      "name": "arrived: SDK init"
+    },
+    {
+      "t_ms": 495,
+      "name": "arrived: wasm module loaded"
+    },
+    {
+      "t_ms": 496,
+      "name": "meta",
+      "detail": {
+        "initialized": true,
+        "wasmLoaded": true,
+        "wasmError": null,
+        "wasm": {
+          "url": "http://localhost:4734/divide-buildid.wasm",
+          "loader": "streaming",
+          "buildIdSections": 1,
+          "externalDebugInfoSections": 1,
+          "exports": [
+            "divide",
+            "compute_intensive_function"
+          ]
+        },
+        "callStyles": {
+          "direct": false,
+          "api": true
+        }
+      }
+    },
+    {
+      "t_ms": 548,
+      "name": "click",
+      "detail": "Trigger WebAssembly error (index.mdx:148-152 -> testWasmError, index.mdx:170-184)"
+    },
+    {
+      "t_ms": 572,
+      "name": "click",
+      "detail": "uncaught trap (testWasmErrorUncaught, not in the guide)"
+    },
+    {
+      "t_ms": 606,
+      "name": "click",
+      "detail": "Test WebAssembly with tracing (index.mdx:225-229 -> testWasmTracing, index.mdx:242-259)"
+    },
+    {
+      "t_ms": 638,
+      "name": "click",
+      "detail": "sentinel (captureMessage + sentinel-span)"
+    },
+    {
+      "t_ms": 656,
+      "name": "arrived: sentinel event"
+    },
+    {
+      "t_ms": 721,
+      "name": "browser closed"
+    }
+  ],
+  "clicked": [
+    "Trigger WebAssembly error",
+    "uncaught trap",
+    "Test WebAssembly with tracing",
+    "sentinel"
+  ],
+  "meta": {
+    "initialized": true,
+    "sdk": {
+      "name": "sentry.javascript.browser",
+      "version": "10.67.0",
+      "packages": [
+        {
+          "name": "npm:@sentry/browser",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession",
+      "Wasm"
+    ],
+    "options": {
+      "tunnel": "/tunnel",
+      "traceLifecycle": "stream",
+      "sendDefaultPii": true
+    },
+    "callStyles": {
+      "direct": false,
+      "api": true
+    },
+    "wasm": {
+      "url": "http://localhost:4734/divide-buildid.wasm",
+      "loader": "streaming",
+      "buildIdSections": 1,
+      "externalDebugInfoSections": 1,
+      "exports": [
+        "divide",
+        "compute_intensive_function"
+      ]
+    }
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: Wasm",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Captured error event `divide by zero`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Captured error event `divide by zero`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Result: 1783293664",
+    "log: Sentry Logger [log]: Captured error event `sentinel`"
+  ],
+  "pageErrors": [
+    "divide by zero"
+  ],
+  "summary": {
+    "envelopeItemTypes": [
+      "event",
+      "event",
+      "event"
+    ],
+    "sdk": {
+      "name": "sentry.javascript.browser",
+      "version": "10.67.0",
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Wasm"
+      ],
+      "packages": [
+        {
+          "name": "npm:@sentry/browser",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "browser": null,
+    "events": [
+      {
+        "exception": "RuntimeError: divide by zero",
+        "mechanism": "generic",
+        "handled": true,
+        "wasmFrames": [
+          {
+            "function": "divide",
+            "filename": "http://localhost:4734/divide-buildid.wasm",
+            "in_app": true,
+            "instruction_addr": "0x4d",
+            "addr_mode": "rel:0",
+            "platform": "native"
+          }
+        ],
+        "debug_meta": {
+          "images": [
+            {
+              "type": "wasm",
+              "code_id": "0123456789abcdef1032547698badcfe",
+              "code_file": "http://localhost:4734/divide-buildid.wasm",
+              "debug_file": "http://localhost:4734/divide.debug.wasm",
+              "debug_id": "0123456789abcdef1032547698badcfe0"
+            }
+          ]
+        },
+        "frameCount": 3
+      },
+      {
+        "exception": "RuntimeError: divide by zero",
+        "mechanism": "auto.browser.global_handlers.onerror",
+        "handled": false,
+        "wasmFrames": [
+          {
+            "function": "divide",
+            "filename": "http://localhost:4734/divide-buildid.wasm",
+            "in_app": true,
+            "instruction_addr": "0x4d",
+            "addr_mode": "rel:0",
+            "platform": "native"
+          }
+        ],
+        "debug_meta": {
+          "images": [
+            {
+              "type": "wasm",
+              "code_id": "0123456789abcdef1032547698badcfe",
+              "code_file": "http://localhost:4734/divide-buildid.wasm",
+              "debug_file": "http://localhost:4734/divide.debug.wasm",
+              "debug_id": "0123456789abcdef1032547698badcfe0"
+            }
+          ]
+        },
+        "frameCount": 3
+      },
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "wasmFrames": [],
+        "debug_meta": null,
+        "frameCount": 1
+      }
+    ],
+    "spans": [],
+    "logs": [],
+    "clientReports": []
+  },
+  "checks": {
+    "initialized": true,
+    "wasmLoaded": true,
+    "wasmIntegrationInstalled": true,
+    "sentinelArrived": true,
+    "pageloadArrived": null,
+    "caughtTrapEvent": true,
+    "uncaughtTrapEvent": true,
+    "caughtHasWasmFrame": true,
+    "caughtWasmFrameFields": {
+      "filename": "http://localhost:4734/divide-buildid.wasm",
+      "instruction_addr": "0x4d",
+      "addr_mode": "rel:0",
+      "platform": "native",
+      "function": "divide",
+      "in_app": true
+    },
+    "caughtDebugMetaImages": [
+      {
+        "type": "wasm",
+        "code_id": "0123456789abcdef1032547698badcfe",
+        "code_file": "http://localhost:4734/divide-buildid.wasm",
+        "debug_file": "http://localhost:4734/divide.debug.wasm",
+        "debug_id": "0123456789abcdef1032547698badcfe0"
+      }
+    ],
+    "uncaughtHasWasmFrame": true,
+    "uncaughtWasmFrameFields": {
+      "filename": "http://localhost:4734/divide-buildid.wasm",
+      "instruction_addr": "0x4d",
+      "addr_mode": "rel:0",
+      "platform": "native",
+      "function": "divide",
+      "in_app": true
+    },
+    "uncaughtDebugMetaImages": [
+      {
+        "type": "wasm",
+        "code_id": "0123456789abcdef1032547698badcfe",
+        "code_file": "http://localhost:4734/divide-buildid.wasm",
+        "debug_file": "http://localhost:4734/divide.debug.wasm",
+        "debug_id": "0123456789abcdef1032547698badcfe0"
+      }
+    ],
+    "exampleSpan": null,
+    "resultLogged": true
+  },
+  "verdict": {
+    "status": "works",
+    "text": "the caught trap carries a wasm frame with instruction_addr, addr_mode and platform=native plus a debug_meta wasm image"
+  },
+  "items": [
+    {
+      "type": "event",
+      "exception": "RuntimeError: divide by zero",
+      "mechanism": "generic",
+      "handled": true,
+      "sdk": "sentry.javascript.browser",
+      "sdk_version": "10.67.0",
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Wasm"
+      ],
+      "packages": [
+        {
+          "name": "npm:@sentry/browser",
+          "version": "10.67.0"
+        }
+      ],
+      "frames": [
+        {
+          "function": "HTMLButtonElement.onclick",
+          "filename": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+          "lineno": 19,
+          "colno": 53,
+          "in_app": true
+        },
+        {
+          "function": "testWasmError",
+          "filename": "http://localhost:4734/buttons.js",
+          "lineno": 18,
+          "colno": 50,
+          "in_app": true
+        },
+        {
+          "function": "divide",
+          "filename": "http://localhost:4734/divide-buildid.wasm",
+          "in_app": true,
+          "instruction_addr": "0x4d",
+          "addr_mode": "rel:0",
+          "platform": "native"
+        }
+      ],
+      "wasmFrames": [
+        {
+          "function": "divide",
+          "filename": "http://localhost:4734/divide-buildid.wasm",
+          "in_app": true,
+          "instruction_addr": "0x4d",
+          "addr_mode": "rel:0",
+          "platform": "native"
+        }
+      ],
+      "debug_meta": {
+        "images": [
+          {
+            "type": "wasm",
+            "code_id": "0123456789abcdef1032547698badcfe",
+            "code_file": "http://localhost:4734/divide-buildid.wasm",
+            "debug_file": "http://localhost:4734/divide.debug.wasm",
+            "debug_id": "0123456789abcdef1032547698badcfe0"
+          }
+        ]
+      },
+      "trace_id": "d6790127917f40e68e8581e34c0110fc",
+      "breadcrumbs": [
+        "fetch: http://localhost:4734/divide-buildid.wasm"
+      ],
+      "request": {
+        "url": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "exception": "RuntimeError: divide by zero",
+      "mechanism": "auto.browser.global_handlers.onerror",
+      "handled": false,
+      "sdk": "sentry.javascript.browser",
+      "sdk_version": "10.67.0",
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Wasm"
+      ],
+      "packages": [
+        {
+          "name": "npm:@sentry/browser",
+          "version": "10.67.0"
+        }
+      ],
+      "frames": [
+        {
+          "function": "HTMLButtonElement.onclick",
+          "filename": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+          "lineno": 27,
+          "colno": 79,
+          "in_app": true
+        },
+        {
+          "function": "testWasmErrorUncaught",
+          "filename": "http://localhost:4734/buttons.js",
+          "lineno": 44,
+          "colno": 40,
+          "in_app": true
+        },
+        {
+          "function": "divide",
+          "filename": "http://localhost:4734/divide-buildid.wasm",
+          "in_app": true,
+          "instruction_addr": "0x4d",
+          "addr_mode": "rel:0",
+          "platform": "native"
+        }
+      ],
+      "wasmFrames": [
+        {
+          "function": "divide",
+          "filename": "http://localhost:4734/divide-buildid.wasm",
+          "in_app": true,
+          "instruction_addr": "0x4d",
+          "addr_mode": "rel:0",
+          "platform": "native"
+        }
+      ],
+      "debug_meta": {
+        "images": [
+          {
+            "type": "wasm",
+            "code_id": "0123456789abcdef1032547698badcfe",
+            "code_file": "http://localhost:4734/divide-buildid.wasm",
+            "debug_file": "http://localhost:4734/divide.debug.wasm",
+            "debug_id": "0123456789abcdef1032547698badcfe0"
+          }
+        ]
+      },
+      "trace_id": "d6790127917f40e68e8581e34c0110fc",
+      "breadcrumbs": [
+        "fetch: http://localhost:4734/divide-buildid.wasm",
+        "sentry.event: RuntimeError: divide by zero",
+        "ui.click: body > button[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.browser",
+      "sdk_version": "10.67.0",
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "Wasm",
+        "SpanStreaming"
+      ],
+      "packages": [
+        {
+          "name": "npm:@sentry/browser",
+          "version": "10.67.0"
+        }
+      ],
+      "frames": [
+        {
+          "function": "window.__qsSentinel",
+          "filename": "http://localhost:4734/buttons.js",
+          "lineno": 73,
+          "colno": 19,
+          "in_app": true
+        }
+      ],
+      "wasmFrames": [],
+      "trace_id": "d6790127917f40e68e8581e34c0110fc",
+      "breadcrumbs": [
+        "fetch: http://localhost:4734/divide-buildid.wasm",
+        "sentry.event: RuntimeError: divide by zero",
+        "ui.click: body > button[type=\"button\"]",
+        "sentry.event: RuntimeError: divide by zero",
+        "ui.click: body > button#btn-uncaught[type=\"button\"]",
+        "console: Result: 1783293664",
+        "ui.click: body > button[type=\"button\"]",
+        "ui.click: body > button#btn-sentinel[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    }
+  ],
+  "raw": [
+    {
+      "envHeader": {
+        "event_id": "4ca741a313734b999cc94e87a2d4c043",
+        "sent_at": "2026-09-09T06:48:26.958Z",
+        "sdk": {
+          "name": "sentry.javascript.browser",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "d6790127917f40e68e8581e34c0110fc",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "RuntimeError",
+              "value": "divide by zero",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+                    "function": "HTMLButtonElement.onclick",
+                    "in_app": true,
+                    "lineno": 19,
+                    "colno": 53
+                  },
+                  {
+                    "filename": "http://localhost:4734/buttons.js",
+                    "function": "testWasmError",
+                    "in_app": true,
+                    "lineno": 18,
+                    "colno": 50
+                  },
+                  {
+                    "filename": "http://localhost:4734/divide-buildid.wasm",
+                    "function": "divide",
+                    "in_app": true,
+                    "instruction_addr": "0x4d",
+                    "platform": "native",
+                    "addr_mode": "rel:0"
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "4ca741a313734b999cc94e87a2d4c043",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "d6790127917f40e68e8581e34c0110fc",
+            "span_id": "a5903b79e6ec058e"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788936506.957,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Wasm"
+          ],
+          "name": "sentry.javascript.browser",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/browser",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788936506.904,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4734/divide-buildid.wasm",
+              "status_code": 200
+            },
+            "type": "http"
+          }
+        ],
+        "debug_meta": {
+          "images": [
+            {
+              "type": "wasm",
+              "code_id": "0123456789abcdef1032547698badcfe",
+              "code_file": "http://localhost:4734/divide-buildid.wasm",
+              "debug_file": "http://localhost:4734/divide.debug.wasm",
+              "debug_id": "0123456789abcdef1032547698badcfe0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "25af9691c92d4d889e8fcf83573ad165",
+        "sent_at": "2026-09-09T06:48:26.983Z",
+        "sdk": {
+          "name": "sentry.javascript.browser",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "d6790127917f40e68e8581e34c0110fc",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "RuntimeError",
+              "value": "divide by zero",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+                    "function": "HTMLButtonElement.onclick",
+                    "in_app": true,
+                    "lineno": 27,
+                    "colno": 79
+                  },
+                  {
+                    "filename": "http://localhost:4734/buttons.js",
+                    "function": "testWasmErrorUncaught",
+                    "in_app": true,
+                    "lineno": 44,
+                    "colno": 40
+                  },
+                  {
+                    "filename": "http://localhost:4734/divide-buildid.wasm",
+                    "function": "divide",
+                    "in_app": true,
+                    "instruction_addr": "0x4d",
+                    "platform": "native",
+                    "addr_mode": "rel:0"
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.global_handlers.onerror",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "d6790127917f40e68e8581e34c0110fc",
+            "span_id": "a67b27afb4a71d9b"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "event_id": "25af9691c92d4d889e8fcf83573ad165",
+        "timestamp": 1788936506.983,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Wasm"
+          ],
+          "name": "sentry.javascript.browser",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/browser",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788936506.904,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4734/divide-buildid.wasm",
+              "status_code": 200
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788936506.958,
+            "category": "sentry.event",
+            "event_id": "4ca741a313734b999cc94e87a2d4c043",
+            "level": "error",
+            "message": "RuntimeError: divide by zero"
+          },
+          {
+            "timestamp": 1788936506.959,
+            "category": "ui.click",
+            "message": "body > button[type=\"button\"]"
+          }
+        ],
+        "debug_meta": {
+          "images": [
+            {
+              "type": "wasm",
+              "code_id": "0123456789abcdef1032547698badcfe",
+              "code_file": "http://localhost:4734/divide-buildid.wasm",
+              "debug_file": "http://localhost:4734/divide.debug.wasm",
+              "debug_id": "0123456789abcdef1032547698badcfe0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "06b22612256246db9aa169de1afdf887",
+        "sent_at": "2026-09-09T06:48:27.049Z",
+        "sdk": {
+          "name": "sentry.javascript.browser",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "d6790127917f40e68e8581e34c0110fc",
+          "org_id": "0"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4734/buttons.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 73,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "06b22612256246db9aa169de1afdf887",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4734/errors-only.html?wasm=divide-buildid.wasm&load=streaming",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "d6790127917f40e68e8581e34c0110fc",
+            "span_id": "bcf041a3b7d39f9f"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788936507.049,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "Wasm",
+            "SpanStreaming"
+          ],
+          "name": "sentry.javascript.browser",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/browser",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "timestamp": 1788936506.904,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4734/divide-buildid.wasm",
+              "status_code": 200
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788936506.958,
+            "category": "sentry.event",
+            "event_id": "4ca741a313734b999cc94e87a2d4c043",
+            "level": "error",
+            "message": "RuntimeError: divide by zero"
+          },
+          {
+            "timestamp": 1788936506.959,
+            "category": "ui.click",
+            "message": "body > button[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788936506.983,
+            "category": "sentry.event",
+            "event_id": "25af9691c92d4d889e8fcf83573ad165",
+            "level": "error",
+            "message": "RuntimeError: divide by zero"
+          },
+          {
+            "timestamp": 1788936506.983,
+            "category": "ui.click",
+            "message": "body > button#btn-uncaught[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788936507.017,
+            "category": "console",
+            "data": {
+              "arguments": [
+                "Result:",
+                1783293664
+              ],
+              "logger": "console"
+            },
+            "level": "log",
+            "message": "Result: 1783293664"
+          },
+          {
+            "timestamp": 1788936507.017,
+            "category": "ui.click",
+            "message": "body > button[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788936507.048,
+            "category": "ui.click",
+            "message": "body > button#btn-sentinel[type=\"button\"]"
+          }
+        ]
+      }
+    }
+  ]
+}

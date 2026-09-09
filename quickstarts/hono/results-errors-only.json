@@ -1,0 +1,438 @@
+{
+  "id": "QS-hono",
+  "variant": "errors-only",
+  "command": "node --import ./instrument-errors-only.mjs app.mjs",
+  "hono_version": "4.13.7",
+  "hono_node_server_version": "2.1.1",
+  "sdk": {
+    "name": "sentry.javascript.hono",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "steps": [
+    {
+      "route": "/users/42",
+      "http_code": "200",
+      "seconds": "0.001061",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-sentry",
+      "http_code": "500",
+      "seconds": "0.003227",
+      "curl_exit": 0
+    },
+    {
+      "route": "/error-401",
+      "http_code": "401",
+      "seconds": "0.002221",
+      "curl_exit": 0
+    },
+    {
+      "route": "/error-404",
+      "http_code": "404",
+      "seconds": "0.001021",
+      "curl_exit": 0
+    },
+    {
+      "route": "/error-503",
+      "http_code": "503",
+      "seconds": "0.001120",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-log",
+      "http_code": "200",
+      "seconds": "0.001044",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-sentry-tracing",
+      "http_code": "500",
+      "seconds": "0.103567",
+      "curl_exit": 0
+    },
+    {
+      "route": "/sentinel",
+      "http_code": "200",
+      "seconds": "0.001440",
+      "curl_exit": 0
+    }
+  ],
+  "console": {
+    "line_count": 99,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 16769, thread: main.",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Error: My first Sentry error!",
+      "    at Object.apply (file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/shared/wrapMiddlewareSpan.js:26:22)",
+      "    at file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/node/middleware.js:29:11",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Captured error event `custom 503`",
+      "Error: My first Sentry error!",
+      "    at async Object.apply (file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/shared/wrapMiddlewareSpan.js:26:16)",
+      "    at async file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/node/middleware.js:29:5",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: Captured error event `sentinel`"
+    ],
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "LinkedErrors",
+      "RequestData",
+      "NodeSystemError",
+      "ConversationId",
+      "Console",
+      "Http",
+      "NodeFetch",
+      "OnUncaughtException",
+      "OnUnhandledRejection",
+      "ContextLines",
+      "LocalVariablesAsync",
+      "Context",
+      "ChildProcess",
+      "WorkerThreads",
+      "ProcessSession",
+      "Modules",
+      "Express",
+      "Fastify",
+      "Hapi",
+      "Koa",
+      "SpanStreaming"
+    ],
+    "integration_count": 23,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 16769, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: Sentry is initialized, proceeding to set up Hono `sentry` middleware.",
+      "Sentry Logger [log]: [hono] Patched app.request for internal dispatch tracing.",
+      "app listening 4729",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Error: My first Sentry error!",
+      "    at file://$REPRO/quickstarts/hono/routes.mjs:12:11",
+      "    at dispatch (file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:23)",
+      "    at file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:46",
+      "    at auditMiddleware (file://$REPRO/quickstarts/hono/routes.mjs:7:11)",
+      "    at Object.apply (file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/shared/wrapMiddlewareSpan.js:26:22)",
+      "    at dispatch (file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:23)",
+      "    at file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:46",
+      "    at file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/node/middleware.js:29:11",
+      "    at dispatch (file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:23)",
+      "    at file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:5:12",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Sentry Logger [log]: Captured error event `custom 503`",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Error: My first Sentry error!",
+      "    at file://$REPRO/quickstarts/hono/routes.mjs:25:15",
+      "    at async file://$REPRO/quickstarts/hono/routes.mjs:18:5",
+      "    at async dispatch (file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:17)",
+      "    at async auditMiddleware (file://$REPRO/quickstarts/hono/routes.mjs:7:5)",
+      "    at async Object.apply (file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/shared/wrapMiddlewareSpan.js:26:16)",
+      "    at async dispatch (file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:17)",
+      "    at async file://$REPRO/quickstarts/hono/node_modules/@sentry/hono/build/esm/node/middleware.js:29:5",
+      "    at async dispatch (file://$REPRO/quickstarts/hono/node_modules/hono/dist/compose.js:22:17)",
+      "    at async file://$REPRO/quickstarts/hono/node_modules/hono/dist/hono-base.js:308:25",
+      "    at async responseViaResponseObject (file://$REPRO/quickstarts/hono/node_modules/@hono/node-server/dist/index.mjs:946:13)",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recording outcome: \"no_parent_span:span\"",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: Recorded request session with status: ok"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 4,
+      "span": 0,
+      "transaction": 0,
+      "log": 1
+    },
+    "items": [
+      {
+        "type": "event",
+        "exception": "Error: My first Sentry error!",
+        "mechanism": "auto.http.hono.context_error",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.hono",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /debug-sentry",
+        "trace_id": "432973d0f26f4a60ba1075cfb9829877",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4729/debug-sentry",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "accept": "*/*",
+            "host": "127.0.0.1:4729",
+            "user-agent": "curl/8.7.1"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "Error: custom 503",
+        "mechanism": "auto.http.hono.context_error",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.hono",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /error-503",
+        "trace_id": "b92b505daf5b4b158deb394002c648ea",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4729/error-503",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "accept": "*/*",
+            "host": "127.0.0.1:4729",
+            "user-agent": "curl/8.7.1"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "Error: My first Sentry error!",
+        "mechanism": "auto.http.hono.context_error",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.hono",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /debug-sentry-tracing",
+        "trace_id": "aa47702b07fb4f7ea77409f430792595",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4729/debug-sentry-tracing",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "accept": "*/*",
+            "host": "127.0.0.1:4729",
+            "user-agent": "curl/8.7.1"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.hono",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /sentinel",
+        "trace_id": "086c7833086a42769fb05f76c06299d5",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4729/sentinel",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "accept": "*/*",
+            "host": "127.0.0.1:4729",
+            "user-agent": "curl/8.7.1"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "log",
+        "items": [
+          "info: User example action completed"
+        ]
+      }
+    ]
+  },
+  "spansRaw": [],
+  "verdict": {
+    "status": "works",
+    "checks": {
+      "app_started": true,
+      "app_alive_at_end": true,
+      "error_event_debug_sentry": [
+        {
+          "exception": "Error: My first Sentry error!",
+          "mechanism": "auto.http.hono.context_error",
+          "handled": false,
+          "transaction": "GET /debug-sentry",
+          "request": "http://127.0.0.1:4729/debug-sentry",
+          "hasRequestData": false,
+          "user": {
+            "ip_address": "127.0.0.1"
+          },
+          "trace_id": "432973d0f26f4a60ba1075cfb9829877"
+        }
+      ],
+      "error_event_tracing_route": [
+        {
+          "exception": "Error: My first Sentry error!",
+          "mechanism": "auto.http.hono.context_error",
+          "handled": false,
+          "transaction": "GET /debug-sentry-tracing",
+          "request": "http://127.0.0.1:4729/debug-sentry-tracing",
+          "hasRequestData": false,
+          "user": {
+            "ip_address": "127.0.0.1"
+          },
+          "trace_id": "aa47702b07fb4f7ea77409f430792595"
+        }
+      ],
+      "error_401_captured": [],
+      "error_404_captured": [],
+      "error_503_captured": [
+        {
+          "exception": "Error: custom 503",
+          "mechanism": "auto.http.hono.context_error",
+          "handled": false,
+          "transaction": "GET /error-503",
+          "request": "http://127.0.0.1:4729/error-503",
+          "hasRequestData": false,
+          "user": {
+            "ip_address": "127.0.0.1"
+          },
+          "trace_id": "b92b505daf5b4b158deb394002c648ea"
+        }
+      ],
+      "other_error_events": [
+        {
+          "exception": "undefined: sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "transaction": "GET /sentinel",
+          "request": "http://127.0.0.1:4729/sentinel",
+          "hasRequestData": false,
+          "user": {
+            "ip_address": "127.0.0.1"
+          },
+          "trace_id": "086c7833086a42769fb05f76c06299d5"
+        }
+      ],
+      "duplicate_error_events": [],
+      "sentinel_event": [
+        {
+          "mechanism": "generic",
+          "handled": true,
+          "transaction": "GET /sentinel",
+          "request": "http://127.0.0.1:4729/sentinel",
+          "user": {
+            "ip_address": "127.0.0.1"
+          }
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 0,
+      "segments": [],
+      "route_named_segment_for_users": false,
+      "child_spans": [],
+      "child_ops": [],
+      "child_origins": [],
+      "middleware_spans": [],
+      "manual_test_span": [],
+      "log_batches": 1,
+      "log_bodies": [
+        "info: User example action completed"
+      ],
+      "other_item_types": [],
+      "require_banner": [],
+      "deprecation_output": [],
+      "hono_sdk_warnings": [],
+      "onerror_lines": [],
+      "root_export_keys": [],
+      "hono_default_error_log": 2
+    }
+  }
+}

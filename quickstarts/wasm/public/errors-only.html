@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>QS-wasm, errors-only</title>
+    <script>
+      window.__QS_VARIANT__ = 'errors-only';
+    </script>
+    <!-- The esbuild ESM bundle of src/app-errors.js: the guide's imports and Sentry.init call.
+         It runs before DOMContentLoaded, so the SDK is initialized before the wasm module is
+         loaded, as index.mdx:65 asks. -->
+    <script type="module" src="/app-errors.js"></script>
+    <script src="/buttons.js"></script>
+  </head>
+  <body>
+    <h1>QS-wasm, errors-only (@sentry/browser + @sentry/wasm 10.67.0, develop 03aaf42455)</h1>
+
+    <!-- docs/platforms/javascript/guides/wasm/index.mdx:148-152 -->
+    <button type="button" onclick="testWasmError()">
+      Trigger WebAssembly error
+    </button>
+    <!-- docs/platforms/javascript/guides/wasm/index.mdx:225-229 -->
+    <button type="button" onclick="testWasmTracing()">
+      Test WebAssembly with tracing
+    </button>
+    <!-- not in the guide: the same trap without the try/catch, for the global onerror handler -->
+    <button id="btn-uncaught" type="button" onclick="testWasmErrorUncaught()">uncaught trap</button>
+    <button id="btn-sentinel" type="button">sentinel</button>
+  </body>
+</html>

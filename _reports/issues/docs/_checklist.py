@@ -61,15 +61,15 @@ PLAN=[
    ('later','DOC-Q23','the late-init and multiple-apps snippets miss their imports'),
    ('later','DOC-Q24','the dev build reports the verify error without component context'),
  ]),
- ('Node, Express, Fastify, Koa and Hapi', [
+ ('Node, Express, Fastify, Koa, Hapi and Connect', [
    ('should','DOC-Q5','--require banner, and a first-line ESM import equals --import'),
-   ('must','DOC-Q25','the Express, Fastify, Koa and Hapi ESM tabs import the instrument file without its extension'),
+   ('must','DOC-Q25','the Express, Fastify, Koa, Hapi and Connect ESM tabs import the instrument file without its extension'),
    ('must','DOC-Q26','the late-initialization page rests on the removed @sentry/node/preload entry'),
-   ('should','DOC-Q27','the Express async verify snippet hangs on Express 4'),
+   ('should','DOC-Q27','the Express and Connect async verify snippets hang on Express 4 and Connect 3'),
    ('should','DOC-Q28','the esm-without-import page says a first-line import cannot instrument frameworks; Express and Fastify are'),
    ('later','DOC-Q29','the Express, Fastify, Koa and Hapi guides teach deprecated error handler calls'),
    ('later','DOC-Q30','no expressIntegration page'),
-   ('later','DOC-Q31','empty, orphaned and unreachable includes on the Express, Fastify and Koa guides'),
+   ('later','DOC-Q31','empty, orphaned and unreachable includes on the Express, Fastify, Koa and Connect guides'),
    ('must','DOC-Q37','the Fastify error handler page imports from a package that does not exist'),
    ('should','DOC-Q38','the Fastify error handler options object is silently ignored'),
    ('should','DOC-Q39','the Fastify supported versions exclude 5'),
@@ -78,6 +78,8 @@ PLAN=[
    ('should','DOC-Q45','with a direct import Koa still needs setupKoaErrorHandler, the migration page says otherwise'),
    ('should','DOC-Q46','the Koa integration page names the wrong mechanism, enablement rule and version range'),
    ('should','DOC-Q47','the Hapi integration page names the wrong mechanism and no option, and its table row says no errors'),
+   ('must','DOC-Q52','the Connect guide and integration page describe a removed instrumentation; every printed app crashes'),
+   ('should','DOC-Q53','the Connect verify route never reaches Sentry without an error middleware'),
  ]),
  ('Bun', [
    ('must','DOC-B1','the instrumentation step is backwards and never names the plugin'),

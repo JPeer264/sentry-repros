@@ -23,7 +23,7 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | [QS-koa](koa/) | node framework | koa | npm, manual setup | done | Node 26.5.0 with the develop tarballs; fourteen variants across the install variants, the error handler, the integration options and the verify snippet |
 | [QS-hapi](hapi/) | node framework | hapi | npm, manual setup | done | Node 26.5.0 with the develop tarballs; thirteen variants across the install variants, the error handler, the integration options and the verify snippet |
 | QS-nestjs | node framework | nestjs | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
-| QS-connect | node framework | connect | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
+| [QS-connect](connect/) | node framework | connect | npm, manual setup | done | Node 26.5.0 with the develop tarballs; fourteen variants; no printed app starts because the Connect helper and integration no longer exist |
 | QS-hono | node framework | hono | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-elysia | node framework | elysia | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
 | QS-nitro | node framework | nitro | npm, manual setup | planned | Node with the develop tarballs; hono and elysia also on their other runtimes in the cells |
@@ -45,4 +45,4 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 22 planned, 14 done, 4 not measurable.
+Totals: 21 planned, 15 done, 4 not measurable.

@@ -332,5 +332,34 @@
    "guide snippet without @solidjs/router": "broken (unresolved import)",
    "TanStack Router page": "not run (parse error in the javascript fence)"
   }
+ },
+ {
+  "id": "QS-connect",
+  "path": "quickstarts/connect",
+  "runtime": "Node 26.5.0, develop 03aaf42455; connect 3.7.0",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "No application file the Connect guide prints starts on develop: setupConnectErrorHandler is gone, connectIntegration is gone, and the build has no Connect instrumentation at all, which the migration page records at :1370 while the guide, the integration page, the integrations table, the request-handler row and the late-initialization list still describe it. With the handler line removed the app delivers the generic Node telemetry only (method-named segments, no route, no handler span), thrown handler errors are never captured, and the async verify snippet hangs.",
+  "sdk": {
+   "name": "sentry.javascript.node",
+   "version": "10.67.0",
+   "integrations": 46
+  },
+  "variants": {
+   "--import (guide app)": "broken (setupConnectErrorHandler is not a function)",
+   "CommonJS (guide app)": "broken",
+   "ESM tab verbatim": "broken (ERR_MODULE_NOT_FOUND)",
+   "first-line import (guide app)": "broken",
+   "NODE_OPTIONS (guide app)": "broken",
+   "orphaned top-level-import include": "broken",
+   "connectIntegration() from the integration page": "broken (not a function)",
+   "late init (--import @sentry/node/preload)": "broken (subpath not exported)",
+   "guide app without the handler line": "partial (no error capture, no route names)",
+   "CommonJS without the handler line": "partial",
+   "first-line import without the handler line": "partial",
+   "NODE_OPTIONS without the handler line": "partial",
+   "--require without the handler line": "partial with the banner",
+   "errors only": "partial (verify route not captured)"
+  }
  }
 ]
