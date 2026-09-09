@@ -1,0 +1,4326 @@
+{
+  "variant": "base",
+  "verdict": {
+    "status": "partial",
+    "observed": "Same outcome as results-base.json under Svelte dev mode; no compiler, dev-mode or runtime warning about the onClick attribute."
+  },
+  "pagePath": "/base.html",
+  "mode": "development",
+  "build": {
+    "ok": true,
+    "mode": "development",
+    "src": "src/base/main.js",
+    "svelteConfig": null,
+    "preprocessors": [],
+    "esbuildWarnings": [],
+    "svelteWarnings": []
+  },
+  "meta": {
+    "initialized": true,
+    "SDK_VERSION": "10.67.0",
+    "sdk": {
+      "name": "sentry.javascript.svelte",
+      "version": "10.67.0",
+      "packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession",
+      "BrowserTracing",
+      "Replay",
+      "Feedback",
+      "SpanStreaming",
+      "WebVitals"
+    ],
+    "options": {
+      "tracesSampleRate": 1,
+      "tracePropagationTargets": [
+        "localhost",
+        "/^https:\\/\\/yourserver\\.io\\/api/"
+      ],
+      "replaysSessionSampleRate": 0.1,
+      "replaysOnErrorSampleRate": 1,
+      "tunnel": "/tunnel",
+      "traceLifecycle": "stream",
+      "attachStacktrace": true,
+      "debug": true
+    },
+    "svelte": "5.57.0"
+  },
+  "steps": [
+    {
+      "label": "boot",
+      "result": {
+        "sdkUp": true,
+        "appUp": true,
+        "pageErrorsAtBoot": [],
+        "feedbackWidget": true,
+        "appHtml": "<h1>QS-svelte base</h1> <button id=\"btn-throw\" type=\"button\">Throw error</button> <button id=\"btn-span\" type=\"button\">Throw error</button> <button id=\"btn-span-fixed\" type=\"button\">Throw error</button> <button id=\"btn-log\" type=\"button\">logs</button> <button id=\"btn-fetch\" type=\"button\">fetch</button><!---->"
+      }
+    },
+    {
+      "label": "click #btn-throw (index.mdx:215-222, onclick throws \"Sentry Frontend Error\")",
+      "result": {
+        "captured": true
+      },
+      "itemsBefore": 0,
+      "itemsAfter": 1
+    },
+    {
+      "label": "inspect #btn-span (index.mdx:255-266 verbatim, `onClick`)",
+      "result": {
+        "attributeNames": [
+          "id",
+          "type"
+        ],
+        "onclickAttribute": null,
+        "onclickProperty": "object",
+        "hasOnClickProperty": false
+      },
+      "itemsBefore": 1,
+      "itemsAfter": 1
+    },
+    {
+      "label": "click #btn-span (index.mdx:255-266 verbatim, `onClick`)",
+      "result": {
+        "errorsSoFar": 1
+      },
+      "itemsBefore": 1,
+      "itemsAfter": 1
+    },
+    {
+      "label": "click #btn-span-fixed (the same snippet with `onclick`)",
+      "result": {
+        "fixedErrorArrived": true,
+        "frontendErrors": 2,
+        "exampleSpans": 0
+      },
+      "itemsBefore": 1,
+      "itemsAfter": 2
+    },
+    {
+      "label": "click #btn-log (logs include :12-24, Sentry.logger.*)",
+      "result": null,
+      "itemsBefore": 2,
+      "itemsAfter": 2
+    },
+    {
+      "label": "click #btn-fetch (relative + absolute same-origin fetch to /recorder)",
+      "result": {
+        "recorderHits": true,
+        "headers": [
+          {
+            "url": "/recorder?from=relative",
+            "sentry-trace": "81bca9e47b3a4492815534261226c3bd-9669ea4778044e12-1",
+            "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=81bca9e47b3a4492815534261226c3bd,sentry-org_id=0,sentry-replay_id=68426e86ee7241708feef7f76e582efb,sentry-sampled=true,sentry-sample_rand=0.7753449115730793,sentry-sample_rate=1",
+            "traceparent": null
+          },
+          {
+            "url": "/recorder?from=absolute",
+            "sentry-trace": "81bca9e47b3a4492815534261226c3bd-8e0207abac465e95-1",
+            "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=81bca9e47b3a4492815534261226c3bd,sentry-org_id=0,sentry-replay_id=68426e86ee7241708feef7f76e582efb,sentry-sampled=true,sentry-sample_rand=0.7753449115730793,sentry-sample_rate=1",
+            "traceparent": null
+          }
+        ]
+      },
+      "itemsBefore": 2,
+      "itemsAfter": 2
+    },
+    {
+      "label": "replay after minReplayDuration",
+      "result": {
+        "replayArrived": true
+      }
+    }
+  ],
+  "sentinel1": true,
+  "pageloadArrived": true,
+  "deadlineHit": false,
+  "summary": {
+    "itemTypes": [
+      "event",
+      "event",
+      "event",
+      "span",
+      "log",
+      "event",
+      "replay_event",
+      "replay_recording"
+    ],
+    "events": [
+      {
+        "exception": "Error: Sentry Frontend Error",
+        "mechanism": "auto.browser.browserapierrors.addEventListener",
+        "handled": false,
+        "transaction": "/base.html",
+        "trace_id": "81bca9e47b3a4492815534261226c3bd",
+        "breadcrumbs": [
+          "ui.click: body > div#app > button#btn-throw[type=\"button\"]"
+        ]
+      },
+      {
+        "exception": "Error: Sentry Frontend Error",
+        "mechanism": "auto.browser.browserapierrors.setTimeout",
+        "handled": false,
+        "transaction": "/base.html",
+        "trace_id": "81bca9e47b3a4492815534261226c3bd",
+        "breadcrumbs": [
+          "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+          "sentry.event: Error: Sentry Frontend Error",
+          "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+          "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]"
+        ]
+      },
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "transaction": "/base.html",
+        "trace_id": "81bca9e47b3a4492815534261226c3bd",
+        "breadcrumbs": [
+          "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+          "sentry.event: Error: Sentry Frontend Error",
+          "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+          "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]",
+          "sentry.event: Error: Sentry Frontend Error",
+          "ui.click: body > div#app > button#btn-log[type=\"button\"]",
+          "ui.click: body > div#app > button#btn-fetch[type=\"button\"]"
+        ]
+      },
+      {
+        "exception": "Error: Error for the replay buffer",
+        "mechanism": "generic",
+        "handled": true,
+        "transaction": "/base.html",
+        "trace_id": "81bca9e47b3a4492815534261226c3bd",
+        "breadcrumbs": [
+          "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+          "sentry.event: Error: Sentry Frontend Error",
+          "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+          "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]",
+          "sentry.event: Error: Sentry Frontend Error",
+          "ui.click: body > div#app > button#btn-log[type=\"button\"]",
+          "ui.click: body > div#app > button#btn-fetch[type=\"button\"]",
+          "sentry.event: sentinel",
+          "fetch: /recorder?from=relative",
+          "fetch: http://localhost:4720/recorder?from=absolute"
+        ]
+      }
+    ],
+    "spans": [
+      {
+        "op": "test",
+        "name": "Example Frontend Span",
+        "is_segment": false,
+        "origin": "manual",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "8de440695797177c"
+      },
+      {
+        "op": "test",
+        "name": "sentinel-span",
+        "is_segment": false,
+        "origin": "manual",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "a8556730419ce70e"
+      },
+      {
+        "op": "http.client",
+        "name": "GET localhost",
+        "is_segment": false,
+        "origin": "auto.http.browser",
+        "status": "ok",
+        "duration_ms": 14,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "9669ea4778044e12"
+      },
+      {
+        "op": "http.client",
+        "name": "GET localhost",
+        "is_segment": false,
+        "origin": "auto.http.browser",
+        "status": "ok",
+        "duration_ms": 14,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "8e0207abac465e95"
+      },
+      {
+        "op": "browser.dom_content_loaded_event",
+        "name": "http://localhost:4720/base.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "8d3625b5ce3f6023"
+      },
+      {
+        "op": "browser.load_event",
+        "name": "http://localhost:4720/base.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "9a0c436cd6ca9414"
+      },
+      {
+        "op": "browser.connect",
+        "name": "http://localhost:4720/base.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "b46191d2504d42dc"
+      },
+      {
+        "op": "browser.cache",
+        "name": "http://localhost:4720/base.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "ac9f712619519a4b"
+      },
+      {
+        "op": "browser.dns",
+        "name": "http://localhost:4720/base.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "93ae4c637ad70df8"
+      },
+      {
+        "op": "browser.request",
+        "name": "http://localhost:4720/base.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 2,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "9f77beb4db69caa5"
+      },
+      {
+        "op": "browser.response",
+        "name": "http://localhost:4720/base.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "a98921c28b31ede0"
+      },
+      {
+        "op": "resource.script",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 4,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "9a484efba50c18d8"
+      },
+      {
+        "op": "resource.other",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "99750d117083cbb3"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "971f76fc6d8158b9"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-contentful-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "b95d60fea88d5d74",
+        "span_id": "bb8c41be026a7f8a"
+      },
+      {
+        "op": "pageload",
+        "name": "Pageload",
+        "is_segment": true,
+        "source": "url",
+        "origin": "auto.pageload.browser",
+        "url_path": "/base.html",
+        "status": "error",
+        "duration_ms": 353,
+        "span_id": "b95d60fea88d5d74"
+      }
+    ],
+    "logs": [
+      "info: User example action completed",
+      "warn: Slow operation detected",
+      "error: Validation failed"
+    ],
+    "sessions": [],
+    "replay": 1,
+    "headers": [
+      {
+        "url": "/recorder?from=relative",
+        "sentry-trace": "81bca9e47b3a4492815534261226c3bd-9669ea4778044e12-1",
+        "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=81bca9e47b3a4492815534261226c3bd,sentry-org_id=0,sentry-replay_id=68426e86ee7241708feef7f76e582efb,sentry-sampled=true,sentry-sample_rand=0.7753449115730793,sentry-sample_rate=1",
+        "traceparent": null
+      },
+      {
+        "url": "/recorder?from=absolute",
+        "sentry-trace": "81bca9e47b3a4492815534261226c3bd-8e0207abac465e95-1",
+        "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=81bca9e47b3a4492815534261226c3bd,sentry-org_id=0,sentry-replay_id=68426e86ee7241708feef7f76e582efb,sentry-sampled=true,sentry-sample_rand=0.7753449115730793,sentry-sample_rate=1",
+        "traceparent": null
+      }
+    ]
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: BrowserTracing",
+    "log: Sentry Logger [log]: Integration installed: Replay",
+    "log: Sentry Logger [log]: Integration installed: Feedback",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Sentry Logger [log]: Integration installed: WebVitals",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: pageload\n  name: Pageload\n  ID: b95d60fea88d5d74",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "log: Sentry Logger [log]: [Replay]  Creating new session",
+    "log: Sentry Logger [log]: [Replay]  Starting replay in buffer mode",
+    "log: Sentry Logger [log]: [Replay]  Using compression worker",
+    "log: Sentry Logger [log]: [Replay]  Updating session start time to earliest event in buffer to Wed Sep 09 2026 08:07:30 GMT+0200 (Central European Summer Time)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: Captured error event `Sentry Frontend Error`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: [Tracing] Root span: internal_error -> Global error occurred",
+    "log: Sentry Logger [log]: [Replay]  Converting buffer to session",
+    "log: Sentry Logger [log]: [Replay]  Session duration (0s) is too short, not sending replay.",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: test\n  name: Example Frontend Span\n  ID: 8de440695797177c\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" span \"Example Frontend Span\" with ID 8de440695797177c",
+    "log: Sentry Logger [log]: Captured error event `Sentry Frontend Error`",
+    "log: Sentry Logger [log]: [Tracing] Root span: internal_error -> Global error occurred",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: http.client\n  name: GET localhost\n  ID: 9669ea4778044e12\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: http.client\n  name: GET localhost\n  ID: 8e0207abac465e95\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: Captured error event `sentinel`",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: test\n  name: sentinel-span\n  ID: a8556730419ce70e\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" span \"sentinel-span\" with ID a8556730419ce70e",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET localhost\" with ID 9669ea4778044e12",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET localhost\" with ID 8e0207abac465e95",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dom_content_loaded_event\n  name: http://localhost:4720/base.html\n  ID: 8d3625b5ce3f6023\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dom_content_loaded_event\" span \"http://localhost:4720/base.html\" with ID 8d3625b5ce3f6023",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.load_event\n  name: http://localhost:4720/base.html\n  ID: 9a0c436cd6ca9414\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.load_event\" span \"http://localhost:4720/base.html\" with ID 9a0c436cd6ca9414",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.connect\n  name: http://localhost:4720/base.html\n  ID: b46191d2504d42dc\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.connect\" span \"http://localhost:4720/base.html\" with ID b46191d2504d42dc",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.cache\n  name: http://localhost:4720/base.html\n  ID: ac9f712619519a4b\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.cache\" span \"http://localhost:4720/base.html\" with ID ac9f712619519a4b",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dns\n  name: http://localhost:4720/base.html\n  ID: 93ae4c637ad70df8\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dns\" span \"http://localhost:4720/base.html\" with ID 93ae4c637ad70df8",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.request\n  name: http://localhost:4720/base.html\n  ID: 9f77beb4db69caa5\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.request\" span \"http://localhost:4720/base.html\" with ID 9f77beb4db69caa5",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.response\n  name: http://localhost:4720/base.html\n  ID: a98921c28b31ede0\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.response\" span \"http://localhost:4720/base.html\" with ID a98921c28b31ede0",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.script\n  name: localhost\n  ID: 9a484efba50c18d8\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.script\" span \"localhost\" with ID 9a484efba50c18d8",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.other\n  name: localhost\n  ID: 99750d117083cbb3\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.other\" span \"localhost\" with ID 99750d117083cbb3",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-paint\n  ID: 971f76fc6d8158b9\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-paint\" with ID 971f76fc6d8158b9",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-contentful-paint\n  ID: bb8c41be026a7f8a\n  parent ID: b95d60fea88d5d74\n  root ID: b95d60fea88d5d74\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-contentful-paint\" with ID bb8c41be026a7f8a",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"pageload\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"pageload\" root span \"Pageload\" with ID b95d60fea88d5d74",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.value: 1.800000011920929} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fp.value: 56} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fcp.value: 56} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.request_time: 1.300000011920929} on pageload span",
+    "log: Sentry Logger [log]: Sending span envelope for trace 81bca9e47b3a4492815534261226c3bd with 16 spans",
+    "log: Sentry Logger [log]: Captured error event `Error for the replay buffer`"
+  ],
+  "pageErrors": [
+    "Sentry Frontend Error",
+    "Sentry Frontend Error"
+  ],
+  "compiledOnClick": [
+    {
+      "line": 16159,
+      "text": "onClick: () => {"
+    },
+    {
+      "line": 16165,
+      "text": "), screenshotError ? /* @__PURE__ */ k$1(\"div\", { class: \"form__error-container\" }, screenshotError.message) : null) : null), /* @__PURE__ */ k$1(\"div\", { class: \"btn-group\" }, /* @__PURE__ */ k$1(\"button\", { class: \"btn btn--primary\", disabled: isSubmitting, type: \"submit\" }, submitButtonLabel), /* @__PURE__ */ k$1(\"button\", { class: \"btn btn--default\", disabled: isSubmitting, type: \"button\", onClick: onFormClose }, cancelButtonLabel))));"
+    },
+    {
+      "line": 16235,
+      "text": "return /* @__PURE__ */ k$1(S2, null, timeoutId ? /* @__PURE__ */ k$1(\"div\", { class: \"success__position\", onClick: handleOnSuccessClick }, /* @__PURE__ */ k$1(\"div\", { class: \"success__content\" }, options.successMessageText, /* @__PURE__ */ k$1(\"span\", { class: \"success__icon\", dangerouslySetInnerHTML: successIconHtml }))) : /* @__PURE__ */ k$1(\"dialog\", { class: \"dialog\", onClick: options.onFormClose, open }, /* @__PURE__ */ k$1(\"div\", { class: \"dialog__position\" }, /* @__PURE__ */ k$1("
+    },
+    {
+      "line": 16239,
+      "text": "onClick: (e5) => {"
+    },
+    {
+      "line": 16783,
+      "text": "onClick: () => {"
+    },
+    {
+      "line": 16793,
+      "text": "onClick: () => {"
+    },
+    {
+      "line": 17046,
+      "text": "onClick: deleteRect(index2),"
+    },
+    {
+      "line": 23319,
+      "text": "MouseInteractions2[MouseInteractions2[\"Click\"] = 2] = \"Click\";"
+    },
+    {
+      "line": 34130,
+      "text": "event(\"Click\", button_1, function Click() {"
+    }
+  ],
+  "itemsAfterVerify": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Frontend Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Frontend Error",
+          "mechanism": "auto.browser.browserapierrors.addEventListener",
+          "handled": false,
+          "frames": 2
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.addEventListener",
+      "handled": false,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "HTMLButtonElement.click",
+        "filename": "http://localhost:4720/base.js",
+        "in_app": true
+      },
+      "transaction": "/base.html",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "span_id": "b95d60fea88d5d74",
+      "tags": {
+        "replayId": "68426e86ee7241708feef7f76e582efb"
+      },
+      "extra": {
+        "arguments": [
+          {
+            "type": "click",
+            "target": "[HTMLElement: body > div#app > button#btn-throw[type=\"button\"]]",
+            "currentTarget": "[HTMLElement: body > div#app]",
+            "detail": 1,
+            "isTrusted": true
+          }
+        ]
+      },
+      "breadcrumbs": [
+        "ui.click: body > div#app > button#btn-throw[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4720/base.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Frontend Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Frontend Error",
+          "mechanism": "auto.browser.browserapierrors.setTimeout",
+          "handled": false,
+          "frames": 1
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.setTimeout",
+      "handled": false,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "?",
+        "filename": "http://localhost:4720/base.js",
+        "in_app": true
+      },
+      "transaction": "/base.html",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "span_id": "b95d60fea88d5d74",
+      "tags": {
+        "replayId": "68426e86ee7241708feef7f76e582efb"
+      },
+      "extra": {
+        "arguments": []
+      },
+      "breadcrumbs": [
+        "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4720/base.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4720/base.js",
+        "in_app": true
+      },
+      "transaction": "/base.html",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "span_id": "b95d60fea88d5d74",
+      "tags": {
+        "replayId": "68426e86ee7241708feef7f76e582efb"
+      },
+      "breadcrumbs": [
+        "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-fetch[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4720/base.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "items": [
+        "test Example Frontend Span",
+        "test sentinel-span",
+        "http.client GET localhost",
+        "http.client GET localhost",
+        "browser.dom_content_loaded_event http://localhost:4720/base.html",
+        "browser.load_event http://localhost:4720/base.html",
+        "browser.connect http://localhost:4720/base.html",
+        "browser.cache http://localhost:4720/base.html",
+        "browser.dns http://localhost:4720/base.html",
+        "browser.request http://localhost:4720/base.html",
+        "browser.response http://localhost:4720/base.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "Example Frontend Span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "8de440695797177c",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "a8556730419ce70e",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "9669ea4778044e12",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4720/recorder?from=relative",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 14,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4720/recorder?from=relative",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "url.query": "from=relative",
+            "server.address": "localhost:4720",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.6773,
+            "http.request.domain_lookup_start": 1788934050.6773,
+            "http.request.domain_lookup_end": 1788934050.6773,
+            "http.request.connect_start": 1788934050.6773,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.6773,
+            "http.request.request_start": 1788934050.6776,
+            "http.request.response_start": 1788934050.6778998,
+            "http.request.response_end": 1788934050.678,
+            "http.request.time_to_first_byte": 0.34020000000298023,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "8e0207abac465e95",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4720/recorder?from=absolute",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 14,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4720/recorder?from=absolute",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "server.address": "localhost:4720",
+            "server.port": 4720,
+            "url.query": "from=absolute",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.6776,
+            "http.request.domain_lookup_start": 1788934050.6777,
+            "http.request.domain_lookup_end": 1788934050.6777,
+            "http.request.connect_start": 1788934050.6777,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.678,
+            "http.request.request_start": 1788934050.678,
+            "http.request.response_start": 1788934050.6783001,
+            "http.request.response_end": 1788934050.6783001,
+            "http.request.time_to_first_byte": 0.3406000000089407,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "8d3625b5ce3f6023",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "9a0c436cd6ca9414",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "b46191d2504d42dc",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "ac9f712619519a4b",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "93ae4c637ad70df8",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "9f77beb4db69caa5",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "a98921c28b31ede0",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "9a484efba50c18d8",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/base.js",
+          "status_code": 200,
+          "duration_ms": 4,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/base.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1130392,
+            "http.response.body.size": 1130092,
+            "http.response.body.decoded_size": 1130092,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.3415,
+            "http.request.domain_lookup_start": 1788934050.3415,
+            "http.request.domain_lookup_end": 1788934050.3415,
+            "http.request.connect_start": 1788934050.3415,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.3415,
+            "http.request.request_start": 1788934050.3435998,
+            "http.request.response_start": 1788934050.3449,
+            "http.request.response_end": 1788934050.3453999,
+            "http.request.time_to_first_byte": 0.007200000002980232,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "99750d117083cbb3",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.3860998,
+            "http.request.domain_lookup_start": 1788934050.3860998,
+            "http.request.domain_lookup_end": 1788934050.3860998,
+            "http.request.connect_start": 1788934050.3860998,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.3860998,
+            "http.request.request_start": 1788934050.3863,
+            "http.request.response_start": 1788934050.3868,
+            "http.request.response_end": 1788934050.387,
+            "http.request.time_to_first_byte": 0.0491000000089407,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "971f76fc6d8158b9",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "bb8c41be026a7f8a",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "error",
+          "span_id": "b95d60fea88d5d74",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4720/base.html",
+          "url_path": "/base.html",
+          "duration_ms": 353,
+          "attributes": {
+            "sentry.status.message": "internal_error",
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/base.html",
+            "url.full": "http://localhost:4720/base.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 1.800000011920929,
+            "browser.web_vital.fp.value": 56,
+            "browser.web_vital.fcp.value": 56,
+            "browser.web_vital.ttfb.request_time": 1.300000011920929,
+            "browser.performance.time_origin": 1788934050.3377,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "Replay",
+              "Feedback",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        }
+      ]
+    },
+    {
+      "type": "log",
+      "items": [
+        "info: User example action completed",
+        "warn: Slow operation detected",
+        "error: Validation failed"
+      ],
+      "attributes": [
+        {
+          "sentry.sdk.name": "sentry.javascript.svelte",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sentry.trace.parent_span_id": "b95d60fea88d5d74",
+          "sentry.timestamp.sequence": 0
+        },
+        {
+          "operation": "data_fetch",
+          "duration": 3500,
+          "sentry.sdk.name": "sentry.javascript.svelte",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sentry.trace.parent_span_id": "b95d60fea88d5d74",
+          "sentry.timestamp.sequence": 1
+        },
+        {
+          "field": "email",
+          "reason": "Invalid email",
+          "sentry.sdk.name": "sentry.javascript.svelte",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sentry.trace.parent_span_id": "b95d60fea88d5d74",
+          "sentry.timestamp.sequence": 2
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Frontend Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Frontend Error",
+          "mechanism": "auto.browser.browserapierrors.addEventListener",
+          "handled": false,
+          "frames": 2
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.addEventListener",
+      "handled": false,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "HTMLButtonElement.click",
+        "filename": "http://localhost:4720/base.js",
+        "in_app": true
+      },
+      "transaction": "/base.html",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "span_id": "b95d60fea88d5d74",
+      "tags": {
+        "replayId": "68426e86ee7241708feef7f76e582efb"
+      },
+      "extra": {
+        "arguments": [
+          {
+            "type": "click",
+            "target": "[HTMLElement: body > div#app > button#btn-throw[type=\"button\"]]",
+            "currentTarget": "[HTMLElement: body > div#app]",
+            "detail": 1,
+            "isTrusted": true
+          }
+        ]
+      },
+      "breadcrumbs": [
+        "ui.click: body > div#app > button#btn-throw[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4720/base.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Sentry Frontend Error",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Sentry Frontend Error",
+          "mechanism": "auto.browser.browserapierrors.setTimeout",
+          "handled": false,
+          "frames": 1
+        }
+      ],
+      "mechanism": "auto.browser.browserapierrors.setTimeout",
+      "handled": false,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "?",
+        "filename": "http://localhost:4720/base.js",
+        "in_app": true
+      },
+      "transaction": "/base.html",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "span_id": "b95d60fea88d5d74",
+      "tags": {
+        "replayId": "68426e86ee7241708feef7f76e582efb"
+      },
+      "extra": {
+        "arguments": []
+      },
+      "breadcrumbs": [
+        "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4720/base.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4720/base.js",
+        "in_app": true
+      },
+      "transaction": "/base.html",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "span_id": "b95d60fea88d5d74",
+      "tags": {
+        "replayId": "68426e86ee7241708feef7f76e582efb"
+      },
+      "breadcrumbs": [
+        "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-fetch[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4720/base.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "items": [
+        "test Example Frontend Span",
+        "test sentinel-span",
+        "http.client GET localhost",
+        "http.client GET localhost",
+        "browser.dom_content_loaded_event http://localhost:4720/base.html",
+        "browser.load_event http://localhost:4720/base.html",
+        "browser.connect http://localhost:4720/base.html",
+        "browser.cache http://localhost:4720/base.html",
+        "browser.dns http://localhost:4720/base.html",
+        "browser.request http://localhost:4720/base.html",
+        "browser.response http://localhost:4720/base.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "Example Frontend Span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "8de440695797177c",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "a8556730419ce70e",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "9669ea4778044e12",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4720/recorder?from=relative",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 14,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4720/recorder?from=relative",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "url.query": "from=relative",
+            "server.address": "localhost:4720",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.6773,
+            "http.request.domain_lookup_start": 1788934050.6773,
+            "http.request.domain_lookup_end": 1788934050.6773,
+            "http.request.connect_start": 1788934050.6773,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.6773,
+            "http.request.request_start": 1788934050.6776,
+            "http.request.response_start": 1788934050.6778998,
+            "http.request.response_end": 1788934050.678,
+            "http.request.time_to_first_byte": 0.34020000000298023,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "GET localhost",
+          "op": "http.client",
+          "status": "ok",
+          "span_id": "8e0207abac465e95",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.http.browser",
+          "url": "http://localhost:4720/recorder?from=absolute",
+          "method": "GET",
+          "status_code": 200,
+          "duration_ms": 14,
+          "attributes": {
+            "sentry.origin": "auto.http.browser",
+            "sentry.op": "http.client",
+            "url.full": "http://localhost:4720/recorder?from=absolute",
+            "type": "fetch",
+            "http.request.method": "GET",
+            "url.domain": "localhost",
+            "server.address": "localhost:4720",
+            "server.port": 4720,
+            "url.query": "from=absolute",
+            "http.response.status_code": 200,
+            "http.response.body.size": 11,
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.6776,
+            "http.request.domain_lookup_start": 1788934050.6777,
+            "http.request.domain_lookup_end": 1788934050.6777,
+            "http.request.connect_start": 1788934050.6777,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.678,
+            "http.request.request_start": 1788934050.678,
+            "http.request.response_start": 1788934050.6783001,
+            "http.request.response_end": 1788934050.6783001,
+            "http.request.time_to_first_byte": 0.3406000000089407,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "8d3625b5ce3f6023",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "9a0c436cd6ca9414",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "b46191d2504d42dc",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "ac9f712619519a4b",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "93ae4c637ad70df8",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "9f77beb4db69caa5",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "http://localhost:4720/base.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "a98921c28b31ede0",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "9a484efba50c18d8",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/base.js",
+          "status_code": 200,
+          "duration_ms": 4,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/base.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1130392,
+            "http.response.body.size": 1130092,
+            "http.response.body.decoded_size": 1130092,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.3415,
+            "http.request.domain_lookup_start": 1788934050.3415,
+            "http.request.domain_lookup_end": 1788934050.3415,
+            "http.request.connect_start": 1788934050.3415,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.3415,
+            "http.request.request_start": 1788934050.3435998,
+            "http.request.response_start": 1788934050.3449,
+            "http.request.response_end": 1788934050.3453999,
+            "http.request.time_to_first_byte": 0.007200000002980232,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "99750d117083cbb3",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788934050.3860998,
+            "http.request.domain_lookup_start": 1788934050.3860998,
+            "http.request.domain_lookup_end": 1788934050.3860998,
+            "http.request.connect_start": 1788934050.3860998,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788934050.3860998,
+            "http.request.request_start": 1788934050.3863,
+            "http.request.response_start": 1788934050.3868,
+            "http.request.response_end": 1788934050.387,
+            "http.request.time_to_first_byte": 0.0491000000089407,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "971f76fc6d8158b9",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "bb8c41be026a7f8a",
+          "parent_span_id": "b95d60fea88d5d74",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "error",
+          "span_id": "b95d60fea88d5d74",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4720/base.html",
+          "url_path": "/base.html",
+          "duration_ms": 353,
+          "attributes": {
+            "sentry.status.message": "internal_error",
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/base.html",
+            "url.full": "http://localhost:4720/base.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 150,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 1.800000011920929,
+            "browser.web_vital.fp.value": 56,
+            "browser.web_vital.fcp.value": 56,
+            "browser.web_vital.ttfb.request_time": 1.300000011920929,
+            "browser.performance.time_origin": 1788934050.3377,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "b95d60fea88d5d74",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "Replay",
+              "Feedback",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory",
+            "sentry.replay_id": "68426e86ee7241708feef7f76e582efb"
+          }
+        }
+      ]
+    },
+    {
+      "type": "log",
+      "items": [
+        "info: User example action completed",
+        "warn: Slow operation detected",
+        "error: Validation failed"
+      ],
+      "attributes": [
+        {
+          "sentry.sdk.name": "sentry.javascript.svelte",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sentry.trace.parent_span_id": "b95d60fea88d5d74",
+          "sentry.timestamp.sequence": 0
+        },
+        {
+          "operation": "data_fetch",
+          "duration": 3500,
+          "sentry.sdk.name": "sentry.javascript.svelte",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sentry.trace.parent_span_id": "b95d60fea88d5d74",
+          "sentry.timestamp.sequence": 1
+        },
+        {
+          "field": "email",
+          "reason": "Invalid email",
+          "sentry.sdk.name": "sentry.javascript.svelte",
+          "sentry.sdk.version": "10.67.0",
+          "sentry.replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sentry.trace.parent_span_id": "b95d60fea88d5d74",
+          "sentry.timestamp.sequence": 2
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "level": "error",
+      "exception": "Error: Error for the replay buffer",
+      "exceptions": [
+        {
+          "type": "Error",
+          "value": "Error for the replay buffer",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 3
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "Replay",
+        "Feedback",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "eval",
+        "filename": "",
+        "in_app": true
+      },
+      "transaction": "/base.html",
+      "trace_id": "81bca9e47b3a4492815534261226c3bd",
+      "span_id": "b9111a2137b02321",
+      "tags": {
+        "replayId": "68426e86ee7241708feef7f76e582efb"
+      },
+      "breadcrumbs": [
+        "ui.click: body > div#app > button#btn-throw[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-span[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-span-fixed[type=\"button\"]",
+        "sentry.event: Error: Sentry Frontend Error",
+        "ui.click: body > div#app > button#btn-log[type=\"button\"]",
+        "ui.click: body > div#app > button#btn-fetch[type=\"button\"]",
+        "sentry.event: sentinel",
+        "fetch: /recorder?from=relative",
+        "fetch: http://localhost:4720/recorder?from=absolute"
+      ],
+      "request": {
+        "url": "http://localhost:4720/base.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "replay_event",
+      "replay_type": "buffer",
+      "segment_id": 0,
+      "error_ids": 4,
+      "trace_ids": 1,
+      "urls": [
+        "http://localhost:4720/base.html"
+      ]
+    },
+    {
+      "type": "replay_recording"
+    }
+  ],
+  "headers": [
+    {
+      "url": "/recorder?from=relative",
+      "sentry-trace": "81bca9e47b3a4492815534261226c3bd-9669ea4778044e12-1",
+      "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=81bca9e47b3a4492815534261226c3bd,sentry-org_id=0,sentry-replay_id=68426e86ee7241708feef7f76e582efb,sentry-sampled=true,sentry-sample_rand=0.7753449115730793,sentry-sample_rate=1",
+      "traceparent": null
+    },
+    {
+      "url": "/recorder?from=absolute",
+      "sentry-trace": "81bca9e47b3a4492815534261226c3bd-8e0207abac465e95-1",
+      "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=81bca9e47b3a4492815534261226c3bd,sentry-org_id=0,sentry-replay_id=68426e86ee7241708feef7f76e582efb,sentry-sampled=true,sentry-sample_rand=0.7753449115730793,sentry-sample_rate=1",
+      "traceparent": null
+    }
+  ],
+  "raw": [
+    {
+      "envHeader": {
+        "event_id": "7db3897df28241baaedb81fce5127c28",
+        "sent_at": "2026-09-09T06:07:30.452Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "81bca9e47b3a4492815534261226c3bd",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.7753449115730793",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Sentry Frontend Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4720/base.js",
+                    "function": "HTMLDivElement.handle_event_propagation",
+                    "in_app": true,
+                    "lineno": 3436,
+                    "colno": 22
+                  },
+                  {
+                    "filename": "http://localhost:4720/base.js",
+                    "function": "HTMLButtonElement.click",
+                    "in_app": true,
+                    "lineno": 34128,
+                    "colno": 11
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.browserapierrors.addEventListener",
+                "handled": false,
+                "data": {
+                  "handler": "handle_event_propagation",
+                  "target": "EventTarget"
+                }
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "7db3897df28241baaedb81fce5127c28",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4720/base.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "b95d60fea88d5d74",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788934050.45,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/svelte",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/base.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788934050.444,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-throw[type=\"button\"]"
+          }
+        ],
+        "tags": {
+          "replayId": "68426e86ee7241708feef7f76e582efb"
+        },
+        "extra": {
+          "arguments": [
+            {
+              "type": "click",
+              "target": "[HTMLElement: body > div#app > button#btn-throw[type=\"button\"]]",
+              "currentTarget": "[HTMLElement: body > div#app]",
+              "detail": 1,
+              "isTrusted": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "beae8dfb3cb240ec91d946e39987f76f",
+        "sent_at": "2026-09-09T06:07:30.627Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "81bca9e47b3a4492815534261226c3bd",
+          "org_id": "0",
+          "replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sampled": "true",
+          "sample_rand": "0.7753449115730793",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Sentry Frontend Error",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "http://localhost:4720/base.js",
+                    "function": "?",
+                    "in_app": true,
+                    "lineno": 34144,
+                    "colno": 17
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "auto.browser.browserapierrors.setTimeout",
+                "handled": false
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "beae8dfb3cb240ec91d946e39987f76f",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4720/base.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "b95d60fea88d5d74",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788934050.627,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/svelte",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/base.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788934050.444,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.451,
+            "category": "sentry.event",
+            "event_id": "7db3897df28241baaedb81fce5127c28",
+            "level": "error",
+            "message": "Error: Sentry Frontend Error"
+          },
+          {
+            "timestamp": 1788934050.492,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-span[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.525,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-span-fixed[type=\"button\"]"
+          }
+        ],
+        "tags": {
+          "replayId": "68426e86ee7241708feef7f76e582efb"
+        },
+        "extra": {
+          "arguments": []
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "57b57732cb024005aa2d40f4ca3625f8",
+        "sent_at": "2026-09-09T06:07:30.685Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "81bca9e47b3a4492815534261226c3bd",
+          "org_id": "0",
+          "replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sampled": "true",
+          "sample_rand": "0.7753449115730793",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4720/base.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4720/base.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 34192,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "57b57732cb024005aa2d40f4ca3625f8",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4720/base.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "b95d60fea88d5d74",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788934050.684,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/svelte",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/base.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788934050.444,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.451,
+            "category": "sentry.event",
+            "event_id": "7db3897df28241baaedb81fce5127c28",
+            "level": "error",
+            "message": "Error: Sentry Frontend Error"
+          },
+          {
+            "timestamp": 1788934050.492,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-span[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.525,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-span-fixed[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.627,
+            "category": "sentry.event",
+            "event_id": "beae8dfb3cb240ec91d946e39987f76f",
+            "level": "error",
+            "message": "Error: Sentry Frontend Error"
+          },
+          {
+            "timestamp": 1788934050.641,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-log[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.676,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-fetch[type=\"button\"]"
+          }
+        ],
+        "tags": {
+          "replayId": "68426e86ee7241708feef7f76e582efb"
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:07:32.250Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "81bca9e47b3a4492815534261226c3bd",
+          "org_id": "0",
+          "replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sampled": "true",
+          "sample_rand": "0.7753449115730793",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 16,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "Example Frontend Span",
+            "span_id": "8de440695797177c",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.5261,
+            "end_timestamp": 1788934050.5263999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sentinel-span",
+            "span_id": "a8556730419ce70e",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.6853,
+            "end_timestamp": 1788934050.6855,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "GET localhost",
+            "span_id": "9669ea4778044e12",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.6768,
+            "end_timestamp": 1788934050.6908,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.client",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/recorder?from=relative",
+                "type": "string"
+              },
+              "type": {
+                "value": "fetch",
+                "type": "string"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "url.query": {
+                "value": "from=relative",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4720",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 11,
+                "type": "integer"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788934050.6773,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788934050.6773,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788934050.6773,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788934050.6773,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788934050.6773,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788934050.6776,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788934050.6778998,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788934050.678,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.34020000000298023,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "GET localhost",
+            "span_id": "8e0207abac465e95",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.6773999,
+            "end_timestamp": 1788934050.691,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.http.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "http.client",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/recorder?from=absolute",
+                "type": "string"
+              },
+              "type": {
+                "value": "fetch",
+                "type": "string"
+              },
+              "http.request.method": {
+                "value": "GET",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4720",
+                "type": "string"
+              },
+              "server.port": {
+                "value": 4720,
+                "type": "integer"
+              },
+              "url.query": {
+                "value": "from=absolute",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 11,
+                "type": "integer"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788934050.6776,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788934050.6777,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788934050.6777,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788934050.6777,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788934050.678,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788934050.678,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788934050.6783001,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788934050.6783001,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.3406000000089407,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/base.html",
+            "span_id": "8d3625b5ce3f6023",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3813999,
+            "end_timestamp": 1788934050.3813999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dom_content_loaded_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/base.html",
+            "span_id": "9a0c436cd6ca9414",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3848,
+            "end_timestamp": 1788934050.3848999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.load_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/base.html",
+            "span_id": "b46191d2504d42dc",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3379,
+            "end_timestamp": 1788934050.3379,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.connect",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/base.html",
+            "span_id": "ac9f712619519a4b",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3379,
+            "end_timestamp": 1788934050.3379,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.cache",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/base.html",
+            "span_id": "93ae4c637ad70df8",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3379,
+            "end_timestamp": 1788934050.3379,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dns",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/base.html",
+            "span_id": "9f77beb4db69caa5",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3381999,
+            "end_timestamp": 1788934050.3398,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.request",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/base.html",
+            "span_id": "a98921c28b31ede0",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3395,
+            "end_timestamp": 1788934050.3398,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.response",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "9a484efba50c18d8",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3414998,
+            "end_timestamp": 1788934050.3453999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.script",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4720",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/base.js",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 1130392,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 1130092,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 1130092,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788934050.3415,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788934050.3415,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788934050.3415,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788934050.3415,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788934050.3415,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788934050.3435998,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788934050.3449,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788934050.3453999,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.007200000002980232,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "99750d117083cbb3",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3860998,
+            "end_timestamp": 1788934050.3869998,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.other",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4720",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/favicon.ico",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 404,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 309,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788934050.3860998,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788934050.3860998,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788934050.3860998,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788934050.3860998,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788934050.3860998,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788934050.3863,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788934050.3868,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788934050.387,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.0491000000089407,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-paint",
+            "span_id": "971f76fc6d8158b9",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3937,
+            "end_timestamp": 1788934050.3937,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-contentful-paint",
+            "span_id": "bb8c41be026a7f8a",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "parent_span_id": "b95d60fea88d5d74",
+            "start_timestamp": 1788934050.3937,
+            "end_timestamp": 1788934050.3937,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Pageload",
+            "span_id": "b95d60fea88d5d74",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "start_timestamp": 1788934050.3377,
+            "end_timestamp": 1788934050.691,
+            "is_segment": true,
+            "status": "error",
+            "attributes": {
+              "sentry.status.message": {
+                "value": "internal_error",
+                "type": "string"
+              },
+              "sentry.origin": {
+                "value": "auto.pageload.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "pageload",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "url",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/base.html",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/base.html",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 150,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "idleTimeout",
+                "type": "string"
+              },
+              "browser.web_vital.ttfb.value": {
+                "value": 1.800000011920929,
+                "type": "double"
+              },
+              "browser.web_vital.fp.value": {
+                "value": 56,
+                "type": "integer"
+              },
+              "browser.web_vital.fcp.value": {
+                "value": 56,
+                "type": "integer"
+              },
+              "browser.web_vital.ttfb.request_time": {
+                "value": 1.300000011920929,
+                "type": "double"
+              },
+              "browser.performance.time_origin": {
+                "value": 1788934050.3377,
+                "type": "double"
+              },
+              "browser.performance.navigation.activation_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "Replay",
+                  "Feedback",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "log",
+        "item_count": 3,
+        "content_type": "application/vnd.sentry.items.log+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "timestamp": 1788934050.6422,
+            "level": "info",
+            "body": "User example action completed",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "severity_number": 9,
+            "attributes": {
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              },
+              "sentry.trace.parent_span_id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.timestamp.sequence": {
+                "value": 0,
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "timestamp": 1788934050.6423998,
+            "level": "warn",
+            "body": "Slow operation detected",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "severity_number": 13,
+            "attributes": {
+              "operation": {
+                "value": "data_fetch",
+                "type": "string"
+              },
+              "duration": {
+                "value": 3500,
+                "type": "integer"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              },
+              "sentry.trace.parent_span_id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.timestamp.sequence": {
+                "value": 1,
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "timestamp": 1788934050.6425,
+            "level": "error",
+            "body": "Validation failed",
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "severity_number": 17,
+            "attributes": {
+              "field": {
+                "value": "email",
+                "type": "string"
+              },
+              "reason": {
+                "value": "Invalid email",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.replay_id": {
+                "value": "68426e86ee7241708feef7f76e582efb",
+                "type": "string"
+              },
+              "sentry.trace.parent_span_id": {
+                "value": "b95d60fea88d5d74",
+                "type": "string"
+              },
+              "sentry.timestamp.sequence": {
+                "value": 2,
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "5fb66b3db4d84422820f5d89228d59ac",
+        "sent_at": "2026-09-09T06:07:32.398Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "81bca9e47b3a4492815534261226c3bd",
+          "org_id": "0",
+          "replay_id": "68426e86ee7241708feef7f76e582efb",
+          "sampled": "true",
+          "sample_rand": "0.7753449115730793",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "type": "Error",
+              "value": "Error for the replay buffer",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true
+              }
+            }
+          ]
+        },
+        "level": "error",
+        "event_id": "5fb66b3db4d84422820f5d89228d59ac",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4720/base.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "81bca9e47b3a4492815534261226c3bd",
+            "span_id": "b9111a2137b02321"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788934052.398,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/svelte",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/base.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788934050.444,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-throw[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.451,
+            "category": "sentry.event",
+            "event_id": "7db3897df28241baaedb81fce5127c28",
+            "level": "error",
+            "message": "Error: Sentry Frontend Error"
+          },
+          {
+            "timestamp": 1788934050.492,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-span[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.525,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-span-fixed[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.627,
+            "category": "sentry.event",
+            "event_id": "beae8dfb3cb240ec91d946e39987f76f",
+            "level": "error",
+            "message": "Error: Sentry Frontend Error"
+          },
+          {
+            "timestamp": 1788934050.641,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-log[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.676,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-fetch[type=\"button\"]"
+          },
+          {
+            "timestamp": 1788934050.685,
+            "category": "sentry.event",
+            "event_id": "57b57732cb024005aa2d40f4ca3625f8",
+            "level": "info",
+            "message": "sentinel"
+          },
+          {
+            "timestamp": 1788934050.69,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "/recorder?from=relative",
+              "__span": "9669ea4778044e12",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          },
+          {
+            "timestamp": 1788934050.691,
+            "category": "fetch",
+            "data": {
+              "method": "GET",
+              "url": "http://localhost:4720/recorder?from=absolute",
+              "__span": "8e0207abac465e95",
+              "status_code": 200,
+              "response_body_size": 11
+            },
+            "type": "http"
+          }
+        ],
+        "tags": {
+          "replayId": "68426e86ee7241708feef7f76e582efb"
+        }
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "68426e86ee7241708feef7f76e582efb",
+        "sent_at": "2026-09-09T06:07:35.966Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "replay_event"
+      },
+      "payload": {
+        "type": "replay_event",
+        "replay_start_timestamp": 1788934050.3377,
+        "timestamp": 1788934055.963,
+        "error_ids": [
+          "7db3897df28241baaedb81fce5127c28",
+          "beae8dfb3cb240ec91d946e39987f76f",
+          "57b57732cb024005aa2d40f4ca3625f8",
+          "5fb66b3db4d84422820f5d89228d59ac"
+        ],
+        "trace_ids": [
+          "81bca9e47b3a4492815534261226c3bd"
+        ],
+        "segment_names": [
+          "Pageload"
+        ],
+        "urls": [
+          "http://localhost:4720/base.html"
+        ],
+        "replay_id": "68426e86ee7241708feef7f76e582efb",
+        "segment_id": 0,
+        "replay_type": "buffer",
+        "request": {
+          "url": "http://localhost:4720/base.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "event_id": "68426e86ee7241708feef7f76e582efb",
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "Replay",
+            "Feedback",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0",
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/base.html",
+        "platform": "javascript"
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "68426e86ee7241708feef7f76e582efb",
+        "sent_at": "2026-09-09T06:07:35.966Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "replay_recording",
+        "length": 3615
+      },
+      "payload": {
+        "omitted": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,2969 @@
+{
+  "variant": "component-tracking-options",
+  "verdict": {
+    "status": "works",
+    "observed": "The trackComponents allowlist is honored: ui.mount spans for Navbar, PrimaryButton and LoginForm only, App is not tracked; the op is ui.mount, not the documented ui.svelte.init."
+  },
+  "pagePath": "/component-tracking-options.html",
+  "mode": "production",
+  "build": {
+    "ok": true,
+    "mode": "production",
+    "src": "src/component-tracking/main.js",
+    "svelteConfig": "./svelte.config.options.js",
+    "preprocessors": [
+      "FIRST_PASS_COMPONENT_TRACKING_PREPROCESSOR"
+    ],
+    "esbuildWarnings": [],
+    "svelteWarnings": []
+  },
+  "meta": {
+    "initialized": true,
+    "SDK_VERSION": "10.67.0",
+    "sdk": {
+      "name": "sentry.javascript.svelte",
+      "version": "10.67.0",
+      "packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ]
+    },
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "BrowserApiErrors",
+      "Breadcrumbs",
+      "GlobalHandlers",
+      "LinkedErrors",
+      "Dedupe",
+      "HttpContext",
+      "CultureContext",
+      "BrowserSession",
+      "BrowserTracing",
+      "SpanStreaming",
+      "WebVitals"
+    ],
+    "options": {
+      "tracesSampleRate": 1,
+      "tracePropagationTargets": [
+        "localhost",
+        "/^https:\\/\\/yourserver\\.io\\/api/"
+      ],
+      "tunnel": "/tunnel",
+      "traceLifecycle": "stream",
+      "attachStacktrace": true,
+      "debug": true
+    },
+    "svelte": "5.57.0"
+  },
+  "steps": [
+    {
+      "label": "boot",
+      "result": {
+        "sdkUp": true,
+        "appUp": true,
+        "pageErrorsAtBoot": [],
+        "feedbackWidget": false,
+        "appHtml": "<!----><nav>Navbar without a script tag</nav><!----> <h1>QS-svelte component tracking, render 0</h1> <button type=\"button\">Primary (0)</button><!----> <form><input id=\"email\" placeholder=\"email\"> <span id=\"email-echo\"></span></form><!----> <button id=\"btn-update\" type=\"button\">re-render</button> <span id=\"renders\">0</span>"
+      }
+    },
+    {
+      "label": "init spans after pageload",
+      "result": {
+        "componentSpans": [
+          {
+            "op": "ui.mount",
+            "name": "<Navbar>",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "duration_ms": 2
+          },
+          {
+            "op": "ui.mount",
+            "name": "<PrimaryButton>",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "duration_ms": 2
+          },
+          {
+            "op": "ui.mount",
+            "name": "<LoginForm>",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "duration_ms": 1
+          }
+        ]
+      },
+      "itemsBefore": 2,
+      "itemsAfter": 2
+    },
+    {
+      "label": "click #btn-update x2 (App $state change, re-render)",
+      "result": {
+        "renders": "2"
+      },
+      "itemsBefore": 2,
+      "itemsAfter": 2
+    },
+    {
+      "label": "update spans after re-render",
+      "result": {
+        "updateSpans": []
+      },
+      "itemsBefore": 4,
+      "itemsAfter": 4
+    }
+  ],
+  "sentinel1": true,
+  "pageloadArrived": true,
+  "deadlineHit": false,
+  "summary": {
+    "itemTypes": [
+      "event",
+      "span",
+      "event",
+      "span"
+    ],
+    "events": [
+      {
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "handled": true,
+        "transaction": "/component-tracking-options.html",
+        "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+        "breadcrumbs": []
+      },
+      {
+        "message": "sentinel-2",
+        "exception": "undefined: sentinel-2",
+        "mechanism": "generic",
+        "handled": true,
+        "transaction": "/component-tracking-options.html",
+        "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+        "breadcrumbs": [
+          "sentry.event: sentinel",
+          "ui.click: body > div#app > button#btn-update[type=\"button\"]"
+        ]
+      }
+    ],
+    "spans": [
+      {
+        "op": "ui.mount",
+        "name": "<Navbar>",
+        "is_segment": false,
+        "origin": "auto.ui.svelte",
+        "status": "ok",
+        "duration_ms": 2,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "85f6ab94915a0be0"
+      },
+      {
+        "op": "ui.mount",
+        "name": "<PrimaryButton>",
+        "is_segment": false,
+        "origin": "auto.ui.svelte",
+        "status": "ok",
+        "duration_ms": 2,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "9359879cf51aa1f8"
+      },
+      {
+        "op": "ui.mount",
+        "name": "<LoginForm>",
+        "is_segment": false,
+        "origin": "auto.ui.svelte",
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "9719282f43735e44"
+      },
+      {
+        "op": "test",
+        "name": "sentinel-span",
+        "is_segment": false,
+        "origin": "manual",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "8be45b85da263595"
+      },
+      {
+        "op": "browser.dom_content_loaded_event",
+        "name": "http://localhost:4720/component-tracking-options.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "84ce2c44abd0a020"
+      },
+      {
+        "op": "browser.load_event",
+        "name": "http://localhost:4720/component-tracking-options.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "bebcd4ea51417b78"
+      },
+      {
+        "op": "browser.connect",
+        "name": "http://localhost:4720/component-tracking-options.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "bceb565c143ced85"
+      },
+      {
+        "op": "browser.cache",
+        "name": "http://localhost:4720/component-tracking-options.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "ac1a018f39067002"
+      },
+      {
+        "op": "browser.dns",
+        "name": "http://localhost:4720/component-tracking-options.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "b2ce802942f93003"
+      },
+      {
+        "op": "browser.request",
+        "name": "http://localhost:4720/component-tracking-options.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "99d4ea9520bf3066"
+      },
+      {
+        "op": "browser.response",
+        "name": "http://localhost:4720/component-tracking-options.html",
+        "is_segment": false,
+        "origin": "auto.ui.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "97368557d7a588cf"
+      },
+      {
+        "op": "resource.script",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 3,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "95a9ffe2f0888854"
+      },
+      {
+        "op": "resource.other",
+        "name": "localhost",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 1,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "a19024c6858137df"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "924b15bb37041c76"
+      },
+      {
+        "op": "browser.paint",
+        "name": "first-contentful-paint",
+        "is_segment": false,
+        "origin": "auto.resource.browser.metrics",
+        "status": "ok",
+        "duration_ms": 0,
+        "parent_span_id": "a2c477cdc3ec9abc",
+        "span_id": "b90e8c2d8d0c1f36"
+      },
+      {
+        "op": "pageload",
+        "name": "Pageload",
+        "is_segment": true,
+        "source": "url",
+        "origin": "auto.pageload.browser",
+        "url_path": "/component-tracking-options.html",
+        "status": "ok",
+        "duration_ms": 53,
+        "span_id": "a2c477cdc3ec9abc"
+      },
+      {
+        "op": "test",
+        "name": "sentinel-2-span",
+        "is_segment": true,
+        "source": "custom",
+        "origin": "manual",
+        "status": "ok",
+        "duration_ms": 0,
+        "span_id": "a8c5e69506e9a5f4"
+      }
+    ],
+    "logs": [],
+    "sessions": [],
+    "replay": 0,
+    "headers": []
+  },
+  "console": [
+    "log: Sentry Logger [log]: Integration installed: EventFilters",
+    "log: Sentry Logger [log]: Integration installed: FunctionToString",
+    "log: Sentry Logger [log]: Integration installed: ConversationId",
+    "log: Sentry Logger [log]: Integration installed: BrowserApiErrors",
+    "log: Sentry Logger [log]: Integration installed: Breadcrumbs",
+    "log: Sentry Logger [log]: Global Handler attached: onerror",
+    "log: Sentry Logger [log]: Global Handler attached: onunhandledrejection",
+    "log: Sentry Logger [log]: Integration installed: GlobalHandlers",
+    "log: Sentry Logger [log]: Integration installed: LinkedErrors",
+    "log: Sentry Logger [log]: Integration installed: Dedupe",
+    "log: Sentry Logger [log]: Integration installed: HttpContext",
+    "log: Sentry Logger [log]: Integration installed: CultureContext",
+    "log: Sentry Logger [log]: Integration installed: BrowserSession",
+    "log: Sentry Logger [log]: Integration installed: BrowserTracing",
+    "log: Sentry Logger [log]: Integration installed: SpanStreaming",
+    "log: Sentry Logger [log]: Integration installed: WebVitals",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: pageload\n  name: Pageload\n  ID: a2c477cdc3ec9abc",
+    "log: Sentry Logger [log]: [Tracing] Started span is an idle span",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: <Navbar>\n  ID: 85f6ab94915a0be0\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: <PrimaryButton>\n  ID: 9359879cf51aa1f8\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: ui.mount\n  name: <LoginForm>\n  ID: 9719282f43735e44\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"<Navbar>\" with ID 85f6ab94915a0be0",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"<PrimaryButton>\" with ID 9359879cf51aa1f8",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"ui.mount\" span \"<LoginForm>\" with ID 9719282f43735e44",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "log: Sentry Logger [log]: Captured error event `sentinel`",
+    "warning: Sentry Logger [warn]: Discarded session because of missing or non-string release",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: test\n  name: sentinel-span\n  ID: 8be45b85da263595\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" span \"sentinel-span\" with ID 8be45b85da263595",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dom_content_loaded_event\n  name: http://localhost:4720/component-tracking-options.html\n  ID: 84ce2c44abd0a020\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dom_content_loaded_event\" span \"http://localhost:4720/component-tracking-options.html\" with ID 84ce2c44abd0a020",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.load_event\n  name: http://localhost:4720/component-tracking-options.html\n  ID: bebcd4ea51417b78\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.load_event\" span \"http://localhost:4720/component-tracking-options.html\" with ID bebcd4ea51417b78",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.connect\n  name: http://localhost:4720/component-tracking-options.html\n  ID: bceb565c143ced85\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.connect\" span \"http://localhost:4720/component-tracking-options.html\" with ID bceb565c143ced85",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.cache\n  name: http://localhost:4720/component-tracking-options.html\n  ID: ac1a018f39067002\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.cache\" span \"http://localhost:4720/component-tracking-options.html\" with ID ac1a018f39067002",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.dns\n  name: http://localhost:4720/component-tracking-options.html\n  ID: b2ce802942f93003\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.dns\" span \"http://localhost:4720/component-tracking-options.html\" with ID b2ce802942f93003",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.request\n  name: http://localhost:4720/component-tracking-options.html\n  ID: 99d4ea9520bf3066\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.request\" span \"http://localhost:4720/component-tracking-options.html\" with ID 99d4ea9520bf3066",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.response\n  name: http://localhost:4720/component-tracking-options.html\n  ID: 97368557d7a588cf\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.response\" span \"http://localhost:4720/component-tracking-options.html\" with ID 97368557d7a588cf",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.script\n  name: localhost\n  ID: 95a9ffe2f0888854\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.script\" span \"localhost\" with ID 95a9ffe2f0888854",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: resource.other\n  name: localhost\n  ID: a19024c6858137df\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"resource.other\" span \"localhost\" with ID a19024c6858137df",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-paint\n  ID: 924b15bb37041c76\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-paint\" with ID 924b15bb37041c76",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled span\n  op: browser.paint\n  name: first-contentful-paint\n  ID: b90e8c2d8d0c1f36\n  parent ID: a2c477cdc3ec9abc\n  root ID: a2c477cdc3ec9abc\n  root op: pageload\n  root description: Pageload",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"browser.paint\" span \"first-contentful-paint\" with ID b90e8c2d8d0c1f36",
+    "log: Sentry Logger [log]: [Tracing] Idle span \"pageload\" finished",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"pageload\" root span \"Pageload\" with ID a2c477cdc3ec9abc",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.value: 1.8999999910593033} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fp.value: 44} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.fcp.value: 44} on pageload span",
+    "log: Sentry Logger [log]: Setting web vital attribute {browser.web_vital.ttfb.request_time: 1.2999999970197678} on pageload span",
+    "log: Sentry Logger [log]: Sending span envelope for trace 9711a5cedba740d1a11597bce74cfe24 with 16 spans",
+    "log: Sentry Logger [log]: Captured error event `sentinel-2`",
+    "log: Sentry Logger [log]: [Tracing] Starting sampled root span\n  op: test\n  name: sentinel-2-span\n  ID: a8c5e69506e9a5f4",
+    "log: Sentry Logger [log]: [Tracing] Finishing \"test\" root span \"sentinel-2-span\" with ID a8c5e69506e9a5f4",
+    "log: Sentry Logger [log]: Sending span envelope for trace 9711a5cedba740d1a11597bce74cfe24 with 1 spans"
+  ],
+  "pageErrors": [],
+  "compiledOnClick": [
+    {
+      "line": 16639,
+      "text": "onClick: () => {"
+    },
+    {
+      "line": 16645,
+      "text": "), screenshotError ? /* @__PURE__ */ k$1(\"div\", { class: \"form__error-container\" }, screenshotError.message) : null) : null), /* @__PURE__ */ k$1(\"div\", { class: \"btn-group\" }, /* @__PURE__ */ k$1(\"button\", { class: \"btn btn--primary\", disabled: isSubmitting, type: \"submit\" }, submitButtonLabel), /* @__PURE__ */ k$1(\"button\", { class: \"btn btn--default\", disabled: isSubmitting, type: \"button\", onClick: onFormClose }, cancelButtonLabel))));"
+    },
+    {
+      "line": 16715,
+      "text": "return /* @__PURE__ */ k$1(S2, null, timeoutId ? /* @__PURE__ */ k$1(\"div\", { class: \"success__position\", onClick: handleOnSuccessClick }, /* @__PURE__ */ k$1(\"div\", { class: \"success__content\" }, options.successMessageText, /* @__PURE__ */ k$1(\"span\", { class: \"success__icon\", dangerouslySetInnerHTML: successIconHtml }))) : /* @__PURE__ */ k$1(\"dialog\", { class: \"dialog\", onClick: options.onFormClose, open }, /* @__PURE__ */ k$1(\"div\", { class: \"dialog__position\" }, /* @__PURE__ */ k$1("
+    },
+    {
+      "line": 16719,
+      "text": "onClick: (e5) => {"
+    },
+    {
+      "line": 17263,
+      "text": "onClick: () => {"
+    },
+    {
+      "line": 17273,
+      "text": "onClick: () => {"
+    },
+    {
+      "line": 17526,
+      "text": "onClick: deleteRect(index2),"
+    },
+    {
+      "line": 23799,
+      "text": "MouseInteractions2[MouseInteractions2[\"Click\"] = 2] = \"Click\";"
+    }
+  ],
+  "itemsAfterVerify": [
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4720/component-tracking-options.js",
+        "in_app": true
+      },
+      "transaction": "/component-tracking-options.html",
+      "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+      "span_id": "a2c477cdc3ec9abc",
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://localhost:4720/component-tracking-options.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+      "items": [
+        "ui.mount <Navbar>",
+        "ui.mount <PrimaryButton>",
+        "ui.mount <LoginForm>",
+        "test sentinel-span",
+        "browser.dom_content_loaded_event http://localhost:4720/component-tracking-options.html",
+        "browser.load_event http://localhost:4720/component-tracking-options.html",
+        "browser.connect http://localhost:4720/component-tracking-options.html",
+        "browser.cache http://localhost:4720/component-tracking-options.html",
+        "browser.dns http://localhost:4720/component-tracking-options.html",
+        "browser.request http://localhost:4720/component-tracking-options.html",
+        "browser.response http://localhost:4720/component-tracking-options.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "<Navbar>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "85f6ab94915a0be0",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.svelte",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.svelte",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "<PrimaryButton>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9359879cf51aa1f8",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.svelte",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.svelte",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "<LoginForm>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9719282f43735e44",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.svelte",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.svelte",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "8be45b85da263595",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "84ce2c44abd0a020",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "bebcd4ea51417b78",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "bceb565c143ced85",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "ac1a018f39067002",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "b2ce802942f93003",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "99d4ea9520bf3066",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "97368557d7a588cf",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "95a9ffe2f0888854",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/component-tracking-options.js",
+          "status_code": 200,
+          "duration_ms": 3,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/component-tracking-options.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1144687,
+            "http.response.body.size": 1144387,
+            "http.response.body.decoded_size": 1144387,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788933998.8195,
+            "http.request.domain_lookup_start": 1788933998.8195,
+            "http.request.domain_lookup_end": 1788933998.8195,
+            "http.request.connect_start": 1788933998.8195,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788933998.8195,
+            "http.request.request_start": 1788933998.8215,
+            "http.request.response_start": 1788933998.8222,
+            "http.request.response_end": 1788933998.8227,
+            "http.request.time_to_first_byte": 0.006399999991059303,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "a19024c6858137df",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788933998.8559,
+            "http.request.domain_lookup_start": 1788933998.8559,
+            "http.request.domain_lookup_end": 1788933998.8559,
+            "http.request.connect_start": 1788933998.8559,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788933998.8559,
+            "http.request.request_start": 1788933998.8561,
+            "http.request.response_start": 1788933998.8567,
+            "http.request.response_end": 1788933998.8568,
+            "http.request.time_to_first_byte": 0.0408999999910593,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "924b15bb37041c76",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "b90e8c2d8d0c1f36",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "ok",
+          "span_id": "a2c477cdc3ec9abc",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4720/component-tracking-options.html",
+          "url_path": "/component-tracking-options.html",
+          "duration_ms": 53,
+          "attributes": {
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/component-tracking-options.html",
+            "url.full": "http://localhost:4720/component-tracking-options.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 100,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 1.8999999910593033,
+            "browser.web_vital.fp.value": 44,
+            "browser.web_vital.fcp.value": 44,
+            "browser.web_vital.ttfb.request_time": 1.2999999970197678,
+            "browser.performance.time_origin": 1788933998.8158,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "exceptions": [
+        {
+          "value": "sentinel",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4720/component-tracking-options.js",
+        "in_app": true
+      },
+      "transaction": "/component-tracking-options.html",
+      "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+      "span_id": "a2c477cdc3ec9abc",
+      "breadcrumbs": [],
+      "request": {
+        "url": "http://localhost:4720/component-tracking-options.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+      "items": [
+        "ui.mount <Navbar>",
+        "ui.mount <PrimaryButton>",
+        "ui.mount <LoginForm>",
+        "test sentinel-span",
+        "browser.dom_content_loaded_event http://localhost:4720/component-tracking-options.html",
+        "browser.load_event http://localhost:4720/component-tracking-options.html",
+        "browser.connect http://localhost:4720/component-tracking-options.html",
+        "browser.cache http://localhost:4720/component-tracking-options.html",
+        "browser.dns http://localhost:4720/component-tracking-options.html",
+        "browser.request http://localhost:4720/component-tracking-options.html",
+        "browser.response http://localhost:4720/component-tracking-options.html",
+        "resource.script localhost",
+        "resource.other localhost",
+        "browser.paint first-paint",
+        "browser.paint first-contentful-paint",
+        "pageload Pageload"
+      ],
+      "raw": [
+        {
+          "name": "<Navbar>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "85f6ab94915a0be0",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.svelte",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.svelte",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "<PrimaryButton>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9359879cf51aa1f8",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.svelte",
+          "duration_ms": 2,
+          "attributes": {
+            "sentry.origin": "auto.ui.svelte",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "<LoginForm>",
+          "op": "ui.mount",
+          "status": "ok",
+          "span_id": "9719282f43735e44",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.svelte",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.svelte",
+            "sentry.op": "ui.mount",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "sentinel-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "8be45b85da263595",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "manual",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.dom_content_loaded_event",
+          "status": "ok",
+          "span_id": "84ce2c44abd0a020",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dom_content_loaded_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.load_event",
+          "status": "ok",
+          "span_id": "bebcd4ea51417b78",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.load_event",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.connect",
+          "status": "ok",
+          "span_id": "bceb565c143ced85",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.connect",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.cache",
+          "status": "ok",
+          "span_id": "ac1a018f39067002",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.cache",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.dns",
+          "status": "ok",
+          "span_id": "b2ce802942f93003",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.dns",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.request",
+          "status": "ok",
+          "span_id": "99d4ea9520bf3066",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.request",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "http://localhost:4720/component-tracking-options.html",
+          "op": "browser.response",
+          "status": "ok",
+          "span_id": "97368557d7a588cf",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.ui.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.ui.browser.metrics",
+            "sentry.op": "browser.response",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.script",
+          "status": "ok",
+          "span_id": "95a9ffe2f0888854",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/component-tracking-options.js",
+          "status_code": 200,
+          "duration_ms": 3,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.script",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/component-tracking-options.js",
+            "http.response.status_code": 200,
+            "http.response.size": 1144687,
+            "http.response.body.size": 1144387,
+            "http.response.body.decoded_size": 1144387,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788933998.8195,
+            "http.request.domain_lookup_start": 1788933998.8195,
+            "http.request.domain_lookup_end": 1788933998.8195,
+            "http.request.connect_start": 1788933998.8195,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788933998.8195,
+            "http.request.request_start": 1788933998.8215,
+            "http.request.response_start": 1788933998.8222,
+            "http.request.response_end": 1788933998.8227,
+            "http.request.time_to_first_byte": 0.006399999991059303,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "localhost",
+          "op": "resource.other",
+          "status": "ok",
+          "span_id": "a19024c6858137df",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "url": "http://localhost:4720/favicon.ico",
+          "status_code": 404,
+          "duration_ms": 1,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "resource.other",
+            "url.scheme": "http",
+            "server.address": "localhost:4720",
+            "url.domain": "localhost",
+            "http.request.same_origin": true,
+            "url.full": "http://localhost:4720/favicon.ico",
+            "http.response.status_code": 404,
+            "http.response.size": 309,
+            "http.response.body.size": 9,
+            "http.response.body.decoded_size": 9,
+            "resource.render_blocking_status": "non-blocking",
+            "http.response_delivery_type": "",
+            "network.protocol.version": "1.1",
+            "network.protocol.name": "http",
+            "http.request.redirect_start": 0,
+            "http.request.redirect_end": 0,
+            "http.request.worker_start": 0,
+            "http.request.fetch_start": 1788933998.8559,
+            "http.request.domain_lookup_start": 1788933998.8559,
+            "http.request.domain_lookup_end": 1788933998.8559,
+            "http.request.connect_start": 1788933998.8559,
+            "http.request.secure_connection_start": 0,
+            "http.request.connection_end": 1788933998.8559,
+            "http.request.request_start": 1788933998.8561,
+            "http.request.response_start": 1788933998.8567,
+            "http.request.response_end": 1788933998.8568,
+            "http.request.time_to_first_byte": 0.0408999999910593,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "924b15bb37041c76",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "op": "browser.paint",
+          "status": "ok",
+          "span_id": "b90e8c2d8d0c1f36",
+          "parent_span_id": "a2c477cdc3ec9abc",
+          "is_segment": false,
+          "origin": "auto.resource.browser.metrics",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "auto.resource.browser.metrics",
+            "sentry.op": "browser.paint",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production"
+          }
+        },
+        {
+          "name": "Pageload",
+          "op": "pageload",
+          "status": "ok",
+          "span_id": "a2c477cdc3ec9abc",
+          "is_segment": true,
+          "origin": "auto.pageload.browser",
+          "source": "url",
+          "url": "http://localhost:4720/component-tracking-options.html",
+          "url_path": "/component-tracking-options.html",
+          "duration_ms": 53,
+          "attributes": {
+            "sentry.origin": "auto.pageload.browser",
+            "sentry.op": "pageload",
+            "sentry.segment.name.source": "url",
+            "sentry.sample_rate": 1,
+            "url.path": "/component-tracking-options.html",
+            "url.full": "http://localhost:4720/component-tracking-options.html",
+            "network.connection.effective_type": "4g",
+            "network.connection.rtt": 100,
+            "device.memory.estimated_capacity": 32,
+            "device.processor_count": 16,
+            "sentry.idle_span_finish_reason": "idleTimeout",
+            "browser.web_vital.ttfb.value": 1.8999999910593033,
+            "browser.web_vital.fp.value": 44,
+            "browser.web_vital.fcp.value": 44,
+            "browser.web_vital.ttfb.request_time": 1.2999999970197678,
+            "browser.performance.time_origin": 1788933998.8158,
+            "browser.performance.navigation.activation_start": 0,
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "Pageload",
+            "sentry.segment.id": "a2c477cdc3ec9abc",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "level": "info",
+      "message": "sentinel-2",
+      "exception": "undefined: sentinel-2",
+      "exceptions": [
+        {
+          "value": "sentinel-2",
+          "mechanism": "generic",
+          "handled": true,
+          "frames": 4
+        }
+      ],
+      "mechanism": "generic",
+      "handled": true,
+      "synthetic": true,
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "sdk_packages": [
+        {
+          "name": "npm:@sentry/svelte",
+          "version": "10.67.0"
+        }
+      ],
+      "integrations": [
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "BrowserApiErrors",
+        "Breadcrumbs",
+        "GlobalHandlers",
+        "LinkedErrors",
+        "Dedupe",
+        "HttpContext",
+        "CultureContext",
+        "BrowserSession",
+        "BrowserTracing",
+        "SpanStreaming",
+        "WebVitals"
+      ],
+      "contexts": [
+        "trace",
+        "culture"
+      ],
+      "topFrame": {
+        "function": "window.__qsSentinel",
+        "filename": "http://localhost:4720/component-tracking-options.js",
+        "in_app": true
+      },
+      "transaction": "/component-tracking-options.html",
+      "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+      "span_id": "814d25af5cbf4495",
+      "breadcrumbs": [
+        "sentry.event: sentinel",
+        "ui.click: body > div#app > button#btn-update[type=\"button\"]"
+      ],
+      "request": {
+        "url": "http://localhost:4720/component-tracking-options.html",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.svelte",
+      "sdk_version": "10.67.0",
+      "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+      "items": [
+        "test sentinel-2-span"
+      ],
+      "raw": [
+        {
+          "name": "sentinel-2-span",
+          "op": "test",
+          "status": "ok",
+          "span_id": "a8c5e69506e9a5f4",
+          "is_segment": true,
+          "origin": "manual",
+          "source": "custom",
+          "url": "http://localhost:4720/component-tracking-options.html",
+          "duration_ms": 0,
+          "attributes": {
+            "sentry.origin": "manual",
+            "sentry.op": "test",
+            "sentry.segment.name.source": "custom",
+            "sentry.trace_lifecycle": "stream",
+            "sentry.segment.name": "sentinel-2-span",
+            "sentry.segment.id": "a8c5e69506e9a5f4",
+            "sentry.sdk.name": "sentry.javascript.svelte",
+            "sentry.sdk.version": "10.67.0",
+            "sentry.environment": "production",
+            "sentry.sdk.integrations": [
+              "EventFilters",
+              "FunctionToString",
+              "ConversationId",
+              "BrowserApiErrors",
+              "Breadcrumbs",
+              "GlobalHandlers",
+              "LinkedErrors",
+              "Dedupe",
+              "HttpContext",
+              "CultureContext",
+              "BrowserSession",
+              "BrowserTracing",
+              "SpanStreaming",
+              "WebVitals"
+            ],
+            "url.full": "http://localhost:4720/component-tracking-options.html",
+            "http.request.header.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "culture.locale": "en-US",
+            "culture.timezone": "Europe/Vienna",
+            "culture.calendar": "gregory"
+          }
+        }
+      ]
+    }
+  ],
+  "headers": [],
+  "raw": [
+    {
+      "envHeader": {
+        "event_id": "9a75750d39914959a0b6e0ba0b1bf3a3",
+        "sent_at": "2026-09-09T06:06:38.868Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.6294324905082892",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4720/component-tracking-options.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4720/component-tracking-options.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 34679,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel",
+        "level": "info",
+        "event_id": "9a75750d39914959a0b6e0ba0b1bf3a3",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4720/component-tracking-options.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "span_id": "a2c477cdc3ec9abc",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788933998.867,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/svelte",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/component-tracking-options.html"
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:06:40.392Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.6294324905082892",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 16,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "<Navbar>",
+            "span_id": "85f6ab94915a0be0",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8468,
+            "end_timestamp": 1788933998.8485,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.svelte",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "<PrimaryButton>",
+            "span_id": "9359879cf51aa1f8",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8474002,
+            "end_timestamp": 1788933998.849,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.svelte",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "<LoginForm>",
+            "span_id": "9719282f43735e44",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8478,
+            "end_timestamp": 1788933998.849,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.svelte",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "ui.mount",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sentinel-span",
+            "span_id": "8be45b85da263595",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8689,
+            "end_timestamp": 1788933998.8691,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/component-tracking-options.html",
+            "span_id": "84ce2c44abd0a020",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8490999,
+            "end_timestamp": 1788933998.8490999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dom_content_loaded_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/component-tracking-options.html",
+            "span_id": "bebcd4ea51417b78",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8546,
+            "end_timestamp": 1788933998.8548,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.load_event",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/component-tracking-options.html",
+            "span_id": "bceb565c143ced85",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.816,
+            "end_timestamp": 1788933998.816,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.connect",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/component-tracking-options.html",
+            "span_id": "ac1a018f39067002",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.816,
+            "end_timestamp": 1788933998.816,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.cache",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/component-tracking-options.html",
+            "span_id": "b2ce802942f93003",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.816,
+            "end_timestamp": 1788933998.816,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.dns",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/component-tracking-options.html",
+            "span_id": "99d4ea9520bf3066",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8164,
+            "end_timestamp": 1788933998.8179,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.request",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "http://localhost:4720/component-tracking-options.html",
+            "span_id": "97368557d7a588cf",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8177,
+            "end_timestamp": 1788933998.8179,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.ui.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.response",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "95a9ffe2f0888854",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8195,
+            "end_timestamp": 1788933998.8227,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.script",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4720",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/component-tracking-options.js",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 200,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 1144687,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 1144387,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 1144387,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788933998.8195,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788933998.8195,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788933998.8195,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788933998.8195,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788933998.8195,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788933998.8215,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788933998.8222,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788933998.8227,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.006399999991059303,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "localhost",
+            "span_id": "a19024c6858137df",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8559,
+            "end_timestamp": 1788933998.8568,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "resource.other",
+                "type": "string"
+              },
+              "url.scheme": {
+                "value": "http",
+                "type": "string"
+              },
+              "server.address": {
+                "value": "localhost:4720",
+                "type": "string"
+              },
+              "url.domain": {
+                "value": "localhost",
+                "type": "string"
+              },
+              "http.request.same_origin": {
+                "value": true,
+                "type": "boolean"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/favicon.ico",
+                "type": "string"
+              },
+              "http.response.status_code": {
+                "value": 404,
+                "type": "integer"
+              },
+              "http.response.size": {
+                "value": 309,
+                "type": "integer"
+              },
+              "http.response.body.size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "http.response.body.decoded_size": {
+                "value": 9,
+                "type": "integer"
+              },
+              "resource.render_blocking_status": {
+                "value": "non-blocking",
+                "type": "string"
+              },
+              "http.response_delivery_type": {
+                "value": "",
+                "type": "string"
+              },
+              "network.protocol.version": {
+                "value": "1.1",
+                "type": "string"
+              },
+              "network.protocol.name": {
+                "value": "http",
+                "type": "string"
+              },
+              "http.request.redirect_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.redirect_end": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.worker_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.fetch_start": {
+                "value": 1788933998.8559,
+                "type": "double"
+              },
+              "http.request.domain_lookup_start": {
+                "value": 1788933998.8559,
+                "type": "double"
+              },
+              "http.request.domain_lookup_end": {
+                "value": 1788933998.8559,
+                "type": "double"
+              },
+              "http.request.connect_start": {
+                "value": 1788933998.8559,
+                "type": "double"
+              },
+              "http.request.secure_connection_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "http.request.connection_end": {
+                "value": 1788933998.8559,
+                "type": "double"
+              },
+              "http.request.request_start": {
+                "value": 1788933998.8561,
+                "type": "double"
+              },
+              "http.request.response_start": {
+                "value": 1788933998.8567,
+                "type": "double"
+              },
+              "http.request.response_end": {
+                "value": 1788933998.8568,
+                "type": "double"
+              },
+              "http.request.time_to_first_byte": {
+                "value": 0.0408999999910593,
+                "type": "double"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-paint",
+            "span_id": "924b15bb37041c76",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8597999,
+            "end_timestamp": 1788933998.8597999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "first-contentful-paint",
+            "span_id": "b90e8c2d8d0c1f36",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "parent_span_id": "a2c477cdc3ec9abc",
+            "start_timestamp": 1788933998.8597999,
+            "end_timestamp": 1788933998.8597999,
+            "is_segment": false,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.resource.browser.metrics",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "browser.paint",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Pageload",
+            "span_id": "a2c477cdc3ec9abc",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "start_timestamp": 1788933998.8158,
+            "end_timestamp": 1788933998.8691,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "auto.pageload.browser",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "pageload",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "url",
+                "type": "string"
+              },
+              "sentry.sample_rate": {
+                "value": 1,
+                "type": "integer"
+              },
+              "url.path": {
+                "value": "/component-tracking-options.html",
+                "type": "string"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/component-tracking-options.html",
+                "type": "string"
+              },
+              "network.connection.effective_type": {
+                "value": "4g",
+                "type": "string"
+              },
+              "network.connection.rtt": {
+                "value": 100,
+                "type": "integer"
+              },
+              "device.memory.estimated_capacity": {
+                "value": 32,
+                "type": "integer"
+              },
+              "device.processor_count": {
+                "value": 16,
+                "type": "integer"
+              },
+              "sentry.idle_span_finish_reason": {
+                "value": "idleTimeout",
+                "type": "string"
+              },
+              "browser.web_vital.ttfb.value": {
+                "value": 1.8999999910593033,
+                "type": "double"
+              },
+              "browser.web_vital.fp.value": {
+                "value": 44,
+                "type": "integer"
+              },
+              "browser.web_vital.fcp.value": {
+                "value": 44,
+                "type": "integer"
+              },
+              "browser.web_vital.ttfb.request_time": {
+                "value": 1.2999999970197678,
+                "type": "double"
+              },
+              "browser.performance.time_origin": {
+                "value": 1788933998.8158,
+                "type": "double"
+              },
+              "browser.performance.navigation.activation_start": {
+                "value": 0,
+                "type": "integer"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "Pageload",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a2c477cdc3ec9abc",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "event_id": "d493b37c0747496f89ff3dd62a30c10f",
+        "sent_at": "2026-09-09T06:06:40.567Z",
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.6294324905082892",
+          "sample_rate": "1"
+        }
+      },
+      "header": {
+        "type": "event"
+      },
+      "payload": {
+        "exception": {
+          "values": [
+            {
+              "value": "sentinel-2",
+              "stacktrace": {
+                "frames": [
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.<anonymous>",
+                    "in_app": true,
+                    "lineno": 1,
+                    "colno": 44
+                  },
+                  {
+                    "filename": "<anonymous>",
+                    "function": "UtilityScript.evaluate",
+                    "in_app": true,
+                    "lineno": 293,
+                    "colno": 16
+                  },
+                  {
+                    "filename": "http://localhost:4720/component-tracking-options.js",
+                    "function": "eval",
+                    "in_app": true,
+                    "lineno": 291,
+                    "colno": 30
+                  },
+                  {
+                    "filename": "http://localhost:4720/component-tracking-options.js",
+                    "function": "window.__qsSentinel",
+                    "in_app": true,
+                    "lineno": 34679,
+                    "colno": 19
+                  }
+                ]
+              },
+              "mechanism": {
+                "type": "generic",
+                "handled": true,
+                "synthetic": true
+              }
+            }
+          ]
+        },
+        "message": "sentinel-2",
+        "level": "info",
+        "event_id": "d493b37c0747496f89ff3dd62a30c10f",
+        "platform": "javascript",
+        "request": {
+          "url": "http://localhost:4720/component-tracking-options.html",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36"
+          }
+        },
+        "contexts": {
+          "trace": {
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "span_id": "814d25af5cbf4495"
+          },
+          "culture": {
+            "locale": "en-US",
+            "timezone": "Europe/Vienna",
+            "calendar": "gregory"
+          }
+        },
+        "timestamp": 1788934000.567,
+        "environment": "production",
+        "sdk": {
+          "integrations": [
+            "EventFilters",
+            "FunctionToString",
+            "ConversationId",
+            "BrowserApiErrors",
+            "Breadcrumbs",
+            "GlobalHandlers",
+            "LinkedErrors",
+            "Dedupe",
+            "HttpContext",
+            "CultureContext",
+            "BrowserSession",
+            "BrowserTracing",
+            "SpanStreaming",
+            "WebVitals"
+          ],
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0",
+          "packages": [
+            {
+              "name": "npm:@sentry/svelte",
+              "version": "10.67.0"
+            }
+          ],
+          "settings": {
+            "infer_ip": "auto"
+          }
+        },
+        "transaction": "/component-tracking-options.html",
+        "breadcrumbs": [
+          {
+            "timestamp": 1788933998.868,
+            "category": "sentry.event",
+            "event_id": "9a75750d39914959a0b6e0ba0b1bf3a3",
+            "level": "info",
+            "message": "sentinel"
+          },
+          {
+            "timestamp": 1788934000.525,
+            "category": "ui.click",
+            "message": "body > div#app > button#btn-update[type=\"button\"]"
+          }
+        ]
+      }
+    },
+    {
+      "envHeader": {
+        "sent_at": "2026-09-09T06:06:41.069Z",
+        "trace": {
+          "environment": "production",
+          "public_key": "1234567890abcdef1234567890abcdef",
+          "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+          "org_id": "0",
+          "sampled": "true",
+          "sample_rand": "0.6294324905082892",
+          "sample_rate": "1"
+        },
+        "sdk": {
+          "name": "sentry.javascript.svelte",
+          "version": "10.67.0"
+        },
+        "dsn": "https://1234567890abcdef1234567890abcdef@o0.ingest.sentry.io/1337"
+      },
+      "header": {
+        "type": "span",
+        "item_count": 1,
+        "content_type": "application/vnd.sentry.items.span.v2+json"
+      },
+      "payload": {
+        "version": 2,
+        "ingest_settings": {
+          "infer_ip": "auto",
+          "infer_user_agent": "auto"
+        },
+        "items": [
+          {
+            "name": "sentinel-2-span",
+            "span_id": "a8c5e69506e9a5f4",
+            "trace_id": "9711a5cedba740d1a11597bce74cfe24",
+            "start_timestamp": 1788934000.5681002,
+            "end_timestamp": 1788934000.5681999,
+            "is_segment": true,
+            "status": "ok",
+            "attributes": {
+              "sentry.origin": {
+                "value": "manual",
+                "type": "string"
+              },
+              "sentry.op": {
+                "value": "test",
+                "type": "string"
+              },
+              "sentry.segment.name.source": {
+                "value": "custom",
+                "type": "string"
+              },
+              "sentry.trace_lifecycle": {
+                "value": "stream",
+                "type": "string"
+              },
+              "sentry.segment.name": {
+                "value": "sentinel-2-span",
+                "type": "string"
+              },
+              "sentry.segment.id": {
+                "value": "a8c5e69506e9a5f4",
+                "type": "string"
+              },
+              "sentry.sdk.name": {
+                "value": "sentry.javascript.svelte",
+                "type": "string"
+              },
+              "sentry.sdk.version": {
+                "value": "10.67.0",
+                "type": "string"
+              },
+              "sentry.environment": {
+                "value": "production",
+                "type": "string"
+              },
+              "sentry.sdk.integrations": {
+                "value": [
+                  "EventFilters",
+                  "FunctionToString",
+                  "ConversationId",
+                  "BrowserApiErrors",
+                  "Breadcrumbs",
+                  "GlobalHandlers",
+                  "LinkedErrors",
+                  "Dedupe",
+                  "HttpContext",
+                  "CultureContext",
+                  "BrowserSession",
+                  "BrowserTracing",
+                  "SpanStreaming",
+                  "WebVitals"
+                ],
+                "type": "array"
+              },
+              "url.full": {
+                "value": "http://localhost:4720/component-tracking-options.html",
+                "type": "string"
+              },
+              "http.request.header.user_agent": {
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+                "type": "string"
+              },
+              "culture.locale": {
+                "value": "en-US",
+                "type": "string"
+              },
+              "culture.timezone": {
+                "value": "Europe/Vienna",
+                "type": "string"
+              },
+              "culture.calendar": {
+                "value": "gregory",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -232,5 +232,26 @@
    "fastify 4": "works (404 captured, FSTDEP017 once)",
    "fastify 4 without the handler": "works"
   }
+ },
+ {
+  "id": "QS-svelte",
+  "path": "quickstarts/svelte",
+  "runtime": "Chrome 153 headless, develop 03aaf42455; svelte 5.57.0, esbuild-svelte 0.9.5, no Vite",
+  "rebuilt": "yes",
+  "matches": "n/a (new probe)",
+  "summary": "The guide's main.js works: 16 integrations, errors, logs, propagation, a Pageload segment with its children, replay after minReplayDuration, the feedback widget. Defects: the Svelte v5 tab's verify button uses onClick, which Svelte 5 compiles to nothing; the component tracking page names ui.svelte.init/update ops, claims trackUpdates defaults to true, and says nothing about runes-mode components getting no update spans; transactions wording and a 0 ms test span; a compilerOptions placeholder that is a syntax error; no sessions without a release.",
+  "sdk": {
+   "name": "sentry.javascript.svelte",
+   "version": "10.67.0",
+   "integrations": 16
+  },
+  "variants": {
+   "base (guide main.js, Svelte 5 tab)": "partial (onClick button sends nothing)",
+   "base in dev mode": "partial (no warning either)",
+   "withSentryConfig component tracking": "works (mount spans only)",
+   "withSentryConfig with trackComponents list": "works",
+   "trackComponent snippet": "partial (runes-mode components get no update spans)",
+   "Svelte 3-4 tabs": "not run"
+  }
  }
 ]

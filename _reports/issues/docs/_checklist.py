@@ -33,7 +33,7 @@ PLAN=[
    ('should','DOC-Q15','the Profiler span ops are named wrong'),
    ('later','DOC-Q16','the routing snippet uses the deprecated V7 API'),
    ('later','DOC-Q17','the verify step says transactions and its test span ends before the error'),
-   ('later','DOC-Q18','sessions need a release, on the Vue and Angular guides too'),
+   ('later','DOC-Q18','sessions need a release, on the Vue, Angular and Svelte guides too'),
  ]),
  ('Angular', [
    ('must','DOC-Q32','three snippets do not compile under the tsconfig ng new generates'),
@@ -41,6 +41,11 @@ PLAN=[
    ('should','DOC-Q34','the component tracking span ops are named wrong'),
    ('later','DOC-Q35','transactions wording and a 0 ms verify span'),
    ('later','DOC-Q36','deprecated bootstrap call, missing logs option, stray line'),
+ ]),
+ ('Svelte', [
+   ('must','DOC-Q41','the Svelte v5 verify snippet binds onClick, which compiles to nothing'),
+   ('should','DOC-Q42','old span ops, the wrong trackUpdates default and no runes caveat on the component tracking page'),
+   ('later','DOC-Q43','transactions wording, a 0 ms test span and a placeholder that is a syntax error'),
  ]),
  ('Vue', [
    ('must','DOC-Q19','the Vue Router page\'s only full example is Vue 2 code that fails on Vue 3'),

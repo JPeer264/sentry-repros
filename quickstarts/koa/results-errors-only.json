@@ -1,0 +1,403 @@
+{
+  "id": "QS-koa",
+  "variant": "errors-only",
+  "command": "node --import ./instrument-errors-only.mjs app.mjs",
+  "koa_version": "3.2.1",
+  "koa_router_version": "15.7.0",
+  "sdk": {
+    "name": "sentry.javascript.node",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "steps": [
+    {
+      "route": "/users/42",
+      "http_code": "200",
+      "seconds": "0.001222",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-sentry",
+      "http_code": "500",
+      "seconds": "0.002963",
+      "curl_exit": 0
+    },
+    {
+      "route": "/error-404",
+      "http_code": "404",
+      "seconds": "0.001344",
+      "curl_exit": 0
+    },
+    {
+      "route": "/error-503",
+      "http_code": "503",
+      "seconds": "0.001154",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-log",
+      "http_code": "200",
+      "seconds": "0.001248",
+      "curl_exit": 0
+    },
+    {
+      "route": "/debug-sentry-tracing",
+      "http_code": "500",
+      "seconds": "0.104009",
+      "curl_exit": 0
+    },
+    {
+      "route": "/sentinel",
+      "http_code": "200",
+      "seconds": "0.001706",
+      "curl_exit": 0
+    }
+  ],
+  "console": {
+    "line_count": 66,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 99643, thread: main.",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Captured error event `custom 404`",
+      "Sentry Logger [log]: Captured error event `custom 503`",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: Captured error event `sentinel`"
+    ],
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "LinkedErrors",
+      "RequestData",
+      "NodeSystemError",
+      "ConversationId",
+      "Console",
+      "Http",
+      "NodeFetch",
+      "OnUncaughtException",
+      "OnUnhandledRejection",
+      "ContextLines",
+      "LocalVariablesAsync",
+      "Context",
+      "ChildProcess",
+      "WorkerThreads",
+      "ProcessSession",
+      "Modules",
+      "Express",
+      "Fastify",
+      "Hapi",
+      "Koa",
+      "SpanStreaming"
+    ],
+    "integration_count": 23,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 99643, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from ESM",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "Sentry Logger [log]: [instrumentation:koa] \"koa\" injected at runtime, subscribing now",
+      "Sentry Logger [log]: [instrumentation:koa] subscribing to channels",
+      "app listening 4722",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Opened new request session aggregate.",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `custom 404`",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `custom 503`",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Recorded request session with status: ok",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: Recorded request session with status: crashed",
+      "Sentry Logger [log]: Http.Server Handling incoming request",
+      "Sentry Logger [log]: Http.Server Patching request.on",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: Recorded request session with status: ok"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 5,
+      "span": 0,
+      "transaction": 0,
+      "log": 1
+    },
+    "items": [
+      {
+        "type": "event",
+        "exception": "Error: My first Sentry error!",
+        "mechanism": "auto.middleware.koa",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /debug-sentry",
+        "trace_id": "fe9ef55b43bd4404a111024eecb9d37f",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4722/debug-sentry",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4722",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "NotFoundError: custom 404",
+        "mechanism": "auto.middleware.koa",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /error-404",
+        "trace_id": "590a8201e8e34e4ab1951d27f9f0b052",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4722/error-404",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4722",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "ServiceUnavailableError: custom 503",
+        "mechanism": "auto.middleware.koa",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /error-503",
+        "trace_id": "efc9b75aa34a4f73ad88b934bd5df731",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4722/error-503",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4722",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "exception": "Error: My first Sentry error!",
+        "mechanism": "auto.middleware.koa",
+        "level": "error",
+        "handled": false,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /debug-sentry-tracing",
+        "trace_id": "7360ffcb0f9e48bdb7f2c9157e3af49d",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4722/debug-sentry-tracing",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4722",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "transaction": "GET /sentinel",
+        "trace_id": "4e35854d2a4c4ed78867f9446a3cb879",
+        "user": {
+          "ip_address": "127.0.0.1"
+        },
+        "request": {
+          "url": "http://127.0.0.1:4722/sentinel",
+          "method": "GET",
+          "hasData": false,
+          "headers": {
+            "host": "127.0.0.1:4722",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*"
+          }
+        },
+        "environment": "production"
+      },
+      {
+        "type": "log",
+        "items": [
+          "info: User example action completed"
+        ]
+      }
+    ]
+  },
+  "spansRaw": [],
+  "verdict": {
+    "status": "works",
+    "checks": {
+      "app_started": true,
+      "app_alive_at_end": true,
+      "error_event_debug_sentry": [
+        {
+          "exception": "Error: My first Sentry error!",
+          "mechanism": "auto.middleware.koa",
+          "handled": false,
+          "transaction": "GET /debug-sentry",
+          "request": "http://127.0.0.1:4722/debug-sentry",
+          "hasRequestData": false,
+          "trace_id": "fe9ef55b43bd4404a111024eecb9d37f"
+        }
+      ],
+      "error_event_tracing_route": [
+        {
+          "exception": "Error: My first Sentry error!",
+          "mechanism": "auto.middleware.koa",
+          "handled": false,
+          "transaction": "GET /debug-sentry-tracing",
+          "request": "http://127.0.0.1:4722/debug-sentry-tracing",
+          "hasRequestData": false,
+          "trace_id": "7360ffcb0f9e48bdb7f2c9157e3af49d"
+        }
+      ],
+      "error_404_captured": [
+        {
+          "exception": "NotFoundError: custom 404",
+          "mechanism": "auto.middleware.koa",
+          "handled": false,
+          "transaction": "GET /error-404",
+          "request": "http://127.0.0.1:4722/error-404",
+          "hasRequestData": false,
+          "trace_id": "590a8201e8e34e4ab1951d27f9f0b052"
+        }
+      ],
+      "error_503_captured": [
+        {
+          "exception": "ServiceUnavailableError: custom 503",
+          "mechanism": "auto.middleware.koa",
+          "handled": false,
+          "transaction": "GET /error-503",
+          "request": "http://127.0.0.1:4722/error-503",
+          "hasRequestData": false,
+          "trace_id": "efc9b75aa34a4f73ad88b934bd5df731"
+        }
+      ],
+      "duplicate_error_events": [],
+      "sentinel_event": [
+        {
+          "mechanism": "generic",
+          "handled": true,
+          "transaction": "GET /sentinel",
+          "request": "http://127.0.0.1:4722/sentinel"
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 0,
+      "segments": [],
+      "route_named_segment_for_users": false,
+      "child_spans": [],
+      "child_ops": [],
+      "child_origins": [],
+      "router_spans": [],
+      "middleware_spans": [],
+      "manual_test_span": [],
+      "log_batches": 1,
+      "log_bodies": [
+        "info: User example action completed"
+      ],
+      "other_item_types": [],
+      "require_banner": [],
+      "deprecation_output": [],
+      "koa_default_error_log": 0
+    }
+  }
+}
