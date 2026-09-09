@@ -1,0 +1,203 @@
+
+ ⛅️ wrangler 4.130.0
+────────────────────
+✨ Compiled Worker successfully
+Your Worker has access to the following bindings:
+Binding                                                                   Resource                  Mode
+env.CF_PAGES ("1")                                                        Environment Variable      local
+env.CF_PAGES_BRANCH ("issue-linear-runtime-improvements")                 Environment Variable      local
+env.CF_PAGES_COMMIT_SHA ("eab81dba73feacf388944cfb2d04e8bb32476...")      Environment Variable      local
+env.CF_PAGES_URL ("https://eab81db.qs-cloudflare-pages.p...")             Environment Variable      local
+
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:4748
+[wrangler:info] GET / 200 OK (11ms)
+[wrangler:info] GET /style.css 200 OK (3ms)
+[wrangler:error] ReferenceError: Sentry is not defined
+    at onRequest (file://$REPRO/quickstarts/cloudflare-pages/functions/debug-sentry.js:4:3)
+    at next (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/pages-template-worker.ts:163:28)
+    at Object.fetch (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/pages-template-worker.ts:182:17)
+[wrangler:info] GET /debug-sentry 500 Internal Server Error (23ms)
+[wrangler:error] Error: My first Sentry error!
+    at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/functions/debug-sentry-import.js:12:13)
+    at async onRequest (file://$REPRO/quickstarts/cloudflare-pages/functions/debug-sentry-import.js:5:3)
+    at async next (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/pages-template-worker.ts:163:22)
+    at async Object.fetch (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/pages-template-worker.ts:182:11)
+    at async jsonError (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10)
+    at async drainBody (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts:5:10)
+    at async jsonError (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10)
+    at async drainBody (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts:5:10)
+[wrangler:info] GET /debug-sentry-import 500 Internal Server Error (113ms)
+Sentry Logger [log]: Cleared AI provider skip registrations
+Sentry Logger [log]: Integration installed: Dedupe
+Sentry Logger [log]: Integration installed: EventFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: ConversationId
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: Fetch
+Sentry Logger [log]: Integration installed: HttpServer
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: Integration installed: SpanStreaming
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b1f62262abec0ff1
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID b1f62262abec0ff1
+Sentry Logger [log]: Captured error event `api error`
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 71596f26e87e46a7becac955993aefe9 with 1 spans
+[wrangler:error] Error: api error
+    at onRequest (file://$REPRO/quickstarts/cloudflare-pages/functions/api/error.js:2:9)
+    at Object.next (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/pages-template-worker.ts:163:28)
+    at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/cloudflare/src/pages-plugin.ts:90:21)
+    at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:162:25)
+    at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:139:60)
+    at handleCallbackErrors.status.status [as status] (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+    at handleCallbackErrors (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+    at callback (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+    at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+    at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+[wrangler:info] GET /api/error 500 Internal Server Error (23ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: be908082d0444f59
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID be908082d0444f59
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 860397cc7f6b47c69bf952c39cfcea86 with 1 spans
+[wrangler:info] GET /api/users/42 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a3513f5d2c88aa78
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET 127.0.0.1
+  ID: b7ee2fc97e807e46
+  parent ID: a3513f5d2c88aa78
+  root ID: a3513f5d2c88aa78
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET 127.0.0.1" with ID b7ee2fc97e807e46
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID a3513f5d2c88aa78
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 890424480fe04bd5a32d81c0871d7f33 with 2 spans
+[wrangler:info] GET /api/fetch 200 OK (5ms)
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b2de8a956b2151ec
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID b2de8a956b2151ec
+[wrangler:info] GET /api/log 200 OK (2ms)
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 14ef13bb93b5417c9053b6c23fc434ac with 1 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: a86bc684769cb736
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: task
+  name: background.task
+  ID: 91ca2737d2080ce0
+  parent ID: a86bc684769cb736
+  root ID: a86bc684769cb736
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET 127.0.0.1
+  ID: 8062b04dc89e77f5
+  parent ID: 91ca2737d2080ce0
+  root ID: a86bc684769cb736
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID a86bc684769cb736
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 1450f1a323e6465b803ac8d9433886be with 1 spans
+[wrangler:info] GET /api/waituntil 200 OK (2ms)
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET 127.0.0.1" with ID 8062b04dc89e77f5
+Sentry Logger [log]: Sending span envelope for trace 1450f1a323e6465b803ac8d9433886be with 1 spans
+Sentry Logger [log]: [Tracing] Finishing "task" span "background.task" with ID 91ca2737d2080ce0
+Sentry Logger [log]: Sending span envelope for trace 1450f1a323e6465b803ac8d9433886be with 1 spans
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: bc1906aee754c61c
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: waitUntil rejection Error[0m
+
+      at onRequest (file://$REPRO/quickstarts/cloudflare-pages/functions/api/waituntil-reject.js:2:36)
+      at next (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/pages-template-worker.ts:163:28)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/cloudflare/src/pages-plugin.ts:90:21)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:162:25)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:139:60)
+      at handleCallbackErrors.status.status (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:672:13)
+      at handleCallbackErrors (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)
+      at callback (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:671:5)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:665:18)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:654:16)
+      at runCallback (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:670:10)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:139:14)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:621:30)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:117:12)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/currentScopes.ts:85:18)
+      at startSpanManual (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:113:10)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:158:16)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:239:12)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at withActiveSpan (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:237:10)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:218:12)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:51:14)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/server-utils/src/async-context.ts:50:25)
+      at withScope (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/currentScopes.ts:91:14)
+      at continueTrace (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:215:10)
+      at null.<anonymous> (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/cloudflare/src/wrapRequestHandlerWithInit.ts:150:12)
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUncaught Error: waitUntil rejection [0m
+
+
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID bc1906aee754c61c
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 862f80866dfa415b905bc3f340bce2c2 with 1 spans
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNOSENTRY reporting trace with exceptions, but no exception outcome; trace->eventInfo = FetchEventInfo: GET, http://127.0.0.1:4748/api/waituntil-reject[0m
+
+
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: http.server
+  name: GET
+  ID: b68b751c1f4a56f1
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: test
+  name: sentinel span
+  ID: 8dde80da7992d8c5
+  parent ID: b68b751c1f4a56f1
+  root ID: b68b751c1f4a56f1
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: http.client
+  name: GET 127.0.0.1
+  ID: b83863b3c1ce8f1d
+  parent ID: 8dde80da7992d8c5
+  root ID: b68b751c1f4a56f1
+  root op: http.server
+  root description: GET
+Sentry Logger [log]: [Tracing] Finishing "http.client" span "GET 127.0.0.1" with ID b83863b3c1ce8f1d
+Sentry Logger [log]: [Tracing] Finishing "test" span "sentinel span" with ID 8dde80da7992d8c5
+Sentry Logger [log]: Captured error event `sentinel`
+Sentry Logger [log]: [Tracing] Finishing "http.server" root span "GET" with ID b68b751c1f4a56f1
+Sentry Logger [log]: Flushing span tree map with 1 traces
+Sentry Logger [log]: Sending span envelope for trace 0f15e39637e14c6abfe4f5a262e56597 with 3 spans
+[wrangler:info] GET /api/waituntil-reject 200 OK (2ms)
+[wrangler:info] GET /api/sentinel 200 OK (3ms)
+🪵  Logs were written to "$HOME/Library/Preferences/.wrangler/logs/wrangler-2026-09-09_07-46-34_864.log"

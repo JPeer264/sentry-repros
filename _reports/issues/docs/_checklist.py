@@ -74,6 +74,10 @@ PLAN=[
    ('should','DOC-Q73','the wrapper options are overridden by the v11 automatic wrapping'),
    ('later','DOC-Q74','verify tabs, a broken anchor, request data, awslambda-auto outside Lambda, transactions comment'),
  ]),
+ ('Azure Functions', [
+   ('should','DOC-Q81','request data attached with a metadata key the SDK never reads'),
+   ('later','DOC-Q82','the wrong SDK in the frontmatter, no invocation span, v3-only snippets, transactions, a hidden logs option'),
+ ]),
  ('Effect', [
    ('must','DOC-Q75','the metrics layer breaks the whole program on Effect v3'),
    ('should','DOC-Q76','the verify step promises an issue that nothing captures'),

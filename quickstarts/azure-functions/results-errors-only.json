@@ -1,0 +1,277 @@
+{
+  "id": "QS-azure-functions",
+  "variant": "errors-only",
+  "command": "node invoke.mjs errors-only function-verify-errors-only.js v3 verify",
+  "azure_functions_version": "4.16.2",
+  "sdk": {
+    "name": "sentry.javascript.node",
+    "version": "10.67.0",
+    "runtime": "node",
+    "runtime_version": "v26.5.0"
+  },
+  "steps": [
+    {
+      "step": "load",
+      "at": "2026-09-09T07:46:18.293Z",
+      "file": "function-verify-errors-only.js",
+      "ok": true,
+      "exportType": "function",
+      "registered": []
+    },
+    {
+      "step": "invoke",
+      "at": "2026-09-09T07:46:18.305Z",
+      "ok": true,
+      "response": {
+        "status": 500,
+        "body": "Test error sent to Sentry."
+      },
+      "contextLog": []
+    },
+    {
+      "step": "sink-after-function",
+      "at": "2026-09-09T07:46:18.318Z",
+      "counts": {
+        "event": 1
+      }
+    },
+    {
+      "step": "sentinel-flush",
+      "at": "2026-09-09T07:46:18.320Z",
+      "flushed": true
+    },
+    {
+      "step": "sentinel-arrived",
+      "at": "2026-09-09T07:46:18.323Z",
+      "arrived": true,
+      "counts": {
+        "event": 2
+      }
+    }
+  ],
+  "console": {
+    "line_count": 45,
+    "notable": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 38662, thread: main.",
+      "Sentry Logger [log]: SDK initialized from CommonJS",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "[repro] load {\"file\":\"function-verify-errors-only.js\",\"ok\":true,\"exportType\":\"function\",\"registered\":[]}",
+      "Sentry Logger [log]: Captured error event `notExistFunction is not defined`",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "[repro] invoke {\"ok\":true,\"response\":{\"status\":500,\"body\":\"Test error sent to Sentry.\"},\"contextLog\":[]}",
+      "Sentry Logger [log]: Captured error event `sentinel`"
+    ],
+    "integrations": [
+      "EventFilters",
+      "FunctionToString",
+      "LinkedErrors",
+      "RequestData",
+      "NodeSystemError",
+      "ConversationId",
+      "Console",
+      "Http",
+      "NodeFetch",
+      "OnUncaughtException",
+      "OnUnhandledRejection",
+      "ContextLines",
+      "LocalVariablesAsync",
+      "Context",
+      "ChildProcess",
+      "WorkerThreads",
+      "ProcessSession",
+      "Modules",
+      "Express",
+      "Fastify",
+      "Hapi",
+      "Koa",
+      "SpanStreaming"
+    ],
+    "integration_count": 23,
+    "full": [
+      "Sentry Logger [log]: Registered diagnostics-channel injection via Module.registerHooks()",
+      "Sentry Logger [log]: Initializing Sentry: process: 38662, thread: main.",
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Integration installed: EventFilters",
+      "Sentry Logger [log]: Integration installed: FunctionToString",
+      "Sentry Logger [log]: Integration installed: LinkedErrors",
+      "Sentry Logger [log]: Integration installed: RequestData",
+      "Sentry Logger [log]: Integration installed: NodeSystemError",
+      "Sentry Logger [log]: Integration installed: ConversationId",
+      "Sentry Logger [log]: Integration installed: Console",
+      "Sentry Logger [log]: Integration installed: Http",
+      "Sentry Logger [log]: Integration installed: NodeFetch",
+      "Sentry Logger [log]: Integration installed: OnUncaughtException",
+      "Sentry Logger [log]: Integration installed: OnUnhandledRejection",
+      "Sentry Logger [log]: Integration installed: ContextLines",
+      "Sentry Logger [log]: Integration installed: LocalVariablesAsync",
+      "Sentry Logger [log]: Integration installed: Context",
+      "Sentry Logger [log]: Integration installed: ChildProcess",
+      "Sentry Logger [log]: Integration installed: WorkerThreads",
+      "Sentry Logger [log]: Integration installed: ProcessSession",
+      "Sentry Logger [log]: Integration installed: Modules",
+      "Sentry Logger [log]: [instrumentation:express, router] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Express",
+      "Sentry Logger [log]: Integration installed: Fastify",
+      "Sentry Logger [log]: [instrumentation:@hapi/hapi] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Hapi",
+      "Sentry Logger [log]: [instrumentation:koa] not injected yet, waiting for the module to load",
+      "Sentry Logger [log]: Integration installed: Koa",
+      "Sentry Logger [log]: Integration installed: SpanStreaming",
+      "Sentry Logger [log]: SDK initialized from CommonJS",
+      "Sentry Logger [log]: [Sentry] Runtime hook registered, injected libraries=[]",
+      "Sentry Logger [log]: [Sentry] Bundler plugin did not run",
+      "[repro] load {\"file\":\"function-verify-errors-only.js\",\"ok\":true,\"exportType\":\"function\",\"registered\":[]}",
+      "Sentry Logger [log]: Captured error event `notExistFunction is not defined`",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "Sentry Logger [warn]: Discarded session because of missing or non-string release",
+      "[repro] invoke {\"ok\":true,\"response\":{\"status\":500,\"body\":\"Test error sent to Sentry.\"},\"contextLog\":[]}",
+      "[repro] sink-after-function {\"counts\":{\"event\":1}}",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: Flushing outcomes...",
+      "Sentry Logger [log]: No outcomes to send",
+      "[repro] sentinel-flush {\"flushed\":true}",
+      "[repro] sentinel-arrived {\"arrived\":true,\"counts\":{\"event\":2}}",
+      "runner exit code 0"
+    ]
+  },
+  "envelopes": {
+    "counts": {
+      "event": 2,
+      "span": 0,
+      "transaction": 0,
+      "log": 0
+    },
+    "items": [
+      {
+        "type": "event",
+        "exception": "ReferenceError: notExistFunction is not defined",
+        "mechanism": "generic",
+        "level": "error",
+        "handled": true,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "trace_id": "09b7b58f1d1548df8b4b8867f4ae57b0",
+        "environment": "production"
+      },
+      {
+        "type": "event",
+        "message": "sentinel",
+        "exception": "undefined: sentinel",
+        "mechanism": "generic",
+        "level": "info",
+        "handled": true,
+        "sdk": "sentry.javascript.node",
+        "sdk_version": "10.67.0",
+        "runtime": "node",
+        "runtime_version": "v26.5.0",
+        "hasContextLine": true,
+        "trace_id": "09b7b58f1d1548df8b4b8867f4ae57b0",
+        "environment": "production"
+      }
+    ]
+  },
+  "rawEvents": [
+    {
+      "exception": "ReferenceError: notExistFunction is not defined",
+      "mechanism": {
+        "type": "generic",
+        "handled": true
+      },
+      "server_name": "DJ90J9R5XC.local",
+      "environment": "production",
+      "contexts": {
+        "runtime": {
+          "name": "node",
+          "version": "v26.5.0"
+        },
+        "cloud_resource": {},
+        "trace": {
+          "trace_id": "09b7b58f1d1548df8b4b8867f4ae57b0",
+          "span_id": "865e8e8066f68898"
+        }
+      },
+      "sdk": "sentry.javascript.node",
+      "sdk_version": "10.67.0"
+    },
+    {
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "mechanism": {
+        "type": "generic",
+        "handled": true,
+        "synthetic": true
+      },
+      "server_name": "DJ90J9R5XC.local",
+      "environment": "production",
+      "contexts": {
+        "runtime": {
+          "name": "node",
+          "version": "v26.5.0"
+        },
+        "cloud_resource": {},
+        "trace": {
+          "trace_id": "09b7b58f1d1548df8b4b8867f4ae57b0",
+          "span_id": "942932d22d75427f"
+        }
+      },
+      "sdk": "sentry.javascript.node",
+      "sdk_version": "10.67.0"
+    }
+  ],
+  "spansRaw": [],
+  "verdict": {
+    "status": "partial",
+    "checks": {
+      "load_ok": true,
+      "invoke_ok": true,
+      "response": {
+        "status": 500,
+        "body": "Test error sent to Sentry."
+      },
+      "context_log": [],
+      "sink_after_function": {
+        "event": 1
+      },
+      "sentinel_flushed": true,
+      "sentinel_arrived": true,
+      "error_events": [
+        {
+          "exception": "ReferenceError: notExistFunction is not defined",
+          "mechanism": "generic",
+          "handled": true,
+          "trace_id": "09b7b58f1d1548df8b4b8867f4ae57b0"
+        }
+      ],
+      "request_data_on_error_event": false,
+      "user_on_error_event": false,
+      "sentinel_event": [
+        {
+          "mechanism": "generic",
+          "handled": true
+        }
+      ],
+      "transaction_envelopes": 0,
+      "span_envelopes": 0,
+      "segments": [],
+      "child_spans": [],
+      "custom_span": [],
+      "log_batches": 0,
+      "log_bodies": [],
+      "other_item_types": [],
+      "faas_cloud_attributes": {
+        "contexts.cloud_resource": {}
+      },
+      "deprecation_output": [],
+      "release_warning": [
+        "Sentry Logger [warn]: Discarded session because of missing or non-string release"
+      ],
+      "azure_test_mode_warning": []
+    }
+  }
+}

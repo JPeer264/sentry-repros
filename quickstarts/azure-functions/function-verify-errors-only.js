@@ -1,0 +1,29 @@
+// docs/platforms/javascript/guides/azure-functions/index.mdx:55,60-61,83 (Configure, error-monitoring option only)
+// and index.mdx:154-172 (Verify > Issues), verbatim; the two repro-only init options are marked.
+const Sentry = require("@sentry/node");
+
+Sentry.init({
+  dsn: "https://public@o0.ingest.sentry.io/0",
+  tunnel: process.env.SENTRY_TUNNEL, // repro-only: envelopes go to the local sink
+  debug: true, // repro-only
+});
+
+module.exports = async function (context, req) {
+  try {
+    // This function does not exist, triggering an error
+    await notExistFunction();
+  } catch (e) {
+    Sentry.withScope((scope) => {
+      scope.setSDKProcessingMetadata({ request: req });
+      Sentry.captureException(e);
+    });
+  }
+
+  // Wait for the event to be sent before the function execution ends
+  await Sentry.flush(2000);
+
+  context.res = {
+    status: 500,
+    body: "Test error sent to Sentry.",
+  };
+};

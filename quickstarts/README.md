@@ -39,10 +39,10 @@ One directory per docs guide: the install, configure and verify steps as a new u
 | QS-solidstart | meta-framework | solidstart | wizard is out of scope, manual setup, install variants | planned | server on Node plus the client in headless Chrome |
 | [QS-aws-lambda](aws-lambda/) | serverless | aws-lambda | npm, layer, container-image, esm-npm, cjs-npm | done | npm path invoked locally with a fake event, fourteen variants; the layer and container paths need AWS and stay unmeasured |
 | [QS-gcp-functions](gcp-functions/) | serverless | gcp-functions | npm | done | functions-framework locally with the develop tarballs; thirteen variants across the HTTP, Background and CloudEvent tabs and the instrumentation page |
-| QS-azure-functions | serverless | azure-functions | npm | planned | the wrapper invoked locally with a fake context; no core tools |
+| [QS-azure-functions](azure-functions/) | serverless | azure-functions | npm | done | host stand-in with fake v3 and v4 contexts; seven variants; the real Azure host not run |
 | QS-firebase | serverless | firebase | npm | not measurable | needs the Firebase emulator; not run on this machine |
 | QS-electron | desktop | electron | npm | not measurable | separate repository getsentry/sentry-electron; not the develop of sentry-javascript |
 | QS-capacitor | mobile | capacitor | npm | not measurable | separate repository; needs a device or simulator |
 | QS-cordova | mobile | cordova | npm | not measurable | separate repository; needs a device or simulator |
 
-Totals: 24 done, 12 planned, 4 not measurable.
+Totals: 25 done, 11 planned, 4 not measurable.

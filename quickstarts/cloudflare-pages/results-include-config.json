@@ -1,0 +1,2801 @@
+{
+  "variant": "include-config",
+  "wranglerReady": true,
+  "steps": [
+    {
+      "route": "/",
+      "status": 200
+    },
+    {
+      "route": "/style.css",
+      "status": 200
+    },
+    {
+      "route": "/debug-sentry",
+      "status": 500
+    },
+    {
+      "route": "/debug-sentry-import",
+      "status": 500
+    },
+    {
+      "route": "/api/error",
+      "status": 500
+    },
+    {
+      "route": "/api/users/42",
+      "status": 200
+    },
+    {
+      "route": "/api/fetch",
+      "status": 200
+    },
+    {
+      "route": "/api/log",
+      "status": 200
+    },
+    {
+      "route": "/api/waituntil",
+      "status": 200
+    },
+    {
+      "route": "/api/waituntil-reject",
+      "status": 200
+    },
+    {
+      "route": "/api/sentinel",
+      "status": 200
+    }
+  ],
+  "console": {
+    "wrangler": [
+      "[wrangler:info] Ready on http://localhost:4748",
+      "[wrangler:error] ReferenceError: Sentry is not defined",
+      "    at handleCallbackErrors.status.status [as status] (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:672:13)",
+      "    at handleCallbackErrors (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)",
+      "[wrangler:info] GET /debug-sentry 500 Internal Server Error (24ms)",
+      "[wrangler:error] Error: My first Sentry error!",
+      "    at async jsonError (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10)",
+      "    at async jsonError (file://$REPRO/quickstarts/cloudflare-pages/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10)",
+      "[wrangler:info] GET /debug-sentry-import 500 Internal Server Error (116ms)",
+      "[wrangler:error] Error: api error",
+      "    at onRequest (file://$REPRO/quickstarts/cloudflare-pages/functions/api/error.js:2:9)",
+      "    at handleCallbackErrors.status.status [as status] (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:672:13)",
+      "    at handleCallbackErrors (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)",
+      "[wrangler:info] GET /api/error 500 Internal Server Error (15ms)",
+      "✘ [ERROR] Uncaught Error: waitUntil rejection Error",
+      "      at handleCallbackErrors.status.status (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/tracing/trace.ts:672:13)",
+      "      at handleCallbackErrors (file://$REPRO/quickstarts/cloudflare-pages/node_modules/@sentry/core/src/utils/handleCallbackErrors.ts:41:26)",
+      "✘ [ERROR] Uncaught Error: waitUntil rejection ",
+      "▲ [WARNING] NOSENTRY reporting trace with exceptions, but no exception outcome; trace->eventInfo = FetchEventInfo: GET, http://127.0.0.1:4748/api/waituntil-reject"
+    ],
+    "sdkInit": [
+      "Sentry Logger [log]: Cleared AI provider skip registrations",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 242d6e0e8b1149bf91076d2b71bb2531 with 1 spans",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace f7b76702b894456eae0d2595eae85133 with 1 spans",
+      "Sentry Logger [log]: Captured error event `Sentry is not defined`",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace a53f1ab2503047ceb047f0fd862cb852 with 1 spans",
+      "Sentry Logger [log]: Captured error event `My first Sentry error!`",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 39cb18ee45914ca4933ee9a0ae9e5637 with 2 spans",
+      "Sentry Logger [log]: Captured error event `api error`",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 87acad771c8c4edca17760d124f3c3d4 with 1 spans",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace e0cb17343d8141389757cd7de9fc50ec with 1 spans",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 2a6c9f56efd145ee891b82dc8dd12811 with 2 spans",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 8cd86b3a7cc2473b9315b72be0f21a99 with 1 spans",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 8156fdf70f9c46a4816b7f4448c7fa5b with 1 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 8156fdf70f9c46a4816b7f4448c7fa5b with 1 spans",
+      "Sentry Logger [log]: Sending span envelope for trace 8156fdf70f9c46a4816b7f4448c7fa5b with 1 spans",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace a464aa21b9274def8649eade36e98c21 with 1 spans",
+      "Sentry Logger [log]: Captured error event `sentinel`",
+      "Sentry Logger [log]: Flushing span tree map with 1 traces",
+      "Sentry Logger [log]: Sending span envelope for trace 9cc1159e95094f18936961ed7e8dea9f with 3 spans"
+    ],
+    "integrations": [
+      "Dedupe",
+      "EventFilters",
+      "FunctionToString",
+      "ConversationId",
+      "LinkedErrors",
+      "Fetch",
+      "HttpServer",
+      "RequestData",
+      "Console",
+      "SpanStreaming"
+    ],
+    "tracingLines": [
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET /\" with ID 8dcc47199b10bcd9",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID 8a0a3bce8c8f50ab",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID 8deb84af736e6b50",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Finishing \"test\" span \"My First Test Transaction\" with ID ba6b4dea8e754ed5",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID b516d028eede5504",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID b55b72fe27d4b641",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID a363c9c337c37eaf",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET 127.0.0.1\" with ID 91da725ed3e1291f",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID a6392fe946695ae7",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID aeecc8386510f7fb",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID 8fb9b958ad857650",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET 127.0.0.1\" with ID bb7b17c0d9caaff3",
+      "Sentry Logger [log]: [Tracing] Finishing \"task\" span \"background.task\" with ID 9c05c2a8a9f6d3fd",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID 8b2102ade789da97",
+      "Sentry Logger [log]: [Tracing] Starting sampled root span",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Starting sampled span",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.client\" span \"GET 127.0.0.1\" with ID 9d87c6a488f675ee",
+      "Sentry Logger [log]: [Tracing] Finishing \"test\" span \"sentinel span\" with ID 9ec6d5f0e5c38305",
+      "Sentry Logger [log]: [Tracing] Finishing \"http.server\" root span \"GET\" with ID 84f58990bc9daef8"
+    ]
+  },
+  "envelopeTypes": [
+    "span",
+    "span",
+    "event",
+    "span",
+    "event",
+    "span",
+    "event",
+    "span",
+    "span",
+    "span",
+    "log",
+    "span",
+    "span",
+    "span",
+    "span",
+    "span",
+    "event",
+    "span"
+  ],
+  "items": [
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "242d6e0e8b1149bf91076d2b71bb2531",
+      "items": [
+        "http.server GET /"
+      ],
+      "raw": [
+        {
+          "name": "GET /",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "route",
+          "url_path": "/",
+          "url_full": "http://127.0.0.1:4748/",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "f7b76702b894456eae0d2595eae85133",
+      "items": [
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/style.css",
+          "url_full": "http://127.0.0.1:4748/style.css",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "exception": "ReferenceError: Sentry is not defined",
+      "mechanism": "auto.http.cloudflare",
+      "handled": false,
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "integrations": [
+        "Dedupe",
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "LinkedErrors",
+        "Fetch",
+        "HttpServer",
+        "RequestData",
+        "Console",
+        "SpanStreaming"
+      ],
+      "runtime": "cloudflare",
+      "hasContextLine": false,
+      "appFrames": [
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "handleCallbackErrors"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "handleCallbackErrors.status.status"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "Object.next"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "onRequest"
+        }
+      ],
+      "trace_id": "a53f1ab2503047ceb047f0fd862cb852",
+      "user": {
+        "ip_address": "127.0.0.1"
+      },
+      "request": {
+        "url": "http://127.0.0.1:4748/debug-sentry",
+        "method": "GET",
+        "hasData": false,
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "br, gzip",
+          "cf-connecting-ip": "127.0.0.1",
+          "host": "127.0.0.1:4748",
+          "user-agent": "curl/8.7.1"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "a53f1ab2503047ceb047f0fd862cb852",
+      "items": [
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/debug-sentry",
+          "url_full": "http://127.0.0.1:4748/debug-sentry",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "exception": "Error: My first Sentry error!",
+      "mechanism": "auto.http.cloudflare",
+      "handled": false,
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "integrations": [
+        "Dedupe",
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "LinkedErrors",
+        "Fetch",
+        "HttpServer",
+        "RequestData",
+        "Console",
+        "SpanStreaming"
+      ],
+      "runtime": "cloudflare",
+      "hasContextLine": false,
+      "appFrames": [
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "drainBody"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "jsonError"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "drainBody"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "jsonError"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "Object.fetch"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "next"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "Object.next"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "onRequest"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        }
+      ],
+      "trace_id": "39cb18ee45914ca4933ee9a0ae9e5637",
+      "user": {
+        "ip_address": "127.0.0.1"
+      },
+      "request": {
+        "url": "http://127.0.0.1:4748/debug-sentry-import",
+        "method": "GET",
+        "hasData": false,
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "br, gzip",
+          "cf-connecting-ip": "127.0.0.1",
+          "host": "127.0.0.1:4748",
+          "user-agent": "curl/8.7.1"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "39cb18ee45914ca4933ee9a0ae9e5637",
+      "items": [
+        "test My First Test Transaction",
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "My First Test Transaction",
+          "op": "test",
+          "status": "error",
+          "is_segment": false,
+          "parent_span_id": "b516d028eede5504",
+          "origin": "manual"
+        },
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/debug-sentry-import",
+          "url_full": "http://127.0.0.1:4748/debug-sentry-import",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "exception": "Error: api error",
+      "mechanism": "auto.http.cloudflare",
+      "handled": false,
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "integrations": [
+        "Dedupe",
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "LinkedErrors",
+        "Fetch",
+        "HttpServer",
+        "RequestData",
+        "Console",
+        "SpanStreaming"
+      ],
+      "runtime": "cloudflare",
+      "hasContextLine": false,
+      "appFrames": [
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "handleCallbackErrors"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "handleCallbackErrors.status.status"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "Object.next"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "onRequest"
+        }
+      ],
+      "trace_id": "87acad771c8c4edca17760d124f3c3d4",
+      "user": {
+        "ip_address": "127.0.0.1"
+      },
+      "request": {
+        "url": "http://127.0.0.1:4748/api/error",
+        "method": "GET",
+        "hasData": false,
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "br, gzip",
+          "cf-connecting-ip": "127.0.0.1",
+          "host": "127.0.0.1:4748",
+          "user-agent": "curl/8.7.1"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "87acad771c8c4edca17760d124f3c3d4",
+      "items": [
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/api/error",
+          "url_full": "http://127.0.0.1:4748/api/error",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "e0cb17343d8141389757cd7de9fc50ec",
+      "items": [
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/api/users/42",
+          "url_full": "http://127.0.0.1:4748/api/users/42",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "2a6c9f56efd145ee891b82dc8dd12811",
+      "items": [
+        "http.client GET 127.0.0.1",
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET 127.0.0.1",
+          "op": "http.client",
+          "status": "ok",
+          "is_segment": false,
+          "parent_span_id": "a6392fe946695ae7",
+          "origin": "auto.http.fetch",
+          "url_full": "http://127.0.0.1:4747/recorder?from=api-fetch",
+          "method": "GET",
+          "status_code": 200
+        },
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/api/fetch",
+          "url_full": "http://127.0.0.1:4748/api/fetch",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "log",
+      "items": [
+        "info: hello from /api/log"
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "8cd86b3a7cc2473b9315b72be0f21a99",
+      "items": [
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/api/log",
+          "url_full": "http://127.0.0.1:4748/api/log",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "8156fdf70f9c46a4816b7f4448c7fa5b",
+      "items": [
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/api/waituntil",
+          "url_full": "http://127.0.0.1:4748/api/waituntil",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "8156fdf70f9c46a4816b7f4448c7fa5b",
+      "items": [
+        "http.client GET 127.0.0.1"
+      ],
+      "raw": [
+        {
+          "name": "GET 127.0.0.1",
+          "op": "http.client",
+          "status": "ok",
+          "is_segment": false,
+          "parent_span_id": "9c05c2a8a9f6d3fd",
+          "origin": "auto.http.fetch",
+          "url_full": "http://127.0.0.1:4747/recorder?from=waituntil",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "8156fdf70f9c46a4816b7f4448c7fa5b",
+      "items": [
+        "task background.task"
+      ],
+      "raw": [
+        {
+          "name": "background.task",
+          "op": "task",
+          "status": "ok",
+          "is_segment": false,
+          "parent_span_id": "8fb9b958ad857650",
+          "origin": "manual"
+        }
+      ]
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "a464aa21b9274def8649eade36e98c21",
+      "items": [
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/api/waituntil-reject",
+          "url_full": "http://127.0.0.1:4748/api/waituntil-reject",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "message": "sentinel",
+      "exception": "undefined: sentinel",
+      "mechanism": "generic",
+      "handled": true,
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "integrations": [
+        "Dedupe",
+        "EventFilters",
+        "FunctionToString",
+        "ConversationId",
+        "LinkedErrors",
+        "Fetch",
+        "HttpServer",
+        "RequestData",
+        "Console",
+        "SpanStreaming"
+      ],
+      "runtime": "cloudflare",
+      "hasContextLine": false,
+      "appFrames": [
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "jsonError"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "drainBody"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "jsonError"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "Object.fetch"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "next"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "?"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "Object.next"
+        },
+        {
+          "filename": "$REPRO/quickstarts/cloudflare-pages/.wrangler/tmp/dev-W6UC7X/functionsWorker-0.4221974924522245.js",
+          "function": "onRequest"
+        }
+      ],
+      "trace_id": "9cc1159e95094f18936961ed7e8dea9f",
+      "user": {
+        "ip_address": "127.0.0.1"
+      },
+      "request": {
+        "url": "http://127.0.0.1:4748/api/sentinel",
+        "method": "GET",
+        "hasData": false,
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "br, gzip",
+          "cf-connecting-ip": "127.0.0.1",
+          "host": "127.0.0.1:4748",
+          "user-agent": "curl/8.7.1"
+        }
+      },
+      "environment": "production"
+    },
+    {
+      "type": "span",
+      "sdk": "sentry.javascript.cloudflare",
+      "sdk_version": "10.67.0",
+      "trace_id": "9cc1159e95094f18936961ed7e8dea9f",
+      "items": [
+        "http.client GET 127.0.0.1",
+        "test sentinel span",
+        "http.server GET"
+      ],
+      "raw": [
+        {
+          "name": "GET 127.0.0.1",
+          "op": "http.client",
+          "status": "ok",
+          "is_segment": false,
+          "parent_span_id": "9ec6d5f0e5c38305",
+          "origin": "auto.http.fetch",
+          "url_full": "http://127.0.0.1:4747/recorder?from=sentinel",
+          "method": "GET",
+          "status_code": 200
+        },
+        {
+          "name": "sentinel span",
+          "op": "test",
+          "status": "ok",
+          "is_segment": false,
+          "parent_span_id": "84f58990bc9daef8",
+          "origin": "manual"
+        },
+        {
+          "name": "GET",
+          "op": "http.server",
+          "status": "ok",
+          "is_segment": true,
+          "origin": "auto.http.cloudflare",
+          "segment_name_source": "url",
+          "url_path": "/api/sentinel",
+          "url_full": "http://127.0.0.1:4748/api/sentinel",
+          "method": "GET",
+          "status_code": 200
+        }
+      ]
+    }
+  ],
+  "spansRaw": [
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET /",
+          "span_id": "8dcc47199b10bcd9",
+          "trace_id": "242d6e0e8b1149bf91076d2b71bb2531",
+          "start_timestamp": 1788940016.051,
+          "end_timestamp": 1788940016.06,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "route",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET /",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8dcc47199b10bcd9",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "8a0a3bce8c8f50ab",
+          "trace_id": "f7b76702b894456eae0d2595eae85133",
+          "start_timestamp": 1788940016.075,
+          "end_timestamp": 1788940016.076,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/style.css",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/style.css",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8a0a3bce8c8f50ab",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "8deb84af736e6b50",
+          "trace_id": "a53f1ab2503047ceb047f0fd862cb852",
+          "start_timestamp": 1788940016.088,
+          "end_timestamp": 1788940016.088,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/debug-sentry",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/debug-sentry",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8deb84af736e6b50",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "My First Test Transaction",
+          "span_id": "ba6b4dea8e754ed5",
+          "trace_id": "39cb18ee45914ca4933ee9a0ae9e5637",
+          "parent_span_id": "b516d028eede5504",
+          "start_timestamp": 1788940016.123,
+          "end_timestamp": 1788940016.225,
+          "is_segment": false,
+          "status": "error",
+          "attributes": {
+            "sentry.status.message": {
+              "value": "internal_error",
+              "type": "string"
+            },
+            "sentry.origin": {
+              "value": "manual",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "test",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b516d028eede5504",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET",
+          "span_id": "b516d028eede5504",
+          "trace_id": "39cb18ee45914ca4933ee9a0ae9e5637",
+          "start_timestamp": 1788940016.123,
+          "end_timestamp": 1788940016.225,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/debug-sentry-import",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/debug-sentry-import",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b516d028eede5504",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "b55b72fe27d4b641",
+          "trace_id": "87acad771c8c4edca17760d124f3c3d4",
+          "start_timestamp": 1788940016.249,
+          "end_timestamp": 1788940016.25,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/api/error",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/api/error",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "b55b72fe27d4b641",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "a363c9c337c37eaf",
+          "trace_id": "e0cb17343d8141389757cd7de9fc50ec",
+          "start_timestamp": 1788940016.275,
+          "end_timestamp": 1788940016.275,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/api/users/42",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/api/users/42",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a363c9c337c37eaf",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET 127.0.0.1",
+          "span_id": "91da725ed3e1291f",
+          "trace_id": "2a6c9f56efd145ee891b82dc8dd12811",
+          "parent_span_id": "a6392fe946695ae7",
+          "start_timestamp": 1788940016.286,
+          "end_timestamp": 1788940016.287,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.fetch",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.client",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4747/recorder?from=api-fetch",
+              "type": "string"
+            },
+            "type": {
+              "value": "fetch",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.domain": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4747,
+              "type": "integer"
+            },
+            "url.query": {
+              "value": "from=api-fetch",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "http.response.body.size": {
+              "value": 11,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a6392fe946695ae7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET",
+          "span_id": "a6392fe946695ae7",
+          "trace_id": "2a6c9f56efd145ee891b82dc8dd12811",
+          "start_timestamp": 1788940016.285,
+          "end_timestamp": 1788940016.287,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/api/fetch",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/api/fetch",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "a6392fe946695ae7",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "aeecc8386510f7fb",
+          "trace_id": "8cd86b3a7cc2473b9315b72be0f21a99",
+          "start_timestamp": 1788940016.298,
+          "end_timestamp": 1788940016.299,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/api/log",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/api/log",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "aeecc8386510f7fb",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "8fb9b958ad857650",
+          "trace_id": "8156fdf70f9c46a4816b7f4448c7fa5b",
+          "start_timestamp": 1788940016.309,
+          "end_timestamp": 1788940016.31,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/api/waituntil",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/api/waituntil",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8fb9b958ad857650",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET 127.0.0.1",
+          "span_id": "bb7b17c0d9caaff3",
+          "trace_id": "8156fdf70f9c46a4816b7f4448c7fa5b",
+          "parent_span_id": "9c05c2a8a9f6d3fd",
+          "start_timestamp": 1788940016.31,
+          "end_timestamp": 1788940016.311,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.fetch",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.client",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4747/recorder?from=waituntil",
+              "type": "string"
+            },
+            "type": {
+              "value": "fetch",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.domain": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4747,
+              "type": "integer"
+            },
+            "url.query": {
+              "value": "from=waituntil",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "http.response.body.size": {
+              "value": 11,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8fb9b958ad857650",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "background.task",
+          "span_id": "9c05c2a8a9f6d3fd",
+          "trace_id": "8156fdf70f9c46a4816b7f4448c7fa5b",
+          "parent_span_id": "8fb9b958ad857650",
+          "start_timestamp": 1788940016.309,
+          "end_timestamp": 1788940016.312,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "manual",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "task",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8fb9b958ad857650",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET",
+          "span_id": "8b2102ade789da97",
+          "trace_id": "a464aa21b9274def8649eade36e98c21",
+          "start_timestamp": 1788940016.32,
+          "end_timestamp": 1788940016.321,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/api/waituntil-reject",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/api/waituntil-reject",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "8b2102ade789da97",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "items": [
+        {
+          "name": "GET 127.0.0.1",
+          "span_id": "9d87c6a488f675ee",
+          "trace_id": "9cc1159e95094f18936961ed7e8dea9f",
+          "parent_span_id": "9ec6d5f0e5c38305",
+          "start_timestamp": 1788940016.331,
+          "end_timestamp": 1788940016.332,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.fetch",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.client",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4747/recorder?from=sentinel",
+              "type": "string"
+            },
+            "type": {
+              "value": "fetch",
+              "type": "string"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.domain": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "server.port": {
+              "value": 4747,
+              "type": "integer"
+            },
+            "url.query": {
+              "value": "from=sentinel",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "http.response.body.size": {
+              "value": 11,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "84f58990bc9daef8",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "sentinel span",
+          "span_id": "9ec6d5f0e5c38305",
+          "trace_id": "9cc1159e95094f18936961ed7e8dea9f",
+          "parent_span_id": "84f58990bc9daef8",
+          "start_timestamp": 1788940016.331,
+          "end_timestamp": 1788940016.332,
+          "is_segment": false,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "manual",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "test",
+              "type": "string"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "84f58990bc9daef8",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "GET",
+          "span_id": "84f58990bc9daef8",
+          "trace_id": "9cc1159e95094f18936961ed7e8dea9f",
+          "start_timestamp": 1788940016.331,
+          "end_timestamp": 1788940016.333,
+          "is_segment": true,
+          "status": "ok",
+          "attributes": {
+            "sentry.origin": {
+              "value": "auto.http.cloudflare",
+              "type": "string"
+            },
+            "sentry.op": {
+              "value": "http.server",
+              "type": "string"
+            },
+            "sentry.segment.name.source": {
+              "value": "url",
+              "type": "string"
+            },
+            "sentry.sample_rate": {
+              "value": 1,
+              "type": "integer"
+            },
+            "http.request.method": {
+              "value": "GET",
+              "type": "string"
+            },
+            "url.full": {
+              "value": "http://127.0.0.1:4748/api/sentinel",
+              "type": "string"
+            },
+            "url.path": {
+              "value": "/api/sentinel",
+              "type": "string"
+            },
+            "url.port": {
+              "value": "4748",
+              "type": "string"
+            },
+            "url.scheme": {
+              "value": "http:",
+              "type": "string"
+            },
+            "server.address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "user_agent.original": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "http.request.header.accept": {
+              "value": "*/*",
+              "type": "string"
+            },
+            "http.request.header.accept_encoding": {
+              "value": "br, gzip",
+              "type": "string"
+            },
+            "http.request.header.cf_connecting_ip": {
+              "value": "127.0.0.1",
+              "type": "string"
+            },
+            "http.request.header.host": {
+              "value": "127.0.0.1:4748",
+              "type": "string"
+            },
+            "http.request.header.user_agent": {
+              "value": "curl/8.7.1",
+              "type": "string"
+            },
+            "network.protocol.name": {
+              "value": "http",
+              "type": "string"
+            },
+            "network.protocol.version": {
+              "value": "1.1",
+              "type": "string"
+            },
+            "http.response.status_code": {
+              "value": 200,
+              "type": "integer"
+            },
+            "sentry.trace_lifecycle": {
+              "value": "stream",
+              "type": "string"
+            },
+            "sentry.segment.name": {
+              "value": "GET",
+              "type": "string"
+            },
+            "sentry.segment.id": {
+              "value": "84f58990bc9daef8",
+              "type": "string"
+            },
+            "sentry.sdk.name": {
+              "value": "sentry.javascript.cloudflare",
+              "type": "string"
+            },
+            "sentry.sdk.version": {
+              "value": "10.67.0",
+              "type": "string"
+            },
+            "sentry.environment": {
+              "value": "production",
+              "type": "string"
+            },
+            "cloud.provider": {
+              "value": "cloudflare",
+              "type": "string"
+            },
+            "culture.timezone": {
+              "value": "Europe/Vienna",
+              "type": "string"
+            },
+            "sentry.sdk.integrations": {
+              "value": [
+                "Dedupe",
+                "EventFilters",
+                "FunctionToString",
+                "ConversationId",
+                "LinkedErrors",
+                "Fetch",
+                "HttpServer",
+                "RequestData",
+                "Console",
+                "SpanStreaming"
+              ],
+              "type": "array"
+            },
+            "user.ip_address": {
+              "value": "127.0.0.1",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "transactionsRaw": [],
+  "recorderHeaders": [
+    {
+      "url": "/recorder?from=api-fetch",
+      "sentry-trace": "2a6c9f56efd145ee891b82dc8dd12811-91da725ed3e1291f-1",
+      "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=2a6c9f56efd145ee891b82dc8dd12811,sentry-org_id=1,sentry-sampled=true,sentry-sample_rand=0.644635337883434,sentry-sample_rate=1",
+      "traceparent": null
+    },
+    {
+      "url": "/recorder?from=waituntil",
+      "sentry-trace": "8156fdf70f9c46a4816b7f4448c7fa5b-bb7b17c0d9caaff3-1",
+      "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=8156fdf70f9c46a4816b7f4448c7fa5b,sentry-org_id=1,sentry-sampled=true,sentry-sample_rand=0.8033882761722712,sentry-sample_rate=1",
+      "traceparent": null
+    },
+    {
+      "url": "/recorder?from=sentinel",
+      "sentry-trace": "9cc1159e95094f18936961ed7e8dea9f-9d87c6a488f675ee-1",
+      "baggage": "sentry-environment=production,sentry-public_key=1234567890abcdef1234567890abcdef,sentry-trace_id=9cc1159e95094f18936961ed7e8dea9f,sentry-org_id=1,sentry-sampled=true,sentry-sample_rand=0.04431446083782309,sentry-sample_rate=1",
+      "traceparent": null
+    }
+  ],
+  "verdict": "works: wrangler 4.130.0 honours the verbatim include wrangler.jsonc (compatibility_date 2024-09-23, nodejs_compat, no pages_build_output_dir) for wrangler pages dev public; item set identical to base."
+}
