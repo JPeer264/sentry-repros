@@ -6,6 +6,9 @@
 #   bundle       bun run build.ts && bun --preload ./instrument.ts dist/app.js
 #   bundle-minimal  same, but build-minimal.ts leaves out `external: ["@sentry/*"]`
 #   watch        bun --watch --preload ./instrument.ts app.ts
+#   graphql-preload         bun --preload ./instrument.ts app-graphql.ts        (unbundled, graphql loaded at runtime)
+#   graphql-bundle-preload  plugin build of app-graphql.ts, then bun --preload ./instrument.ts dist-graphql/app-graphql.js
+#   graphql-bundle-inline   plugin build of app-graphql-inline.ts (imports ./instrument first), run without --preload
 set -u
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VARIANT="${1:-preload}"
@@ -34,6 +37,14 @@ case "$VARIANT" in
                bun $NOCFG run build-minimal.ts > "$DIR/build-$VARIANT.log" 2>&1
                bun $NOCFG --preload ./instrument.ts dist-minimal/app.js > "$DIR/app-$VARIANT.log" 2>&1 & ;;
   watch)       bun $NOCFG --watch --preload ./instrument.ts app.ts > "$DIR/app-$VARIANT.log" 2>&1 & ;;
+  graphql-preload)
+               bun $NOCFG --preload ./instrument.ts app-graphql.ts > "$DIR/app-$VARIANT.log" 2>&1 & ;;
+  graphql-bundle-preload)
+               bun $NOCFG run build-graphql.ts > "$DIR/build-$VARIANT.log" 2>&1
+               bun $NOCFG --preload ./instrument.ts dist-graphql/app-graphql.js > "$DIR/app-$VARIANT.log" 2>&1 & ;;
+  graphql-bundle-inline)
+               GRAPHQL_ENTRY=./app-graphql-inline.ts GRAPHQL_OUTDIR=./dist-graphql-inline bun $NOCFG run build-graphql.ts > "$DIR/build-$VARIANT.log" 2>&1
+               bun $NOCFG dist-graphql-inline/app-graphql-inline.js > "$DIR/app-$VARIANT.log" 2>&1 & ;;
   *) echo "unknown variant $VARIANT"; kill $SINK_PID; exit 1 ;;
 esac
 APP_PID=$!
@@ -44,6 +55,7 @@ curl -s "$APP/users/42"     >/dev/null
 curl -s "$APP/debug-sentry" >/dev/null
 curl -s "$APP/debug-span"   >/dev/null
 curl -s "$APP/debug-log"    >/dev/null
+case "$VARIANT" in graphql-*) curl -s "$APP/graphql" >/dev/null ;; esac
 curl -s "$APP/sentinel"     >/dev/null
 
 # Wait until the sentinel event, its server span and the timer-flushed log batch have arrived. No fixed sleeps.

@@ -25,7 +25,7 @@
   "runtime": "bun 1.4.2 (audit ran 1.4.0)",
   "rebuilt": "yes",
   "matches": "n/a (new probe)",
-  "summary": "Documented path works on develop: --preload, bunfig preload, first-line import, --watch and a Bun.build bundle with the plugin all deliver the same errors, Bun.serve spans, fetch spans with headers and logs. The guide's claim that auto-instrumentation does not work with bundled code is refuted for runtime instrumentation. Gaps: two warnings about missing channel injection on the documented path that no page mentions; Bun error events carry no transaction field; no transaction envelope under the stream lifecycle; debug output names no SDK or runtime; installing the tarballs needs an overrides block (tarball artifact, not a guide defect).",
+  "summary": "Documented path works on develop: --preload, bunfig preload, first-line import, --watch and a Bun.build bundle with the plugin all deliver the same errors, Bun.serve spans, fetch spans with headers and logs. The guide's claim that auto-instrumentation does not work with bundled code is refuted for runtime instrumentation. Gaps: two warnings about missing channel injection on the documented path that no page mentions; Bun error events carry no transaction field; no transaction envelope under the stream lifecycle; debug output names no SDK or runtime; installing the tarballs needs an overrides block (tarball artifact, not a guide defect). Added 2026-09-10: the injection warning also prints on a plugin build started with --preload although the bundled instrumentation records spans (graphql variants), an SDK defect tracked in the Linear drafts.",
   "sdk": {
    "name": "sentry.javascript.bun",
    "version": "10.67.0",
@@ -37,7 +37,10 @@
    "first-line import": "yes",
    "Bun.build + sentryBunPlugin": "yes",
    "--watch": "yes",
-   "bundle-minimal (no external)": "works (results-bundle-minimal.json, same shape as the bundle variant)"
+   "bundle-minimal (no external)": "works (results-bundle-minimal.json, same shape as the bundle variant)",
+   "graphql-bundle-preload (plugin build + --preload)": "warning prints, GraphQL spans recorded: the warning is false (results-graphql-bundle-preload.json)",
+   "graphql-preload (unbundled + --preload)": "warning prints, no GraphQL span: the warning is right (results-graphql-preload.json)",
+   "graphql-bundle-inline (init inside the bundle)": "no warning, GraphQL spans recorded (results-graphql-bundle-inline.json)"
   }
  },
  {

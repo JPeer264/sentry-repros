@@ -345,6 +345,16 @@ Firebase SpanStreaming
 | The captured data shows up as named transactions in the product (`index.mdx:188`, `quick-starts.html:108`) | **partial** — spans are route-named, but they arrive as streamed `span` items with no `sentry.source`, and the error event has no `transaction` field to group by |
 | Prerequisites name no Bun version (`index.mdx:12` -> `_default.mdx:3-6`) | **gap** — the quick start's "Bun 1.3.14 or later" (`quick-starts.html:45`) has no counterpart in the guide; not verified here, only 1.4.2 was run |
 
+## Observed on 2026-09-10: the injection warning on a plugin build
+
+Three more variants pin down the second warning line (`[Sentry] No diagnostics-channel injection detected. Channel-based integrations will not record spans.`), with `graphql` 16.14.2 as a channel-instrumented library that needs no server and `debug: true` everywhere:
+
+- `graphql-bundle-preload` (`bun run build-graphql.ts`, then `bun --preload ./instrument.ts dist-graphql/app-graphql.js`): the warning prints at `app-graphql-bundle-preload.log:101`, and `GET /graphql` still records `GraphQL parse`, `GraphQL validate` and `GraphQL query` child spans (`results-graphql-bundle-preload.json`). The warning is false: `detectOrchestrionSetup()` runs inside `init()` in the preload, and the bundle's entry banner sets the bundler marker only when the bundle evaluates.
+- `graphql-preload` (`bun --preload ./instrument.ts app-graphql.ts`, no build): the warning prints and the request records no GraphQL span (`results-graphql-preload.json`). The warning is right on the documented unbundled path.
+- `graphql-bundle-inline` (entry `app-graphql-inline.ts` imports `./instrument` first, run without `--preload`): no warning, `[Sentry] Bundler plugin ran, injected libraries=[]` at `app-graphql-bundle-inline.log:102`, and the same three GraphQL spans. The library list is empty at init time because the per-module snippets run when each module evaluates.
+
+A `GraphQL parse` root span with no parent also appears in both bundle variants: `buildSchema()` at module scope parses the schema outside any request.
+
 ## Files
 
 `instrument.ts`, `routes.ts`, `app.ts`, `app-import-first.ts`, `bunfig.toml` (variant a),
@@ -355,3 +365,4 @@ Firebase SpanStreaming
 
 `node_modules/`, `dist/` and `dist-minimal/` were removed after the run; the Install and Run steps
 restore them.
+- `app-graphql.ts`, `app-graphql-inline.ts`, `build-graphql.ts`: the graphql variants (2026-09-10), with `results-graphql-*.json`, `app-graphql-*.log` and `build-graphql-*.log`
